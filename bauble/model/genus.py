@@ -114,7 +114,7 @@ class Genus(db.Base):
 
 
     def __str__(self):
-        return Genus.str(self)
+        return Genus.str(self)    
 
 
     @staticmethod
@@ -131,6 +131,9 @@ class Genus(db.Base):
                              xml.sax.saxutils.escape(genus.author)] \
                      if s not in ('', None)])
 
+    def json(self):
+        return dict(id=self.id,
+                    genus=self.genus)
 
 
 class GenusNote(db.Base):
