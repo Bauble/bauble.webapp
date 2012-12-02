@@ -20,7 +20,8 @@ import bauble.db as db
 from bauble.error import check, CheckConditionError
 
 import bauble.paths as paths
-import bauble.model.meta as meta
+#import bauble.model.meta as meta
+from bauble.model import meta
 from bauble.model.location import Location
 from bauble.model.propagation import PlantPropagation
 #import bauble.prefs as prefs
@@ -342,6 +343,12 @@ class Plant(db.Base):
 
     def __str__(self):
         return "%s%s%s" % (self.accession, self.delimiter, self.code)
+
+    
+    def json(self, depth=1):
+        return dict(id=self.id,
+                    code=self.code,
+                    quantity=self.quantity)
 
 
     def duplicate(self, code=None, session=None):

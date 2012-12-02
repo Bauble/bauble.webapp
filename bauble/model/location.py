@@ -55,3 +55,9 @@ class Location(db.Base):
         else:
             return str(self.code)
 
+
+    def json(self, depth=1):
+        return dict(id=self.id,
+                    code=self.code,
+                    name=self.name,
+                    description=self.description)

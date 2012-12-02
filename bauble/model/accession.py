@@ -341,7 +341,7 @@ class Accession(db.Base):
     def __str__(self):
         return self.code
 
-
+    
     def species_str(self, authors=False, markup=False):
         """
         Return the string of the species with the id qualifier(id_qual)
@@ -414,10 +414,10 @@ class Accession(db.Base):
     def json(self, depth=1):
         json = dict(ref="")
         if(depth > 0):
-            json[code] = self.code
-        if(depth > 1):
-            json[prov_type] = self.prov_type
-        print(json)
+            json['id'] = self.id
+            json['code'] = self.code
+        if(depth > 1):            
+            json['prov_type'] = self.prov_type
         return json
 
 

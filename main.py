@@ -197,13 +197,57 @@ def get_accessions(id=None):
 @post(API_ROOT + "/accession")
 def post_accessions():
     from bauble.model import Accession
-    return handle_post(Accession, 'genera')
+    return handle_post(Accession, 'accessions')
 
 
 @delete(API_ROOT + "/accession/<id>")
 def delete_accessions(id): 
     from bauble.model import Accession
     handle_delete(Accession, id)
+
+
+#
+# Plant request handlers
+# 
+@get(API_ROOT + "/plant")
+@get(API_ROOT + "/plant/<id>")
+def get_plants(id=None):
+    from bauble.model import Plant
+    return handle_get(Plant, id, 'plants')
+
+
+@post(API_ROOT + "/plant")
+def post_plants():
+    from bauble.model import Plant
+    return handle_post(Plant, 'plants')
+
+
+@delete(API_ROOT + "/plant/<id>")
+def delete_plants(id): 
+    from bauble.model import Plant
+    handle_delete(Plant, id)
+
+
+#
+# Location request handlers
+# 
+@get(API_ROOT + "/location")
+@get(API_ROOT + "/location/<id>")
+def get_locations(id=None):
+    from bauble.model import Location
+    return handle_get(Location, id, 'locations')
+
+
+@post(API_ROOT + "/location")
+def post_locations():
+    from bauble.model import Location
+    return handle_post(Location, 'locations')
+
+
+@delete(API_ROOT + "/location/<id>")
+def delete_locations(id): 
+    from bauble.model import Location
+    handle_delete(Location, id)
 
 
 #
