@@ -2,54 +2,7 @@ import json
 
 import requests
 
-server="http://localhost:8080/api/v1"
-
-def get_random_name():
-    """
-    Return a random string for creating resources that require unique names.
-    """
-    import random
-    return str(random.random())
-
-
-def get_headers(depth=1):
-    """
-    Return the standard request headers
-    """
-    return {'accept': 'application/json;depth=' + str(depth)}
-
-
-def create_resource(resource, **kwargs):
-    """
-    Create a server based resource with fields in kwargs with a POST
-    """
-    response = requests.post(server+resource, data=kwargs,
-                             headers=get_headers())
-    assert response.status_code == 200
-    return json.loads(response.text)
-
-
-def get_resource(resource, id=None):
-    """
-    Get a server based resource with id=id
-    """
-    uri = server + resource
-    if id is not None:
-        uri = uri + "/" + str(id)
-    print(uri)
-    response = requests.get(uri, headers=get_headers())    
-    print(response.text)
-    assert response.status_code == 200
-    return json.loads(response.text)
-
-
-def delete_resource(resource, id):
-    """
-    Delete a server based resource with id=id
-    """
-    response = requests.delete(server + resource + "/" + str(id))
-    assert response.status_code == 200
-    return response
+from test import *
 
 
 def test_basics():
