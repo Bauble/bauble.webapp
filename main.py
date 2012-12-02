@@ -130,7 +130,7 @@ def post_family():
 @get(API_ROOT + "/family/<id>")
 def get_family(id=None):
     from bauble.model import Family
-    handle_get(Family, id, 'families')
+    return handle_get(Family, id, 'families')
 
 
 @delete(API_ROOT + "/family/<id>")
@@ -175,7 +175,7 @@ def get_species(id=None):
 @post(API_ROOT + "/species")
 def post_species():
     from bauble.model import Species
-    return handle_post(Species, 'genera')
+    return handle_post(Species, 'species')
 
 
 @delete(API_ROOT + "/species/<id>")
@@ -191,7 +191,7 @@ def delete_species(id):
 @get(API_ROOT + "/accession/<id>")
 def get_accessions(id=None):
     from bauble.model import Accession
-    handle_get(Accession, id, 'accessions')
+    return handle_get(Accession, id, 'accessions')
 
 
 @post(API_ROOT + "/accession")

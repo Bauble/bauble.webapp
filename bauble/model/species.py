@@ -346,6 +346,11 @@ class Species(db.Base):
                         'author': 'infrasp4_author'}}
 
 
+    def json(self, depth=1):
+        return dict(id=self.id, 
+                    sp=self.sp)
+
+
     def get_infrasp(self, level):
         """
         level should be 1-4
