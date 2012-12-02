@@ -17,11 +17,13 @@ def create_family(**kwargs):
     response = requests.post(server + "/family", data=kwargs, 
                              headers=get_headers())
     assert response.status_code == 200
+    print('response: ', response.text)
     return json.loads(response.text)
 
 
 def test_family():
-    family = create_family(family=get_random_name())
+    response_json = create_family(family=get_random_name())
+    family = response_json['families'][0]
 
     # get the family id
     response = requests.get(server + "/family/" + str(family['id']), 
@@ -43,8 +45,11 @@ def create_genus(family, **kwargs):
         
     
 def test_genus():
-    family = create_family(family=get_random_name())
-    genus = create_genus(family, genus=get_random_name())
+    response_json = create_family(family=get_random_name())
+    family = response_json['families'][0]
+    response_json = create_genus(family, genus=get_random_name())
+    genus = response_json['genera'][0]
+    
     response = requests.get(server + "/genus/" + str(genus['id']), 
                             headers=get_headers())
     assert response.status_code == 200

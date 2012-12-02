@@ -103,7 +103,7 @@ class Family(db.Base):
     def json(self):
         d = dict(family=self.family,
                  id=self.id)
-        return json.dumps(d)
+        return d
 
 
 
