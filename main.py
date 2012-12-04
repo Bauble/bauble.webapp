@@ -21,24 +21,52 @@ JSON_MIMETYPE="application/json"
 view_dir = os.path.join(os.getcwd(), 'bauble', 'view')
 bottle.TEMPLATE_PATH.insert(0, view_dir)
 
+app_dir = os.path.join(os.getcwd(), 'app')
 
-@get('/static/css/<filename>')
+@get('/lib/<filename>')
+def lib_get(filename):
+    return bottle.static_file(filename, root=os.path.join(app_dir, 'lib'))
+
+
+@get('/lib/angular/<filename>')
+def lib_angular_get(filename):
+    return bottle.static_file(filename, root=os.path.join(app_dir, 'lib',
+                                                          'angular'))
+
+
+@get('/partials/<filename>')
+def partials_get(filename):
+    return bottle.static_file(filename, root=os.path.join(app_dir, 'partials'))
+
+
+@get('/css/<filename>')
 def css_get(filename):
-    return bottle.static_file(filename, root=os.path.join(view_dir, 'css'))
+    return bottle.static_file(filename, root=os.path.join(app_dir, 'css'))
 
 
-@get('/static/js/<filename>')
+@get('/js/<filename>')
 def js_get(filename):
-    return bottle.static_file(filename, root=os.path.join(view_dir, 'js'))
+    return bottle.static_file(filename, root=os.path.join(app_dir, 'js'))
 
 
 @get("/")
 def index():
     #return "Welcome"
-    return bottle.template("index.html")
+    return bottle.template("app/index.html")
+
+#
+# Rest API request handlers.  
+#
+# TODO: these should probably be moved into a different subproject/app
+# 
 
 
 def parse_accept_header():
+    """
+    Parse the Accept header.
+    
+    Returns (mimetype, depth) tuple
+    """
     header = request.headers.get("Accept");
     parts = header.split(';')
     mimetype = parts[0]
@@ -260,7 +288,7 @@ def get_search():
     session = db.connect()
     results = search.search(query, session)
     response.content_type = '; '.join((JSON_MIMETYPE, "charset=utf8"))
-    return {'results': [r.json() for r in results]}
+    return {'results': [r.json(depth=0) for r in results]}
 
 
 # set up search strategies
