@@ -2,23 +2,25 @@
 
 
 // Declare app level module which depends on filters, and services
-angular.module('BaubleApp', ['BaubleApp.filters', 'BaubleApp.services', 
-			     'BaubleApp.directives']).
+angular.module('BaubleApp', ['BaubleApp.filters', 'BaubleApp.services',
+                'BaubleApp.directives']).
   config(['$routeProvider', function($routeProvider) {
-    $routeProvider.when('/search', 
+    $routeProvider.when('/search',
 			{
-			    templateUrl: 'partials/search.html', 
-			    controller: SearchCtrl
+                templateUrl: 'partials/search.html',
+                controller: SearchCtrl
 			});
-    $routeProvider.when('/login', 
+
+    $routeProvider.when('/login',
 			{
-			    templateUrl: 'partials/login.html', 
-			    controller: LoginCtrl
+                templateUrl: 'partials/login.html',
+                controller: LoginCtrl
 			});
-    $routeProvider.when('/admin', 
+
+    $routeProvider.when('/admin',
 			{
-			    templateUrl: 'partials/admin.html', 
-			    controller: AdminCtrl
+                templateUrl: 'partials/admin.html',
+                controller: AdminCtrl
 			});
 
     $routeProvider.otherwise({redirectTo: '/search'});

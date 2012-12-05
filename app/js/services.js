@@ -12,8 +12,8 @@ var Query = angular.module("Query", ['ngResource']);
 Query.factory = function(){
     return $resource('/search', {}, {
 	query: {
-	    method: 'GET',
-	    params: {query: 'query'},
+        method: 'GET',
+        params: {query: 'query'}
 	}
     });
-}
+};

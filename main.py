@@ -1,11 +1,9 @@
 #!/usr/bin/env python
 
 import os
-import sys
 
 import bottle
 from bottle import request, response, get, post, delete
-from bottle import mako_view as view, mako_template as template
 
 import bauble
 import bauble.db as db
@@ -16,12 +14,13 @@ import bauble.search as search
 app = bottle.Bottle()
 
 API_ROOT = "/api/v1"
-JSON_MIMETYPE="application/json"
+JSON_MIMETYPE = "application/json"
 
 view_dir = os.path.join(os.getcwd(), 'bauble', 'view')
 bottle.TEMPLATE_PATH.insert(0, view_dir)
 
 app_dir = os.path.join(os.getcwd(), 'app')
+
 
 @get('/lib/<filename>')
 def lib_get(filename):
@@ -55,19 +54,19 @@ def index():
     return bottle.template("app/index.html")
 
 #
-# Rest API request handlers.  
+# Rest API request handlers.
 #
 # TODO: these should probably be moved into a different subproject/app
-# 
+#
 
 
 def parse_accept_header():
     """
     Parse the Accept header.
-    
+
     Returns (mimetype, depth) tuple
     """
-    header = request.headers.get("Accept");
+    header = request.headers.get("Accept")
     parts = header.split(';')
     mimetype = parts[0]
     depth = parts[1]
@@ -76,7 +75,7 @@ def parse_accept_header():
 
 def handle_get(mapper, id, collection_name):
     """
-    Handle generic GET requests.  
+    Handle generic GET requests.
 
     Return a standard json response object representing the mapper
     where the queried objects are returned in the json object in
@@ -88,7 +87,7 @@ def handle_get(mapper, id, collection_name):
         return
 
     session = db.connect()
-    query = session.query(mapper)    
+    query = session.query(mapper)
     if id is not None:
         query.filter_by(id=id)
 
@@ -103,7 +102,7 @@ def handle_get(mapper, id, collection_name):
 
 def handle_post(mapper, collection_name):
     """
-    Handle generic POST requests.  
+    Handle generic POST requests.
 
     Create an instance of mapper where the fields are set from the
     form encoded values.  Returns the JSON resposne the same as a GET
@@ -113,10 +112,10 @@ def handle_post(mapper, collection_name):
     if mimetype != JSON_MIMETYPE:
         response.status = 400
         return
-    
+
     response.content_type = '; '.join((JSON_MIMETYPE, "charset=utf8"))
     session = db.connect()
-        
+
     # TODO: the request forms values probably need to be reencoded as
     # UTF8 where appropriate
 
@@ -132,7 +131,7 @@ def handle_post(mapper, collection_name):
 
 def handle_delete(mapper, id):
     """
-    Handle generic DELETE requests.  
+    Handle generic DELETE requests.
 
     Delete a mapper with id=id.
     """
@@ -146,13 +145,13 @@ def handle_delete(mapper, id):
 
 #
 # Family request handlers
-# 
+#
 
 @post(API_ROOT + "/family")
 def post_family():
     from bauble.model import Family
     return handle_post(Family, 'families')
-        
+
 
 @get(API_ROOT + "/family")
 @get(API_ROOT + "/family/<id>")
@@ -162,7 +161,7 @@ def get_family(id=None):
 
 
 @delete(API_ROOT + "/family/<id>")
-def delete_family(id): 
+def delete_family(id):
     from bauble.model import Family
     handle_delete(Family, id)
 
@@ -185,20 +184,21 @@ def post_genus():
 
 
 @delete(API_ROOT + "/genus/<id>")
-def delete_genus(id): 
+def delete_genus(id):
     from bauble.model import Genus
     handle_delete(Genus, id)
 
 
 #
 # Species request handlers
-# 
+#
 
 @get(API_ROOT + "/species")
 @get(API_ROOT + "/species/<id>")
 def get_species(id=None):
     from bauble.model import Species
     return handle_get(Species, id, 'species')
+
 
 @post(API_ROOT + "/species")
 def post_species():
@@ -207,14 +207,14 @@ def post_species():
 
 
 @delete(API_ROOT + "/species/<id>")
-def delete_species(id): 
+def delete_species(id):
     from bauble.model import Species
     handle_delete(Species, id)
 
 
 #
 # Accession request handlers
-# 
+#
 @get(API_ROOT + "/accession")
 @get(API_ROOT + "/accession/<id>")
 def get_accessions(id=None):
@@ -229,14 +229,14 @@ def post_accessions():
 
 
 @delete(API_ROOT + "/accession/<id>")
-def delete_accessions(id): 
+def delete_accessions(id):
     from bauble.model import Accession
     handle_delete(Accession, id)
 
 
 #
 # Plant request handlers
-# 
+#
 @get(API_ROOT + "/plant")
 @get(API_ROOT + "/plant/<id>")
 def get_plants(id=None):
@@ -251,14 +251,14 @@ def post_plants():
 
 
 @delete(API_ROOT + "/plant/<id>")
-def delete_plants(id): 
+def delete_plants(id):
     from bauble.model import Plant
     handle_delete(Plant, id)
 
 
 #
 # Location request handlers
-# 
+#
 @get(API_ROOT + "/location")
 @get(API_ROOT + "/location/<id>")
 def get_locations(id=None):
@@ -273,7 +273,7 @@ def post_locations():
 
 
 @delete(API_ROOT + "/location/<id>")
-def delete_locations(id): 
+def delete_locations(id):
     from bauble.model import Location
     handle_delete(Location, id)
 
@@ -281,9 +281,9 @@ def delete_locations(id):
 
 #
 # Handle search requests
-# 
+#
 @get("/search")
-def get_search():    
+def get_search():
     query = request.query.query
     session = db.connect()
     results = search.search(query, session)
