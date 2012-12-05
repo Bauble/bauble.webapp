@@ -78,7 +78,7 @@ def locale_dir():
     """
     Returns the root path of the locale files
     """
-    if sys.platform == 'linux2':
+    if sys.platform == 'linux2' or sys.platform == 'darwin':
         # TODO: how do we get the locale directory for linux?
         d = os.path.join('/usr', 'share', 'locale')
     elif sys.platform == 'win32':
