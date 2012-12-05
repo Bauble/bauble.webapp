@@ -2,11 +2,19 @@
 
 /* Controllers */
 
-
-function MyCtrl1() {}
-MyCtrl1.$inject = [];
-
-
-function MyCtrl2() {
+function SearchCtrl() {
+    $scope.query = "";
+    $scope.results = [];
 }
-MyCtrl2.$inject = [];
+// explicityly inject so minification doesn't doesn't break the controller
+SearchCtrl.$inject = ['$scope']
+
+
+function LoginCtrl() {
+}
+//LoginCtrl.$inject = [];
+
+
+function AdminCtrl() {
+}
+//AdminCtrl.$inject = [];
