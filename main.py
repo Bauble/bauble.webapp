@@ -48,6 +48,25 @@ def js_get(filename):
     return bottle.static_file(filename, root=os.path.join(app_dir, 'js'))
 
 
+test_dir = os.path.join(os.getcwd(), 'test')
+
+
+@get('/test')
+def test_index():
+    return bottle.static_file('index.html', root=test_dir)
+
+
+@get('/test/<filename>')
+def test_get(filename):
+    return bottle.static_file(filename, root=test_dir)
+
+
+@get('/test/jasmine/lib/jasmine-core/<filename>')
+def jasmine_get(filename):
+    return bottle.static_file(filename, root=os.path.join(test_dir, 'jasmine', 'lib',
+        'jasmine-core'))
+
+
 @get("/")
 def index():
     #return "Welcome"

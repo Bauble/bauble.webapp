@@ -1,0 +1,48 @@
+<html>
+<head>
+    <title>AVMobile Tests</title>
+
+    <link rel="shortcut icon" type="image/png" href="test/lib/jasmine-1.1.0.rc1/jasmine_favicon.png">
+    <link rel="stylesheet" type="text/css" href="test/jasmine/lib/jasmine-core/jasmine.css">
+
+    <!-- <script type="text/javascript" src="extjs/ext-debug.js"></script> -->
+    <!-- <script id="microloader" type="text/javascript" src="../touch/sencha-touch-all-debug.js"></script> -->
+
+    <script type="text/javascript" src="test/jasmine/lib/jasmine-core/jasmine.js"></script>
+    <script type="text/javascript" src="test/jasmine/lib/jasmine-core/jasmine-html.js"></script>
+
+    <!--script type="text/javascript" src="console-runner.js"></script -->
+
+    <!-- include specs here -->
+    <script type="text/javascript" src="test/test.js"></script>
+
+    <script type="text/javascript">
+        // defining console_reporter here avoids getting errors when running
+        // this with phantomjs
+        //var console_reporter = new jasmine.ConsoleReporter();
+    </script>
+
+    <!-- test launcher -->
+    <script type="text/javascript">
+    (function() {
+
+        //Ext.onReady(function() {
+            // the console report makes running the tests from the command line with
+            // phantomjs work
+            var reporter = new jasmine.HtmlReporter,
+                //console_reporter = new jasmine.ConsoleReporter(),
+                env = jasmine.getEnv();
+            env.specFilter = reporter.specFilter;
+            env.addReporter(reporter);
+            //env.addReporter(console_reporter);
+            env.execute();
+        //});
+    })();
+    </script>
+
+
+</head>
+<body>
+<!--** ERROR: Could not load tests.  See the console for error messages.-->
+</body>
+</html>
