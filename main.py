@@ -297,7 +297,6 @@ def delete_locations(id):
     handle_delete(Location, id)
 
 
-
 #
 # Handle search requests
 #
@@ -305,7 +304,9 @@ def delete_locations(id):
 def get_search():
     query = request.query.query
     session = db.connect()
-    results = search.search(query, session)
+    results = {}
+    if query:
+        results = search.search(query, session)
     response.content_type = '; '.join((JSON_MIMETYPE, "charset=utf8"))
     return {'results': [r.json(depth=0) for r in results]}
 
