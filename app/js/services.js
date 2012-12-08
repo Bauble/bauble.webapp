@@ -8,13 +8,16 @@
 // angular.module('BaubleApp.services', [])
 //   .value('version', '0.1');
 
-angular.module('BaubleApp.services', [])
+angular.module('BaubleApp.services', [])    
     .factory('Query', ['$http', function($http) {
-        return $http({method: 'GET', url: '/search'}).
-                success(function(data, status, headers, config) {
-                    console.log('/search success: ', data);
-                }).
-                error(function(data, status, headers, config) {
-                    console.log('/search error: ', data);
-                });
+	return function(value, callback) {
+            return $http({method: 'GET', url: '/search', params: {'q': value}}).
+                // success(function(data, status, headers, config) {
+                //     console.log('/search success: ', data);
+                // }).
+                // error(function(data, status, headers, config) {
+                //     console.log('/search error: ', data);
+                // }).
+		then(callback);
+	};
     }]);

@@ -302,7 +302,7 @@ def delete_locations(id):
 #
 @get("/search")
 def get_search():
-    query = request.query.query
+    query = request.query.q
     session = db.connect()
     results = {}
     if query:

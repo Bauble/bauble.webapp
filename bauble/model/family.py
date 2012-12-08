@@ -100,7 +100,7 @@ class Family(db.Base):
             return ' '.join([s for s in [family.family,
                                     family.qualifier] if s not in (None,'')])
 
-    def json(self):
+    def json(self, depth=1):
         d = dict(family=self.family,
                  id=self.id)
         return d

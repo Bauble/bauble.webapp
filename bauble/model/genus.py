@@ -131,7 +131,7 @@ class Genus(db.Base):
                              xml.sax.saxutils.escape(genus.author)] \
                      if s not in ('', None)])
 
-    def json(self):
+    def json(self, depth=1):
         return dict(id=self.id,
                     genus=self.genus)
 

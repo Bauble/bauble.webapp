@@ -1,7 +1,11 @@
 <div>
   <form>
-    <input ng-model="query">
-    <button ng-click="Query">Search</button>
+    <input ng-model="q">
+    <button ng-click="query(q)">Search</button>
   </form>
-  {{query}}
+  <div>
+    <div ng-repeat="result in results">
+        {{result}}
+  </div>
+
 </div>
