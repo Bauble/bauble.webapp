@@ -9,7 +9,7 @@
 //   .value('version', '0.1');
 
 angular.module('BaubleApp.services', ['ngResource'])
-    .factory('Query', ['$http', function($http) {
+    .factory('Search', ['$http', function($http) {
         return function(value, callback) {
             return $http({method: 'GET', url: '/search', params: {'q': value}})
         .then(callback);

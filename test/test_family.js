@@ -32,10 +32,9 @@ describe('Family controllers', function() {
 
         it('should retrieve a family', function() {
             scope.family = scope.Family.get({familyId: '1'});
-            $httpBackend.flush()
+            $httpBackend.flush();
 
             expect(scope.family).toEqualData(testFamily);
-
         });
 
     });

@@ -2,11 +2,11 @@
 
 /* Controllers */
 
-function SearchCtrl($scope, Query) {
+function SearchCtrl($scope, Search) {
 
     // query the server for search results
-    $scope.query = function(q) {
-        return Query(q, function(response) {
+    $scope.Search = function(q) {
+        return Search(q, function(response) {
             console.log('response: ', response);
             $scope.results = response.data.results;
         });
@@ -17,7 +17,7 @@ function SearchCtrl($scope, Query) {
 
 }
 // explicityly inject so minification doesn't doesn't break the controller
-SearchCtrl.$inject = ['$scope', 'Query'];
+SearchCtrl.$inject = ['$scope', 'Search'];
 
 
 //
