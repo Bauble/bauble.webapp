@@ -1,20 +1,32 @@
 <html>
 <head>
-    <title>AVMobile Tests</title>
+    <title>Bauble Tests</title>
 
-    <link rel="shortcut icon" type="image/png" href="test/lib/jasmine-1.1.0.rc1/jasmine_favicon.png">
+    <!-- <link rel="shortcut icon" type="image/png" href="test/lib/jasmine-1.1.0.rc1/jasmine_favicon.png"> -->
+
     <link rel="stylesheet" type="text/css" href="test/jasmine/lib/jasmine-core/jasmine.css">
-
-    <!-- <script type="text/javascript" src="extjs/ext-debug.js"></script> -->
-    <!-- <script id="microloader" type="text/javascript" src="../touch/sencha-touch-all-debug.js"></script> -->
 
     <script type="text/javascript" src="test/jasmine/lib/jasmine-core/jasmine.js"></script>
     <script type="text/javascript" src="test/jasmine/lib/jasmine-core/jasmine-html.js"></script>
 
+
+    <!-- include angular and angular test helpers -->
+    <script src="lib/angular/angular.js"></script>
+    <script src="lib/angular/angular-resource.js"></script>
+    <script src="test/lib/angular/angular-mocks.js"></script>
+
+    <!-- include our app script -->
+    <script src="js/app.js"></script>
+    <script src="js/services.js"></script>
+    <script src="js/controllers.js"></script>
+    <script src="js/filters.js"></script>
+    <script src="js/directives.js"></script>
+
     <!--script type="text/javascript" src="console-runner.js"></script -->
 
     <!-- include specs here -->
-    <script type="text/javascript" src="test/test.js"></script>
+    <script type="text/javascript" src="/test/test.js"></script>
+    <script type="text/javascript" src="test/test_family.js"></script>
 
     <script type="text/javascript">
         // defining console_reporter here avoids getting errors when running
@@ -24,19 +36,29 @@
 
     <!-- test launcher -->
     <script type="text/javascript">
-    (function() {
+        (function() {
 
-        //Ext.onReady(function() {
-            // the console report makes running the tests from the command line with
-            // phantomjs work
-            var reporter = new jasmine.HtmlReporter,
-                //console_reporter = new jasmine.ConsoleReporter(),
-                env = jasmine.getEnv();
+            var reporter = new jasmine.HtmlReporter;
+
+            env = jasmine.getEnv();
             env.specFilter = reporter.specFilter;
             env.addReporter(reporter);
+
+            // the console report makes running the tests from the command line with
+            // phantomjs work
+            //console_reporter = new jasmine.ConsoleReporter(),
             //env.addReporter(console_reporter);
-            env.execute();
-        //});
+
+            var currentWindowOnload = window.onload;
+
+            window.onload = function() {
+                if (currentWindowOnload) {
+                    currentWindowOnload();
+                }
+                env.execute();
+                //execJasmine();
+            };
+
     })();
     </script>
 

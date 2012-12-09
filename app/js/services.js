@@ -8,16 +8,19 @@
 // angular.module('BaubleApp.services', [])
 //   .value('version', '0.1');
 
-angular.module('BaubleApp.services', [])    
+angular.module('BaubleApp.services', ['ngResource'])
     .factory('Query', ['$http', function($http) {
-	return function(value, callback) {
-            return $http({method: 'GET', url: '/search', params: {'q': value}}).
-                // success(function(data, status, headers, config) {
-                //     console.log('/search success: ', data);
-                // }).
-                // error(function(data, status, headers, config) {
-                //     console.log('/search error: ', data);
-                // }).
-		then(callback);
-	};
+        return function(value, callback) {
+            return $http({method: 'GET', url: '/search', params: {'q': value}})
+        .then(callback);
+    };
+    }])
+
+    // Family service for CRUD family types
+    .factory('Family', ['$resource', function($resource) {
+        return $resource('/family/:familyId', {}, {
+            get: {method: 'GET'} //params: {familyId: '999'}}
+        });
     }]);
+
+
