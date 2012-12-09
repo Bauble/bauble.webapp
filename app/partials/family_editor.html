@@ -1,10 +1,13 @@
-<form>
-    <label>Family</label>
-    <input ng-model="family.family" required>
+<div>
+    <form name="familyForm" ng-submit="Family.save(family)">
+        <label>Family</label>
+        <input ng-model="family.family" required>
 
-    <label>Notes</label>
-    <textarea ng-mode="family.notes" rows="5"></textarea>
+        <label>Notes</label>
+        <textarea ng-model="family.notes" rows="5"></textarea>
 
-    <br>
-    <button type="submit" class="btn">Save</button>
-</form>
+        <br>
+<!--         <button ngClick="Family.save(family)" type="submit" class="btn">Save</button> -->
+        <button type="submit" class="btn">Save</button>
+    </form>
+</div>

@@ -5,6 +5,7 @@
 angular.module('BaubleApp', ['BaubleApp.filters', 'BaubleApp.services',
                 'BaubleApp.directives']).
   config(['$routeProvider', function($routeProvider) {
+
     $routeProvider.when('/search',
 			{
                 templateUrl: 'partials/search.html',

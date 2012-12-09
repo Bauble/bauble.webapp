@@ -85,7 +85,11 @@ def parse_accept_header():
     header = request.headers.get("Accept")
     parts = header.split(';')
     mimetype = parts[0]
-    depth = parts[1]
+
+    depth = None
+    if len(parts) > 1:
+        depth = parts[1]
+
     return mimetype, depth
 
 
@@ -151,7 +155,7 @@ def handle_delete(mapper, id):
 
     Delete a mapper with id=id.
     """
-    # query the family based on the ID
+    # query the mapper based on the ID
     session = db.connect()
     obj = session.query(mapper).filter_by(id=id)
     obj.delete()
