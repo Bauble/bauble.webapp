@@ -16,10 +16,10 @@ app = bottle.Bottle()
 API_ROOT = "/api/v1"
 JSON_MIMETYPE = "application/json"
 
+app_dir = os.path.join(os.getcwd(), 'app')
+test_dir = os.path.join(os.getcwd(), 'test')
 view_dir = os.path.join(os.getcwd(), 'bauble', 'view')
 bottle.TEMPLATE_PATH.insert(0, view_dir)
-
-app_dir = os.path.join(os.getcwd(), 'app')
 
 
 @get('/lib/<filename>')
@@ -48,9 +48,6 @@ def js_get(filename):
     return bottle.static_file(filename, root=os.path.join(app_dir, 'js'))
 
 
-test_dir = os.path.join(os.getcwd(), 'test')
-
-
 @get('/test')
 def test_index():
     return bottle.static_file('index.html', root=test_dir)
@@ -61,10 +58,10 @@ def test_get(filename):
     return bottle.static_file(filename, root=test_dir)
 
 
-@get('/test/jasmine/lib/jasmine-core/<filename>')
-def jasmine_get(filename):
-    return bottle.static_file(filename, root=os.path.join(test_dir, 'jasmine', 'lib',
-        'jasmine-core'))
+@get('/test/<path:path>/<filename>')
+def testlib_get(path, filename):
+    parts = path.split('/')
+    return bottle.static_file(filename, root=os.path.join(test_dir, *parts))
 
 
 @get("/")
