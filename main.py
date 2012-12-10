@@ -82,6 +82,8 @@ def parse_accept_header():
 
     Returns (mimetype, depth) tuple
     """
+
+    # TODO: this won't accept multiple mimetypes in the Accept header
     header = request.headers.get("Accept")
     parts = header.split(';')
     mimetype = parts[0]

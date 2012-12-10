@@ -3,33 +3,87 @@
 <head>
   <meta charset="utf-8">
   <title>Bauble</title>
-  <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!-- <link href="css/bootstrap.min.css" rel="stylesheet" media="screen"> -->
+  <link href="css/bootstrap.css" rel="stylesheet" media="screen">
+  <style>
+    body {
+      padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+    }
+  </style>
+  <!-- <link href="css/bootstrap-responsive.min.css" rel="stylesheet"> -->
+  <link href="css/bootstrap-responsive.css" rel="stylesheet">
+
+  <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+  <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+  <!-- Fav and touch icons -->
+  <!-- <link rel="apple-touch-icon-precomposed" sizes="144x144" href="ico/apple-touch-icon-144-precomposed.png">
+  <link rel="apple-touch-icon-precomposed" sizes="114x114" href="ico/apple-touch-icon-114-precomposed.png">
+  <link rel="apple-touch-icon-precomposed" sizes="72x72" href="ico/apple-touch-icon-72-precomposed.png">
+  <link rel="apple-touch-icon-precomposed" href="ico/apple-touch-icon-57-precomposed.png">
+  <link rel="shortcut icon" href="ico/favicon.png"> -->
+
   <link rel="stylesheet" href="css/app.css"/>
 
-  <script src="http://code.jquery.com/jquery-latest.js"></script>
-  <script src="js/bootstrap.min.js"></script>
 </head>
 <body>
 
-  <ul class="menu">
-    <li><a href="#/admin">Admin</a></li>
-    <li><a href="#/search">Search</a></li>
-    <li><a href="#/login">Login</a></li>
-  </ul>
+  <div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar-inner">
+      <div class="container">
 
+        <a class="brand" href="#">Bauble</a>
 
-  <div ng-view>
+        <div class="nav-collapse collapse">
+
+          <ul class="nav">
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">New
+                <b class="caret"></b>
+              </a>
+              <ul class="dropdown-menu pull-right">
+                <li><a class="pull-right" href="#family_editor">Family</a></li>
+                <li><a class="pull-right" href="#genus_editor">Genus</a></li>
+              </ul>
+          </ul>
+
+          <ul class="nav pull-right">
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Menu
+                <b class="caret"></b>
+              </a>
+              <ul class="dropdown-menu pull-right">
+                <li><a class="pull-right" href="#admin">Admin</a></li>
+                <li><a class="pull-right" href="#login">Login/Logout</a></li>
+              </ul>
+            </li>
+          </ul>
+
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
   </div>
 
-  <div>
-    <a href="#/family_editor">Family Editor</a>
+  <div ng-view>
   </div>
 
   <!-- In production use:
   <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.2/angular.min.js"></script>
   -->
+
   <script src="lib/angular/angular.js"></script>
   <script src="lib/angular/angular-resource.js"></script>
+
+  <script src="http://code.jquery.com/jquery-latest.js"></script>
+  <!-- <script src="js/bootstrap.min.js"></script> -->
+  <script src="js/bootstrap.js"></script>
 
   <script src="js/app.js"></script>
   <script src="js/services.js"></script>
