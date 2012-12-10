@@ -48,7 +48,7 @@ describe('Family controller', function() {
 
         beforeEach(inject(function(_$httpBackend_, $rootScope, $controller, globals) {
             $httpBackend = _$httpBackend_;
-            $httpBackend.expectPOST(globals.apiRoot + '/family/1')
+            $httpBackend.expectPOST(globals.apiRoot + '/family')
                 .respond('');
 
             scope = $rootScope.$new();
