@@ -26,6 +26,10 @@ angular.module('BaubleApp.services', ['ngResource'])
                     return $http({ method: 'GET', url: resourceRoot + '/' + id })
                                 .then(callback);
                 },
+            query: function(q, callback) {
+                    return $http({ method: 'GET', url: resourceRoot, params: { q: q } })
+                                .then(callback);
+                },
             save: function (data, callback) {
                     // create if there's no id in data else update
                     // create or update??
@@ -42,13 +46,37 @@ angular.module('BaubleApp.services', ['ngResource'])
                             .then(callback);
                 }
         };
-        // return $resource(globals.apiRoot + '/family/:familyId', {}, {
-        //     'get': {method: 'GET'}, //params: {familyId: '999'}}
-        //     'save': {
-        //             method: 'POST',
-        //         },
-        //     'delete': {method: 'DELETE'}
-        // });
+    }])
+
+    // Genus service for CRUD genus types
+    .factory('Genus', ['globals', '$http', '$resource', function(globals, $http, $resource) {
+        var resourceRoot = globals.apiRoot + '/genus';
+        return {
+            get: function(id, callback) {
+                    return $http({ method: 'GET', url: resourceRoot + '/' + id })
+                                .then(callback);
+                },
+            query: function(q, callback) {
+                    return $http({ method: 'GET', url: resourceRoot, params: { q: q } })
+                                .then(callback);
+                },
+            save: function (data, callback) {
+                    // create if there's no id in data else update
+                    // create or update??
+                    var url = resourceRoot;
+                    // if(data && (data.id !== undefined))
+                    //     url = resourceRoot + '/' + data.id;
+                    return $http({ method: 'POST', url: url, data: $.param(data),
+                                   headers: { 'Content-Type': 'application/x-www-form-urlencoded',
+                                              'Accept': 'application/json'}})
+                                .then(callback);
+                },
+            del: function(id, callback) {
+                return $http({ method: 'DELETE', url: resourceRoot + '/' + id })
+                            .then(callback);
+                }
+        };
     }]);
+
 
 

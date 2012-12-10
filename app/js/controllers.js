@@ -31,6 +31,27 @@ function FamilyCtrl($scope, Family) {
 FamilyCtrl.$inject = ['$scope', 'Family'];
 
 
+//
+// Genus controller
+//
+function GenusCtrl($scope, Family, Genus) {
+
+    // lookup
+    $scope.queryFamily = function(q){
+        console.log('queryFamilies: ', q);
+        if(!q || q.length < 3)
+            return;
+        Family.query(q, function(response){
+            $scope.families = response.data;
+        });
+    };
+    $scope.families = {}; // the list of completions
+    $scope.genus = {};
+    $scope.Genus = Genus;
+}
+GenusCtrl.$inject = ['$scope', 'Family', 'Genus'];
+
+
 function LoginCtrl() {
 }
 //LoginCtrl.$inject = [];

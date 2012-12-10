@@ -30,5 +30,11 @@ angular.module('BaubleApp', ['BaubleApp.filters', 'BaubleApp.services',
                 controller: FamilyCtrl
             });
 
-    //$routeProvider.otherwise({redirectTo: '/search'});
+    $routeProvider.when('/genus_editor',
+            {
+                templateUrl: 'partials/genus_editor.html',
+                controller: GenusCtrl
+            });
+
+    $routeProvider.otherwise({redirectTo: '/search'});
   }]);

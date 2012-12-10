@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+import json
 import os
 
 import bottle
@@ -175,11 +176,29 @@ def post_family():
     return handle_post(Family, 'families')
 
 
-@get(API_ROOT + "/family")
 @get(API_ROOT + "/family/<id>")
 def get_family(id=None):
     from bauble.model import Family
     return handle_get(Family, id, 'families')
+
+
+@get(API_ROOT + "/family")
+def query_family():
+    from bauble.model import Family
+    q = request.query.q
+
+    # mimetype, depth = parse_accept_header()
+    # if mimetype != JSON_MIMETYPE:
+    #     response.status = 400
+    #     return
+
+    session = db.connect()
+    query = session.query(Family).filter_by(family=q)
+    json_objs = [obj.json() for obj in query]
+    session.close()
+    response.content_type = '; '.join((JSON_MIMETYPE, "charset=utf8"))
+
+    return json.dumps(json_objs)
 
 
 @delete(API_ROOT + "/family/<id>")

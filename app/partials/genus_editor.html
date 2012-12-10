@@ -1,0 +1,18 @@
+<h1>Genus</h1>
+<div>
+    <form name="genusForm" ng-submit="Genus.save(genus)">
+
+        <label>Family</label>
+        <input ng-model="q" ng-change="queryFamily(q)" required>
+
+        <label>Genus</label>
+        <input ng-model="genus.genus" required>
+
+        <label>Notes</label>
+        <textarea ng-model="genus.notes" rows="5"></textarea>
+
+        <br>
+<!--         <button ngClick="Genus.save(genus)" type="submit" class="btn">Save</button> -->
+        <button type="submit" class="btn">Save</button>
+    </form>
+</div>
