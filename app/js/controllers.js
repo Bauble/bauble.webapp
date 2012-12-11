@@ -59,10 +59,9 @@ function GenusCtrl($scope, Family, Genus) {
         }
     };
 
-    // seth the family_id on the genus when a family is selected
+    // set the family_id on the genus when a family is selected
     $scope.$watch('family', function() {
         $scope.genus.family_id = $scope.family.id;
-        console.log('family_id: ', $scope.genus.family_id);
     });
 }
 GenusCtrl.$inject = ['$scope', 'Family', 'Genus'];

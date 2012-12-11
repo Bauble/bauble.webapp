@@ -96,7 +96,7 @@ class Genus(db.Base):
                        default='')
 
     family_id = Column(Integer, ForeignKey('family.id'), nullable=False)
-    genera = relation('Family', backref=backref('genera', cascade='all,delete-orphan'))
+    family = relation('Family', backref=backref('genera', cascade='all,delete-orphan'))
 
     # relations
     synonyms = association_proxy('_synonyms', 'synonym')
@@ -114,7 +114,7 @@ class Genus(db.Base):
 
 
     def __str__(self):
-        return Genus.str(self)    
+        return Genus.str(self)
 
 
     @staticmethod
@@ -133,7 +133,13 @@ class Genus(db.Base):
 
     def json(self, depth=1):
         return dict(id=self.id,
-                    genus=self.genus)
+                    genus=self.genus,
+                    qualifier=self.qualifier,
+                    author=self.author,
+                    family_id=self.family.id,
+                    family=self.family.json(depth=0),
+                    #synonyms=self.synonyms.json(depth=0),
+                    str=str(self))
 
 
 class GenusNote(db.Base):
@@ -179,7 +185,7 @@ class GenusSynonym(db.Base):
         return str(self.synonym)
 
 
-# TODO: could probably incorporate this into the class since if we can 
+# TODO: could probably incorporate this into the class since if we can
 # avoid using the Species class name in the order_by
 Genus.species = relation('Species', cascade='all, delete-orphan',
                          #order_by=[Species.sp],
