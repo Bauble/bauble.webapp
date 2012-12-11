@@ -18,20 +18,27 @@ API_ROOT = "/api/v1"
 JSON_MIMETYPE = "application/json"
 
 app_dir = os.path.join(os.getcwd(), 'app')
+lib_dir = os.path.join(app_dir, 'lib')
+js_dir = os.path.join(app_dir, 'js')
 test_dir = os.path.join(os.getcwd(), 'test')
 view_dir = os.path.join(os.getcwd(), 'bauble', 'view')
 bottle.TEMPLATE_PATH.insert(0, view_dir)
 
 
-@get('/lib/<filename>')
-def lib_get(filename):
-    return bottle.static_file(filename, root=os.path.join(app_dir, 'lib'))
+# @get('/lib/<filename>')
+# def lib_get(filename):
+#     return bottle.static_file(filename, root=os.path.join(app_dir, 'lib'))
+
+@get('/lib/<path:path>/<filename>')
+def lib_get(path, filename):
+    parts = path.split('/')
+    return bottle.static_file(filename, root=os.path.join(lib_dir, *parts))
 
 
-@get('/lib/angular/<filename>')
-def lib_angular_get(filename):
-    return bottle.static_file(filename, root=os.path.join(app_dir, 'lib',
-                                                          'angular'))
+# @get('/lib/angular/<filename>')
+# def lib_angular_get(filename):
+#     return bottle.static_file(filename, root=os.path.join(app_dir, 'lib',
+#                                                           'angular'))
 
 
 @get('/partials/<filename>')
