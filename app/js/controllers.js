@@ -36,18 +36,31 @@ FamilyCtrl.$inject = ['$scope', 'Family'];
 //
 function GenusCtrl($scope, Family, Genus) {
 
-    // lookup
-    $scope.queryFamily = function(q){
-        console.log('queryFamilies: ', q);
-        if(!q || q.length < 3)
-            return;
-        Family.query(q, function(response){
-            $scope.families = response.data;
-        });
-    };
-    $scope.families = {}; // the list of completions
+    $scope.families = []; // the list of completions
+    $scope.family = {};
     $scope.genus = {};
     $scope.Genus = Genus;
+
+    $scope.multiOptions = {
+        minimumInputLength: 1,
+
+        // get the list of families matching the query
+        query: function(options){
+            //console.log('query: ', options);
+            Family.query(options.term, function(response){
+                //console.log('response: ', response);
+                $scope.families = response.data;
+                if(response.data && response.data.length > 0)
+                    options.callback({results: response.data});
+            });
+        }
+    };
+
+    // seth the family_id on the genus when a family is selected
+    $scope.$watch('family', function() {
+        $scope.genus.family_id = $scope.family.id;
+        console.log('family_id: ', $scope.genus.family_id);
+    });
 }
 GenusCtrl.$inject = ['$scope', 'Family', 'Genus'];
 
