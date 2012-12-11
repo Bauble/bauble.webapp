@@ -44,6 +44,9 @@ function GenusCtrl($scope, Family, Genus) {
     $scope.multiOptions = {
         minimumInputLength: 1,
 
+        formatResult: function(object, container, query) { return object.str; },
+        formatSelection: function(object, container) { return object.str; },
+
         // get the list of families matching the query
         query: function(options){
             //console.log('query: ', options);

@@ -98,14 +98,14 @@ class Family(db.Base):
             return repr(family)
         else:
             return ' '.join([s for s in [family.family,
-                                    family.qualifier] if s not in (None,'')])
+                                    family.qualifier] if s not in (None, '')])
 
     def json(self, depth=1):
         d = dict(family=self.family,
+                 qualifier=self.qualifier,
                  id=self.id,
-                 text=self.family)
+                 str=str(self))
         return d
-
 
 
 class FamilyNote(db.Base):
