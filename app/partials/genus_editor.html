@@ -3,15 +3,15 @@
     <form name="genusForm" ng-submit="Genus.save(genus)">
 
         <label>Family</label>
-        <input ng-model="q" ng-change="queryFamily(q)" required>
+        <input id="familyField" style="width: 200px" ui-select2="multiOptions" ng-model="family"/>
 
         <label>Genus</label>
-        <input ng-model="genus.genus" required>
+        <input ng-model="genus.genus" required/>
 
         <label>Notes</label>
         <textarea ng-model="genus.notes" rows="5"></textarea>
 
-        <br>
+        <br/>
 <!--         <button ngClick="Genus.save(genus)" type="submit" class="btn">Save</button> -->
         <button type="submit" class="btn">Save</button>
     </form>

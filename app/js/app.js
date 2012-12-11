@@ -2,7 +2,7 @@
 
 
 // Declare app level module which depends on filters, and services
-angular.module('BaubleApp', ['BaubleApp.filters', 'BaubleApp.services',
+angular.module('BaubleApp', ['ui', 'BaubleApp.filters', 'BaubleApp.services',
                 'BaubleApp.directives']).
   config(['$routeProvider', function($routeProvider) {
 

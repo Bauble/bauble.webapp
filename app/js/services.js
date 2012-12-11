@@ -27,7 +27,7 @@ angular.module('BaubleApp.services', ['ngResource'])
                                 .then(callback);
                 },
             query: function(q, callback) {
-                    return $http({ method: 'GET', url: resourceRoot, params: { q: q } })
+                    return $http({ method: 'GET', url: resourceRoot, params: { q: q } , isArray: true })
                                 .then(callback);
                 },
             save: function (data, callback) {

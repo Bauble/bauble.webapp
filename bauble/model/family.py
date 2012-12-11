@@ -102,7 +102,8 @@ class Family(db.Base):
 
     def json(self, depth=1):
         d = dict(family=self.family,
-                 id=self.id)
+                 id=self.id,
+                 text=self.family)
         return d
 
 
