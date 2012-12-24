@@ -77,7 +77,7 @@ class Family(db.Base):
     # relations
     synonyms = association_proxy('_synonyms', 'synonym')
    #genera = relation('Genus', backref='family', cascade='all, delete-orphan')
-    _synonyms =  relation('FamilySynonym',
+    _synonyms = relation('FamilySynonym',
                           primaryjoin='Family.id==FamilySynonym.family_id',
                           cascade='all, delete-orphan', uselist=True,
                           backref='family')

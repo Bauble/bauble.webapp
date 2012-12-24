@@ -39,7 +39,7 @@ def get_resource(resource, id=None):
     if id is not None:
         uri = uri + "/" + str(id)
     print(uri)
-    response = requests.get(uri, headers=get_headers())    
+    response = requests.get(uri, headers=get_headers())
     print(response.text)
     assert response.status_code == 200
     return json.loads(response.text)

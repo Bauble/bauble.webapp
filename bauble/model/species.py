@@ -122,10 +122,9 @@ class Species(db.Base):
     __tablename__ = 'species'
     __mapper_args__ = {'order_by': ['sp', 'sp_author']}
 
-
     # columns
     sp = Column(Unicode(64), index=True)
-    sp2 = Column(Unicode(64), index=True) # in case hybrid=True
+    sp2 = Column(Unicode(64), index=True)  # in case hybrid=True
     sp_author = Column(Unicode(128))
     hybrid = Column(Boolean, default=False)
     sp_qual = Column(types.Enum(values=['agg.', 's. lat.', 's. str.', None]),
@@ -196,7 +195,6 @@ class Species(db.Base):
     def __init__(self, *args, **kwargs):
         super(Species, self).__init__(*args, **kwargs)
 
-
     def __str__(self):
         '''
         returns a string representation of this species,
@@ -204,11 +202,11 @@ class Species(db.Base):
         '''
         return Species.str(self)
 
-
     def _get_default_vernacular_name(self):
         if self._default_vernacular_name is None:
             return None
         return self._default_vernacular_name.vernacular_name
+
     def _set_default_vernacular_name(self, vn):
         if vn is None:
             del self.default_vernacular_name
@@ -218,6 +216,7 @@ class Species(db.Base):
         d = DefaultVernacularName()
         d.vernacular_name = vn
         self._default_vernacular_name = d
+
     def _del_default_vernacular_name(self):
         utils.delete_or_expunge(self._default_vernacular_name)
         del self._default_vernacular_name
@@ -265,7 +264,7 @@ class Species(db.Base):
         sp2 = species.sp2
         if markup:
             # escape = utils.xml_safe_utf8
-            escape = str # from bauble2 conversion
+            escape = str  # from bauble2 conversion
             italicize = lambda s: '<i>%s</i>' % escape(s)
             genus = italicize(genus)
             if sp is not None:
@@ -534,4 +533,3 @@ class Color(db.Base):
             return '%s (%s)' % (self.name, self.code)
         else:
             return str(self.code)
-

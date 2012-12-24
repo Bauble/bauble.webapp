@@ -28,22 +28,22 @@ def test_basics():
     # create the location
     response_json = create_resource('/location', code=get_random_name())
     location = response_json['locations'][0]
-    
+
     # create the plant
     response_json = create_resource('/plant', code=get_random_name(),
                                     quantity=1,
                                     accession_id=accession['id'],
                                     location_id=location['id'])
     plant = response_json['plants'][0]
-    
+
     # get each of the resources we created
     get_resource('/family', family['id'])
     get_resource('/genus', genus['id'])
     get_resource('/species', species['id'])
-    get_resource('/accession', accession['id'])    
+    get_resource('/accession', accession['id'])
     get_resource('/plant', plant['id'])
     get_resource('/location', location['id'])
-    
+
     # delete each of the resources we created
     delete_resource('/plant', plant['id'])
     delete_resource('/location', location['id'])
