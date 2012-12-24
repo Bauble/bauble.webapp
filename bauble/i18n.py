@@ -17,7 +17,7 @@ import os
 import locale
 import gettext
 import bauble.paths as paths
-from bauble import version_tuple
+from bauble.globals import version_tuple
 
 __all__ = ["_"]
 

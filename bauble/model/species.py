@@ -13,7 +13,7 @@ from sqlalchemy.orm.session import object_session
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.orm.collections import collection
 
-import bauble
+#import bauble
 import bauble.db as db
 #import bauble.utils as utils
 #from bauble.utils.log import debug

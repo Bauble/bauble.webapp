@@ -12,6 +12,7 @@ from sqlalchemy.orm import *
 from sqlalchemy.orm.session import object_session
 
 import bauble
+import bauble.i18n
 import bauble.db as db
 #import bauble.editor as editor
 from bauble.model.geography import Geography

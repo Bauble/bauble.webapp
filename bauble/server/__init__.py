@@ -2,6 +2,7 @@
 
 import json
 import os
+import os.path
 
 import bottle
 from bottle import request, response, get, post, delete
@@ -17,28 +18,20 @@ app = bottle.Bottle()
 API_ROOT = "/api/v1"
 JSON_MIMETYPE = "application/json"
 
-app_dir = os.path.join(os.getcwd(), 'app')
+cwd = os.path.abspath(bauble.__path__[0])
+
+app_dir = os.path.join(cwd, 'app')
 lib_dir = os.path.join(app_dir, 'lib')
 js_dir = os.path.join(app_dir, 'js')
-test_dir = os.path.join(os.getcwd(), 'test')
-view_dir = os.path.join(os.getcwd(), 'bauble', 'view')
-bottle.TEMPLATE_PATH.insert(0, view_dir)
+test_dir = os.path.join(cwd, 'test')
 
+bottle.TEMPLATE_PATH.insert(0, cwd)
 
-# @get('/lib/<filename>')
-# def lib_get(filename):
-#     return bottle.static_file(filename, root=os.path.join(app_dir, 'lib'))
 
 @get('/lib/<path:path>/<filename>')
 def lib_get(path, filename):
     parts = path.split('/')
     return bottle.static_file(filename, root=os.path.join(lib_dir, *parts))
-
-
-# @get('/lib/angular/<filename>')
-# def lib_angular_get(filename):
-#     return bottle.static_file(filename, root=os.path.join(app_dir, 'lib',
-#                                                           'angular'))
 
 
 @get('/partials/<filename>')
@@ -84,23 +77,26 @@ def index():
 #
 
 
-def parse_accept_header():
+def parse_accept_header(header=None):
     """
     Parse the Accept header.
 
-    Returns (mimetype, depth) tuple
+    Returns a dict of mimetype keys that map to an accept param dict
     """
+    if(not header):
+        header = request.headers.get("Accept")
+    ranges = [rng.strip() for rng in header.split(',')]
 
-    # TODO: this won't accept multiple mimetypes in the Accept header
-    header = request.headers.get("Accept")
-    parts = header.split(';')
-    mimetype = parts[0]
+    result = {}
+    for rng in ranges:
+        params = rng.split(';')
+        d = {}
+        for param in params[1:]:
+            key, value = param.split("=")
+            d[key] = value
+        result[params[0]] = d
 
-    depth = None
-    if len(parts) > 1:
-        depth = parts[1]
-
-    return mimetype, depth
+    return result
 
 
 def handle_get(mapper, id, collection_name):
@@ -111,17 +107,23 @@ def handle_get(mapper, id, collection_name):
     where the queried objects are returned in the json object in
     the collection_name array.
     """
-    mimetype, depth = parse_accept_header()
-    if mimetype != JSON_MIMETYPE:
+    accepted = parse_accept_header()
+    if JSON_MIMETYPE not in accepted:
         response.status = 400
         return
+
+    depth = 1
+    if 'depth' in accepted[JSON_MIMETYPE]:
+        depth = accepted[JSON_MIMETYPE]['depth']
 
     session = db.connect()
     query = session.query(mapper)
     if id is not None:
         query.filter_by(id=id)
 
-    json_objs = [obj.json() for obj in query]
+    print('handle get')
+    json_objs = [obj.json(depth=int(depth)) for obj in query]
+    print(json_objs[0])
     session.close()
 
     response.content_type = '; '.join((JSON_MIMETYPE, "charset=utf8"))
@@ -138,10 +140,19 @@ def handle_post(mapper, collection_name):
     form encoded values.  Returns the JSON resposne the same as a GET
     request
     """
-    mimetype, depth = parse_accept_header()
-    if mimetype != JSON_MIMETYPE:
+    # mimetype, depth = parse_accept_header()
+    # if mimetype != JSON_MIMETYPE:
+    #     response.status = 400
+    #     return
+
+    accepted = parse_accept_header()
+    if JSON_MIMETYPE not in accepted:
         response.status = 400
         return
+
+    depth = 1
+    if 'depth' in accepted[JSON_MIMETYPE]:
+        depth = accepted[JSON_MIMETYPE]['depth']
 
     response.content_type = '; '.join((JSON_MIMETYPE, "charset=utf8"))
     session = db.connect()
@@ -154,7 +165,7 @@ def handle_post(mapper, collection_name):
     session.add(obj)
     session.commit()
     response_json = {}
-    response_json[collection_name] = [obj.json()]
+    response_json[collection_name] = [obj.json(depth=depth)]
     session.close()
     return response_json
 
@@ -331,42 +342,33 @@ def delete_locations(id):
 #
 @get("/search")
 def get_search():
+    #mimetype, depth = parse_accept_header()
+    accepted = parse_accept_header()
+    if JSON_MIMETYPE not in accepted:
+        response.status = 400
+        return
+
+    depth = 1
+    if 'depth' in accepted[JSON_MIMETYPE]:
+        depth = accepted[JSON_MIMETYPE]['depth']
+
     query = request.query.q
     session = db.connect()
     results = {}
     if query:
         results = search.search(query, session)
     response.content_type = '; '.join((JSON_MIMETYPE, "charset=utf8"))
-    return {'results': [r.json(depth=0) for r in results]}
+    return {'results': [r.json(depth=depth) for r in results]}
 
 
-# set up search strategies
+def start():
+    """
+    Start the Bauble server.
+    """
+    # start the application
+    db.connect()
 
-from bauble.model import Family, Genus, Species, Accession, Plant, Location, \
-    SourceDetail, Collection
-mapper_search = search.get_strategy('MapperSearch')
-mapper_search.add_meta(('family', 'fam'), Family, ['family'])
-mapper_search.add_meta(('genus', 'gen'), Genus, ['genus'])
-mapper_search.add_meta(('species', 'sp'), Species,
-                       ['sp', 'sp2', 'infrasp1', 'infrasp2',
-                                'infrasp3', 'infrasp4'])
-# mapper_search.add_meta(('vernacular', 'vern', 'common'),
-#                        VernacularName, ['name'])
-# mapper_search.add_meta(('geography', 'geo'), Geography, ['name'])
-mapper_search.add_meta(('accession', 'acc'), Accession, ['code'])
-mapper_search.add_meta(('location', 'loc'), Location, ['name', 'code'])
-mapper_search.add_meta(('plant', 'plants'), Plant, ['code'])
-#search.add_strategy(PlantSearch)
-mapper_search.add_meta(('contact', 'contacts', 'person', 'org',
-                        'source'), SourceDetail, ['name'])
-mapper_search.add_meta(('collection', 'col', 'coll'),
-                       Collection, ['locale'])
+    # TODO: the tables should be created everytime the application is started
+    db.Base.metadata.create_all(db.engine)
 
-
-# start the application
-db.connect()
-
-# TODO: the tables should be created everytime the application is started
-db.Base.metadata.create_all(db.engine)
-
-bottle.run(host='localhost', port=8080, reloader=True, debug=True)
+    bottle.run(host='localhost', port=8080, reloader=True, debug=True)
