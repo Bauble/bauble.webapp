@@ -1,6 +1,6 @@
 
 #
-# species_model.py
+# species.py
 #
 
 import traceback
@@ -155,7 +155,6 @@ class Species(db.Base):
     genus_id = Column(Integer, ForeignKey('genus.id'), nullable=False)
 
     label_distribution = Column(UnicodeText)
-    bc_distribution = Column(UnicodeText)
 
     # relations
     synonyms = association_proxy('_synonyms', 'synonym')
@@ -345,9 +344,53 @@ class Species(db.Base):
                         'author': 'infrasp4_author'}}
 
 
-    def json(self, depth=1):
-        return dict(id=self.id, 
-                    sp=self.sp)
+    def json(self, depth=1, markup=False):
+        """Return a dictionary representation of the Species.
+
+        Kwargs:
+           depth (int): The level of detail to return in the dict
+           markup (bool): Whether the returned str should include markup.  This
+                          parameter is only relevant with a depth>0
+        Returns:
+           dict.
+        """
+        d = dict(ref="/species/" + str(self.id))
+        if(depth > 0):
+            d['id'] = self.id
+            d['str'] = Species.str(self, markup=markup)
+            d['genus'] =  self.genus.json(depth=depth - 1)
+        if(depth > 1):
+            d['sp'] = self.sp
+            d['sp2'] = self.sp2
+            d['sp_author'] = self.sp_author
+            d['hybrid'] = self.hybrid
+            d['infrasp1'] = self.infrasp1
+            d['infrasp1_rank'] = self.infrasp1_rank
+            d['infrasp1_author'] = self.infrasp1_author
+            d['infrasp2'] = self.infrasp2
+            d['infrasp2_rank'] = self.infrasp2_rank
+            d['infrasp2_author'] = self.infrasp2_author
+            d['infrasp3'] = self.infrasp3
+            d['infrasp3_rank'] = self.infrasp3_rank
+            d['infrasp3_author'] = self.infrasp3_author
+            d['infrasp4'] = self.infrasp4
+            d['infrasp4_rank'] = self.infrasp4_rank
+            d['infrasp4_author'] = self.infrasp4_author
+            d['cv_group'] = self.cv_group
+            d['trade_name'] = self.trade_name
+            d['sp_qual'] = self.sp_qual
+            d['label_distribution'] = self.label_distribution
+            # d['distribution'] = self.distribution.json(depth=depth - 1)
+            d['habit'] = None  # self.habit.json(depth=depth - 1)
+            d['flower_color'] = None  # self.flower_color.json(depth=depth - 1)
+            d['awards'] = self.awards
+            if(self.flower_color):
+                d['flower_color'] = self.flower_color.json(depth=depth - 1)
+            if self.habit:
+                d['habit'] = self.habit.json(depth=depth - 1)
+
+        return d
+
 
 
     def get_infrasp(self, level):
@@ -385,6 +428,19 @@ class SpeciesNote(db.Base):
                        backref=backref('notes', cascade='all, delete-orphan'))
 
 
+    def json(self, depth=1):
+        """Return a JSON representation of this SpeciesNote
+        """
+        d = dict(ref="/species/" + str(self.species_id) + "/note/" + str(self.id))
+        if(depth > 0):
+            d['date=self.date,
+            user=self.user,
+            category=self.category,
+            note=self.note,
+            species=self.species.json(depth=depth - 1)))
+        return d
+
+
 
 class SpeciesSynonym(db.Base):
     """
@@ -408,8 +464,19 @@ class SpeciesSynonym(db.Base):
         self.synonym = synonym
         super(SpeciesSynonym, self).__init__(**kwargs)
 
+
     def __str__(self):
         return str(self.synonym)
+
+
+    def json(self, depth=1):
+        """Return a JSON representation of this SpeciesSynonym
+        """
+        d = dict(ref="/species/" + str(self.species_id) + "/synonym/" + str(self.id))
+        if(depth > 0):
+            d['species'] = self.species.json(depth=depth - 1)
+            d['synonym'] = self.synonym.json(depth=depth - 1)
+        return d
 
 
 
@@ -444,6 +511,29 @@ class VernacularName(db.Base):
             return self.name
         else:
             return ''
+
+
+    def json(self, depth=1):
+        """Return a dictionary representation of the Habit.
+
+        Kwargs:
+           depth (int): The level of detail to return in the dict
+        Returns:
+           dict.
+        """
+
+        # TODO: we probably don't need the self.id part here since there's should only be one default vernacular
+        # name for the species
+        d = dict(ref="/species/" + str(self.species_id) + "/vernacular_name/" + str(self.id))
+        if(depth > 0):
+            d['name'] = self.name
+            d['language'] = self.language
+            d['species'] = self.species.json(depth=depth - 1)
+            d['str'] = str(self)
+            d['default'] = False
+            if(self.species.default_vernacular_name == self):
+                d['default'] = True
+        return d
 
 
 
@@ -485,6 +575,27 @@ class DefaultVernacularName(db.Base):
         return str(self.vernacular_name)
 
 
+    def json(self, depth=1):
+        """Return a dictionary representation of the Habit.
+
+        Kwargs:
+           depth (int): The level of detail to return in the dict
+        Returns:
+           dict.
+        """
+
+        # TODO: we probably don't need the self.id part here since there's should only be one default vernacular
+        # name for the species
+        d = dict(ref="/species/" + str(self.species_id) + "/default_vernacular_name/" + str(self.id))
+        if(depth > 0):
+            d['species'] = self.species(depth=depth - 1)
+            d['str'] = str(self)
+            d['vernacular_name'] = None
+            if(self.vernacular_name):
+                self.vernacular_name.json(depth=depth - 1)
+        return d
+
+
 class SpeciesDistribution(db.Base):
     """
     :Table name: species_distribution
@@ -504,6 +615,22 @@ class SpeciesDistribution(db.Base):
     def __str__(self):
         return str(self.geography)
 
+
+    def json(self, depth=1):
+        """Return a dictionary representation of the SpeciesDistribution.
+
+        Kwargs:
+           depth (int): The level of detail to return in the dict
+        Returns:
+           dict.
+        """
+        d = dict(ref="/species/" + str(self.species_id) + "/distribution/" + str(self.id))
+        if(depth > 0):
+            d['species'] = self.species.json(depth=depth - 1)
+            d['geography'] = self.geography.json(depth=depth - 1)
+            d['str'] = str(self)
+        return d
+
 # late bindings
 SpeciesDistribution.geography = relation('Geography',
                 primaryjoin='SpeciesDistribution.geography_id==Geography.id',
@@ -521,6 +648,22 @@ class Habit(db.Base):
         else:
             return str(self.code)
 
+    def json(self, depth=1):
+        """Return a dictionary representation of the Habit.
+
+        Kwargs:
+           depth (int): The level of detail to return in the dict
+        Returns:
+           dict.
+        """
+        d = dict(ref="/habit/" + str(self.id))
+        if(depth > 0):
+            d['name'] = self.name
+            d['code'] = self.code
+            d['str'] = str(self)
+        return d
+
+
 
 class Color(db.Base):
     __tablename__ = 'color'
@@ -533,3 +676,22 @@ class Color(db.Base):
             return '%s (%s)' % (self.name, self.code)
         else:
             return str(self.code)
+<<<<<<< HEAD
+=======
+
+
+    def json(self, depth=1):
+        """Return a dictionary representation of the Color.
+
+        Kwargs:
+           depth (int): The level of detail to return in the dict
+        Returns:
+           dict.
+        """
+        d = dict(ref="/color/" + str(self.id))
+        if(depth > 0):
+            d['name'] = self.name
+            d['code'] = self.code
+            d['str'] = str(self)
+        return d
+>>>>>>> brett

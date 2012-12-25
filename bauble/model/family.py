@@ -100,11 +100,21 @@ class Family(db.Base):
             return ' '.join([s for s in [family.family,
                                     family.qualifier] if s not in (None, '')])
 
-    def json(self, depth=1):
-        d = dict(family=self.family,
-                 qualifier=self.qualifier,
-                 id=self.id,
-                 str=str(self))
+    def json(self, depth=1, markup=True):
+        """Return a dictionary representation of the Family.
+
+        Kwargs:
+           depth (int): The level of detail to return in the dict
+           markup (bool): Whether the returned str should include markup.  This
+                          parameter is only relevant with a depth>0
+        Returns:
+           dict.
+        """
+        d = dict(ref="/family/" + str(self.id))
+        if(depth > 0):
+            d['family'] = self.family
+            d['qualifier'] = self.qualifier
+            d['str'] = str(self)
         return d
 
 
@@ -121,6 +131,19 @@ class FamilyNote(db.Base):
     family_id = Column(Integer, ForeignKey('family.id'), nullable=False)
     family = relation('Family', uselist=False,
                       backref=backref('notes', cascade='all, delete-orphan'))
+
+
+    def json(self, depth=1):
+        """Return a JSON representation of this FamilyNote
+        """
+        d = dict(ref="/family/" + str(self.family_id) + "/note/" + str(self.id))
+        if(depth > 0):
+            d['date'] = self.date
+            d['user'] = self.user
+            d['category'] = self.category
+            d['note'] = self.note
+            d['family'] = self.family.json(depth=depth - 1)
+        return d
 
 
 
@@ -155,6 +178,16 @@ class FamilySynonym(db.Base):
         self.synonym = synonym
         super(FamilySynonym, self).__init__(**kwargs)
 
+
     def __str__(self):
         return Family.str(self.synonym)
 
+
+    def json(self, depth=1):
+        """Return a JSON representation of this FamilySynonym
+        """
+        d = dict(ref="/family/" + str(self.family_id) + "/synonym/" + str(self.id))
+        if(depth > 0):
+            d['family'] = self.family.json(depth=depth - 1)
+            d['synonym'] =self.synonym.json(depth=depth - 1)
+        return d

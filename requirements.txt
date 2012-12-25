@@ -12,7 +12,7 @@ six==1.2.0
 
 # SQLAlchemy 0.8.0 isn't in PyPI yet so get it from SourceForge
 #SQLAlchemy==0.8.0
-http://downloads.sourceforge.net/project/sqlalchemy/sqlalchemy/0.8.0b1/SQLAlchemy-0.8.0b1.tar.gz
+http://downloads.sourceforge.net/project/sqlalchemy/sqlalchemy/0.8.0b2/SQLAlchemy-0.8.0b2.tar.gz
 
 # don't explicitly install distribute
 #distribute==0.6.24

@@ -13,7 +13,6 @@ def test_parser():
     """
     Test the bauble.search.SearchParser
     """
-    family_name = get_random_name()
     response_json = create_resource('/family', family=get_random_name())
     family = response_json['families'][0]
 
@@ -30,7 +29,6 @@ def test_search():
     response_json = create_resource('/family', family=family_name)
     family = response_json['families'][0]
 
-    
     response_json = create_resource('/family', family=get_random_name())
     family2 = response_json['families'][0]
 
@@ -47,12 +45,3 @@ def test_search():
 
     delete_resource('/family', family['id'])
     delete_resource('/family', family2['id'])
-
-    
-
-
-
-
-
-
-    

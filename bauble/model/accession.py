@@ -125,6 +125,23 @@ class Verification(db.Base):
     notes = Column(UnicodeText)
 
 
+    def json(self, depth=1):
+        """
+        """
+        d = dict(ref="/accession/" + str(self.accession_id) + "/verification/" + str(self.id))
+        if depth > 0:
+            d['verifier'] = self.verifier
+            d['date'] = self.date
+            d['reference'] = self.reference
+            d['accession'] = self.accession.json(depth=depth - 1)
+            d['species'] = self.species.json(depth=depth - 1)
+            d['prev_species'] = self.prev_species.json(depth=depth - 1)
+            d['level'] = self.level
+            d['notes'] = None
+            if self.notes:
+                d['notes'] = self.notes.json(depth=depth - 1)
+        return d
+
 
 # TODO: auto add parent voucher if accession is a propagule of an
 # existing accession and that parent accession has vouchers...or at
@@ -159,6 +176,15 @@ class Voucher(db.Base):
     #                       backref=backref('vouchers',
     #                                       cascade='all, delete-orphan'))
 
+    def json(self, depth=1):
+        d = dict(ref="/accession/" + str(self.accession_id) + "/voucher/" + str(self.id))
+        if depth > 0:
+            d['herbarium'] = self.herbarium
+            d['code'] = self.code
+            d['parent_material'] = self.parent_material
+            d['accession'] = self.accession.json(depth=depth - 1)
+        return d
+
 
 
 class AccessionNote(db.Base):
@@ -176,6 +202,18 @@ class AccessionNote(db.Base):
     accession = relation('Accession', uselist=False,
                        backref=backref('notes', cascade='all, delete-orphan'))
 
+
+    def json(self, depth=1):
+        """Return a JSON representation of this AccessionNote
+        """
+        d = dict(ref="/accession/" + str(self.accession_id) + "/note/" + str(self.id))
+        if(depth > 0):
+            d['date'] = self.date
+            d['user'] = self.user
+            d['category'] = self.category
+            d['note'] = self.note
+            d['accession'] = self.accession.json(depth=depth - 1)
+        return d
 
 
 # invalidate an accessions string cache after it has been updated
@@ -341,7 +379,7 @@ class Accession(db.Base):
     def __str__(self):
         return self.code
 
-    
+
     def species_str(self, authors=False, markup=False):
         """
         Return the string of the species with the id qualifier(id_qual)
@@ -387,7 +425,7 @@ class Accession(db.Base):
 
         # generate the string
         if self.id_qual in ('aff.', 'cf.'):
-            if self.id_qual_rank=='infrasp':
+            if self.id_qual_rank == 'infrasp':
                 species.sp = '%s %s' % (species.sp, self.id_qual)
             elif self.id_qual_rank:
                 setattr(species, self.id_qual_rank,
@@ -411,13 +449,33 @@ class Accession(db.Base):
         return '%s (%s)' % (self.code, self.species.markup())
 
 
-    def json(self, depth=1):
-        json = dict(ref="")
+    def json(self, depth=1, markup=False):
+        d = dict(ref="/accession/" + str(self.id))
         if(depth > 0):
-            json['id'] = self.id
-            json['code'] = self.code
-        if(depth > 1):            
-            json['prov_type'] = self.prov_type
-        return json
+            d['code'] = self.code
+            d['species'] = self.species.json(depth=depth-1)
+            d['str'] = str(self)
+            d['id_qual'] = self.id_qual
 
+
+        if(depth > 1):
+            d['species_str'] = self.species_str(markup=markup)
+            d['prov_type'] = self.prov_type
+            d['wild_prov_status'] = self.wild_prov_status
+            d['date_accd'] = self.date_accd
+            d['date_recvd'] = self.date_recvd
+            d['quantity_recvd'] = self.quantity_recvd
+            d['recvd_type'] = self.recvd_type
+            d['private'] = self.private
+            d['intended_location'] = None
+            d['intended2_location'] = None
+            d['source'] = None
+            if self.source:
+                d['source'] = self.source.json(depth=depth-1)
+            if self.intended_location:
+                d['intended_location'] = self.intended_location.json(depth=depth - 1)
+            if self.intended2_location:
+                d['intended2_location'] = self.intended2_location.json(depth=depth - 1)
+
+        return d
 

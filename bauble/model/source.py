@@ -61,6 +61,35 @@ class Source(db.Base):
                      primaryjoin='Source.plant_propagation_id==Propagation.id')
 
 
+    def json(self, depth=1):
+        """
+        """
+        d = dict(ref="/accession/" + str(self.accession_id) + "/source/" + str(self.id))
+        if depth > 0:
+            d['accession'] = self.accession.json(depth=depth - 1)
+            d['source_detail'] = None
+            d['collection'] = None
+            d['propagation'] = None
+            d['plant_propgation'] = None
+
+            d['source_name'] = None
+            d['source_type'] = None
+            d['description'] = None
+            if self.source_detail:
+                d['source_name'] = self.source_detail.name
+                d['source_type'] = self.source_detail.source_type
+                d['description'] = self.source_detail.description
+            if self.collection:
+                d['collection'] = self.collection.json(depth=depth - 1)
+            if self.propagation:
+                d['propagation'] = self.propagation.json(depth=depth - 1)
+            if self.plant_propagation:
+                d['plant_propagation'] = self.plant_propagation.json(depth=depth - 1)
+
+        return d
+
+
+
 source_type_values = {'Expedition': _('Expedition'),
                       'GeneBank': _('Gene Bank'),
                       'BG': _('Botanic Garden or Arboretum'),
@@ -76,6 +105,7 @@ source_type_values = {'Expedition': _('Expedition'),
                       'Unknown': _('Unknown'),
                      None: ''}
 
+
 class SourceDetail(db.Base):
     __tablename__ = 'source_detail'
     __mapper_args__ = {'order_by': 'name'}
@@ -88,6 +118,12 @@ class SourceDetail(db.Base):
 
     def __str__(self):
         return utils.utf8(self.name)
+
+    def json(self, depth=1):
+        """
+        Returns the JSON for the parent source of this SourceDetail
+        """
+        return self.source.json(depth=depth)
 
 
 # TODO: should provide a collection type: alcohol, bark, boxed,
@@ -160,3 +196,31 @@ class Collection(db.Base):
 
     def __str__(self):
         return _('Collection at %s') % (self.locale or repr(self))
+
+
+    def json(self, depth=1):
+        """
+        """
+        d = dict(ref="/accession/" + str(self.source.accession_id) + "/source/" +
+                str(self.source.id) + "/collection/" + str(self.id))
+        if depth > 0:
+            d['collector'] = self.collector
+            d['collectors_code'] = self.collectors_code
+            d['date'] = self.date
+            d['locale'] = self.locale
+            d['latitude'] = self.latitude
+            d['longitude'] = self.longitude
+            d['gps_datum'] = self.gps_datum
+            d['geo_accy'] = self.geo_accy
+            d['elevation'] = self.elevation
+            d['elevation_accy'] = self.elevation_accy
+            d['habitat'] = self.habitat
+            d['notes'] = self.notes
+            d['region'] = None
+            if self.region:
+                d['region'] = self.region.json(depth=depth - 1)
+            d['source'] = None
+            if self.source:
+                d['source'] = self.source.json(depth=depth - 1)
+
+        return d

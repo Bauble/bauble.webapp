@@ -31,7 +31,7 @@ def create_resource(resource, **kwargs):
     return json.loads(response.text)
 
 
-def get_resource(resource, id=None):
+def get_resource(resource, id=None, depth=1):
     """
     Get a server based resource with id=id
     """

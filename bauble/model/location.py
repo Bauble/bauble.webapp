@@ -57,7 +57,11 @@ class Location(db.Base):
 
 
     def json(self, depth=1):
-        return dict(id=self.id,
-                    code=self.code,
-                    name=self.name,
-                    description=self.description)
+        d = dict(ref="/location/" + str(self.id))
+        if depth > 0:
+            d['id'] = self.id
+            d['code'] = self.code
+            d['name'] = self.name
+
+        if depth > 1:
+            d['description'] = self.description

@@ -48,6 +48,14 @@ class PlantPropagation(db.Base):
     plant = relation('Plant', uselist=False)
 
 
+    def json(self, depth=1):
+        """
+        """
+        d = self.propagation.json(depth)
+        d['ref'] = '/plant/' + str(self.plant_id) + d['ref]']
+        return d
+
+
 
 class Propagation(db.Base):
     """
@@ -89,7 +97,10 @@ class Propagation(db.Base):
     def get_summary(self):
         """
         """
-        date_format = prefs.prefs[prefs.date_format_pref]
+        # TODO: need a date format string from the settings
+        # date_format = prefs.prefs[prefs.date_format_pref]
+        date_format = '%d-%m-%Y'
+
         def get_date(date):
             if isinstance(date, datetime.date):
                 return date.strftime(date_format)
@@ -172,6 +183,71 @@ class Propagation(db.Base):
             s = utils.utf8(self.notes)
 
         return s
+
+
+    def json(self, depth=1):
+        d = dict(ref="/propagation/" + str(self.id))
+        if depth > 0:
+            d['prop_type'] = self.prop_type
+            if self.prop_type == 'UnrootedCutting':
+                d.update(self._json_cutting(depth))
+            elif self.prop_type == 'Seed':
+                d.update(self._json_seed(depth))
+
+
+    def _json_cutting(self, depth):
+        d = dict()
+        d['cutting_type'] = self._cutting.cutting_type
+        d['tip'] = self._cutting.tip
+        d[' leaves'] = self._cutting.leaves
+        d['leaves_reduced_pct'] = self._cutting.leaves_reduced_pct
+        d['length'] = self._cutting.length
+        d['length_unit'] = self._cutting.length_unit
+
+        # single/double/slice
+        d['wound'] = self._cutting.wound
+
+        # removed/None
+        d['flower_buds'] = self._cutting.flower_buds
+
+        d['fungicide'] = self._cutting.fungicide  # fungal soak
+        d['hormone'] = self._cutting.hormone  # powder/liquid/None....solution
+
+        d['media'] = self._cutting.media
+        d['container'] = self._cutting.container
+        d['location'] = self._cutting.location
+        d['cover'] = self._cutting.cover  # vispore, poly, plastic dome, poly bag
+
+        d['bottom_heat_temp'] = self._cutting.bottom_heat_temp  # temperature of bottom heat
+
+        # F/C
+        d['bottom_heat_unit'] = self._cutting.bottom_heat_unit
+        d['rooted_pct'] = self._cutting.rooted_pct
+
+        d['rooted'] = []
+        for rooted in self._cutting.rooted:
+            d['rooted'].append(dict(date=rooted.date, quantity=rooted.quantity))
+
+        return d
+
+
+    def _json_seed(self, depth):
+        d = dict()
+        d['pretreatment'] = self._seed.pretreatment
+        d['nseeds'] = self._seed.nseeds
+        d['date_sown'] = self._seed.date_sown
+        d['container'] = self._seed.container
+        d['media'] = self._seed.media
+        d['covered'] = self._seed.covered
+        d['location'] = self._seed.location
+        d['moved_from'] = self._seed.moved_from
+        d['moved_to'] = self._seed.moved_to
+        d['moved_date'] = self._seed.moved_date
+        d['germ_date'] = self._seed.germ_date
+        d['nseedlings'] = self._seed.nseedlings
+        d['germ_pct'] = self._seed.germ_pct
+        d['date_planted'] = self._seed.date_planted
+        return d
 
 
 

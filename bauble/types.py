@@ -114,9 +114,12 @@ class DateTime(types.TypeDecorator):
             DateTime._dayfirst
             DateTime._yearfirst
         except AttributeError:
-            import bauble.prefs as prefs
-            DateTime._dayfirst = prefs.prefs[prefs.parse_dayfirst_pref]
-            DateTime._yearfirst = prefs.prefs[prefs.parse_yearfirst_pref]
+            # TODO: need global settings
+            # import bauble.prefs as prefs
+            # DateTime._dayfirst = prefs.prefs[prefs.parse_dayfirst_pref]
+            # DateTime._yearfirst = prefs.prefs[prefs.parse_yearfirst_pref]
+            DateTime._dayfirst = True
+            DateTime._yearfirst = False
         return date_parser.parse(value, dayfirst=DateTime._dayfirst,
                                  yearfirst=DateTime._yearfirst)
 
@@ -143,9 +146,11 @@ class Date(types.TypeDecorator):
             Date._dayfirst
             Date._yearfirst
         except AttributeError:
-            import bauble.prefs as prefs
-            Date._dayfirst = prefs.prefs[prefs.parse_dayfirst_pref]
-            Date._yearfirst = prefs.prefs[prefs.parse_yearfirst_pref]
+            # import bauble.prefs as prefs
+            # Date._dayfirst = prefs.prefs[prefs.parse_dayfirst_pref]
+            # Date._yearfirst = prefs.prefs[prefs.parse_yearfirst_pref]
+            Date._dayfirst = True
+            Date._yearfirst = False
         return date_parser.parse(value, dayfirst=Date._dayfirst,
                                  yearfirst=Date._yearfirst).date()
 

@@ -132,14 +132,16 @@ class Genus(db.Base):
                      if s not in ('', None)])
 
     def json(self, depth=1):
-        return dict(id=self.id,
-                    genus=self.genus,
-                    qualifier=self.qualifier,
-                    author=self.author,
-                    family_id=self.family.id,
-                    family=self.family.json(depth=0),
-                    #synonyms=self.synonyms.json(depth=0),
-                    str=str(self))
+        """Return a JSON respresentation of this Genus.
+        """
+        d = dict(ref="/genus/" + str(self.id))
+        if depth > 0:
+            d['genus'] = self.genus
+            d['str'] = str(self)
+            d['qualifier'] = self.qualifier
+            d['author'] = self.author
+            d['family'] = self.family.json(depth=depth - 1)
+        return d
 
 
 class GenusNote(db.Base):
@@ -156,6 +158,19 @@ class GenusNote(db.Base):
     genus_id = Column(Integer, ForeignKey('genus.id'), nullable=False)
     genus = relation('Genus', uselist=False,
                       backref=backref('notes', cascade='all, delete-orphan'))
+
+    def json(self, depth=1):
+        """Return a JSON representation of this GenusNote
+        """
+        d = dict(ref="/genus/" + str(self.genus_id) + "/note/" + str(self.id))
+        if(depth > 0):
+            d['date'] = self.date
+            d['user'] = self.user
+            d['category'] = self.category
+            d['note'] = self.note
+            d['genus'] = self.genus.json(depth=depth - 1)
+        return d
+
 
 
 class GenusSynonym(db.Base):
@@ -175,14 +190,26 @@ class GenusSynonym(db.Base):
     synonym = relation('Genus', uselist=False,
                        primaryjoin='GenusSynonym.synonym_id==Genus.id')
 
+
     def __init__(self, synonym=None, **kwargs):
         # it is necessary that the first argument here be synonym for
         # the Genus.synonyms association_proxy to work
         self.synonym = synonym
         super(GenusSynonym, self).__init__(**kwargs)
 
+
     def __str__(self):
         return str(self.synonym)
+
+
+    def json(self, depth=1):
+        """Return a JSON representation of this GenusSynonym
+        """
+        d = dict(ref="/genus/" + str(self.genus_id) + "/synonym/" + str(self.id))
+        if(depth > 0):
+            d['genus'] = self.genus.json(depth=depth - 1)
+            d['synonym'] = self.synonym.json(depth=depth - 1)
+        return d
 
 
 # TODO: could probably incorporate this into the class since if we can
