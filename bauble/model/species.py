@@ -433,11 +433,11 @@ class SpeciesNote(db.Base):
         """
         d = dict(ref="/species/" + str(self.species_id) + "/note/" + str(self.id))
         if(depth > 0):
-            d['date=self.date,
-            user=self.user,
-            category=self.category,
-            note=self.note,
-            species=self.species.json(depth=depth - 1)))
+            d['date'] = self.date
+            user = self.user
+            category = self.category
+            note = self.note
+            species = self.species.json(depth=depth - 1)
         return d
 
 
@@ -676,8 +676,6 @@ class Color(db.Base):
             return '%s (%s)' % (self.name, self.code)
         else:
             return str(self.code)
-<<<<<<< HEAD
-=======
 
 
     def json(self, depth=1):
@@ -694,4 +692,3 @@ class Color(db.Base):
             d['code'] = self.code
             d['str'] = str(self)
         return d
->>>>>>> brett
