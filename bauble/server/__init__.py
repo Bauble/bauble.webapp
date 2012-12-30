@@ -219,7 +219,7 @@ def query_family():
     #     return
 
     session = db.connect()
-    query = session.query(Family).filter_by(family=q)
+    query = session.query(Family).filter(Family.family.like(q))
     json_objs = [obj.json() for obj in query]
     session.close()
     response.content_type = '; '.join((JSON_MIMETYPE, "charset=utf8"))

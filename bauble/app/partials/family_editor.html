@@ -1,23 +1,23 @@
 <div ng-controller="FamilyCtrl">
-<div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-    <h3 id="myModalLabel">Family</h3>
-</div>
-<div class="modal-body">
-  <div>
-    <form name="familyForm" ng-submit="Family.save(family)">
-      <label>Family</label>
-      <input ng-model="family.family" required>
-
-      <label>Qualifier</label>
-      <input ng-model="family.qualifier" required>
-      <!-- <label>Notes</label>
-      <textarea ng-model="family.notes" rows="5"></textarea> -->
-    </form>
+  <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+      <h3 id="myModalLabel">Family</h3>
   </div>
-</div>
-<div class="modal-footer">
-    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-    <button class="btn btn-primary" ng-click="save()">Save changes</button>
-</div>
+  <div class="modal-body">
+    <div>
+      <form name="familyForm">
+        <label>Family</label>
+        <input ng-model="family.family" required>
+
+        <label>Qualifier</label>
+        <input ng-model="family.qualifier" required>
+        <!-- <label>Notes</label>
+        <textarea ng-model="family.notes" rows="5"></textarea> -->
+      </form>
+    </div>
+  </div>
+  <div class="modal-footer">
+      <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+      <button class="btn btn-primary" ng-click="save()">Save changes</button>
+  </div>
 </div>

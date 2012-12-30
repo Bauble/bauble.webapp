@@ -1,6 +1,11 @@
-<h1>Genus</h1>
-<div>
-    <form name="genusForm" ng-submit="Genus.save(genus)">
+  <div ng-controller="GenusCtrl">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel">Genus</h3>
+  </div>
+
+  <div class="modal-body">
+      <form name="genusForm">
 
         <label>Family</label>
         <input id="familyField" style="width: 200px" ui-select2="multiOptions" ng-model="family"/>
@@ -8,11 +13,14 @@
         <label>Genus</label>
         <input ng-model="genus.genus" required/>
 
-        <label>Notes</label>
-        <textarea ng-model="genus.notes" rows="5"></textarea>
+        <!-- <label>Notes</label>
+        <textarea ng-model="genus.notes" rows="5"></textarea> -->
+      </form>
+  </div>
 
-        <br/>
-<!--         <button ngClick="Genus.save(genus)" type="submit" class="btn">Save</button> -->
-        <button type="submit" class="btn">Save</button>
-    </form>
+  <div class="modal-footer">
+      <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+      <button class="btn btn-primary" ng-click="save()">Save changes</button>
+  </div>
+
 </div>

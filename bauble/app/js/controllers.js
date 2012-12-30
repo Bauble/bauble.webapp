@@ -2,6 +2,16 @@
 
 /* Controllers */
 
+//
+// Controller to handle things on the main view page that don't fit elsewhere
+//
+function MainCtrl($scope) {
+    $scope.selectedEditor = null;
+}
+
+//
+// Controller to handle the searching and search result
+//
 function SearchCtrl($scope, Search) {
 
     // query the server for search results
@@ -22,7 +32,7 @@ function SearchCtrl($scope, Search) {
 
     $scope.editors = {
         'family': 'partials/family_editor.html',
-        'genus': 'partials/genus_summary.html'
+        'genus': 'partials/genus_editor.html'
     };
 
     $scope.summary = "";
@@ -61,7 +71,7 @@ SearchCtrl.$inject = ['$scope', 'Search'];
 function FamilyCtrl($scope, Family) {
 
     // use $scope.selected in case we're inheriting from the SearchCtrl
-    $scope.family = $scope.selected;
+    $scope.family = $scope.selected || {};
     $scope.Family = Family;
 
     $scope.save = function() {
@@ -93,8 +103,10 @@ function GenusCtrl($scope, Family, Genus) {
 
         // get the list of families matching the query
         query: function(options){
-            //console.log('query: ', options);
-            Family.query(options.term, function(response){
+            // TODO: somehow we need to cache the returned results and early search
+            // for new results when the query string is something like .length==2
+             //console.log('query: ', options);
+            Family.query(options.term + '%', function(response){
                 //console.log('response: ', response);
                 $scope.families = response.data;
                 if(response.data && response.data.length > 0)
@@ -105,8 +117,16 @@ function GenusCtrl($scope, Family, Genus) {
 
     // set the family_id on the genus when a family is selected
     $scope.$watch('family', function() {
-        $scope.genus.family_id = $scope.family.id;
+        $scope.genus.family_id = $scope.family.id || null;
     });
+
+    // called when the save button is clicked on the editor
+    $scope.save = function() {
+        // TODO: we need a way to determine if this is a save on a new or existing
+        // object an whether we whould be calling save or edit
+        console.log('save');
+        $scope.Genus.save($scope.genus);
+    };
 }
 GenusCtrl.$inject = ['$scope', 'Family', 'Genus'];
 
