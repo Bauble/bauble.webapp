@@ -1,11 +1,41 @@
-<div>
+
+<div class="container">
   <form>
     <input ng-model="q" type="search">
     <input ng-click="Search(q)" type="submit" value="Search">
   </form>
-  <div>
-    <div ng-repeat="result in results">
-        {{result.str}}
+
+  <div class="row">
+    <div class="span4">
+      <ul>
+        <div ng-repeat="result in results">
+            <li class="search-result-item">
+                <span>
+                  <a class="search-result-expand icon-chevron-right" ng-click="itemExpanded()"></a>
+                  <a class="search-result-link" ng-click="itemSelected(result)">{{result.str}}</a>
+                </span>
+            </li>
+        </div>
+      </ul>
+    </div>
+
+    <div class="span8">
+
+      <div class="row">
+        <div class="span2 offset6">
+          <a href="#myModal" role="button" class="btn" data-toggle="modal">Edit</a>
+        </div>
+      </div>
+
+
+      <div ng-include src="summary"></div>
+    </div>
+
+    <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div ng-include src="editor"></div>
+    </div>
+
+
   </div>
 
 </div>

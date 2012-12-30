@@ -115,6 +115,7 @@ class Family(db.Base):
             d['family'] = self.family
             d['qualifier'] = self.qualifier
             d['str'] = str(self)
+            d['resource'] = 'family'
         return d
 
 

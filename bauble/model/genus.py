@@ -141,6 +141,7 @@ class Genus(db.Base):
             d['qualifier'] = self.qualifier
             d['author'] = self.author
             d['family'] = self.family.json(depth=depth - 1)
+            d['resource'] = 'genus'
         return d
 
 

@@ -44,7 +44,22 @@ angular.module('BaubleApp.services', ['ngResource'])
             del: function(id, callback) {
                 return $http({ method: 'DELETE', url: resourceRoot + '/' + id })
                             .then(callback);
-                }
+                },
+            details: function(id, callback) {
+                return $http({ method: 'GET', url: resourceRoot + '/' + id,
+                               headers: { 'Accept': 'application/json;depth=2' }})
+                            .then(callback);
+                },
+            stats: function(ref, callback) {
+                // return the calculated status for this resource
+                console.log('this.family: ', this.family);
+                return $http({ method: 'GET', url:  ref + "/stats" })
+                            .then(callback);
+                },
+            synonyms: function(ref, callback) {
+                return $http({ method: 'GET', url:  ref + "/synonyms" })
+                            .then(callback);
+            }
         };
     }])
 

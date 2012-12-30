@@ -13,6 +13,8 @@ import bauble.i18n
 import bauble.model as model
 import bauble.search as search
 
+import sqlalchemy.orm as orm
+
 app = bottle.Bottle()
 
 API_ROOT = "/api/v1"
@@ -157,11 +159,17 @@ def handle_post(mapper, collection_name):
     response.content_type = '; '.join((JSON_MIMETYPE, "charset=utf8"))
     session = db.connect()
 
-    # TODO: the request forms values probably need to be reencoded as
-    # UTF8 where appropriate
+    # extract the param values that are columns on the mapper and build a new
+    # dict to pass as the values for the new object
+    cls_mapper = orm.class_mapper(mapper)
+    values = {}
+    for key in request.forms:
+        if key in cls_mapper.columns:
+            values[key] = request.forms[key]
 
     # need to process request.forms to remove to avoid xss
-    obj = mapper(**request.forms)
+    obj = mapper(**values)
+    print(request.forms)
     session.add(obj)
     session.commit()
     response_json = {}
