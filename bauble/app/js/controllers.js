@@ -79,9 +79,10 @@ FamilyCtrl.$inject = ['$scope', 'Family'];
 //
 function GenusCtrl($scope, Family, Genus) {
 
+    // use $scope.selected in case we're inheriting from the SearchCtrl
+    $scope.genus = $scope.selected || {};
     $scope.families = []; // the list of completions
     $scope.family = {};
-    $scope.genus = {};
     $scope.Genus = Genus;
 
     $scope.multiOptions = {
