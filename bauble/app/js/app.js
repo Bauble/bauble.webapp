@@ -23,18 +23,5 @@ angular.module('BaubleApp', ['ui', 'BaubleApp.filters', 'BaubleApp.services',
                 templateUrl: 'partials/admin.html',
                 controller: AdminCtrl
 			});
-
-    $routeProvider.when('/family_editor',
-            {
-                templateUrl: 'partials/family_editor.html',
-                controller: FamilyCtrl
-            });
-
-    $routeProvider.when('/genus_editor',
-            {
-                templateUrl: 'partials/genus_editor.html',
-                controller: GenusCtrl
-            });
-
     $routeProvider.otherwise({redirectTo: '/search'});
   }]);
