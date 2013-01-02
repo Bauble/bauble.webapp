@@ -1,3 +1,4 @@
+
 <div ng-controller="FamilyCtrl">
   <div class="modal-header">
       <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
@@ -8,9 +9,15 @@
       <form name="familyForm">
         <label>Family</label>
         <input ng-model="family.family" required>
-
+        <h1>what</h1>
         <label>Qualifier</label>
-        <input ng-model="family.qualifier" required>
+        <!-- <input ng-model="family.qualifier" required> -->
+        <span>
+          <select ng-model="family.qualifier" ng-options="q for q in qualifiers">
+            <option value="">-- choose qualifier --</option>
+          </select>
+        </span>
+      <br/>
         <!-- <label>Notes</label>
         <textarea ng-model="family.notes" rows="5"></textarea> -->
       </form>

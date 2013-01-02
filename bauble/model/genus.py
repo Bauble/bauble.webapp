@@ -142,6 +142,10 @@ class Genus(db.Base):
             d['author'] = self.author
             d['family'] = self.family.json(depth=depth - 1)
             d['resource'] = 'genus'
+
+        if(depth > 1):
+            d['synonyms'] = [syn.json(depth=depth - 1) for syn in self.synonyms]
+            d['notes'] = [note.json(depth=depth - 1) for note in self.notes]
         return d
 
 

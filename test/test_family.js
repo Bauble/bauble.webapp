@@ -83,4 +83,25 @@ describe('Family controller', function() {
         });
     });
 
+
+    describe('Family.delete()', function() {
+
+        var scope, ctrl, $httpBackend,
+            testFamily = {family: 'TestFamily', id: 1};
+
+
+        beforeEach(inject(function(_$httpBackend_, $rootScope, $controller, globals) {
+            $httpBackend = _$httpBackend_;
+            $httpBackend.expectDELETE(globals.apiRoot + '/family/1')
+                .respond('');
+
+            scope = $rootScope.$new();
+            ctrl = $controller(FamilyCtrl, {$scope: scope});
+        }));
+
+        it('should delete a family', function() {
+            scope.Family.del(testFamily.id);
+            $httpBackend.flush();
+        });
+    });
 });

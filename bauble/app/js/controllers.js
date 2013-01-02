@@ -6,13 +6,24 @@
 // Controller to handle things on the main view page that don't fit elsewhere
 //
 function MainCtrl($scope) {
-    $scope.selectedEditor = null;
+
 }
+MainCtrl.$inject = ['$scope'];
+
+
+function EditorCtrl($scope, $route, ViewMeta) {
+    $scope.editor = ViewMeta[$route.current.params.resource].editor;
+    $scope.showModal = true;
+
+    // TODO: we should store the locatio nand when the modal editor is closed
+    // we should go back to the previous location
+}
+EditorCtrl.$inject = ['$scope', '$route', 'ViewMeta']
 
 //
 // Controller to handle the searching and search result
 //
-function SearchCtrl($scope, Search) {
+function SearchCtrl($scope, $compile, Search, ViewMeta) {
 
     // query the server for search results
     $scope.Search = function(q) {
@@ -25,45 +36,33 @@ function SearchCtrl($scope, Search) {
     // search results will be in here
     $scope.results = [];
 
-    $scope.summaries = {
-        'family': 'partials/family_summary.html',
-        'genus': 'partials/genus_summary.html'
-    };
-
-    $scope.editors = {
-        'family': 'partials/family_editor.html',
-        'genus': 'partials/genus_editor.html'
-    };
-
-    $scope.summary = "";
-    $scope.editor = "";
-
     $scope.itemSelected = function(selected) {
-        $scope.selected = selected;
-        if (selected.resource in $scope.summaries) {
-            $scope.summary = $scope.summaries[selected.resource];
-            console.log("summary: ", $scope.summary);
-        } else {
-            // TODO: we need some type of of default view for objects
-            // that don't have summaries
-        }
+        // TODO: should we remove any existing event handles from old controllers
 
-        if (selected.resource in $scope.editors) {
-            $scope.editor = $scope.editors[selected.resource];
-            console.log("editor:" , $scope.editor);
-        } else {
-            // TODO: disable or hide edit button
-        }
+        $scope.selected = selected;
+        console.log(selected.resource);
+        console.log(ViewMeta);
+        var viewMeta = ViewMeta[selected.resource]
+        $scope.selectedView = viewMeta.view
+
+        var buttons = $("#actionButtons")
+        buttons.empty() // remove existing buttons
+
+        // create each of the buttons that will broadcast the event
+        angular.forEach(viewMeta.buttons, function(url, name) {
+            // TODO: this should probably go in a directive
+            var el = '<a role="button" href="' + url + '" class="btn" data-toggle="modal">' + name + '</a>';
+            console.log(el);
+            buttons.append($compile(el)($scope));
+        })
     };
 
     $scope.itemExpanded = function() {
         console.log('itemExpanded(');
     };
-
 }
 // explicityly inject so minification doesn't doesn't break the controller
-SearchCtrl.$inject = ['$scope', 'Search'];
-
+SearchCtrl.$inject = ['$scope', '$compile', 'Search', 'ViewMeta'];
 
 //
 // Controller for Family summary and editor views
@@ -74,12 +73,19 @@ function FamilyCtrl($scope, Family) {
     $scope.family = $scope.selected || {};
     $scope.Family = Family;
 
+    $scope.qualifiers = ["s. lat.", "s. str."];
+
     $scope.save = function() {
         // TODO: we need a way to determine if this is a save on a new or existing
         // object an whether we whould be calling save or edit
         console.log('save');
-        $scope.Family.save($scope.family);
+        $scope.family = $scope.Family.save($scope.family);
     };
+
+    // watch the selected for changes and update the family accordingly
+    $scope.$watch('selected', function() {
+        $scope.family = $scope.selected;
+    });
 }
 FamilyCtrl.$inject = ['$scope', 'Family'];
 
@@ -120,6 +126,12 @@ function GenusCtrl($scope, Family, Genus) {
         $scope.genus.family_id = $scope.family.id || null;
     });
 
+    // watch the selected for changes and update the genus accordingly
+    $scope.$watch('selected', function() {
+        $scope.genus = $scope.selected;
+    });
+
+
     // called when the save button is clicked on the editor
     $scope.save = function() {
         // TODO: we need a way to determine if this is a save on a new or existing
@@ -129,6 +141,13 @@ function GenusCtrl($scope, Family, Genus) {
     };
 }
 GenusCtrl.$inject = ['$scope', 'Family', 'Genus'];
+
+/*
+ * Generic controller for notes view partial.
+ */
+function NoteCtrl($scope) {
+}
+NoteCtrl.$inject = ['$scope'];
 
 
 function LoginCtrl() {
