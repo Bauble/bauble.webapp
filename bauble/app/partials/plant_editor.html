@@ -1,17 +1,17 @@
-<div ng-controller="GenusCtrl">
+<div ng-controller="PlantCtrl">
   <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-    <h3 id="myModalLabel">Genus</h3>
+    <h3 id="myModalLabel">Plant</h3>
   </div>
 
   <div class="modal-body">
       <form name="genusForm">
 
-        <label>Family</label>
-        <input id="familyField" style="width: 200px" ui-select2="multiOptions" ng-model="family"/>
+        <label>Accession</label>
+        <input id="accessionField" style="width: 200px" ui-select2="multiOptions" ng-model="accession"/>
 
-        <label>Genus</label>
-        <input ng-model="genus.genus" required/>
+        <label>Plant</label>
+        <input ng-model="plant.code" required/>
 
         <!-- <label>Notes</label>
         <textarea ng-model="genus.notes" rows="5"></textarea> -->

@@ -358,7 +358,8 @@ class Species(db.Base):
         if(depth > 0):
             d['id'] = self.id
             d['str'] = Species.str(self, markup=markup)
-            d['genus'] =  self.genus.json(depth=depth - 1)
+            d['genus'] = self.genus.json(depth=depth - 1)
+            d['resource'] = 'taxon'
         if(depth > 1):
             d['sp'] = self.sp
             d['sp2'] = self.sp2

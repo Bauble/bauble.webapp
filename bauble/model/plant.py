@@ -128,6 +128,7 @@ class PlantNote(db.Base):
             d['category'] = self.category
             d['note'] = self.note
             d['plant'] = self.plant.json(depth=depth - 1)
+            d['resource'] = 'plant'
         return d
 
 

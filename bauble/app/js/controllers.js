@@ -13,10 +13,9 @@ MainCtrl.$inject = ['$scope'];
 
 function EditorCtrl($scope, $route, ViewMeta) {
     $scope.editor = ViewMeta[$route.current.params.resource].editor;
-    $scope.showModal = true;
+    $('#editorModal').modal('show');
 
     // TODO: we should store the locatio nand when the modal editor is closed
-    // we should go back to the previous location
 }
 EditorCtrl.$inject = ['$scope', '$route', 'ViewMeta'];
 
@@ -78,8 +77,8 @@ function FamilyCtrl($scope, Family) {
     $scope.save = function() {
         // TODO: we need a way to determine if this is a save on a new or existing
         // object an whether we whould be calling save or edit
-        console.log('save');
         $scope.family = $scope.Family.save($scope.family);
+        $('#editorModal').modal('hide');
     };
 
     // watch the selected for changes and update the family accordingly
@@ -136,11 +135,73 @@ function GenusCtrl($scope, Family, Genus) {
     $scope.save = function() {
         // TODO: we need a way to determine if this is a save on a new or existing
         // object an whether we whould be calling save or edit
-        console.log('save');
         $scope.Genus.save($scope.genus);
+        $('#editorModal').modal('hide');
     };
 }
 GenusCtrl.$inject = ['$scope', 'Family', 'Genus'];
+
+
+/**
+ * Taxon Controller
+ */
+function TaxonCtrl($scope, Taxon) {
+    $scope.taxon = $scope.selected || {};
+    $scope.Taxon = Taxon;
+
+     // called when the save button is clicked on the editor
+    $scope.save = function() {
+        $scope.Taxon.save($scope.taxon);
+        $('#editorModal').modal('hide');
+    };
+}
+TaxonCtrl.$inject = ['$scope', 'Taxon'];
+
+
+/**
+ * Accession Controller
+ */
+function AccessionCtrl($scope, Accession) {
+    $scope.accession = $scope.selected || {};
+    $scope.Accession = Accession;
+
+    // called when the save button is clicked on the editor
+    $scope.save = function() {
+        $scope.Accession.save($scope.accession);
+        $('#editorModal').modal('hide');
+    };
+}
+AccessionCtrl.$inject = ['$scope', 'Accession'];
+
+/**
+ * Plant Controller
+ */
+function PlantCtrl($scope, Plant) {
+    $scope.plant = $scope.selected || {};
+    $scope.Plant = Plant;
+
+    // called when the save button is clicked on the editor
+    $scope.save = function() {
+        $scope.Plant.save($scope.plant);
+        $('#editorModal').modal('hide');
+    };
+}
+PlantCtrl.$inject = ['$scope', 'Plant'];
+
+/**
+ * Location Controller
+ */
+function LocationCtrl($scope, Location) {
+    $scope.location = $scope.selected || {};
+    $scope.Location = Location;
+
+    // called when the save button is clicked on the editor
+    $scope.save = function() {
+        $scope.Location.save($scope.location);
+        $('#editorModal').modal('hide');
+    };
+}
+LocationCtrl.$inject = ['$scope', 'Location'];
 
 /*
  * Generic controller for notes view partial.

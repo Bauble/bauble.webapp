@@ -4,7 +4,7 @@
  * Bauble services
  */
 
-angular.module('BaubleApp.services', ['ngResource'])
+angular.module('BaubleApp.services', [])
     .factory("globals", function() {
         return {
             apiRoot: "/api/v1"
@@ -18,14 +18,20 @@ angular.module('BaubleApp.services', ['ngResource'])
         };
     }])
 
-    .factory('ViewMeta', ['FamilyView', 'GenusView', function(FamilyView, GenusView) {
-        return {
-            'family': FamilyView,
-            'genus': GenusView
-        };
+    .factory('ViewMeta',
+        ['FamilyView', 'GenusView', 'TaxonView', 'AccessionView', 'PlantView', 'LocationView',
+            function(FamilyView, GenusView, TaxonView, AccessionView, PlantView, LocationView) {
+                return {
+                    'family': FamilyView,
+                    'genus': GenusView,
+                    'taxon': TaxonView,
+                    'accession': AccessionView,
+                    'plant': PlantView,
+                    'location': LocationView
+                };
     }])
 
-    .factory('FamilyView', [function(Family, Genus) {
+    .factory('FamilyView', [function() {
         return {
             editor: "partials/family_editor.html",
             view: "partials/family_view.html",
@@ -38,21 +44,118 @@ angular.module('BaubleApp.services', ['ngResource'])
         };
     }])
 
-    .factory('GenusView', [function(Family, Genus) {
+    .factory('GenusView', [function() {
         return {
             editor: "partials/genus_editor.html",
             view: "partials/genus_view.html",
 
             buttons: {
                 "Edit": "#/edit/genus",
-                "Add Taxon": "#/new/taxon", // add genus to selected Family,
+                "Add Taxon": "#/new/taxon", // add genus to selected Genus,
+                "Delete": "#delete" // delete the selected Genus
+            }
+        };
+    }])
+
+    .factory('TaxonView', [function() {
+        return {
+            editor: "partials/taxon_editor.html",
+            view: "partials/taxon_view.html",
+
+            buttons: {
+                "Edit": "#/edit/taxon",
+                "Add Accession": "#/new/accession", // add accession to selected Family,
                 "Delete": "#delete" // delete the selected Family
             }
         };
     }])
 
+    .factory('AccessionView', [function() {
+        return {
+            editor: "partials/accession_editor.html",
+            view: "partials/accession_view.html",
+
+            buttons: {
+                "Edit": "#/edit/accession",
+                "Add Plant": "#/new/plant", // add plant to selected Family,
+                "Delete": "#delete" // delete the selected Family
+            }
+        };
+    }])
+
+    .factory('PlantView', [function() {
+        return {
+            editor: "partials/plant_editor.html",
+            view: "partials/plant_view.html",
+
+            buttons: {
+                "Edit": "#/edit/plant",
+                //"Add Taxon": "#/new/plant", // add plant to selected Family,
+                "Delete": "#delete" // delete the selected Family
+            }
+        };
+    }])
+
+    .factory('LocationView', [function() {
+        return {
+            editor: "partials/location_editor.html",
+            view: "partials/location_view.html",
+
+            buttons: {
+                "Edit": "#/edit/location",
+                //"Add Taxon": "#/new/location", // add location to selected Family,
+                "Delete": "#delete" // delete the selected Family
+            }
+        };
+    }])
+
+    .factory('Bauble.$resource', ['globals', '$http', function(globals, $http) {
+        return function(resourceRoot) {
+            var resource = globals.apiRoot + resourceRoot;
+            return {
+                get: function(id, callback) {
+                    return $http({ method: 'GET', url: resource + '/' + id })
+                                .then(callback);
+                },
+                query: function(q, callback) {
+                    return $http({ method: 'GET', url: resource, params: { q: q } , isArray: true })
+                                .then(callback);
+                },
+                save: function (data, callback) {
+                    // create if there's no id in data else update
+                    // create or update??
+                    var url = resource;
+                    var method = 'POST';
+                    if(data.ref) {
+                        method = 'PUT';
+                    }
+
+                    // if(data && (data.id !== undefined))
+                    //     url = resourceRoot + '/' + data.id;
+                    return $http({ method: method, url: url, data: $.param(data),
+                                   headers: { 'Content-Type': 'application/x-www-form-urlencoded',
+                                              'Accept': 'application/json'}})
+                                .then(callback);
+                },
+                del: function(id, callback) {
+                    return $http({ method: 'DELETE', url: resource + '/' + id })
+                            .then(callback);
+                },
+                details: function(id, callback) {
+                    return $http({ method: 'GET', url: resourceRoot + '/' + id,
+                               headers: { 'Accept': 'application/json;depth=2' }})
+                            .then(callback);
+                }
+            };
+        };
+    }])
+
+    .factory('Family', ['Bauble.$resource', function($resource) {
+        return $resource('/family');
+    }])
+
     // Family service for CRUD family types
-    .factory('Family', ['globals', '$http', '$resource', function(globals, $http, $resource) {
+    .factory('FamilyOld', ['globals', '$http', function(globals, $http) {
         var resourceRoot = globals.apiRoot + '/family';
         return {
             get: function(id, callback) {
@@ -102,34 +205,31 @@ angular.module('BaubleApp.services', ['ngResource'])
     }])
 
     // Genus service for CRUD genus types
-    .factory('Genus', ['globals', '$http', '$resource', function(globals, $http, $resource) {
-        var resourceRoot = globals.apiRoot + '/genus';
-        return {
-            get: function(id, callback) {
-                    return $http({ method: 'GET', url: resourceRoot + '/' + id })
-                                .then(callback);
-                },
-            query: function(q, callback) {
-                    return $http({ method: 'GET', url: resourceRoot, params: { q: q } })
-                                .then(callback);
-                },
-            save: function (data, callback) {
-                    // create if there's no id in data else update
-                    // create or update??
-                    var url = resourceRoot;
-                    // if(data && (data.id !== undefined))
-                    //     url = resourceRoot + '/' + data.id;
-                    return $http({ method: 'POST', url: url, data: $.param(data),
-                                   headers: { 'Content-Type': 'application/x-www-form-urlencoded',
-                                              'Accept': 'application/json'}})
-                                .then(callback);
-                },
-            del: function(id, callback) {
-                return $http({ method: 'DELETE', url: resourceRoot + '/' + id })
-                            .then(callback);
-                }
-        };
+    .factory('Genus', ['Bauble.$resource', function($resource) {
+        return $resource('/genus');
+    }])
+
+    // Taxon service for CRUD taxon types
+    .factory('Taxon', ['Bauble.$resource', function($resource) {
+        return $resource('/taxon');
+    }])
+
+    // Accession service for CRUD accession types
+    .factory('Accession', ['Bauble.$resource', function($resource) {
+        return $resource('/accession');
+    }])
+
+    // Plant service for CRUD plant types
+    .factory('Plant', ['Bauble.$resource', function($resource) {
+        return $resource('/plant');
+    }])
+
+    // Location service for CRUD location types
+    .factory('Location', ['Bauble.$resource', function($resource) {
+        return $resource('/location');
     }]);
+
+
 
 
 
