@@ -2,7 +2,28 @@
 
 /* Controllers */
 
-function SearchCtrl($scope, Search) {
+//
+// Controller to handle things on the main view page that don't fit elsewhere
+//
+function MainCtrl($scope) {
+
+}
+MainCtrl.$inject = ['$scope'];
+
+
+function EditorCtrl($scope, $route, ViewMeta) {
+    $scope.editor = ViewMeta[$route.current.params.resource].editor;
+    $scope.showModal = true;
+
+    // TODO: we should store the locatio nand when the modal editor is closed
+    // we should go back to the previous location
+}
+EditorCtrl.$inject = ['$scope', '$route', 'ViewMeta'];
+
+//
+// Controller to handle the searching and search result
+//
+function SearchCtrl($scope, $compile, Search, ViewMeta) {
 
     // query the server for search results
     $scope.Search = function(q) {
@@ -15,18 +36,56 @@ function SearchCtrl($scope, Search) {
     // search results will be in here
     $scope.results = [];
 
+    $scope.itemSelected = function(selected) {
+        // TODO: should we remove any existing event handles from old controllers
+
+        $scope.selected = selected;
+        console.log(selected.resource);
+        console.log(ViewMeta);
+        var viewMeta = ViewMeta[selected.resource];
+        $scope.selectedView = viewMeta.view;
+
+        var buttons = $("#actionButtons");
+        buttons.empty();  // remove existing buttons
+
+        // create each of the buttons that will broadcast the event
+        angular.forEach(viewMeta.buttons, function(url, name) {
+            // TODO: this should probably go in a directive
+            var el = '<a role="button" href="' + url + '" class="btn" data-toggle="modal">' + name + '</a>';
+            console.log(el);
+            buttons.append($compile(el)($scope));
+        });
+    };
+
+    $scope.itemExpanded = function() {
+        console.log('itemExpanded(');
+    };
 }
 // explicityly inject so minification doesn't doesn't break the controller
-SearchCtrl.$inject = ['$scope', 'Search'];
-
+SearchCtrl.$inject = ['$scope', '$compile', 'Search', 'ViewMeta'];
 
 //
-// Family controller
+// Controller for Family summary and editor views
 //
 function FamilyCtrl($scope, Family) {
 
-    $scope.family = {};
+    // use $scope.selected in case we're inheriting from the SearchCtrl
+    $scope.family = $scope.selected || {};
     $scope.Family = Family;
+
+    $scope.qualifiers = ["s. lat.", "s. str."];
+
+    $scope.save = function() {
+        // TODO: we need a way to determine if this is a save on a new or existing
+        // object an whether we whould be calling save or edit
+        console.log('save');
+        $scope.family = $scope.Family.save($scope.family);
+    };
+
+    // watch the selected for changes and update the family accordingly
+    $scope.$watch('selected', function() {
+        $scope.family = $scope.selected;
+    });
 }
 FamilyCtrl.$inject = ['$scope', 'Family'];
 
@@ -36,9 +95,10 @@ FamilyCtrl.$inject = ['$scope', 'Family'];
 //
 function GenusCtrl($scope, Family, Genus) {
 
+    // use $scope.selected in case we're inheriting from the SearchCtrl
+    $scope.genus = $scope.selected || {};
     $scope.families = []; // the list of completions
     $scope.family = {};
-    $scope.genus = {};
     $scope.Genus = Genus;
 
     $scope.multiOptions = {
@@ -49,8 +109,10 @@ function GenusCtrl($scope, Family, Genus) {
 
         // get the list of families matching the query
         query: function(options){
-            //console.log('query: ', options);
-            Family.query(options.term, function(response){
+            // TODO: somehow we need to cache the returned results and early search
+            // for new results when the query string is something like .length==2
+             //console.log('query: ', options);
+            Family.query(options.term + '%', function(response){
                 //console.log('response: ', response);
                 $scope.families = response.data;
                 if(response.data && response.data.length > 0)
@@ -61,10 +123,31 @@ function GenusCtrl($scope, Family, Genus) {
 
     // set the family_id on the genus when a family is selected
     $scope.$watch('family', function() {
-        $scope.genus.family_id = $scope.family.id;
+        $scope.genus.family_id = $scope.family.id || null;
     });
+
+    // watch the selected for changes and update the genus accordingly
+    $scope.$watch('selected', function() {
+        $scope.genus = $scope.selected;
+    });
+
+
+    // called when the save button is clicked on the editor
+    $scope.save = function() {
+        // TODO: we need a way to determine if this is a save on a new or existing
+        // object an whether we whould be calling save or edit
+        console.log('save');
+        $scope.Genus.save($scope.genus);
+    };
 }
 GenusCtrl.$inject = ['$scope', 'Family', 'Genus'];
+
+/*
+ * Generic controller for notes view partial.
+ */
+function NoteCtrl($scope) {
+}
+NoteCtrl.$inject = ['$scope'];
 
 
 function LoginCtrl() {

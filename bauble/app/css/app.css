@@ -28,3 +28,15 @@
   content: "";
   padding: 0;
 }
+
+.search-result-item {
+  list-style-type: none;
+  background-image: null;
+}
+
+.search-result-item .search-result-expand {
+}
+
+.search-result-item .search-result-link {
+
+}
