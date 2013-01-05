@@ -18,7 +18,7 @@ function EditorCtrl($scope, $route, ViewMeta) {
     // TODO: we should store the locatio nand when the modal editor is closed
     // we should go back to the previous location
 }
-EditorCtrl.$inject = ['$scope', '$route', 'ViewMeta']
+EditorCtrl.$inject = ['$scope', '$route', 'ViewMeta'];
 
 //
 // Controller to handle the searching and search result
@@ -42,11 +42,11 @@ function SearchCtrl($scope, $compile, Search, ViewMeta) {
         $scope.selected = selected;
         console.log(selected.resource);
         console.log(ViewMeta);
-        var viewMeta = ViewMeta[selected.resource]
-        $scope.selectedView = viewMeta.view
+        var viewMeta = ViewMeta[selected.resource];
+        $scope.selectedView = viewMeta.view;
 
-        var buttons = $("#actionButtons")
-        buttons.empty() // remove existing buttons
+        var buttons = $("#actionButtons");
+        buttons.empty();  // remove existing buttons
 
         // create each of the buttons that will broadcast the event
         angular.forEach(viewMeta.buttons, function(url, name) {
@@ -54,7 +54,7 @@ function SearchCtrl($scope, $compile, Search, ViewMeta) {
             var el = '<a role="button" href="' + url + '" class="btn" data-toggle="modal">' + name + '</a>';
             console.log(el);
             buttons.append($compile(el)($scope));
-        })
+        });
     };
 
     $scope.itemExpanded = function() {
