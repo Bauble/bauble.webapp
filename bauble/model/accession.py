@@ -138,6 +138,7 @@ class Verification(db.Base):
             d['prev_species'] = self.prev_species.json(depth=depth - 1)
             d['level'] = self.level
             d['notes'] = None
+            d['resource'] = 'accession'
             if self.notes:
                 d['notes'] = self.notes.json(depth=depth - 1)
         return d
