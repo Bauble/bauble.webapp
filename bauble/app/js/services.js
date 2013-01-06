@@ -7,7 +7,10 @@
 angular.module('BaubleApp.services', [])
     .factory("globals", function() {
         return {
-            apiRoot: "/api/v1"
+            apiRoot: "/api/v1",
+
+            // selected represents the currently selected item in the search results
+            selected: null
         };
     })
 

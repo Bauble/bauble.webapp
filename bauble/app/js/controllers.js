@@ -22,7 +22,7 @@ EditorCtrl.$inject = ['$scope', '$route', 'ViewMeta'];
 //
 // Controller to handle the searching and search result
 //
-function SearchCtrl($scope, $compile, Search, ViewMeta) {
+function SearchCtrl($scope, $compile, globals, Search, ViewMeta) {
 
     // query the server for search results
     $scope.Search = function(q) {
@@ -37,9 +37,7 @@ function SearchCtrl($scope, $compile, Search, ViewMeta) {
 
     $scope.itemSelected = function(selected) {
         // TODO: should we remove any existing event handles from old controllers
-
-        $scope.selected = selected;
-        console.log(selected.resource);
+        globals.selected = selected;
         console.log(ViewMeta);
         var viewMeta = ViewMeta[selected.resource];
         $scope.selectedView = viewMeta.view;
@@ -51,7 +49,6 @@ function SearchCtrl($scope, $compile, Search, ViewMeta) {
         angular.forEach(viewMeta.buttons, function(url, name) {
             // TODO: this should probably go in a directive
             var el = '<a role="button" href="' + url + '" class="btn" data-toggle="modal">' + name + '</a>';
-            console.log(el);
             buttons.append($compile(el)($scope));
         });
     };
@@ -61,15 +58,14 @@ function SearchCtrl($scope, $compile, Search, ViewMeta) {
     };
 }
 // explicityly inject so minification doesn't doesn't break the controller
-SearchCtrl.$inject = ['$scope', '$compile', 'Search', 'ViewMeta'];
+SearchCtrl.$inject = ['$scope', '$compile', 'globals', 'Search', 'ViewMeta'];
 
 //
 // Controller for Family summary and editor views
 //
-function FamilyCtrl($scope, Family) {
+function FamilyCtrl($scope, globals, Family) {
 
-    // use $scope.selected in case we're inheriting from the SearchCtrl
-    $scope.family = $scope.selected || {};
+    $scope.family = globals.selected || {};
     $scope.Family = Family;
 
     $scope.qualifiers = ["s. lat.", "s. str."];
@@ -77,25 +73,23 @@ function FamilyCtrl($scope, Family) {
     $scope.save = function() {
         // TODO: we need a way to determine if this is a save on a new or existing
         // object an whether we whould be calling save or edit
+
+        // TODO: we could probably also update the selected result to reflect
+        // any changes in the search result
         $scope.family = $scope.Family.save($scope.family);
         $('#editorModal').modal('hide');
     };
 
-    // watch the selected for changes and update the family accordingly
-    $scope.$watch('selected', function() {
-        $scope.family = $scope.selected;
-    });
 }
-FamilyCtrl.$inject = ['$scope', 'Family'];
+FamilyCtrl.$inject = ['$scope', 'globals', 'Family'];
 
 
 //
 // Genus controller
 //
-function GenusCtrl($scope, Family, Genus) {
+function GenusCtrl($scope, globals, Family, Genus) {
 
-    // use $scope.selected in case we're inheriting from the SearchCtrl
-    $scope.genus = $scope.selected || {};
+    $scope.genus = globals.selected || {};
     $scope.families = []; // the list of completions
     $scope.family = {};
     $scope.Genus = Genus;
@@ -125,12 +119,6 @@ function GenusCtrl($scope, Family, Genus) {
         $scope.genus.family_id = $scope.family.id || null;
     });
 
-    // watch the selected for changes and update the genus accordingly
-    $scope.$watch('selected', function() {
-        $scope.genus = $scope.selected;
-    });
-
-
     // called when the save button is clicked on the editor
     $scope.save = function() {
         // TODO: we need a way to determine if this is a save on a new or existing
@@ -139,7 +127,7 @@ function GenusCtrl($scope, Family, Genus) {
         $('#editorModal').modal('hide');
     };
 }
-GenusCtrl.$inject = ['$scope', 'Family', 'Genus'];
+GenusCtrl.$inject = ['$scope', 'globals', 'Family', 'Genus'];
 
 /*
  * Generic controller for notes view partial.
@@ -152,8 +140,8 @@ NoteCtrl.$inject = ['$scope'];
 /**
  * Taxon Controller
  */
-function TaxonCtrl($scope, Taxon) {
-    $scope.taxon = $scope.selected || {};
+function TaxonCtrl($scope, globals, Taxon) {
+    $scope.taxon = globals.selected || {};
     $scope.Taxon = Taxon;
 
      // called when the save button is clicked on the editor
@@ -162,14 +150,14 @@ function TaxonCtrl($scope, Taxon) {
         $('#editorModal').modal('hide');
     };
 }
-TaxonCtrl.$inject = ['$scope', 'Taxon'];
+TaxonCtrl.$inject = ['$scope', 'globals', 'Taxon'];
 
 
 /**
  * Accession Controller
  */
-function AccessionCtrl($scope, Accession) {
-    $scope.accession = $scope.selected || {};
+function AccessionCtrl($scope, globals, Accession) {
+    $scope.accession = globals.selected || {};
     $scope.Accession = Accession;
 
     // called when the save button is clicked on the editor
@@ -178,13 +166,13 @@ function AccessionCtrl($scope, Accession) {
         $('#editorModal').modal('hide');
     };
 }
-AccessionCtrl.$inject = ['$scope', 'Accession'];
+AccessionCtrl.$inject = ['$scope', 'globals', 'Accession'];
 
 /**
  * Plant Controller
  */
-function PlantCtrl($scope, Plant) {
-    $scope.plant = $scope.selected || {};
+function PlantCtrl($scope, globals, Plant) {
+    $scope.plant = globals.selected || {};
     $scope.Plant = Plant;
 
     // called when the save button is clicked on the editor
@@ -193,13 +181,13 @@ function PlantCtrl($scope, Plant) {
         $('#editorModal').modal('hide');
     };
 }
-PlantCtrl.$inject = ['$scope', 'Plant'];
+PlantCtrl.$inject = ['$scope', 'globals', 'Plant'];
 
 /**
  * Location Controller
  */
-function LocationCtrl($scope, Location) {
-    $scope.location = $scope.selected || {};
+function LocationCtrl($scope, globals, Location) {
+    $scope.location = globals.selected || {};
     $scope.Location = Location;
 
     // called when the save button is clicked on the editor
@@ -208,7 +196,7 @@ function LocationCtrl($scope, Location) {
         $('#editorModal').modal('hide');
     };
 }
-LocationCtrl.$inject = ['$scope', 'Location'];
+LocationCtrl.$inject = ['$scope', 'globals', 'Location'];
 
 /*
  * Generic controller for notes view partial.
