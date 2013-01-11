@@ -42,3 +42,37 @@ def test_family_json():
     session.close()
 
 
+def test_server():
+    """
+    Test the server properly handle /family resources
+    """
+    # create a family family
+    first_family = test.create_resource('/family', {'family': test.get_random_name()})
+
+    # create another family and use the first as a synonym
+    data = {'family': test.get_random_name(),
+            'notes': [{'user': 'me', 'category': 'test', 'date': '1/1/2001', 'note': 'test note'},
+                      {'user': 'me', 'category': 'test', 'date': '2/2/2001', 'note': 'test note2'}],
+            'synonyms': [{'synonym': first_family}]
+            }
+
+    second_family = test.create_resource('/family', data)
+    assert 'ref' in second_family  # created
+
+    # update the family
+    second_family['family'] = test.get_random_name()
+    second_ref = second_family['ref']
+    second_family = test.update_resource(second_family)
+    assert second_family['ref'] == second_ref  # make sure they have the same ref after the update
+
+    # get the family
+    first_family = test.get_resource(first_family['ref'])
+
+    # query for families
+    response_json = test.query_resource('/family', q=second_family['family'])
+    second_family = response_json['results'][0]  # we're assuming there's only one
+    assert second_family['ref'] == second_ref
+
+    # delete the created resources
+    test.delete_resource(first_family['ref'])
+    test.delete_resource(second_family['ref'])

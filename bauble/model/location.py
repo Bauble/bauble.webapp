@@ -63,6 +63,9 @@ class Location(db.Base):
             d['code'] = self.code
             d['name'] = self.name
             d['resource'] = 'location'
+            d['str'] = str(self)
 
         if depth > 1:
             d['description'] = self.description
+
+        return d

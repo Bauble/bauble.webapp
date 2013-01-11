@@ -41,7 +41,7 @@ def test_accession_json():
 
     acc_json = acc.json(depth=1)
     assert 'str' in acc_json
-    assert acc_json['species'] == species.json(depth=0)
+    assert acc_json['taxon'] == species.json(depth=0)
 
     acc_json = acc.json(depth=2)
     assert 'str' in acc_json
@@ -83,3 +83,51 @@ def test_accession_json():
     map(lambda o: session.delete(o), all_objs)
     session.commit()
     session.close()
+
+
+def test_server():
+    """
+    Test the server properly handle /taxon resources
+    """
+
+    family = test.create_resource('/family', {'family': test.get_random_name()})
+    genus = test.create_resource('/genus', {'genus': test.get_random_name(),
+        'family': family})
+    taxon = test.create_resource('/taxon', {'genus': genus, 'sp': test.get_random_name()})
+
+    # create a accession accession
+    first_accession = test.create_resource('/accession',
+        {'taxon': taxon, 'code': test.get_random_name()})
+
+    # create another accession and use the first as a synonym
+    data = {'taxon': taxon, 'code': test.get_random_name()
+            # 'notes': [{'user': 'me', 'category': 'test', 'date': '1/1/2001', 'note': 'test note'},
+            #           {'user': 'me', 'category': 'test', 'date': '2/2/2001', 'note': 'test note2'}],
+            # 'synonyms': [{'synonym': first_accession}]
+            }
+
+    second_accession = test.create_resource('/accession', data)
+    assert 'ref' in second_accession  # created
+
+    # update the accession
+    second_accession['accession'] = test.get_random_name()
+    second_ref = second_accession['ref']
+    second_accession = test.update_resource(second_accession)
+    assert second_accession['ref'] == second_ref  # make sure they have the same ref after the update
+
+    # get the accession
+    first_accession = test.get_resource(first_accession['ref'])
+
+    # query for taxa
+    print('second_accession', second_accession)
+    response_json = test.query_resource('/accession', q=second_accession['code'])
+    print(response_json)
+    second_accession = response_json['results'][0]  # we're assuming there's only one
+    assert second_accession['ref'] == second_ref
+
+    # delete the created resources
+    test.delete_resource(first_accession['ref'])
+    test.delete_resource(second_accession['ref'])
+    test.delete_resource(taxon)
+    test.delete_resource(genus)
+    test.delete_resource(family)

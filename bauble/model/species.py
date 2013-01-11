@@ -354,7 +354,7 @@ class Species(db.Base):
         Returns:
            dict.
         """
-        d = dict(ref="/species/" + str(self.id))
+        d = dict(ref="/taxon/" + str(self.id))
         if(depth > 0):
             d['id'] = self.id
             d['str'] = Species.str(self, markup=markup)
@@ -432,13 +432,13 @@ class SpeciesNote(db.Base):
     def json(self, depth=1):
         """Return a JSON representation of this SpeciesNote
         """
-        d = dict(ref="/species/" + str(self.species_id) + "/note/" + str(self.id))
+        d = dict(ref="/taxon/" + str(self.species_id) + "/note/" + str(self.id))
         if(depth > 0):
             d['date'] = self.date
-            user = self.user
-            category = self.category
-            note = self.note
-            species = self.species.json(depth=depth - 1)
+            d['user'] = self.user
+            d['category'] = self.category
+            d['note'] = self.note
+            d['taxon'] = self.species.json(depth=depth - 1)
         return d
 
 
@@ -475,7 +475,7 @@ class SpeciesSynonym(db.Base):
         """
         d = dict(ref="/species/" + str(self.species_id) + "/synonym/" + str(self.id))
         if(depth > 0):
-            d['species'] = self.species.json(depth=depth - 1)
+            d['taxon'] = self.species.json(depth=depth - 1)
             d['synonym'] = self.synonym.json(depth=depth - 1)
         return d
 
@@ -529,7 +529,7 @@ class VernacularName(db.Base):
         if(depth > 0):
             d['name'] = self.name
             d['language'] = self.language
-            d['species'] = self.species.json(depth=depth - 1)
+            d['taxon'] = self.species.json(depth=depth - 1)
             d['str'] = str(self)
             d['default'] = False
             if(self.species.default_vernacular_name == self):
@@ -587,9 +587,9 @@ class DefaultVernacularName(db.Base):
 
         # TODO: we probably don't need the self.id part here since there's should only be one default vernacular
         # name for the species
-        d = dict(ref="/species/" + str(self.species_id) + "/default_vernacular_name/" + str(self.id))
+        d = dict(ref="/taxon/" + str(self.species_id) + "/default_vernacular_name/" + str(self.id))
         if(depth > 0):
-            d['species'] = self.species(depth=depth - 1)
+            d['taxon'] = self.species(depth=depth - 1)
             d['str'] = str(self)
             d['vernacular_name'] = None
             if(self.vernacular_name):
@@ -625,9 +625,9 @@ class SpeciesDistribution(db.Base):
         Returns:
            dict.
         """
-        d = dict(ref="/species/" + str(self.species_id) + "/distribution/" + str(self.id))
+        d = dict(ref="/taxon/" + str(self.species_id) + "/distribution/" + str(self.id))
         if(depth > 0):
-            d['species'] = self.species.json(depth=depth - 1)
+            d['taxon'] = self.species.json(depth=depth - 1)
             d['geography'] = self.geography.json(depth=depth - 1)
             d['str'] = str(self)
         return d

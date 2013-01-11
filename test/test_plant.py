@@ -32,7 +32,6 @@ def test_plant_json():
     plant_json = plant.json(depth=1)
     assert 'str' in plant_json
 
-
     plant_json = plant.json(depth=2)
 
     # add all deph=2 fields
@@ -47,3 +46,44 @@ def test_plant_json():
     map(lambda o: session.delete(o), all_objs)
     session.commit()
     session.close()
+
+
+def test_server():
+    """
+    Test the server properly handle /taxon resources
+    """
+
+    family = test.create_resource('/family', {'family': test.get_random_name()})
+    genus = test.create_resource('/genus', {'genus': test.get_random_name(),
+        'family': family})
+    taxon = test.create_resource('/taxon', {'genus': genus, 'sp': test.get_random_name()})
+    accession = test.create_resource('/accession',
+        {'taxon': taxon, 'code': test.get_random_name()})
+    location = test.create_resource('/location', {'code': test.get_random_name()})
+
+    plant = test.create_resource('/plant',
+        {'accession': accession, 'location': location, 'code': test.get_random_name(),
+         'quantity': 10})
+
+    assert 'ref' in plant  # created
+    plant_ref = plant['ref']
+    plant['code'] = test.get_random_name()
+    plant = test.update_resource(plant)
+    assert plant['ref'] == plant_ref
+
+    # get the plant
+    plant = test.get_resource(plant['ref'])
+
+    # query for plants
+    response_json = test.query_resource('/plant', q=plant['code'])
+    plant = response_json['results'][0]  # we're assuming there's only one
+    assert plant['ref'] == plant_ref
+
+    # delete the created resources
+    test.delete_resource(plant)
+    test.delete_resource(location)
+    test.delete_resource(accession)
+    test.delete_resource(taxon)
+    test.delete_resource(genus)
+    test.delete_resource(family)
+

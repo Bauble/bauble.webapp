@@ -134,7 +134,7 @@ class Verification(db.Base):
             d['date'] = self.date
             d['reference'] = self.reference
             d['accession'] = self.accession.json(depth=depth - 1)
-            d['species'] = self.species.json(depth=depth - 1)
+            d['taxon'] = self.species.json(depth=depth - 1)
             d['prev_species'] = self.prev_species.json(depth=depth - 1)
             d['level'] = self.level
             d['notes'] = None
@@ -454,7 +454,7 @@ class Accession(db.Base):
         d = dict(ref="/accession/" + str(self.id))
         if(depth > 0):
             d['code'] = self.code
-            d['species'] = self.species.json(depth=depth-1)
+            d['taxon'] = self.species.json(depth=depth-1)
             d['str'] = str(self)
             d['id_qual'] = self.id_qual
 

@@ -13,6 +13,9 @@ mapper_search.add_meta(('genus', 'gen'), Genus, ['genus'])
 mapper_search.add_meta(('species', 'sp'), Species,
                        ['sp', 'sp2', 'infrasp1', 'infrasp2',
                                 'infrasp3', 'infrasp4'])
+mapper_search.add_meta(('taxon', 'sp'), Species,
+                       ['sp', 'sp2', 'infrasp1', 'infrasp2',
+                                'infrasp3', 'infrasp4'])
 # mapper_search.add_meta(('vernacular', 'vern', 'common'),
 #                        VernacularName, ['name'])
 # mapper_search.add_meta(('geography', 'geo'), Geography, ['name'])
