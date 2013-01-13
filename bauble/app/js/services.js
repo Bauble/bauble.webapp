@@ -134,6 +134,8 @@ angular.module('BaubleApp.services', [])
                     var url = data.ref ? data.ref : resourceUrl;
                     var method = data.ref ? 'PUT' : 'POST';
 
+                    // make sure the url has the api root on it
+                    url = url.indexOf(globals.apiRoot) === 0 ? url : globals.apiRoot + url;
                     return $http({ method: method, url: url, data: data,
                                    headers: { 'Content-Type': 'application/json',
                                               'Accept': 'application/json'}})
