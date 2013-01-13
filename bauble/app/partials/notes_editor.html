@@ -1,0 +1,49 @@
+<link href="lib/datepicker/css/datepicker.css" rel="stylesheet">
+<script src="lib/datepicker/js/bootstrap-datepicker.js"> </script>
+<script>
+  $(document).ready(function() {
+      $('#inputDate').datepicker({
+          format: 'mm-dd-yyyy'
+      });
+  });
+</script>
+
+<div ng-controller="NotesEditorCtrl" id="notesEditor" class="baubleEditor">
+
+  <button class="btn" ng-click="addNote()">Add Note</button>
+
+  <div class="accordion" id="notesAccordian"  style="padding-top: 10px">
+
+    <div ng-repeat="note in notes" class="accordion-group">
+      <div class="accordion-heading">
+        <a class="accordion-toggle" data-toggle="collapse" data-parent="#notesAccordian" href="#collapseOne">
+          {{note.user}} - {{note.date}} - {{note.category}}
+        </a>
+      </div>
+      <div id="collapseOne" class="accordion-body collapse in">
+        <div class="accordion-inner">
+
+          <form class="form-inline">
+
+            <label class="control-label" for="inputUser">User</label>
+            <input class="input-large" type="text" ng-model="note.user" id="inputUser" placeholder="Your name">
+
+            <div>
+              <label class="control-label" for="inputDate">Date</label>
+              <input class="input-small" type="text" ng-model="note.date" id="inputDate">
+
+              <label class="control-label" for="inputCategory">Category</label>
+              <input class="input-large" type="text" ng-model="note.category" id="inputCategory">
+            </div>
+
+            <label class="control-label" for="inputNote">Note</label>
+            <textarea class="span5" id="inputNote" ng-model="note.note" rows="5"></textarea>
+
+          </form>
+
+        </div> <!-- accordion-inner -->
+      </div> <!-- accordion-body -->
+    </div> <!-- accordion-group -->
+  </div> <!-- accordion -->
+
+</div> <!-- notedEditor -->

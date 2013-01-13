@@ -1,5 +1,5 @@
 import bauble.model.meta
-from bauble.model.family import Family
+from bauble.model.family import Family, FamilyNote, FamilySynonym
 from bauble.model.genus import Genus
 from bauble.model.species import Species
 from bauble.model.accession import Accession

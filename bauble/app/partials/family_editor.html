@@ -1,30 +1,60 @@
 
-<div ng-controller="FamilyCtrl">
-  <div class="modal-header">
+<div ng-controller="FamilyCtrl" class="baubleEditor">
+
+  <!-- <div class="modal-header">
       <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-      <h3 id="myModalLabel">Family</h3>
-  </div>
+      <h3 id="myModalLabel">Family Editor</h3>
+  </div> -->
+
   <div class="modal-body">
-    <div>
-      <form name="familyForm">
-        <label>Family</label>
-        <input ng-model="family.family" required>
-        <h1>what</h1>
-        <label>Qualifier</label>
-        <!-- <input ng-model="family.qualifier" required> -->
-        <span>
-          <select ng-model="family.qualifier" ng-options="q for q in qualifiers">
-            <option value="">-- choose qualifier --</option>
-          </select>
-        </span>
-      <br/>
-        <!-- <label>Notes</label>
-        <textarea ng-model="family.notes" rows="5"></textarea> -->
-      </form>
-    </div>
-  </div>
+
+    <ul class="nav nav-tabs" id="familyEditorTabs">
+      <li ng-class="{active: activeTab=='general'}"><a ng-click="activeTab='general'">General</a></li>
+      <li ng-class="{active: activeTab=='notes'}"><a ng-click="activeTab='notes'">Notes</a></li>
+    </ul>
+
+    <div class="tab-content" ng-switch="activeTab">
+
+        <div class="tab-pane active" ng-switch-when="general">
+
+          <form name="familyForm" class="form-inline">
+
+            <div>
+              <label class="control-label" for="inputFamily">Family</label>
+              <input type="text" ng-model="family.family" id="inputFamily" required>
+            </div>
+
+            <label class="control-label" for="inputQualifier" >Qualifier</label>
+            <span id="inputQualifier">
+              <select ng-model="family.qualifier" ng-options="q for q in qualifiers">
+                <option value="">-- choose qualifier --</option>
+              </select>
+            </span>
+
+          </form>
+
+          <form class="pull-right">
+
+            <label>Synonyms</label>
+            <input id="familySynonymField" style="width: 200px" ui-select2="multiOptions" ng-model="family.synonyms"/>
+            <ul>
+              <li ng-repeat="synonym.str in family.synonyms">{{synonym}}</li>
+            </ul>
+
+          </form>
+
+        </div> <!-- tab-pane general -->
+
+        <div ng-switch-when="notes" class="tab-pane active">
+            <div ng-include src="'partials/notes_editor.html'"></div>
+        </div>
+
+
+    </div> <!-- end tab-content -->
+
   <div class="modal-footer">
       <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
       <button class="btn btn-primary" ng-click="save()">Save changes</button>
   </div>
+
 </div>

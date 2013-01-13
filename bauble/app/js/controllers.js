@@ -38,7 +38,7 @@ function SearchCtrl($scope, $compile, globals, Search, ViewMeta) {
     $scope.itemSelected = function(selected) {
         // TODO: should we remove any existing event handles from old controllers
         globals.selected = selected;
-        console.log(ViewMeta);
+        console.log('view: ', ViewMeta);
         var viewMeta = ViewMeta[selected.resource];
         $scope.selectedView = viewMeta.view;
 
@@ -67,6 +67,10 @@ function FamilyCtrl($scope, globals, Family) {
 
     $scope.family = globals.selected || {};
     $scope.Family = Family;
+    $scope.activeTab = "general";
+
+    // TODO: first test if family has notes and if not add them
+    //$scope.notes = $scope.family.notes
 
     $scope.qualifiers = ["s. lat.", "s. str."];
 
@@ -89,35 +93,46 @@ FamilyCtrl.$inject = ['$scope', 'globals', 'Family'];
 //
 function GenusCtrl($scope, globals, Family, Genus) {
 
-    $scope.genus = globals.selected || {};
-    $scope.families = []; // the list of completions
-    $scope.family = {};
     $scope.Genus = Genus;
+    $scope.genus = {};
 
-    $scope.multiOptions = {
+    // TODO: just because a global is selected doesn't necessarily mean we
+    // want to use it...maybe we clicked the New button but something is selected
+    if(globals.selected) {
+        // get the details for the genus
+        $scope.Genus.details(globals.selected, function(result) {
+            $scope.genus = result.data;
+        });
+    }
+    // get the details for the genus since
+    $scope.families = []; // the list of completions
+
+    $scope.activeTab = "general";
+
+    $scope.selectOptions = {
         minimumInputLength: 1,
 
         formatResult: function(object, container, query) { return object.str; },
         formatSelection: function(object, container) { return object.str; },
 
+        id: function(obj) {
+            return obj.ref; // use ref field for id since our resources don't have ids
+        },
+
         // get the list of families matching the query
         query: function(options){
             // TODO: somehow we need to cache the returned results and early search
             // for new results when the query string is something like .length==2
-             //console.log('query: ', options);
+            // console.log('query: ', options);....i think this is what the
+            // options.context is for
             Family.query(options.term + '%', function(response){
-                //console.log('response: ', response);
-                $scope.families = response.data;
-                if(response.data && response.data.length > 0)
-                    options.callback({results: response.data});
+                $scope.families = response.data.results;
+                if(response.data.results && response.data.results.length > 0)
+                    console.log('call callback: ');
+                    options.callback({results: response.data.results});
             });
         }
     };
-
-    // set the family_id on the genus when a family is selected
-    $scope.$watch('family', function() {
-        $scope.genus.family_id = $scope.family.id || null;
-    });
 
     // called when the save button is clicked on the editor
     $scope.save = function() {
@@ -132,9 +147,15 @@ GenusCtrl.$inject = ['$scope', 'globals', 'Family', 'Genus'];
 /*
  * Generic controller for notes view partial.
  */
-function NoteCtrl($scope) {
+function NotesEditorCtrl($scope) {
+    $scope.notes = [];
+    $scope.addNote = function() {
+        console.log('add Note');
+        $scope.notes.push({user: 'brett'});
+        console.log('$scope.notes: ', $scope.notes);
+    };
 }
-NoteCtrl.$inject = ['$scope'];
+NotesEditorCtrl.$inject = ['$scope'];
 
 
 /**
@@ -197,13 +218,6 @@ function LocationCtrl($scope, globals, Location) {
     };
 }
 LocationCtrl.$inject = ['$scope', 'globals', 'Location'];
-
-/*
- * Generic controller for notes view partial.
- */
-function NoteCtrl($scope) {
-}
-NoteCtrl.$inject = ['$scope'];
 
 
 function LoginCtrl() {

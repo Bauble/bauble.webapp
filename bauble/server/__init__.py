@@ -8,7 +8,6 @@ from bottle import request, response
 import sqlalchemy as sa
 import sqlalchemy.orm as orm
 
-
 import bauble
 import bauble.db as db
 import bauble.i18n
@@ -30,6 +29,9 @@ JSON_MIMETYPE = "application/json"
 
 cwd = os.path.abspath(bauble.__path__[0])
 
+#
+# TODO: Seems like these hardcoded paths should set somewhere else
+#
 app_dir = os.path.join(cwd, 'app')
 lib_dir = os.path.join(app_dir, 'lib')
 js_dir = os.path.join(app_dir, 'js')
@@ -225,6 +227,7 @@ class GenusResource(Resource):
     def handle_family(self, genus, family, session):
         genus.family_id = self.get_ref_id(family)
 
+
     def get_query(self, query, session):
         return session.query(Genus).filter(Genus.genus.like(query))
 
@@ -391,7 +394,6 @@ def start():
     # TODO: the tables shouldn't be created everytime the application is started
     # *******
     db.Base.metadata.create_all(db.engine)
-
     FamilyResource()
     GenusResource()
     TaxonResource()

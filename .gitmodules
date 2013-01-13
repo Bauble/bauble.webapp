@@ -1,3 +1,6 @@
 [submodule "test/jasmine"]
 	path = test/jasmine
 	url = https://github.com/pivotal/jasmine.git
+[submodule "bauble/app/lib/datepicker"]
+	path = bauble/app/lib/datepicker
+	url = https://github.com/eternicode/bootstrap-datepicker.git

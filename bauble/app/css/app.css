@@ -40,3 +40,39 @@
 .search-result-item .search-result-link {
 
 }
+
+
+/*.baubleEditor label + input {
+  margin-left: 10px;
+}*/
+
+.baubleEditor label + textarea {
+  /*margin-left: 10px;*/
+}
+
+/* usually when there's multple inputs/labels on a line */
+.baubleEditor input + label {
+  margin-left: 25px;
+}
+
+.baubleEditor label {
+  margin-right: 10px;
+  min-width: 35px;
+  max-width: 85px;
+  width: 75px;
+  text-align: right;
+  font-weight: bold;
+}
+
+.baubleEditor form div {
+  margin: 15px 0;
+}
+
+
+.baubleEditor .accordion-group {
+  margin-bottom: 10px;
+}
+
+.baubleEditor .accordion-heading {
+  background-color: #f7f7f7;
+}

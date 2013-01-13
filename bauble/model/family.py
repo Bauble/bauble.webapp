@@ -195,5 +195,5 @@ class FamilySynonym(db.Base):
         d = dict(ref="/family/" + str(self.family_id) + "/synonym/" + str(self.id))
         if(depth > 0):
             d['family'] = self.family.json(depth=depth - 1)
-            d['synonym'] =self.synonym.json(depth=depth - 1)
+            d['synonym'] = self.synonym.json(depth=depth - 1)
         return d

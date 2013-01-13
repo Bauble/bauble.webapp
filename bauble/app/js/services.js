@@ -114,38 +114,47 @@ angular.module('BaubleApp.services', [])
 
     .factory('Bauble.$resource', ['globals', '$http', function(globals, $http) {
         return function(resourceRoot) {
-            var resource = globals.apiRoot + resourceRoot;
+            var resourceUrl = globals.apiRoot + resourceRoot;
             return {
-                get: function(id, callback) {
-                    return $http({ method: 'GET', url: resource + '/' + id })
-                                .then(callback);
+                get: function(resource, callback) {
+                    var url = resourceUrl + '/' + resource; // if an ID
+                    if(isNaN(Number(resource))) {
+                        // if an object then use the ref
+                        url = resource.ref.indexOf(globals.apiRoot) === 0 ? resource.ref : globals.apiRoot + resource.ref;
+                    }
+                    return $http({ method: 'GET', url: url }).then(callback);
                 },
                 query: function(q, callback) {
-                    return $http({ method: 'GET', url: resource, params: { q: q } , isArray: true })
+                    return $http({ method: 'GET', url: resourceUrl, params: { q: q } , isArray: true })
                                 .then(callback);
                 },
                 save: function (data, callback) {
-                    // create if there's no id in data else update
-                    // create or update??
-                    var url = resource;
-                    var method = 'POST';
-                    if(data.ref) {
-                        method = 'PUT';
-                    }
+                    // if the data has a ref then it already exists in the database
+                    // and should be updated instead of creating a new one
+                    var url = data.ref ? data.ref : resourceUrl;
+                    var method = data.ref ? 'PUT' : 'POST';
 
-                    // if(data && (data.id !== undefined))
-                    //     url = resourceRoot + '/' + data.id;
-                    return $http({ method: method, url: url, data: $.param(data),
-                                   headers: { 'Content-Type': 'application/x-www-form-urlencoded',
+                    return $http({ method: method, url: url, data: data,
+                                   headers: { 'Content-Type': 'application/json',
                                               'Accept': 'application/json'}})
                                 .then(callback);
                 },
-                del: function(id, callback) {
-                    return $http({ method: 'DELETE', url: resource + '/' + id })
-                            .then(callback);
+                del: function(resource, callback) {
+                    var url = resourceUrl + '/' + resource; // if an ID
+                    if(isNaN(Number(resource))) {
+                        // if an object then use the ref
+                        url = resource.ref.indexOf(globals.apiRoot) === 0 ? resource.ref : globals.apiRoot + resource.ref;
+                    }
+                    return $http({ method: 'DELETE', url: url }).then(callback);
                 },
-                details: function(id, callback) {
-                    return $http({ method: 'GET', url: resourceRoot + '/' + id,
+                details: function(resource, callback) {
+                    // resource can be an id or an JSON object with a ref property
+                    var url = resourceUrl + '/' + resource; // if an ID
+                    if(isNaN(Number(resource))) {
+                        // if an object then use the ref
+                        url = resource.ref.indexOf(globals.apiRoot) === 0 ? resource.ref : globals.apiRoot + resource.ref;
+                    }
+                    return $http({ method: 'GET', url: url,
                                headers: { 'Accept': 'application/json;depth=2' }})
                             .then(callback);
                 }
