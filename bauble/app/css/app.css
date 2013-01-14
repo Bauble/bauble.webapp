@@ -31,8 +31,18 @@
 
 .search-result-item {
   list-style-type: none;
-  background-image: null;
+  background-image: none;
+  background-color: #f7f7f7;
+  margin: 5px 0;
+  border: solid #ccc 1px;
+  padding: 10px 5px;
 }
+
+.search-result-item-hover {
+  background-color: #eee;
+}
+
+/*.search-result-item {*/
 
 .search-result-item .search-result-expand {
 }
@@ -75,4 +85,17 @@
 
 .baubleEditor .accordion-heading {
   background-color: #f7f7f7;
+}
+
+#searchField {
+
+}
+
+.searchBox {
+  padding: 0 15px;
+  margin-bottom: 25px;
+}
+
+.resourceView {
+  /*margin-left: 25px;*/
 }

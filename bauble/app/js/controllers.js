@@ -1,5 +1,6 @@
 'use strict';
 
+
 /* Controllers */
 
 //
@@ -7,50 +8,62 @@
 //
 function MainCtrl($scope) {
 
+    $scope.showEditor = true;
+
+    var templates = {
+        'family': "partials/family_editor.html",
+        'genus': "partials/genus_editor.html",
+        'taxon': "partials/taxon_editor.html",
+        'accession': 'partials/accession_editor.html',
+        'plant': 'partials/plant_editor.html',
+        'location': 'partials/location_editor.html'
+    };
+
+    $scope.newEditor = function(name) {
+        $scope.editorTemplate = templates[name];
+    };
+
+
+    $scope.onEditorLoaded = function() {
+        // remove the template after the dialog is hidden
+        var el = $('#editorContainer div').first();
+        el.on('hide', function() {
+            $scope.editorTemplate = false;
+        });
+    };
 }
 MainCtrl.$inject = ['$scope'];
 
-
-function EditorCtrl($scope, $route, ViewMeta) {
-    $scope.editor = ViewMeta[$route.current.params.resource].editor;
-    $('#editorModal').modal('show');
-
-    // TODO: we should store the locatio nand when the modal editor is closed
-}
-EditorCtrl.$inject = ['$scope', '$route', 'ViewMeta'];
 
 //
 // Controller to handle the searching and search result
 //
 function SearchCtrl($scope, $compile, globals, Search, ViewMeta) {
 
+    $scope.viewMeta = null;
+    $scope.selected = null;
+    $scope.results = []; // the results of the search
+
     // query the server for search results
     $scope.Search = function(q) {
+        console.log('search: ', q);
         return Search(q, function(response) {
             console.log('response: ', response);
             $scope.results = response.data.results;
         });
     };
 
-    // search results will be in here
-    $scope.results = [];
+    $scope.mouseEnterItem = function(event) {
+        $(event.target).addClass('search-result-item-hover');
+    };
+
+    $scope.mouseLeaveItem = function(event) {
+        $(event.target).removeClass('search-result-item-hover');
+    };
 
     $scope.itemSelected = function(selected) {
-        // TODO: should we remove any existing event handles from old controllers
-        globals.selected = selected;
-        console.log('view: ', ViewMeta);
-        var viewMeta = ViewMeta[selected.resource];
-        $scope.selectedView = viewMeta.view;
-
-        var buttons = $("#actionButtons");
-        buttons.empty();  // remove existing buttons
-
-        // create each of the buttons that will broadcast the event
-        angular.forEach(viewMeta.buttons, function(url, name) {
-            // TODO: this should probably go in a directive
-            var el = '<a role="button" href="' + url + '" class="btn" data-toggle="modal">' + name + '</a>';
-            buttons.append($compile(el)($scope));
-        });
+        $scope.viewMeta = ViewMeta[selected.resource];
+        $scope.selected = selected;
     };
 
     $scope.itemExpanded = function() {
@@ -60,19 +73,92 @@ function SearchCtrl($scope, $compile, globals, Search, ViewMeta) {
 // explicityly inject so minification doesn't doesn't break the controller
 SearchCtrl.$inject = ['$scope', '$compile', 'globals', 'Search', 'ViewMeta'];
 
+function FamilyViewCtrl($scope, globals, Family) {
+
+    // can family inherit from the Family View Scaopt
+    $scope.family = {};
+    $scope.Family = Family;
+
+    // get the family details when the selection is changed
+    if($scope.selected) {
+        $scope.$watch('selected', function() {
+            $scope.Family.details($scope.selected, function(result) {
+                $scope.family = result.data;
+            });
+        });
+    }
+
+    $scope.onEditorLoaded = function() {
+        // remove the template after the dialog is hidden
+        var el = $('#familyEditorContainer div').first();
+        el.on('hide', function() {
+            $scope.editorTemplate = false;
+            $scope.showEditor = false;
+
+        });
+    };
+
+    $scope.$on('family-edit', function(){
+        $scope.editorTemplate = "partials/family_editor.html";
+        // set this in apply since we're in an event "outside" of angular
+        $scope.$apply('showEditor = true');
+    });
+
+
+}
+FamilyViewCtrl.$inject = ['$scope', 'globals', 'Family'];
+
 //
 // Controller for Family summary and editor views
 //
-function FamilyCtrl($scope, globals, Family) {
+function FamilyEditorCtrl($scope, globals, Family) {
 
-    $scope.family = globals.selected || {};
+    $scope.family = {};
     $scope.Family = Family;
+
+    // get the family details when the selection is changed
+    if($scope.selected) {
+        $scope.$watch('selected', function() {
+            $scope.Family.details($scope.selected, function(result) {
+                $scope.family = result.data;
+            });
+        });
+    }
+
     $scope.activeTab = "general";
-
-    // TODO: first test if family has notes and if not add them
-    //$scope.notes = $scope.family.notes
-
     $scope.qualifiers = ["s. lat.", "s. str."];
+
+    $scope.selectOptions = {
+        minimumInputLength: 1,
+
+        formatResult: function(object, container, query) { return object.str; },
+        formatSelection: function(object, container) { return object.str; },
+
+        id: function(obj) {
+            return obj.ref; // use ref field for id since our resources don't have ids
+        },
+
+        // get the list of families matching the query
+        query: function(options){
+            // TODO: somehow we need to cache the returned results and early search
+            // for new results when the query string is something like .length==2
+            // console.log('query: ', options);....i think this is what the
+            // options.context is for
+            Family.query(options.term + '%', function(response){
+                $scope.families = response.data.results;
+                if(response.data.results && response.data.results.length > 0)
+                    options.callback({results: response.data.results});
+            });
+        }
+    };
+
+    $scope.addSynonym = function(synonym) {
+        if(!$scope.family.synonyms) {
+            $scope.family.synonyms = [synonym];
+        } else {
+            $scope.family.synonyms.push(synonym);
+        }
+    };
 
     $scope.save = function() {
         // TODO: we need a way to determine if this is a save on a new or existing
@@ -81,29 +167,29 @@ function FamilyCtrl($scope, globals, Family) {
         // TODO: we could probably also update the selected result to reflect
         // any changes in the search result
         $scope.family = $scope.Family.save($scope.family);
-        $('#editorModal').modal('hide');
+        $scope.showModal = false;
     };
 
 }
-FamilyCtrl.$inject = ['$scope', 'globals', 'Family'];
+FamilyEditorCtrl.$inject = ['$scope', 'globals', 'Family'];
 
 
 //
 // Genus controller
 //
-function GenusCtrl($scope, globals, Family, Genus) {
+function GenusViewCtrl($scope, globals, Family, Genus) {
 
     $scope.Genus = Genus;
     $scope.genus = {};
 
-    // TODO: just because a global is selected doesn't necessarily mean we
-    // want to use it...maybe we clicked the New button but something is selected
-    if(globals.selected) {
-        // get the details for the genus
-        $scope.Genus.details(globals.selected, function(result) {
+    // get the genus details when the selection is changed
+    $scope.$watch('selected', function() {
+        $scope.Genus.details($scope.selected, function(result) {
             $scope.genus = result.data;
         });
-    }
+    });
+
+
     // get the details for the genus since
     $scope.families = []; // the list of completions
 
@@ -128,7 +214,6 @@ function GenusCtrl($scope, globals, Family, Genus) {
             Family.query(options.term + '%', function(response){
                 $scope.families = response.data.results;
                 if(response.data.results && response.data.results.length > 0)
-                    console.log('call callback: ');
                     options.callback({results: response.data.results});
             });
         }
@@ -142,7 +227,7 @@ function GenusCtrl($scope, globals, Family, Genus) {
         $('#editorModal').modal('hide');
     };
 }
-GenusCtrl.$inject = ['$scope', 'globals', 'Family', 'Genus'];
+GenusViewCtrl.$inject = ['$scope', 'globals', 'Family', 'Genus'];
 
 /*
  * Generic controller for notes view partial.
@@ -150,9 +235,7 @@ GenusCtrl.$inject = ['$scope', 'globals', 'Family', 'Genus'];
 function NotesEditorCtrl($scope) {
     $scope.notes = [];
     $scope.addNote = function() {
-        console.log('add Note');
-        $scope.notes.push({user: 'brett'});
-        console.log('$scope.notes: ', $scope.notes);
+        $scope.notes.push({});
     };
 }
 NotesEditorCtrl.$inject = ['$scope'];
@@ -161,7 +244,7 @@ NotesEditorCtrl.$inject = ['$scope'];
 /**
  * Taxon Controller
  */
-function TaxonCtrl($scope, globals, Taxon) {
+function TaxonViewCtrl($scope, globals, Taxon) {
     $scope.taxon = globals.selected || {};
     $scope.Taxon = Taxon;
 
@@ -171,13 +254,13 @@ function TaxonCtrl($scope, globals, Taxon) {
         $('#editorModal').modal('hide');
     };
 }
-TaxonCtrl.$inject = ['$scope', 'globals', 'Taxon'];
+TaxonViewCtrl.$inject = ['$scope', 'globals', 'Taxon'];
 
 
 /**
  * Accession Controller
  */
-function AccessionCtrl($scope, globals, Accession) {
+function AccessionViewCtrl($scope, globals, Accession) {
     $scope.accession = globals.selected || {};
     $scope.Accession = Accession;
 
@@ -187,12 +270,12 @@ function AccessionCtrl($scope, globals, Accession) {
         $('#editorModal').modal('hide');
     };
 }
-AccessionCtrl.$inject = ['$scope', 'globals', 'Accession'];
+AccessionViewCtrl.$inject = ['$scope', 'globals', 'Accession'];
 
 /**
  * Plant Controller
  */
-function PlantCtrl($scope, globals, Plant) {
+function PlantViewCtrl($scope, globals, Plant) {
     $scope.plant = globals.selected || {};
     $scope.Plant = Plant;
 
@@ -202,12 +285,12 @@ function PlantCtrl($scope, globals, Plant) {
         $('#editorModal').modal('hide');
     };
 }
-PlantCtrl.$inject = ['$scope', 'globals', 'Plant'];
+PlantViewCtrl.$inject = ['$scope', 'globals', 'Plant'];
 
 /**
  * Location Controller
  */
-function LocationCtrl($scope, globals, Location) {
+function LocationViewCtrl($scope, globals, Location) {
     $scope.location = globals.selected || {};
     $scope.Location = Location;
 
@@ -217,7 +300,7 @@ function LocationCtrl($scope, globals, Location) {
         $('#editorModal').modal('hide');
     };
 }
-LocationCtrl.$inject = ['$scope', 'globals', 'Location'];
+LocationViewCtrl.$inject = ['$scope', 'globals', 'Location'];
 
 
 function LoginCtrl() {

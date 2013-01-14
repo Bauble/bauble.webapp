@@ -7,4 +7,16 @@ angular.module('BaubleApp.directives', [])
         return function(scope, elm, attrs) {
           elm.text(version);
         };
+    }])
+
+    .directive('emit', [function() {
+        return {
+            restrict: 'A',
+            scope: true,
+            link: function(scope, elm, attrs, controller) {
+                elm.bind('click', function() {
+                    scope.$emit(attrs.emit);
+                });
+            }
+        };
     }]);

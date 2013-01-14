@@ -1,4 +1,5 @@
 /* -*- mode: javascript -*- */
-{ 
-    "devel": true
+{
+    "devel": true,
+    "predef": [ "$", "angular" ]
 }

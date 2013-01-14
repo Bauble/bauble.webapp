@@ -8,9 +8,6 @@ angular.module('BaubleApp.services', [])
     .factory("globals", function() {
         return {
             apiRoot: "/api/v1",
-
-            // selected represents the currently selected item in the search results
-            selected: null
         };
     })
 
@@ -39,11 +36,11 @@ angular.module('BaubleApp.services', [])
             editor: "partials/family_editor.html",
             view: "partials/family_view.html",
 
-            buttons: {
-                "Edit": "#/edit/family",
-                "Add Genus": "#/new/genus", // add genus to selected Family,
-                "Delete": "#/delete" // delete the selected Family
-            }
+            buttons: [
+                { name: "Edit", event: "family-edit" },
+                { name: "Add Genus", event: "family-addgenus" }, // add genus to selected Family,
+                { name: "Delete", event: "family-delete"} // delete the selected Family
+            ]
         };
     }])
 
@@ -52,11 +49,11 @@ angular.module('BaubleApp.services', [])
             editor: "partials/genus_editor.html",
             view: "partials/genus_view.html",
 
-            buttons: {
-                "Edit": "#/edit/genus",
-                "Add Taxon": "#/new/taxon", // add genus to selected Genus,
-                "Delete": "#delete" // delete the selected Genus
-            }
+            buttons: [
+                { name: "Edit", event: "genus-edit" },
+                { name: "Add Taxon", event: "genus-addtaxon" }, // add Taxon to selected Genus
+                { name: "Delete", event: "genus-delete" }  // delete the selected Genus
+            ]
         };
     }])
 
@@ -65,11 +62,11 @@ angular.module('BaubleApp.services', [])
             editor: "partials/taxon_editor.html",
             view: "partials/taxon_view.html",
 
-            buttons: {
-                "Edit": "#/edit/taxon",
-                "Add Accession": "#/new/accession", // add accession to selected Family,
-                "Delete": "#delete" // delete the selected Family
-            }
+            buttons: [
+                { name: "Edit", event: "taxon-edit" },
+                { name: "Add Accession", event: "taxon-addaccession" }, // add accession to selected Taxon
+                { name: "Delete", event: "taxon-delete" } // delete the selected Taxon
+            ]
         };
     }])
 
@@ -78,11 +75,11 @@ angular.module('BaubleApp.services', [])
             editor: "partials/accession_editor.html",
             view: "partials/accession_view.html",
 
-            buttons: {
-                "Edit": "#/edit/accession",
-                "Add Plant": "#/new/plant", // add plant to selected Family,
-                "Delete": "#delete" // delete the selected Family
-            }
+            buttons: [
+                { name: "Edit", event: "acc-edit" },
+                { name: "Add Plant", event: 'acc-addplant' }, // add plant to selected Accession,
+                { name: "Delete",  event: 'acc-delete' } // delete the selected Accession
+            ]
         };
     }])
 
@@ -90,12 +87,10 @@ angular.module('BaubleApp.services', [])
         return {
             editor: "partials/plant_editor.html",
             view: "partials/plant_view.html",
-
-            buttons: {
-                "Edit": "#/edit/plant",
-                //"Add Taxon": "#/new/plant", // add plant to selected Family,
-                "Delete": "#delete" // delete the selected Family
-            }
+            buttons: [
+                { name: "Edit", event: 'plant-edit' },
+                { name: "Delete", event: 'plant-delete' } // delete the selected Plant
+            ]
         };
     }])
 
@@ -103,12 +98,10 @@ angular.module('BaubleApp.services', [])
         return {
             editor: "partials/location_editor.html",
             view: "partials/location_view.html",
-
-            buttons: {
-                "Edit": "#/edit/location",
-                //"Add Taxon": "#/new/location", // add location to selected Family,
-                "Delete": "#delete" // delete the selected Family
-            }
+            buttons: [
+                { name: "Edit", event: 'location-edit' },
+                { name: "Delete", event: 'location-delete' } // delete the selected Location
+            ]
         };
     }])
 

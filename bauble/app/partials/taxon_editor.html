@@ -1,24 +1,28 @@
-<div ng-controller="TaxonCtrl">
-  <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-    <h3 id="myModalLabel">Taxon</h3>
-  </div>
+<div id="taxonEditor" ui-modal ng-model="showEditor" class="baubleEditor" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width:940px; margin-left:-470px;">
 
-  <div class="modal-body">
-      <form name="taxonForm">
+  <div ng-controller="TaxonCtrl">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+      <h3 id="myModalLabel">Taxon</h3>
+    </div>
 
-        <label>Genus</label>
-        <input id="genusField" style="width: 200px" ui-select2="multiOptions" ng-model="genus"/>
+    <div class="modal-body">
+        <form name="taxonForm">
 
-        <label>Species</label>
-        <input ng-model="taxon.sp" required/>
+          <label>Genus</label>
+          <input id="genusField" style="width: 200px" ui-select2="multiOptions" ng-model="genus"/>
 
-      </form>
-  </div>
+          <label>Species</label>
+          <input ng-model="taxon.sp" required/>
 
-  <div class="modal-footer">
-      <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-      <button class="btn btn-primary" ng-click="save()">Save changes</button>
+        </form>
+    </div>
+
+    <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+        <button class="btn btn-primary" ng-click="save()">Save changes</button>
+    </div>
+
   </div>
 
 </div>

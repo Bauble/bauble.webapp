@@ -21,16 +21,6 @@ angular.module('BaubleApp', ['ui', 'BaubleApp.filters', 'BaubleApp.services',
                 controller: AdminCtrl
 			});
 
-    $routeProvider.when('/edit/:resource', {
-                templateUrl: 'partials/modal_editor.html',
-                controller: EditorCtrl
-            });
-
-    $routeProvider.when('/new/:resource', {
-                templateUrl: 'partials/modal_editor.html',
-                controller: EditorCtrl
-            });
-
     $routeProvider.otherwise({redirectTo: '/search'});
 
     //$locationProvider.html5Mode(true);//.hashPrefix('!');

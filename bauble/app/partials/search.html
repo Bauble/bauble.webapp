@@ -1,18 +1,27 @@
 
-<div class="container">
-  <form>
-    <input ng-model="q" type="search">
-    <input ng-click="Search(q)" type="submit" value="Search">
-  </form>
+<!-- <div class="container"> -->
 
+  <!-- <div class="row-fluid"> -->
+    <div class="searchBox">
+      <form>
+      <div class="input-prepend input-append">
+        <span class="addon-on"><button class="btn" type="button"><i class="icon-cog"></i></button></span>
+        <input id="searchField" ng-model="q" type="search" class="appendedInputButtons input-xxlarge"/>
+        <input class="btn" type="submit" ng-click="Search(q)">Search</input>
+      </div>
+    </form>
+    </div>
+  <!-- </div> -->
+
+<!-- <div class="container"> -->
   <div class="row">
     <div class="span4">
       <ul>
         <div ng-repeat="result in results">
-            <li class="search-result-item">
+            <li class="search-result-item"  ng-click="itemSelected(result)" ng-mouseenter="mouseEnterItem($event)" ng-mouseleave="mouseLeaveItem($event)">
                 <span>
                   <a class="search-result-expand icon-chevron-right" ng-click="itemExpanded()"></a>
-                  <a class="search-result-link" ng-click="itemSelected(result)">{{result.str}}</a>
+                  <a class="search-result-link">{{result.str}}</a>
                 </span>
             </li>
         </div>
@@ -20,21 +29,11 @@
     </div>
 
     <div class="span8">
-
-      <div class="row">
-        <div id="actionButtons" class="span2 offset6">
-        </div>
-      </div>
-
-
-      <div ng-include src="selectedView"></div>
+      <div ng-include src="viewMeta.view" class="resourceView"></div>
     </div>
 
     <div id="editorModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
       <div ng-include src="editor"></div>
     </div>
 
-
   </div>
-
-</div>

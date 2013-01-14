@@ -1,3 +1,13 @@
-<div>
-    {{taxon.str}}
+<div ng-controller="TaxonViewCtrl">
+
+  <div id="actionButtons" class="pull-right">
+    <span ng-repeat="button in viewMeta.buttons">
+      <button class="btn" emit="{{button.event}}">{{button.name}}</button>
+    </span>
+  </div>
+
+  {{taxon.str}}
+
+  <div id="taxonEditorContainer" ng-include="editorTemplate" onload="onEditorLoaded()"></div>
+
 </div>
