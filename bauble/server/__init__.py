@@ -310,8 +310,14 @@ def css_get(filename):
 
 
 @app.get('/js/<filename>')
-def js_get(filename):
-    return bottle.static_file(filename, root=os.path.join(app_dir, 'js'))
+def js_get(filename=None):
+    return bottle.static_file(filename, root=js_dir)
+
+
+@app.get('/js/<path:path>/<filename>')
+def js_sub_get(path, filename):
+    parts = path.split('/')
+    return bottle.static_file(filename, root=os.path.join(js_dir, *parts))
 
 
 @app.get('/test')
