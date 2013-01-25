@@ -1,3 +1,19 @@
 <div>
-  Create a report.
+  <span>
+    <select ng-model="reportType" ng-options="type.name for type in reportTypes"></select>
+
+  <ng-switch on="reportType.type">
+    <span ng-switch-when="new">A new one</span>
+    <span ng-switch-when="current">Current seach</span>
+    <span ng-switch-when="table">Table report</span>
+  </ng-switch>
+</span>
+
+  <h4>Add column</h4>
+  <select>
+    </select>
+  <button>Add</button>
+
+  <table>
+  </table>
 </div>
