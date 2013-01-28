@@ -1,19 +1,72 @@
 <div>
-  <span>
+
+<!--   <span>
     <select ng-model="reportType" ng-options="type.name for type in reportTypes"></select>
+    <ng-switch on="reportType.type">
+      <span ng-switch-when="new">A new one</span>
+      <span ng-switch-when="current">Current seach</span>
+      <span ng-switch-when="domain">Domain</span>
+    </ng-switch>
+  </span> -->
 
-  <ng-switch on="reportType.type">
-    <span ng-switch-when="new">A new one</span>
-    <span ng-switch-when="current">Current seach</span>
-    <span ng-switch-when="table">Table report</span>
-  </ng-switch>
-</span>
+  <div class="domainBox">
+    <h4>Select a domain</h4>
+    <select ng-model="resource" ng-options="domain.resource as domain.label for domain in domains | orderBy:domain.sort"/>
+  </div>
 
-  <h4>Add column</h4>
-  <select>
-    </select>
-  <button>Add</button>
+  <div class="filtersBox">
+    <h4>Filters</h4>
+    <div ng-repeat="filter in filters">
+      <!-- <input ui-select2="fieldSelectOptions" ng-model="field"/> -->
 
-  <table>
-  </table>
+      <schema-menu resource="resource"></schema-menu>
+
+      <!-- <div class="btn-group">
+        <a class="btn dropdown-toggle" data-toggle="dropdown">
+          Field
+          <span class="caret"></span>
+        </a>
+
+        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+          <li ng-repeat="column in domainSchema.columns" ng-click="onFieldClicked($event, column)">
+            <a tabindex="-1">{{column}}</a>
+          </li>
+
+
+          <li ng-mouseover="mouseOver(relation)" ng-repeat="relation in domainSchema.relations" class="dropdown-submenu">
+            <a>{{relation}}</a>
+            <ul class="dropdown-menu">
+              <li><a>Sub</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div> -->
+
+      <select ng-model="operator" ng-options="key for (key, value) in operators" />
+      </select>
+
+      <!-- <select ng-options="= +">Operator</select> -->
+      <input type='text'></input> <!-- type depending on field type -->
+      <button type="button" class="button">Add</button>
+
+    </div>
+  </div>
+
+  <div class="reportBox">
+
+    <div>
+      <h4>Fields</h4>
+      <select></select>
+      <button type="button" class="button">Add</button>
+    </div>
+
+    <div>
+      <button type="button" class="button">Refresh</button>
+    </div>
+
+    <table>
+    </table>
+
+  </div>
+
 </div>

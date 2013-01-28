@@ -46,14 +46,14 @@ class Resource:
 
     ignore = ['ref', 'str']
     relations = {}
-    mapper = None
+    mapped_class = None
     resource = None
 
     def __init__(self):
         if not self.resource:
             raise NotImplementedError("resource is required")
-        if not self.mapper:
-            raise NotImplementedError("mapper is required")
+        if not self.mapped_class:
+            raise NotImplementedError("mapped_class is required")
 
         super().__init__()
 
@@ -64,12 +64,15 @@ class Resource:
         app.post(API_ROOT + self.resource, callback=self.save_or_update)
         app.delete(API_ROOT + self.resource + "/<resource_id>", callback=self.delete)
 
+        # URL for relations
+        app.get(API_ROOT + self.resource + "/schema", callback=self.get_schema)
+
 
     def get(self, resource_id):
         """
         Handle GET requests on this resource.
 
-        Return a standard json response object representing the mapper
+        Return a standard json response object representing the mapped_class
         where the queried objects are returned in the json object in
         the collection_name array.
         """
@@ -82,12 +85,30 @@ class Resource:
             depth = accepted[JSON_MIMETYPE]['depth']
 
         session = db.connect()
-        obj = session.query(self.mapper).get(resource_id)
+        obj = session.query(self.mapped_class).get(resource_id)
 
         response.content_type = '; '.join((JSON_MIMETYPE, "charset=utf8"))
         response_json = obj.json(depth=int(depth))
         session.close()
         return response_json
+
+
+    def get_schema(self):
+        """
+        Return a JSON representation of the queryable schema of this resource.
+
+        This doesn't necessarily represent the json object that is returned
+        for this resource.  It is more for the queryable parts of this resources
+        to be used for building reports and query strings.
+
+        A schema object can be declared in the class or else a schema will be generated
+        from the mapper.  If a schema is not to be returned then set schema to None.
+        """
+        mapper = orm.class_mapper(self.mapped_class)
+        schema = dict()
+        schema['columns'] = [col for col in mapper.columns.keys() if not col.startswith('_')]
+        schema['relations'] = [rel for rel in mapper.relationships.keys() if not rel.startswith('_')]
+        return schema
 
 
     @staticmethod
@@ -127,7 +148,7 @@ class Resource:
         Handle DELETE requests on this resource.
         """
         session = db.connect()
-        obj = session.query(self.mapper).get(resource_id)
+        obj = session.query(self.mapped_class).get(resource_id)
         session.delete(obj)
         session.commit()
         session.close()
@@ -172,11 +193,11 @@ class Resource:
         # if this is a PUT to a specific ID then get the existing family
         # else we'll create a new one
         if request.method == 'PUT' and resource_id is not None:
-            instance = session.query(self.mapper).get(resource_id)
+            instance = session.query(self.mapped_class).get(resource_id)
             for key in data.keys():
                 setattr(instance, key, data[key])
         else:
-            instance = self.mapper(**data)
+            instance = self.mapped_class(**data)
 
         # handle the relations
         for name in relation_data:
@@ -192,7 +213,7 @@ class Resource:
 class FamilyResource(Resource):
 
     resource = '/family'
-    mapper = Family
+    mapped_class = Family
     relations = {
         'notes': 'handle_notes',
         'synonyms': 'handle_synonyms'
@@ -221,7 +242,7 @@ class FamilyResource(Resource):
 
 class GenusResource(Resource):
     resource = "/genus"
-    mapper = Genus
+    mapped_class = Genus
     relations = {'family': 'handle_family'}
 
     def handle_family(self, genus, family, session):
@@ -234,7 +255,7 @@ class GenusResource(Resource):
 
 class TaxonResource(Resource):
     resource = "/taxon"
-    mapper = Species
+    mapped_class = Species
     relations = {'genus': 'handle_genus'}
 
     def handle_genus(self, taxon, genus, session):
@@ -252,7 +273,7 @@ class TaxonResource(Resource):
 
 class AccessionResource(Resource):
     resource = "/accession"
-    mapper = Accession
+    mapped_class = Accession
     ignore = ['ref', 'str', 'species_str']
 
     relations = {'taxon': 'handle_taxon',
@@ -268,7 +289,7 @@ class AccessionResource(Resource):
 
 class PlantResource(Resource):
     resource = "/plant"
-    mapper = Plant
+    mapped_class = Plant
 
     relations = {'accession': 'handle_accession',
                  'location': 'handle_location'}
@@ -287,7 +308,7 @@ class PlantResource(Resource):
 
 class LocationResource(Resource):
     resource = "/location"
-    mapper = Location
+    mapped_class = Location
 
     def get_query(self, query, session):
         return session.query(Location).filter(Location.code.like(query))

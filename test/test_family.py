@@ -42,9 +42,17 @@ def test_family_json():
     session.close()
 
 
+def test_get_schema():
+    schema = test.get_schema("/family")
+    print(schema)
+    assert 'genera' in schema
+    assert 'notes' in schema
+    assert 'synonyms' in schema
+
+
 def test_server():
     """
-    Test the server properly handle /family resources
+    Test the server properly /family resources
     """
     # create a family family
     first_family = test.create_resource('/family', {'family': test.get_random_name()})

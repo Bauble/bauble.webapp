@@ -99,3 +99,20 @@
 .resourceView {
   /*margin-left: 25px;*/
 }
+
+/*
+  https://kuler.adobe.com/#themeID/7245;
+  #607056 #519E41 #85BF89 #9DDBB2 #BFE8BE
+*/
+
+.domainBox {
+  background-color: #519E41;
+}
+
+.filtersBox {
+  background-color: #85BF89;
+}
+
+.reportBox {
+  background-color: #9DDBB2;
+}

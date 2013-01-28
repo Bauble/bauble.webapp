@@ -118,7 +118,7 @@ angular.module('BaubleApp.services', [])
                     return $http({ method: 'GET', url: url }).then(callback);
                 },
                 query: function(q, callback) {
-                    return $http({ method: 'GET', url: resourceUrl, params: { q: q } , isArray: true })
+                    return $http({ method: 'GET', url: resourceUrl, params: { q: q }})
                                 .then(callback);
                 },
                 save: function (data, callback) {
@@ -152,6 +152,10 @@ angular.module('BaubleApp.services', [])
                     return $http({ method: 'GET', url: url,
                                headers: { 'Accept': 'application/json;depth=2' }})
                             .then(callback);
+                },
+                get_schema: function(callback) {
+                    var url = resourceUrl + '/schema';
+                    return $http({ method: 'GET', url: url}).then(callback);
                 }
             };
         };
