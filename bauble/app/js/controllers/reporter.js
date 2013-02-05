@@ -48,15 +48,14 @@ function ReporterCtrl($scope, $resource) {
         //     // get here on initialization and the first time the old value is set
         //     alert("Warn the user that the domain is changing!");
         // }
-        console.log('newValue: ', newValue);
-        if(newValue === null || newValue === undefined)
+        if(newValue === null || typeof newValue === 'undefined')
             return;
 
         // get the schema for the new resource
         $resource($scope.resource).get_schema(function(result) {
+            console.log('schema: ', result.data);
             $scope.domainSchema = result.data;
         });
-
     });
 
     $scope.onFieldClicked = function(event, column) {
@@ -67,6 +66,5 @@ function ReporterCtrl($scope, $resource) {
     $scope.mouseOver = function(relation){
         console.log('mouse over: ', relation);
     };
-
 }
 ReporterCtrl.$inject = ['$scope', 'Bauble.$resource'];

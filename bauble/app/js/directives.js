@@ -23,42 +23,42 @@ angular.module('BaubleApp.directives', [])
 
     .directive('schemaMenu', ['$compile', 'Bauble.$resource', function($compile, $resource) {
         return {
-            restrict: 'E',
-            // scope: true,
+            restrict: 'A',
             scope: {
                 resource: '='
             },
-            template: '<div class="btn-group schemaMenu"></div>' +
+            template: '<div class="btn-group schema-menu">' +
                         '<a class="btn dropdown-toggle" data-toggle="dropdown">' +
                           'Field' +
                           '<span class="caret"></span>' +
                         '</a>' +
+                        '<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">' +
+                        '</ul>' +
                        '</div>',
             link: function(scope, element, attrs, controller) {
                 var baseMenu = '' +
-                      '<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">' +
-
                         '<!-- columns -->' +
                         '<li ng-repeat="column in domainSchema.columns" ng-click="onFieldClicked($event, column)">' +
                           '<a tabindex="-1">{{column}}</a>' +
                         '</li>' +
 
                         '<!-- relations -->' +
-                        '<li ng-mouseover="mouseOver(relation)" ng-repeat="relation in domainSchema.relations" class="dropdown-submenu">' +
+                        '<li ng-mouseover="mouseOver($event, this, relation)" ng-repeat="relation in domainSchema.relations" class="dropdown-submenu">' +
                           '<a>{{relation}}</a>' +
                           '<ul class="dropdown-menu relation-submenu">' +
-                            '<li><a></a></li>' + // should be a loading... or spinner or something
+                          //   '<!-- this is where the submenus list items are added -->' +
                           '</ul>' +
-                        '</li>' +
-
-                '</div>';
-
+                        '</li>';
 
                 // create a menu and append it to parentElement
-                function buildMenu(resource, parentElement) {
+                function buildMenu(resource, callback) {
+
+                    console.log('buildMenu(' + resource + ')');
 
                     // get the schema for a resource
                     $resource(resource).get_schema(function(response) {
+
+                        console.log('schema: ', response.data);
 
                         // create a new scope for the new menu
                         var newScope = scope.$new();
@@ -68,22 +68,55 @@ angular.module('BaubleApp.directives', [])
                         // compile the menu snippet and set the new scope
                         var newMenu = $compile(baseMenu)(newScope);
 
-                        // add the new menu to the parent
-                        $(parentElement).append(newMenu);
+                        callback(newMenu);
                     });
-                }
 
+                    scope.mouseOver = function(event, scope, relation) {
+                        // if no menu has been added to this one then fetch the schema
+                        // and build the sub menu
+                        var submenu = $(event.target).parent('.dropdown-submenu').first();
+                        if(submenu.children('.dropdown-menu').first().children().length === 0) {
+                            // TODO: first add a "loading spinner" and remove it
+                            // when buildMenu completes
+
+                            // walk up the menus getting the full relation string
+                            // for this menu item
+                            var parentMenu = submenu,
+                                schemaUrl = scope.resource;
+                            while(parentMenu.length !== 0) {
+                                schemaUrl += "/" + parentMenu.children('a').text();
+                                parentMenu = parentMenu.parent('.dropdown-submenu');
+                            }
+                            schemaUrl += "/schema";
+                            console.log('schemaUrl: ', schemaUrl);
+
+                            // TODO: set up /schema service for the relations
+
+                            //get the resource for the relation
+                            //buildMenu(schemaUrl, function(menu) {
+                            buildMenu(scope.resource, function(menu) {
+                                submenu.children('.dropdown-menu').first().append(menu);
+                            });
+                        }
+
+                    };
+                }
 
                 // ** TODO: how do we get a reference to this element
                 // build the first top level menu
-                console.log('scope: ', scope);
-                console.log('scope.resource: ', scope.resource);
                 if(scope.resource) {
-                    buildMenu(scope.resource, $('.schemaMenu'));
+                    buildMenu(scope.resource, function(menu) {
+                        $('.schema-menu-container').append(menu);
+                    });
                 }
 
-                scope.$watch(scope.resource, function() {
-                    console.log('resource changed: ', scope.resource);
+                scope.$watch('resource', function() {
+                    if(typeof scope.resource != 'undefined') {
+                        buildMenu(scope.resource, function(menu) {
+                            // TODO: remove all .scheme-menu and append menu
+                            $('.schema-menu').children('.dropdown-menu').first().append(menu);
+                        });
+                    }
                 });
             }
         };
