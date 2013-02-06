@@ -43,8 +43,8 @@ angular.module('BaubleApp.directives', [])
                         '</li>' +
 
                         '<!-- relations -->' +
-                        '<li ng-mouseover="mouseOver($event, this, relation)" ng-repeat="relation in domainSchema.relations" class="dropdown-submenu">' +
-                          '<a>{{relation}}</a>' +
+                        '<li ng-repeat="relation in domainSchema.relations" class="dropdown-submenu">' +
+                          '<a ng-mouseover="mouseOver($event, this, relation)">{{relation}}</a>' +
                           '<ul class="dropdown-menu relation-submenu">' +
                           //   '<!-- this is where the submenus list items are added -->' +
                           '</ul>' +
@@ -52,13 +52,8 @@ angular.module('BaubleApp.directives', [])
 
                 // create a menu and append it to parentElement
                 function buildMenu(resource, callback) {
-
-                    console.log('buildMenu(' + resource + ')');
-
                     // get the schema for a resource
                     $resource(resource).get_schema(function(response) {
-
-                        console.log('schema: ', response.data);
 
                         // create a new scope for the new menu
                         var newScope = scope.$new();
@@ -82,19 +77,14 @@ angular.module('BaubleApp.directives', [])
                             // walk up the menus getting the full relation string
                             // for this menu item
                             var parentMenu = submenu,
-                                schemaUrl = scope.resource;
+                                relationUrl = scope.resource;
                             while(parentMenu.length !== 0) {
-                                schemaUrl += "/" + parentMenu.children('a').text();
+                                relationUrl += "/" + parentMenu.children('a').text();
                                 parentMenu = parentMenu.parent('.dropdown-submenu');
                             }
-                            schemaUrl += "/schema";
-                            console.log('schemaUrl: ', schemaUrl);
-
-                            // TODO: set up /schema service for the relations
 
                             //get the resource for the relation
-                            //buildMenu(schemaUrl, function(menu) {
-                            buildMenu(scope.resource, function(menu) {
+                            buildMenu(relationUrl, function(menu) {
                                 submenu.children('.dropdown-menu').first().append(menu);
                             });
                         }

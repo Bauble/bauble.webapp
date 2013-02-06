@@ -52,6 +52,10 @@ def test_get_schema():
     assert 'genus' in schema['columns']
     assert 'species' in schema['relations']
 
+    schema = test.get_resource("/family/notes/schema")
+    assert 'note' in schema['columns']
+    #assert 'species' in schema['relations']
+
     schema = test.get_resource("/family/genera/species/schema")
     assert 'sp' in schema['columns']
     assert 'accessions' in schema['relations']
