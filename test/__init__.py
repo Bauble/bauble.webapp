@@ -67,18 +67,6 @@ def get_resource(ref, depth=1):
     return json.loads(response.text)
 
 
-def get_schema(resource):
-    """
-    Get a json representation of a resources schema.
-    """
-    if not resource.startswith(api_root):
-        resource = api_root + resource
-    response = requests.get(resource + '/schema', headers=get_headers())
-    print(response.text)
-    assert response.status_code == 200
-    return json.loads(response.text)
-
-
 def query_resource(resource, q):
     """
     """

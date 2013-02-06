@@ -43,11 +43,18 @@ def test_family_json():
 
 
 def test_get_schema():
-    schema = test.get_schema("/family")
-    print(schema)
-    assert 'genera' in schema
-    assert 'notes' in schema
-    assert 'synonyms' in schema
+    schema = test.get_resource("/family/schema")
+    assert 'genera' in schema['relations']
+    assert 'notes' in schema['relations']
+    #assert 'synonyms' in schema['relations']
+
+    schema = test.get_resource("/family/genera/schema")
+    assert 'genus' in schema['columns']
+    assert 'species' in schema['relations']
+
+    schema = test.get_resource("/family/genera/species/schema")
+    assert 'sp' in schema['columns']
+    assert 'accessions' in schema['relations']
 
 
 def test_server():

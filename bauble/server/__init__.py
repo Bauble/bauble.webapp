@@ -66,6 +66,7 @@ class Resource:
 
         # URL for relations
         app.get(API_ROOT + self.resource + "/schema", callback=self.get_schema)
+        app.get(API_ROOT + self.resource + "/<relation:path>/schema", callback=self.get_schema)
 
 
     def get(self, resource_id):
@@ -93,9 +94,10 @@ class Resource:
         return response_json
 
 
-    def get_schema(self):
+    def get_schema(self, relation=None):
         """
-        Return a JSON representation of the queryable schema of this resource.
+        Return a JSON representation of the queryable schema of this resource or one
+        of it's relations.
 
         This doesn't necessarily represent the json object that is returned
         for this resource.  It is more for the queryable parts of this resources
@@ -105,6 +107,9 @@ class Resource:
         from the mapper.  If a schema is not to be returned then set schema to None.
         """
         mapper = orm.class_mapper(self.mapped_class)
+        if relation:
+            for name in relation.split('/'):
+                mapper = getattr(mapper.relationships, name).mapper
         schema = dict()
         schema['columns'] = [col for col in mapper.columns.keys() if not col.startswith('_')]
         schema['relations'] = [rel for rel in mapper.relationships.keys() if not rel.startswith('_')]
