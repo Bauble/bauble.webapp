@@ -1,4 +1,4 @@
-<div>
+<div id="report-designer">
 
 <!--   <span>
     <select ng-model="reportType" ng-options="type.name for type in reportTypes"></select>
@@ -9,64 +9,45 @@
     </ng-switch>
   </span> -->
 
-  <div class="domainBox">
+  <div class="domain-box">
     <h4>Select a domain</h4>
     <select ng-model="resource" ng-options="domain.resource as domain.label for domain in domains | orderBy:domain.sort"/>
   </div>
 
-  <div class="filtersBox">
+  <div class="filters-box">
     <h4>Filters</h4>
-    <div ng-repeat="filter in filters">
+    <div class="filters-row form-inline" ng-repeat="filter in filters">
       <!-- <input ui-select2="fieldSelectOptions" ng-model="field"/> -->
 
-      <div schema-menu resource="resource"></div>
-
-      <!-- <div class="btn-group">
-        <a class="btn dropdown-toggle" data-toggle="dropdown">
-          Field
-          <span class="caret"></span>
-        </a>
-
-        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-          <li ng-repeat="column in domainSchema.columns" ng-click="onFieldClicked($event, column)">
-            <a tabindex="-1">{{column}}</a>
-          </li>
-
-
-          <li ng-mouseover="mouseOver(relation)" ng-repeat="relation in domainSchema.relations" class="dropdown-submenu">
-            <a>{{relation}}</a>
-            <ul class="dropdown-menu">
-              <li><a>Sub</a></li>
-            </ul>
-          </li>
-        </ul>
-      </div> -->
+      <div class="filter-schema-menu" style="display: inline" schema-menu resource="resource"></div>
 
       <select ng-model="operator" ng-options="key for (key, value) in operators" />
       </select>
 
       <!-- <select ng-options="= +">Operator</select> -->
       <input type='text'></input> <!-- type depending on field type -->
-      <button type="button" class="button">Add</button>
-
     </div>
+
+    <button type="button" class="btn" ng-click="addFilterField()">Add</button>
   </div>
 
-  <div class="reportBox">
+  <div class="report-box">
 
     <div>
       <h4>Fields</h4>
-      <select></select>
-      <button type="button" class="button">Add</button>
+      <div schema-menu class="fields-schema-menu" resource="resource"></div>
+      <button type="button" class="btn" ng-click="addTableField()">Add</button>
     </div>
 
     <div>
-      <button type="button" class="button">Refresh</button>
+      <button type="button" class="btn">Refresh</button>
     </div>
 
-    <table>
-    </table>
+    </div>
 
-  </div>
+    <table class="report-table">
+      <thead></thead>
+      <tbody></tbody>
+    </table>
 
 </div>

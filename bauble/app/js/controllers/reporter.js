@@ -63,8 +63,20 @@ function ReporterCtrl($scope, $resource) {
         $(event.target).parents('.btn-group').children('.dropdown-toggle').first().text(column);
     };
 
-    $scope.mouseOver = function(relation){
-        console.log('mouse over: ', relation);
+    $scope.addTableField = function() {
+        // add a field to the report table
+        var selected = $('.fields-schema-menu').attr('data-selected');
+        $(".report-table thead").append("<th>" + selected + "</th>");
+    };
+
+    $scope.addFilterField = function() {
+        // add another row to the list of filters
+        $scope.filters.push({});
+    };
+
+
+    $scope.refreshTable = function() {
+        // update the table data based on the domain, filters and report fields
     };
 }
 ReporterCtrl.$inject = ['$scope', 'Bauble.$resource'];
