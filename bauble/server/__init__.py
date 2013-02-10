@@ -81,7 +81,7 @@ class Resource:
 
         accepted = parse_accept_header()
         if JSON_MIMETYPE not in accepted:
-            raise bottle.HTTPError('406 Only application/json responses supported')
+            raise bottle.HTTPError('406 Not Accepted - Expected application/json')
 
         depth = 1
         if 'depth' in accepted[JSON_MIMETYPE]:
@@ -117,7 +117,7 @@ class Resource:
         """
         accepted = parse_accept_header()
         if JSON_MIMETYPE not in accepted:
-            raise bottle.HTTPError('406 Only application/json responses supported')
+            raise bottle.HTTPError('406 Not Accepted - Expected application/json')
 
         depth = 1
         if 'depth' in accepted[JSON_MIMETYPE]:
@@ -163,7 +163,7 @@ class Resource:
 
 
     def get_query(self, query, session):
-        raise bottle.HTTPError("404 Query on " + self.resource + " not supported")
+        raise bottle.HTTPError("404 Not Found - Query on " + self.resource + " not supported")
 
 
     def query(self):
@@ -174,7 +174,7 @@ class Resource:
 
         accepted = parse_accept_header()
         if JSON_MIMETYPE not in accepted:
-            raise bottle.HTTPError('406 Only application/json responses supported')
+            raise bottle.HTTPError('406 Not Accepted - Expected application/json')
 
         session = db.connect()
         query = self.get_query(q, session)
