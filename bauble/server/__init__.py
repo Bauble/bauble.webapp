@@ -67,6 +67,44 @@ class Resource:
         # URL for relations
         app.get(API_ROOT + self.resource + "/schema", callback=self.get_schema)
         app.get(API_ROOT + self.resource + "/<relation:path>/schema", callback=self.get_schema)
+        app.get(API_ROOT + self.resource + "/<resource_id>/<relation:path>", callback=self.get_relation)
+
+
+    def get_relation(self, resource_id, relation):
+        """
+        Handle GET requests on relation rooted at this resource.
+
+        Return a JSON object where the results property represents the items
+        from the relation end point.  e.g. /family/1/genera/species would return
+        all the species related to the family with id=1.
+        """
+
+        accepted = parse_accept_header()
+        if JSON_MIMETYPE not in accepted:
+            raise bottle.HTTPError('406 Only application/json responses supported')
+
+        depth = 1
+        if 'depth' in accepted[JSON_MIMETYPE]:
+            depth = accepted[JSON_MIMETYPE]['depth']
+
+        session = db.connect()
+
+        # get the mapper for the last item in the list of relations
+        mapper = orm.class_mapper(self.mapped_class)
+        for name in relation.split('/'):
+            mapper = getattr(mapper.relationships, name).mapper
+
+        # query the mapped class and the end point relation using the list of the passed
+        # relations to create the join between the two
+        query = session.query(self.mapped_class, mapper.class_).\
+            filter(getattr(self.mapped_class, 'id') == resource_id).\
+            join(*relation.split('/'))
+
+        response.content_type = '; '.join((JSON_MIMETYPE, "charset=utf8"))
+        results = [obj.json(depth=int(depth)) for parent, obj in query]
+        response_json = {'results': results}
+        session.close()
+        return response_json
 
 
     def get(self, resource_id):
