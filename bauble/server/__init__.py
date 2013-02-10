@@ -170,7 +170,7 @@ class Resource:
         """
         accepted = parse_accept_header()
         if JSON_MIMETYPE not in accepted:
-            raise bottle.HTTPError('406 Only application/json responses supported')
+            raise bottle.HTTPError('406 Not Accepted - Expected application/json')
 
         depth = 1
         if 'depth' in accepted[JSON_MIMETYPE]:
@@ -181,7 +181,7 @@ class Resource:
 
         # make sure the content is JSON
         if JSON_MIMETYPE not in request.headers.get("Content-Type"):
-            raise bottle.HTTPError('400 Content-Type should be application/json')
+            raise bottle.HTTPError('415 Unsupported Media Type - Expected application/json')
 
         # we assume all requests are in utf-8
         data = json.loads(request.body.read().decode('utf-8'))
@@ -201,8 +201,10 @@ class Resource:
             instance = session.query(self.mapped_class).get(resource_id)
             for key in data.keys():
                 setattr(instance, key, data[key])
+            response.status = 200
         else:
             instance = self.mapped_class(**data)
+            response.status = 201
 
         # handle the relations
         for name in relation_data:
