@@ -1,4 +1,4 @@
-
+from collections import namedtuple, OrderedDict
 import json
 import os
 import os.path
@@ -162,7 +162,7 @@ class Resource:
         return ref.split('/')[-1]
 
 
-    def get_query(self, query, session):
+    def apply_query(self, query, query_string):
         raise bottle.HTTPError("404 Not Found - Query on " + self.resource + " not supported")
 
 
@@ -171,16 +171,67 @@ class Resource:
         Handle GET /resource?q= requests on this resource.
         """
         q = request.query.q
+        relations = request.query.relations
+        if(relations):
+            relations = [relation.strip() for relation in relations.split(',')]
+        else:
+            relations = []
 
         accepted = parse_accept_header()
         if JSON_MIMETYPE not in accepted:
             raise bottle.HTTPError('406 Not Accepted - Expected application/json')
 
-        session = db.connect()
-        query = self.get_query(q, session)
-        json_objs = [obj.json() for obj in query]
-        session.close()
+        depth = 1
+        if 'depth' in accepted[JSON_MIMETYPE]:
+            depth = accepted[JSON_MIMETYPE]['depth']
 
+        session = db.connect()
+
+        # TODO: should split on either / or . to allow dot or slash delimeters
+        # between references
+
+        def get_relation_class(relation):
+            # get the class at the end of the relationship
+            relation_mapper = orm.class_mapper(self.mapped_class)
+            for kid in relation.split('.'):
+                relation_mapper = getattr(relation_mapper.relationships, kid).mapper
+            return relation_mapper.class_
+
+
+        json_objs = []
+        if relations:
+            # use an OrderedDict so we can maintain the default sort order on the resource and
+            unique_objs = OrderedDict()
+
+            # get the json objects for each of the relations and add them to the
+            # main resource json at resource[relation_name], e.g. resource['genera.species']
+            for relation in relations:
+                query = session.query(self.mapped_class, get_relation_class(relation)).\
+                    join(*relation.split('.'))
+                query = self.apply_query(query, q)
+
+                for result in query:
+                    resource = result[0]
+
+                    # add the resource_json to unique_objs if it doesn't already exist
+                    if resource.id not in unique_objs:
+                        resource_json = resource.json(int(depth))
+                        resource_json[relation] = []
+                        unique_objs[resource.id] = resource_json
+                    else:
+                        resource_json = unique_objs[resource.id]
+
+                    resource_json[relation].append(result[1].json(depth=int(depth)))
+
+            # create a list of json objs that should maintain the
+            json_objs = [obj for obj in unique_objs.values()]
+
+        else:
+            query = session.query(self.mapped_class)
+            query = self.apply_query(query, q)
+            json_objs = [obj.json(int(depth)) for obj in query]
+
+        session.close()
         response_json = {'results': json_objs}
         response.content_type = '; '.join((JSON_MIMETYPE, "charset=utf8"))
         return response_json
@@ -244,6 +295,10 @@ class Resource:
             instance = self.mapped_class(**data)
             response.status = 201
 
+        # TODO: how many relations deep do we support saving, e.g.
+        # family.genera or family.genera.species, or maybe we only support
+        # non-list relations, e.g genus.family
+
         # handle the relations
         for name in relation_data:
             getattr(self, self.relations[name])(instance, relation_data[name], session)
@@ -281,8 +336,8 @@ class FamilyResource(Resource):
             family.notes.append(family_note)
 
 
-    def get_query(self, query, session):
-        return session.query(Family).filter(Family.family.like(query))
+    def apply_query(self, query, query_string):
+        return query.filter(Family.family.like(query_string))
 
 
 class GenusResource(Resource):
@@ -294,8 +349,8 @@ class GenusResource(Resource):
         genus.family_id = self.get_ref_id(family)
 
 
-    def get_query(self, query, session):
-        return session.query(Genus).filter(Genus.genus.like(query))
+    def apply_query(self, query, query_string):
+        return query.filter(Genus.genus.like(query_string))
 
 
 class TaxonResource(Resource):
@@ -306,14 +361,14 @@ class TaxonResource(Resource):
     def handle_genus(self, taxon, genus, session):
         taxon.genus_id = self.get_ref_id(genus)
 
-    def get_query(self, query, session):
+    def apply_query(self, query, query_string):
         mapper = orm.class_mapper(Species)
         ilike = lambda col: \
                 lambda val: utils.ilike(mapper.c[col], '%%%s%%' % val)
         properties = ['sp', 'sp2', 'infrasp1', 'infrasp2',
                                 'infrasp3', 'infrasp4']
         ors = sa.or_(*[ilike(prop)(query) for prop in properties])
-        return session.query(Species).filter(ors)
+        return query.filter(ors)
 
 
 class AccessionResource(Resource):
@@ -328,8 +383,8 @@ class AccessionResource(Resource):
     def handle_taxon(self, accession, taxon, session):
         accession.species_id = self.get_ref_id(taxon)
 
-    def get_query(self, query, session):
-        return session.query(Accession).filter(Accession.code.like(query))
+    def apply_query(self, query, query_string):
+        return query.filter(Accession.code.like(query_string))
 
 
 class PlantResource(Resource):
@@ -345,18 +400,18 @@ class PlantResource(Resource):
     def handle_location(self, plant, location, session):
         plant.location_id = self.get_ref_id(location)
 
-    def get_query(self, query, session):
+    def apply_query(self, query, session):
         # TODO: we also need to support searching will full accession.plant
         # strings like the PlantSearch mapper strategy from bauble 1
-        return session.query(Plant).filter(Plant.code.like(query))
+        return query.filter(Plant.code.like(query_string))
 
 
 class LocationResource(Resource):
     resource = "/location"
     mapped_class = Location
 
-    def get_query(self, query, session):
-        return session.query(Location).filter(Location.code.like(query))
+    def apply_query(self, query, query_string):
+        return query.filter(Location.code.like(query_string))
 
 
 @app.get('/lib/<path:path>/<filename>')

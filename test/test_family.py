@@ -60,7 +60,6 @@ def test_get_schema():
     assert 'sp' in schema['columns']
     assert 'accessions' in schema['relations']
 
-
 def test_server():
     """
     Test the server properly /family resources
