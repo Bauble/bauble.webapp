@@ -36,8 +36,9 @@ function ReporterCtrl($scope, $resource) {
         ];
 
     $scope.domainSchema = {};
-
     $scope.filters = [{}];
+    $scope.tableColumns = []; // the list of column objects
+    $scope.tableData = [];
 
     $scope.$watch('resource', function(newValue, oldValue) {
         if(oldValue !== newValue && oldValue !== undefined) {
@@ -58,15 +59,26 @@ function ReporterCtrl($scope, $resource) {
         });
     });
 
+    // object to represent the report table columns
+    function TableColumn(name, header){
+        this.name = name,
+        this.header = header,
+        this.width = undefined;
+
+        // if header is undefined set to name
+        this.header = typeof this.header === "undefined" ? this.name : this.header;
+    };
+
     $scope.onFieldClicked = function(event, column) {
         // set the button text to the selected column
         $(event.target).parents('.btn-group').children('.dropdown-toggle').first().text(column);
     };
 
-    $scope.addTableField = function() {
+    $scope.addTableColumn = function() {
         // add a field to the report table
         var selected = $('.fields-schema-menu').attr('data-selected');
-        $(".report-table thead").append("<th>" + selected + "</th>");
+        $scope.tableColumns.push(new TableColumn(selected));
+        console.log('$scope.tableColumns: ', $scope.tableColumns);
     };
 
     $scope.addFilterField = function() {
