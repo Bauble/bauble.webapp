@@ -117,9 +117,12 @@ angular.module('BaubleApp.services', [])
                     }
                     return $http({ method: 'GET', url: url }).then(callback);
                 },
-                query: function(q, callback) {
-                    return $http({ method: 'GET', url: resourceUrl, params: { q: q }})
-                                .then(callback);
+                query: function(q, relations, callback) {
+                    relations = (typeof relations === "undefined") ? "" : relations;
+                    q = (typeof q === "undefined") ? "" : q;
+                    return $http({ method: 'GET', url: resourceUrl,
+                                params: { q: q, relations: relations }})
+                        .then(callback);
                 },
                 save: function (data, callback) {
                     // if the data has a ref then it already exists in the database

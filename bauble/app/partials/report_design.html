@@ -36,19 +36,23 @@
     <div>
       <h4>Fields</h4>
       <div schema-menu class="fields-schema-menu" resource="resource"></div>
-      <button type="button" class="btn" ng-click="addTableColumn()">Add</button>
+      <button type="button" class="btn" ng-disabled="!resource" ng-click="addTableColumn()">Add</button>
     </div>
 
-    <div>
+  </div>
+
+  <div>
       <button type="button" class="btn" ng-click="refreshTable()">Refresh</button>
     </div>
 
-    </div>
-
-    <table class="report-table">
-      <thead></thead>
-      <th ng-repeat="column in tableColumns">{{column.header}}</th>
-      <tbody></tbody>
-    </table>
+  <table class="report-table">
+    <thead></thead>
+      <th class="report-table-header" ng-repeat="column in tableColumns">{{column.header}}</th>
+    <tbody>
+      <tr class="report-table-row" ng-repeat="row in tableData">
+          <td class="report-table-cell" ng-repeat="column in tableColumns">{{row[column.name]}}</td>
+      </tr>
+    </tbody>
+  </table>
 
 </div>

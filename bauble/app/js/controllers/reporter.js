@@ -67,7 +67,7 @@ function ReporterCtrl($scope, $resource) {
 
         // if header is undefined set to name
         this.header = typeof this.header === "undefined" ? this.name : this.header;
-    };
+    }
 
     $scope.onFieldClicked = function(event, column) {
         // set the button text to the selected column
@@ -89,6 +89,12 @@ function ReporterCtrl($scope, $resource) {
 
     $scope.refreshTable = function() {
         // update the table data based on the domain, filters and report fields
+        //$resource($scope.resource).
+        // TODO: build up the query based on the filter fields
+        var q = "";
+        $resource($scope.resource).query(q, "", function(result) {
+            $scope.tableData = result.data.results;
+        });
     };
 }
 ReporterCtrl.$inject = ['$scope', 'Bauble.$resource'];

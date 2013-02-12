@@ -208,7 +208,8 @@ class Resource:
             for relation in relations:
                 query = session.query(self.mapped_class, get_relation_class(relation)).\
                     join(*relation.split('.'))
-                query = self.apply_query(query, q)
+                if(q):
+                    query = self.apply_query(query, q)
 
                 for result in query:
                     resource = result[0]
@@ -228,7 +229,8 @@ class Resource:
 
         else:
             query = session.query(self.mapped_class)
-            query = self.apply_query(query, q)
+            if(q):
+                query = self.apply_query(query, q)
             json_objs = [obj.json(int(depth)) for obj in query]
 
         session.close()

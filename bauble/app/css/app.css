@@ -100,6 +100,11 @@
   #607056 #519E41 #85BF89 #9DDBB2 #BFE8BE
 */
 
+/*
+https://kuler.adobe.com/#themeID/137458
+BAE8E5 CCF4FF D9FFF2 BAE8CB CCFFD1
+*/
+
 .domain-box {
   background-color: #519E41;
 }
@@ -110,4 +115,20 @@
 
 .report-box {
   background-color: #9DDBB2;
+}
+
+.report-table {
+
+}
+
+.report-table th  {
+  padding: 0 1em;
+}
+
+.report-table tr {
+
+}
+
+.report-table td {
+
 }
