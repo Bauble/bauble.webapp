@@ -19,7 +19,7 @@
     <div class="filters-row form-inline" ng-repeat="filter in filters">
       <!-- <input ui-select2="fieldSelectOptions" ng-model="field"/> -->
 
-      <div class="filter-schema-menu" style="display: inline" schema-menu resource="resource"></div>
+      <div schema-menu class="filter-schema-menu" style="display: inline" resource="resource"></div>
 
       <select ng-model="operator" ng-options="key for (key, value) in operators" />
       </select>
@@ -35,7 +35,7 @@
 
     <div>
       <h4>Fields</h4>
-      <div schema-menu class="fields-schema-menu" resource="resource"></div>
+      <div schema-menu scalars-only='true' class="fields-schema-menu" resource="resource"></div>
       <button type="button" class="btn" ng-disabled="!resource" ng-click="addTableColumn()">Add</button>
     </div>
 

@@ -35,7 +35,6 @@ function ReporterCtrl($scope, $resource) {
             { label: 'Location', resource: '/location', sort: 5 }
         ];
 
-    $scope.domainSchema = {};
     $scope.filters = [{}];
     $scope.tableColumns = []; // the list of column objects
     $scope.tableData = [];
@@ -51,12 +50,6 @@ function ReporterCtrl($scope, $resource) {
         // }
         if(newValue === null || typeof newValue === 'undefined')
             return;
-
-        // get the schema for the new resource
-        $resource($scope.resource).get_schema(function(result) {
-            console.log('schema: ', result.data);
-            $scope.domainSchema = result.data;
-        });
     });
 
     // object to represent the report table columns

@@ -144,13 +144,21 @@ class Resource:
         A schema object can be declared in the class or else a schema will be generated
         from the mapper.  If a schema is not to be returned then set schema to None.
         """
+        flags = request.query.flags
+        if(flags):
+            flags = flags.split(',')
+
         mapper = orm.class_mapper(self.mapped_class)
         if relation:
             for name in relation.split('/'):
                 mapper = getattr(mapper.relationships, name).mapper
         schema = dict()
         schema['columns'] = [col for col in mapper.columns.keys() if not col.startswith('_')]
-        schema['relations'] = [rel for rel in mapper.relationships.keys() if not rel.startswith('_')]
+
+        if 'scalars_only' in flags:
+            schema['relations'] = [key for key, rel in mapper.relationships.items() if not key.startswith('_') and not rel.uselist]
+        else:
+            schema['relations'] = [key for key in mapper.relationships.keys() if not key.startswith('_')]
         return schema
 
 

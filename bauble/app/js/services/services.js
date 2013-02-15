@@ -156,9 +156,11 @@ angular.module('BaubleApp.services', [])
                                headers: { 'Accept': 'application/json;depth=2' }})
                             .then(callback);
                 },
-                get_schema: function(callback) {
-                    var url = resourceUrl + '/schema';
-                    return $http({ method: 'GET', url: url}).then(callback);
+                get_schema: function(scalars_only, callback) {
+                    var url = resourceUrl + '/schema',
+                        params = scalars_only ? { flags: 'scalars_only' } : undefined,
+                        callback = typeof scalars_only == 'function' ? scalars_only : callback;
+                    return $http({ method: 'GET', url: url, params: params }).then(callback);
                 }
             };
         };

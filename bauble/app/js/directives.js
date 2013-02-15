@@ -25,8 +25,10 @@ angular.module('BaubleApp.directives', [])
         return {
             restrict: 'A',
             replace: true,
+            transclude: true,
             scope: {
-                resource: '='
+                resource: '=',
+                scalarsOnly: '@'
             },
             template: '<div class="btn-group schema-menu">' +
                         '<a class="btn dropdown-toggle" ng-class="{disabled: !resource}" data-toggle="dropdown">' +
@@ -39,12 +41,12 @@ angular.module('BaubleApp.directives', [])
             link: function(scope, element, attrs, controller) {
                 var baseMenu = '' +
                         '<!-- columns -->' +
-                        '<li ng-repeat="column in domainSchema.columns" ng-click="onItemClicked(this, $event, column)">' +
+                        '<li ng-repeat="column in schema.columns" ng-click="onItemClicked(this, $event, column)">' +
                           '<a tabindex="-1">{{column}}</a>' +
                         '</li>' +
 
                         '<!-- relations -->' +
-                        '<li ng-repeat="relation in domainSchema.relations" class="dropdown-submenu">' +
+                        '<li ng-repeat="relation in schema.relations" class="dropdown-submenu">' +
                           '<a ng-mouseover="mouseOver($event, this, relation)">{{relation}}</a>' +
                           '<ul class="dropdown-menu relation-submenu">' +
                           //   '<!-- this is where the submenus list items are added -->' +
@@ -64,16 +66,14 @@ angular.module('BaubleApp.directives', [])
                 // create a menu and append it to parentElement
                 function buildMenu(resource, callback) {
                     // get the schema for a resource
-                    $resource(resource).get_schema(function(response) {
-
+                    $resource(resource).get_schema(scope.scalarsOnly, function(response) {
                         // create a new scope for the new menu
                         var newScope = scope.$new();
-                        newScope.domainSchema = response.data;
+                        newScope.schema = response.data;
                         newScope.resource = resource;
 
                         // compile the menu snippet and set the new scope
                         var newMenu = $compile(baseMenu)(newScope);
-
                         callback(newMenu);
                     });
                 }
