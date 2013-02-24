@@ -18,14 +18,13 @@
     <h4>Filters</h4>
     <div class="filters-row form-inline" ng-repeat="filter in filters">
       <!-- <input ui-select2="fieldSelectOptions" ng-model="field"/> -->
-
       <div schema-menu class="filter-schema-menu" style="display: inline" resource="resource"></div>
 
-      <select ng-model="operator" ng-options="key for (key, value) in operators" />
+      <select ng-model="filters[$index].operator" ng-options="key for (key, value) in operators" />
       </select>
 
       <!-- <select ng-options="= +">Operator</select> -->
-      <input type='text'></input> <!-- type depending on field type -->
+      <input ng-model="filters[$index].value" type='text'></input> <!-- type depending on field type -->
     </div>
 
     <button type="button" class="btn" ng-click="addFilterField()">Add</button>

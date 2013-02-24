@@ -1,12 +1,11 @@
 'use strict';
 
-
 /* Controllers */
 
 //
 // Controller to handle things on the main view page that don't fit elsewhere
 //
-function ReporterCtrl($scope, $resource) {
+function ReporterCtrl($scope, Search, $resource) {
 
     $scope.reportTypes = [
         { name: "Current search", type: 'current' },
@@ -62,10 +61,15 @@ function ReporterCtrl($scope, $resource) {
         this.header = typeof this.header === "undefined" ? this.name : this.header;
     }
 
-    $scope.onFieldClicked = function(event, column) {
-        // set the button text to the selected column
-        $(event.target).parents('.btn-group').children('.dropdown-toggle').first().text(column);
-    };
+    $scope.$on('schema-column-selected', function(event, element, selected) {
+        // ignore the selected event unless this is part of a filter
+        if(!element.hasClass('filter-schema-menu')) return;
+
+        var menus = element.parents('.filters-box').find('.filter-schema-menu'),
+            index = menus.index(element);
+        $scope.filters[index].column = selected;
+    });
+
 
     $scope.addTableColumn = function() {
         // add a field to the report table
@@ -84,10 +88,26 @@ function ReporterCtrl($scope, $resource) {
         // update the table data based on the domain, filters and report fields
         //$resource($scope.resource).
         // TODO: build up the query based on the filter fields
-        var q = "";
-        $resource($scope.resource).query(q, "", function(result) {
-            $scope.tableData = result.data.results;
+
+        var q = $scope.resource.substring(1);
+        if($scope.filters.length === 0)
+          q += '=*';
+        else {
+            q += ' where ';
+            console.log('$scope.filters: ', $scope.filters);
+            angular.forEach($scope.filters, function(filter, index) {
+                q += filter.column + filter.operator + filter.value;
+                if(index < $scope.filters-1) {
+                    q += ' and ';
+                }
+            });
+        }
+
+        console.log('q: ', q);
+        Search(q, function(response) {
+            $scope.tableData = response.data.results;
+            console.log('$scope.tableData: ', $scope.tableData);
         });
     };
 }
-ReporterCtrl.$inject = ['$scope', 'Bauble.$resource'];
+ReporterCtrl.$inject = ['$scope', 'Search', 'Bauble.$resource'];

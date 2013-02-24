@@ -4,10 +4,12 @@
  * Bauble services
  */
 
+// TODO: should rename services to Bauble.service_name, eg. Bauble.Search or Bauble.search
+
 angular.module('BaubleApp.services', [])
     .factory("globals", function() {
         return {
-            apiRoot: "/api/v1",
+            apiRoot: "/api/v1"
         };
     })
 
@@ -244,8 +246,3 @@ angular.module('BaubleApp.services', [])
     .factory('Location', ['Bauble.$resource', function($resource) {
         return $resource('/location');
     }]);
-
-
-
-
-

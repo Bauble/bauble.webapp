@@ -215,7 +215,7 @@ class MapperSearch(SearchStrategy):
                 main_query = query
 
             try:
-                boolop = next(exp_iter)
+                boolop = next(expr_iter)
             except StopIteration:
                 pass
 
@@ -254,13 +254,15 @@ class MapperSearch(SearchStrategy):
                 lambda val: utils.ilike(mapper.c[col], '%%%s%%' % val)
         elif cond == '=':
             condition = lambda col: \
-                lambda val: utils.ilike(mapper.c[col], utils.utf8(val))
+                lambda val: utils.ilike(mapper.c[col], val)
+                #lambda val: utils.ilike(mapper.c[col], utils.utf8(val))
         else:
             condition = lambda col: \
                 lambda val: mapper.c[col].op(cond)(val)
 
         for col in properties:
-            ors = or_(*list(condition(col), values))
+            #ors = or_(*list(condition(col), values))
+            ors = or_(*map(condition(col), values))
             self._results.update(query.filter(ors).all())
         return tokens
 

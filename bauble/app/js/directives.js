@@ -38,7 +38,7 @@ angular.module('BaubleApp.directives', [])
                         '<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">' +
                         '</ul>' +
                        '</div>',
-            link: function(scope, element, attrs, controller) {
+            link: function(scope, element, attrs) {
                 var baseMenu = '' +
                         '<!-- columns -->' +
                         '<li ng-repeat="column in schema.columns" ng-click="onItemClicked(this, $event, column)">' +
@@ -61,6 +61,9 @@ angular.module('BaubleApp.directives', [])
                     var selected = resourceParts.join('.');
                     $(element).children('.btn').first().text(selected);
                     $(element).attr("data-selected", selected);
+
+                    // emit the event to let any listeners know that selection has been made
+                    scope.$emit('schema-column-selected', element, selected);
                 };
 
                 // create a menu and append it to parentElement
