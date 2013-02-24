@@ -4,10 +4,12 @@
  * Bauble services
  */
 
+// TODO: should rename services to Bauble.service_name, eg. Bauble.Search or Bauble.search
+
 angular.module('BaubleApp.services', [])
     .factory("globals", function() {
         return {
-            apiRoot: "/api/v1",
+            apiRoot: "/api/v1"
         };
     })
 
@@ -117,9 +119,12 @@ angular.module('BaubleApp.services', [])
                     }
                     return $http({ method: 'GET', url: url }).then(callback);
                 },
-                query: function(q, callback) {
-                    return $http({ method: 'GET', url: resourceUrl, params: { q: q } , isArray: true })
-                                .then(callback);
+                query: function(q, relations, callback) {
+                    relations = (typeof relations === "undefined") ? "" : relations;
+                    q = (typeof q === "undefined") ? "" : q;
+                    return $http({ method: 'GET', url: resourceUrl,
+                                params: { q: q, relations: relations }})
+                        .then(callback);
                 },
                 save: function (data, callback) {
                     // if the data has a ref then it already exists in the database
@@ -152,6 +157,12 @@ angular.module('BaubleApp.services', [])
                     return $http({ method: 'GET', url: url,
                                headers: { 'Accept': 'application/json;depth=2' }})
                             .then(callback);
+                },
+                get_schema: function(scalars_only, callback) {
+                    var url = resourceUrl + '/schema',
+                        params = scalars_only ? { flags: 'scalars_only' } : undefined,
+                        callback = typeof scalars_only == 'function' ? scalars_only : callback;
+                    return $http({ method: 'GET', url: url, params: params }).then(callback);
                 }
             };
         };
@@ -235,8 +246,3 @@ angular.module('BaubleApp.services', [])
     .factory('Location', ['Bauble.$resource', function($resource) {
         return $resource('/location');
     }]);
-
-
-
-
-

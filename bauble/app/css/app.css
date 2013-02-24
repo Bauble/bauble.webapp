@@ -52,20 +52,20 @@
 }
 
 
-/*.baubleEditor label + input {
+/*.bauble-editor label + input {
   margin-left: 10px;
 }*/
 
-.baubleEditor label + textarea {
+.bauble-editor label + textarea {
   /*margin-left: 10px;*/
 }
 
 /* usually when there's multple inputs/labels on a line */
-.baubleEditor input + label {
+.bauble-editor input + label {
   margin-left: 25px;
 }
 
-.baubleEditor label {
+.bauble-editor label {
   margin-right: 10px;
   min-width: 35px;
   max-width: 85px;
@@ -74,28 +74,61 @@
   font-weight: bold;
 }
 
-.baubleEditor form div {
+.bauble-editor form div {
   margin: 15px 0;
 }
 
 
-.baubleEditor .accordion-group {
+.bauble-editor .accordion-group {
   margin-bottom: 10px;
 }
 
-.baubleEditor .accordion-heading {
+.bauble-editor .accordion-heading {
   background-color: #f7f7f7;
 }
 
-#searchField {
-
-}
-
-.searchBox {
+.search-box {
   padding: 0 15px;
   margin-bottom: 25px;
 }
 
-.resourceView {
-  /*margin-left: 25px;*/
+.filters-row {
+  padding: 5px 0 5px 0;
+}
+/*
+  https://kuler.adobe.com/#themeID/7245;
+  #607056 #519E41 #85BF89 #9DDBB2 #BFE8BE
+*/
+
+/*
+https://kuler.adobe.com/#themeID/137458
+BAE8E5 CCF4FF D9FFF2 BAE8CB CCFFD1
+*/
+
+.domain-box {
+  background-color: #519E41;
+}
+
+.filters-box {
+  background-color: #85BF89;
+}
+
+.report-box {
+  background-color: #9DDBB2;
+}
+
+.report-table {
+
+}
+
+.report-table th  {
+  padding: 0 1em;
+}
+
+.report-table tr {
+
+}
+
+.report-table td {
+
 }

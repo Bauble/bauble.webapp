@@ -1,4 +1,4 @@
-
+from collections import namedtuple, OrderedDict
 import json
 import os
 import os.path
@@ -46,14 +46,14 @@ class Resource:
 
     ignore = ['ref', 'str']
     relations = {}
-    mapper = None
+    mapped_class = None
     resource = None
 
     def __init__(self):
         if not self.resource:
             raise NotImplementedError("resource is required")
-        if not self.mapper:
-            raise NotImplementedError("mapper is required")
+        if not self.mapped_class:
+            raise NotImplementedError("mapped_class is required")
 
         super().__init__()
 
@@ -64,30 +64,102 @@ class Resource:
         app.post(API_ROOT + self.resource, callback=self.save_or_update)
         app.delete(API_ROOT + self.resource + "/<resource_id>", callback=self.delete)
 
+        # URL for relations
+        app.get(API_ROOT + self.resource + "/schema", callback=self.get_schema)
+        app.get(API_ROOT + self.resource + "/<relation:path>/schema", callback=self.get_schema)
+        app.get(API_ROOT + self.resource + "/<resource_id>/<relation:path>", callback=self.get_relation)
 
-    def get(self, resource_id):
-        """
-        Handle GET requests on this resource.
 
-        Return a standard json response object representing the mapper
-        where the queried objects are returned in the json object in
-        the collection_name array.
+    def get_relation(self, resource_id, relation):
         """
+        Handle GET requests on relation rooted at this resource.
+
+        Return a JSON object where the results property represents the items
+        from the relation end point.  e.g. /family/1/genera/species would return
+        all the species related to the family with id=1.
+        """
+
         accepted = parse_accept_header()
         if JSON_MIMETYPE not in accepted:
-            raise bottle.HTTPError('406 Only application/json responses supported')
+            raise bottle.HTTPError('406 Not Accepted - Expected application/json')
 
         depth = 1
         if 'depth' in accepted[JSON_MIMETYPE]:
             depth = accepted[JSON_MIMETYPE]['depth']
 
         session = db.connect()
-        obj = session.query(self.mapper).get(resource_id)
+
+        # get the mapper for the last item in the list of relations
+        mapper = orm.class_mapper(self.mapped_class)
+        for name in relation.split('/'):
+            mapper = getattr(mapper.relationships, name).mapper
+
+        # query the mapped class and the end point relation using the list of the passed
+        # relations to create the join between the two
+        query = session.query(self.mapped_class, mapper.class_).\
+            filter(getattr(self.mapped_class, 'id') == resource_id).\
+            join(*relation.split('/'))
+
+        response.content_type = '; '.join((JSON_MIMETYPE, "charset=utf8"))
+        results = [obj.json(depth=int(depth)) for parent, obj in query]
+        response_json = {'results': results}
+        session.close()
+        return response_json
+
+
+    def get(self, resource_id):
+        """
+        Handle GET requests on this resource.
+
+        Return a standard json response object representing the mapped_class
+        where the queried objects are returned in the json object in
+        the collection_name array.
+        """
+        accepted = parse_accept_header()
+        if JSON_MIMETYPE not in accepted:
+            raise bottle.HTTPError('406 Not Accepted - Expected application/json')
+
+        depth = 1
+        if 'depth' in accepted[JSON_MIMETYPE]:
+            depth = accepted[JSON_MIMETYPE]['depth']
+
+        session = db.connect()
+        obj = session.query(self.mapped_class).get(resource_id)
 
         response.content_type = '; '.join((JSON_MIMETYPE, "charset=utf8"))
         response_json = obj.json(depth=int(depth))
         session.close()
         return response_json
+
+
+    def get_schema(self, relation=None):
+        """
+        Return a JSON representation of the queryable schema of this resource or one
+        of it's relations.
+
+        This doesn't necessarily represent the json object that is returned
+        for this resource.  It is more for the queryable parts of this resources
+        to be used for building reports and query strings.
+
+        A schema object can be declared in the class or else a schema will be generated
+        from the mapper.  If a schema is not to be returned then set schema to None.
+        """
+        flags = request.query.flags
+        if(flags):
+            flags = flags.split(',')
+
+        mapper = orm.class_mapper(self.mapped_class)
+        if relation:
+            for name in relation.split('/'):
+                mapper = getattr(mapper.relationships, name).mapper
+        schema = dict()
+        schema['columns'] = [col for col in mapper.columns.keys() if not col.startswith('_')]
+
+        if 'scalars_only' in flags:
+            schema['relations'] = [key for key, rel in mapper.relationships.items() if not key.startswith('_') and not rel.uselist]
+        else:
+            schema['relations'] = [key for key in mapper.relationships.keys() if not key.startswith('_')]
+        return schema
 
 
     @staticmethod
@@ -98,8 +170,8 @@ class Resource:
         return ref.split('/')[-1]
 
 
-    def get_query(self, query, session):
-        raise bottle.HTTPError("404 Query on " + self.resource + " not supported")
+    def apply_query(self, query, query_string):
+        raise bottle.HTTPError("404 Not Found - Query on " + self.resource + " not supported")
 
 
     def query(self):
@@ -107,16 +179,69 @@ class Resource:
         Handle GET /resource?q= requests on this resource.
         """
         q = request.query.q
+        relations = request.query.relations
+        if(relations):
+            relations = [relation.strip() for relation in relations.split(',')]
+        else:
+            relations = []
 
         accepted = parse_accept_header()
         if JSON_MIMETYPE not in accepted:
-            raise bottle.HTTPError('406 Only application/json responses supported')
+            raise bottle.HTTPError('406 Not Accepted - Expected application/json')
+
+        depth = 1
+        if 'depth' in accepted[JSON_MIMETYPE]:
+            depth = accepted[JSON_MIMETYPE]['depth']
 
         session = db.connect()
-        query = self.get_query(q, session)
-        json_objs = [obj.json() for obj in query]
-        session.close()
 
+        # TODO: should split on either / or . to allow dot or slash delimeters
+        # between references
+
+        def get_relation_class(relation):
+            # get the class at the end of the relationship
+            relation_mapper = orm.class_mapper(self.mapped_class)
+            for kid in relation.split('.'):
+                relation_mapper = getattr(relation_mapper.relationships, kid).mapper
+            return relation_mapper.class_
+
+
+        json_objs = []
+        if relations:
+            # use an OrderedDict so we can maintain the default sort order on the resource and
+            unique_objs = OrderedDict()
+
+            # get the json objects for each of the relations and add them to the
+            # main resource json at resource[relation_name], e.g. resource['genera.species']
+            for relation in relations:
+                query = session.query(self.mapped_class, get_relation_class(relation)).\
+                    join(*relation.split('.'))
+                if(q):
+                    query = self.apply_query(query, q)
+
+                for result in query:
+                    resource = result[0]
+
+                    # add the resource_json to unique_objs if it doesn't already exist
+                    if resource.id not in unique_objs:
+                        resource_json = resource.json(int(depth))
+                        resource_json[relation] = []
+                        unique_objs[resource.id] = resource_json
+                    else:
+                        resource_json = unique_objs[resource.id]
+
+                    resource_json[relation].append(result[1].json(depth=int(depth)))
+
+            # create a list of json objs that should maintain the
+            json_objs = [obj for obj in unique_objs.values()]
+
+        else:
+            query = session.query(self.mapped_class)
+            if(q):
+                query = self.apply_query(query, q)
+            json_objs = [obj.json(int(depth)) for obj in query]
+
+        session.close()
         response_json = {'results': json_objs}
         response.content_type = '; '.join((JSON_MIMETYPE, "charset=utf8"))
         return response_json
@@ -127,7 +252,7 @@ class Resource:
         Handle DELETE requests on this resource.
         """
         session = db.connect()
-        obj = session.query(self.mapper).get(resource_id)
+        obj = session.query(self.mapped_class).get(resource_id)
         session.delete(obj)
         session.commit()
         session.close()
@@ -144,7 +269,7 @@ class Resource:
         """
         accepted = parse_accept_header()
         if JSON_MIMETYPE not in accepted:
-            raise bottle.HTTPError('406 Only application/json responses supported')
+            raise bottle.HTTPError('406 Not Accepted - Expected application/json')
 
         depth = 1
         if 'depth' in accepted[JSON_MIMETYPE]:
@@ -155,7 +280,7 @@ class Resource:
 
         # make sure the content is JSON
         if JSON_MIMETYPE not in request.headers.get("Content-Type"):
-            raise bottle.HTTPError('400 Content-Type should be application/json')
+            raise bottle.HTTPError('415 Unsupported Media Type - Expected application/json')
 
         # we assume all requests are in utf-8
         data = json.loads(request.body.read().decode('utf-8'))
@@ -172,11 +297,17 @@ class Resource:
         # if this is a PUT to a specific ID then get the existing family
         # else we'll create a new one
         if request.method == 'PUT' and resource_id is not None:
-            instance = session.query(self.mapper).get(resource_id)
+            instance = session.query(self.mapped_class).get(resource_id)
             for key in data.keys():
                 setattr(instance, key, data[key])
+            response.status = 200
         else:
-            instance = self.mapper(**data)
+            instance = self.mapped_class(**data)
+            response.status = 201
+
+        # TODO: how many relations deep do we support saving, e.g.
+        # family.genera or family.genera.species, or maybe we only support
+        # non-list relations, e.g genus.family
 
         # handle the relations
         for name in relation_data:
@@ -192,7 +323,7 @@ class Resource:
 class FamilyResource(Resource):
 
     resource = '/family'
-    mapper = Family
+    mapped_class = Family
     relations = {
         'notes': 'handle_notes',
         'synonyms': 'handle_synonyms'
@@ -215,44 +346,44 @@ class FamilyResource(Resource):
             family.notes.append(family_note)
 
 
-    def get_query(self, query, session):
-        return session.query(Family).filter(Family.family.like(query))
+    def apply_query(self, query, query_string):
+        return query.filter(Family.family.like(query_string))
 
 
 class GenusResource(Resource):
     resource = "/genus"
-    mapper = Genus
+    mapped_class = Genus
     relations = {'family': 'handle_family'}
 
     def handle_family(self, genus, family, session):
         genus.family_id = self.get_ref_id(family)
 
 
-    def get_query(self, query, session):
-        return session.query(Genus).filter(Genus.genus.like(query))
+    def apply_query(self, query, query_string):
+        return query.filter(Genus.genus.like(query_string))
 
 
 class TaxonResource(Resource):
     resource = "/taxon"
-    mapper = Species
+    mapped_class = Species
     relations = {'genus': 'handle_genus'}
 
     def handle_genus(self, taxon, genus, session):
         taxon.genus_id = self.get_ref_id(genus)
 
-    def get_query(self, query, session):
+    def apply_query(self, query, query_string):
         mapper = orm.class_mapper(Species)
         ilike = lambda col: \
                 lambda val: utils.ilike(mapper.c[col], '%%%s%%' % val)
         properties = ['sp', 'sp2', 'infrasp1', 'infrasp2',
                                 'infrasp3', 'infrasp4']
         ors = sa.or_(*[ilike(prop)(query) for prop in properties])
-        return session.query(Species).filter(ors)
+        return query.filter(ors)
 
 
 class AccessionResource(Resource):
     resource = "/accession"
-    mapper = Accession
+    mapped_class = Accession
     ignore = ['ref', 'str', 'species_str']
 
     relations = {'taxon': 'handle_taxon',
@@ -262,13 +393,13 @@ class AccessionResource(Resource):
     def handle_taxon(self, accession, taxon, session):
         accession.species_id = self.get_ref_id(taxon)
 
-    def get_query(self, query, session):
-        return session.query(Accession).filter(Accession.code.like(query))
+    def apply_query(self, query, query_string):
+        return query.filter(Accession.code.like(query_string))
 
 
 class PlantResource(Resource):
     resource = "/plant"
-    mapper = Plant
+    mapped_class = Plant
 
     relations = {'accession': 'handle_accession',
                  'location': 'handle_location'}
@@ -279,18 +410,18 @@ class PlantResource(Resource):
     def handle_location(self, plant, location, session):
         plant.location_id = self.get_ref_id(location)
 
-    def get_query(self, query, session):
+    def apply_query(self, query, session):
         # TODO: we also need to support searching will full accession.plant
         # strings like the PlantSearch mapper strategy from bauble 1
-        return session.query(Plant).filter(Plant.code.like(query))
+        return query.filter(Plant.code.like(query_string))
 
 
 class LocationResource(Resource):
     resource = "/location"
-    mapper = Location
+    mapped_class = Location
 
-    def get_query(self, query, session):
-        return session.query(Location).filter(Location.code.like(query))
+    def apply_query(self, query, query_string):
+        return query.filter(Location.code.like(query_string))
 
 
 @app.get('/lib/<path:path>/<filename>')

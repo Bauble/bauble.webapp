@@ -1,5 +1,6 @@
 'use strict';
 
+/*global SearchCtrl LoginCtrl AdminCtrl ReporterCtrl*/ //jshint flags
 
 // Declare app level module which depends on filters, and services
 angular.module('BaubleApp', ['ui', 'BaubleApp.filters', 'BaubleApp.services',
@@ -20,6 +21,11 @@ angular.module('BaubleApp', ['ui', 'BaubleApp.filters', 'BaubleApp.services',
                 templateUrl: 'partials/admin.html',
                 controller: AdminCtrl
 			});
+
+    $routeProvider.when('/reporter', {
+                templateUrl: 'partials/report_design.html',
+                controller: ReporterCtrl
+            });
 
     $routeProvider.otherwise({redirectTo: '/search'});
 

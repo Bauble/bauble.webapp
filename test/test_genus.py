@@ -75,9 +75,21 @@ def test_server():
 
     # query for genera
     response_json = test.query_resource('/genus', q=second_genus['genus'])
-    print(response_json)
     second_genus = response_json['results'][0]  # we're assuming there's only one
     assert second_genus['ref'] == second_ref
+
+    # test getting the genus relative to its family
+    response_json = test.get_resource(family['ref'] + "/genera")
+    genera = response_json['results']
+    assert first_genus['ref'] in [genus['ref'] for genus in genera]
+
+    # test getting a family with its genera relations
+    response_json = test.query_resource('/family', q=family['family'], depth=2,
+        relations="genera,notes")
+    families = response_json['results']
+    print(families[0])
+    print(families[0]['genera'])
+    assert first_genus['ref'] in [genus['ref'] for genus in families[0]['genera']]
 
     # delete the created resources
     test.delete_resource(first_genus['ref'])

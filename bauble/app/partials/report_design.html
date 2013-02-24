@@ -1,0 +1,57 @@
+<div id="report-designer">
+
+<!--   <span>
+    <select ng-model="reportType" ng-options="type.name for type in reportTypes"></select>
+    <ng-switch on="reportType.type">
+      <span ng-switch-when="new">A new one</span>
+      <span ng-switch-when="current">Current seach</span>
+      <span ng-switch-when="domain">Domain</span>
+    </ng-switch>
+  </span> -->
+
+  <div class="domain-box">
+    <h4>Select a domain</h4>
+    <select ng-model="resource" ng-options="domain.resource as domain.label for domain in domains | orderBy:domain.sort"/>
+  </div>
+
+  <div class="filters-box">
+    <h4>Filters</h4>
+    <div class="filters-row form-inline" ng-repeat="filter in filters">
+      <!-- <input ui-select2="fieldSelectOptions" ng-model="field"/> -->
+      <div schema-menu class="filter-schema-menu" style="display: inline" resource="resource"></div>
+
+      <select ng-model="filters[$index].operator" ng-options="key for (key, value) in operators" />
+      </select>
+
+      <!-- <select ng-options="= +">Operator</select> -->
+      <input ng-model="filters[$index].value" type='text'></input> <!-- type depending on field type -->
+    </div>
+
+    <button type="button" class="btn" ng-click="addFilterField()">Add</button>
+  </div>
+
+  <div class="report-box">
+
+    <div>
+      <h4>Fields</h4>
+      <div schema-menu scalars-only='true' class="fields-schema-menu" resource="resource"></div>
+      <button type="button" class="btn" ng-disabled="!resource" ng-click="addTableColumn()">Add</button>
+    </div>
+
+  </div>
+
+  <div>
+      <button type="button" class="btn" ng-click="refreshTable()">Refresh</button>
+    </div>
+
+  <table class="report-table">
+    <thead></thead>
+      <th class="report-table-header" ng-repeat="column in tableColumns">{{column.header}}</th>
+    <tbody>
+      <tr class="report-table-row" ng-repeat="row in tableData">
+          <td class="report-table-cell" ng-repeat="column in tableColumns">{{row[column.name]}}</td>
+      </tr>
+    </tbody>
+  </table>
+
+</div>

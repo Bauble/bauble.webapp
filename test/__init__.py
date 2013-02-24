@@ -56,23 +56,30 @@ def update_resource(data):
     return json.loads(response.text)
 
 
-def get_resource(ref, depth=1):
+def get_resource(ref, depth=1, relations=[]):
     """
     Get a server based resource with id=id
     """
     if(not ref.startswith(api_root)):
         ref = api_root + ref
-    response = requests.get(ref, headers=get_headers())
+    params = {}
+    if relations:
+        params['relations'] = relations
+    response = requests.get(ref, headers=get_headers(depth=depth), params=params)
+    #print('response: ', response.text)
     assert response.status_code == 200
     return json.loads(response.text)
 
 
-def query_resource(resource, q):
+def query_resource(resource, q, depth=1, relations=[]):
     """
     """
     if not resource.startswith(api_root):
         resource = api_root + resource
-    response = requests.get(resource, params={'q': q}, headers=get_headers())
+    params = { 'q': q }
+    if(relations):
+        params['relations'] = str(relations)
+    response = requests.get(resource, params=params, headers=get_headers(depth=depth))
     assert response.status_code == 200
     return json.loads(response.text)
 

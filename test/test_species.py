@@ -89,6 +89,11 @@ def test_server():
     second_taxon = response_json['results'][0]  # we're assuming there's only one
     assert second_taxon['ref'] == second_ref
 
+    # test getting the species relative to its family
+    response_json = test.get_resource(family['ref'] + "/genera/species")
+    taxa = response_json['results']
+    assert first_taxon['ref'] in [taxon['ref'] for taxon in taxa]
+
     # delete the created resources
     test.delete_resource(first_taxon['ref'])
     test.delete_resource(second_taxon['ref'])
