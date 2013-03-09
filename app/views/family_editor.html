@@ -1,6 +1,5 @@
-<div id="familyEditor" ui-modal ng-model="showEditor" class="bauble-editor" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width:940px; margin-left:-470px;">
 
-<div ng-controller="FamilyEditorCtrl">
+<div id="familyEditor" ng-controller="FamilyEditorCtrl" modal="showEditor" class="bauble-editor" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width:940px; margin-left:-470px;">
 
   <div class="modal-body">
 
@@ -47,7 +46,7 @@
         </div> <!-- .tab-pane "general" -->
 
         <div ng-switch-when="notes" class="tab-pane active">
-            <div ng-include src="'partials/notes_editor.html'"></div>
+            <div ng-include src="'views/notes_editor.html'"></div>
         </div>
 
 
@@ -59,7 +58,5 @@
       <button class="btn" data-dismiss="modal" ng-click="close()" aria-hidden="true">Close</button>
       <button class="btn btn-primary" ng-click="save()">Save changes</button>
   </div>
-
-</div>
 
 </div>
