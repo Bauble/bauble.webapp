@@ -39,6 +39,17 @@ test_dir = os.path.join(cwd, 'test')
 
 bottle.TEMPLATE_PATH.insert(0, cwd)
 
+@app.hook('after_request')
+def enable_cors():
+    """
+    You need to add some headers to each request.
+    Don't use the wildcard '*' for Access-Control-Allow-Origin in production.
+    """
+    print('** enable cors')
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    response.headers['Access-Control-Allow-Methods'] = 'PUT, GET, POST, DELETE, OPTIONS'
+    response.headers['Access-Control-Allow-Headers'] = 'Origin, Accept, Content-Type, X-Requested-With, X-CSRF-Token'
+
 
 class Resource:
     """
@@ -57,17 +68,20 @@ class Resource:
 
         super().__init__()
 
-        app.get(API_ROOT + self.resource + "/<resource_id>", callback=self.get)
-        app.get(API_ROOT + self.resource, callback=self.query)
-        app.put(API_ROOT + self.resource, callback=self.save_or_update)
-        app.put(API_ROOT + self.resource + "/<resource_id>", callback=self.save_or_update)
-        app.post(API_ROOT + self.resource, callback=self.save_or_update)
-        app.delete(API_ROOT + self.resource + "/<resource_id>", callback=self.delete)
+        app.route(API_ROOT + self.resource + "/<resource_id>", ['OPTIONS', 'GET'], self.get)
+        app.route(API_ROOT + self.resource, ['OPTIONS', 'GET'], self.query)
+        app.route(API_ROOT + self.resource, ['OPTIONS', 'PUT'], self.save_or_update)
+        app.route(API_ROOT + self.resource + "/<resource_id>", ['OPTIONS', 'PUT'],
+                  self.save_or_update)
+        app.route(API_ROOT + self.resource, ['OPTIONS', 'POST'], self.save_or_update)
+        app.route(API_ROOT + self.resource + "/<resource_id>", ['OPTIONS', 'DELETE'], self.delete)
 
         # URL for relations
-        app.get(API_ROOT + self.resource + "/schema", callback=self.get_schema)
-        app.get(API_ROOT + self.resource + "/<relation:path>/schema", callback=self.get_schema)
-        app.get(API_ROOT + self.resource + "/<resource_id>/<relation:path>", callback=self.get_relation)
+        app.route(API_ROOT + self.resource + "/schema", ['OPTIONS', 'GET'], self.get_schema)
+        app.route(API_ROOT + self.resource + "/<relation:path>/schema", ['OPTIONS', 'GET'],
+                  self.get_schema)
+        app.route(API_ROOT + self.resource + "/<resource_id>/<relation:path>", ['OPTIONS', 'GET'],
+                  self.get_relation)
 
 
     def get_relation(self, resource_id, relation):
@@ -424,33 +438,6 @@ class LocationResource(Resource):
         return query.filter(Location.code.like(query_string))
 
 
-@app.get('/lib/<path:path>/<filename>')
-def lib_get(path, filename):
-    parts = path.split('/')
-    return bottle.static_file(filename, root=os.path.join(lib_dir, *parts))
-
-
-@app.get('/partials/<filename>')
-def partials_get(filename):
-    return bottle.static_file(filename, root=os.path.join(app_dir, 'partials'))
-
-
-@app.get('/css/<filename>')
-def css_get(filename):
-    return bottle.static_file(filename, root=os.path.join(app_dir, 'css'))
-
-
-@app.get('/js/<filename>')
-def js_get(filename=None):
-    return bottle.static_file(filename, root=js_dir)
-
-
-@app.get('/js/<path:path>/<filename>')
-def js_sub_get(path, filename):
-    parts = path.split('/')
-    return bottle.static_file(filename, root=os.path.join(js_dir, *parts))
-
-
 @app.get('/test')
 def test_index():
     return bottle.static_file('index.html', root=test_dir)
@@ -465,12 +452,6 @@ def test_get(filename):
 def testlib_get(path, filename):
     parts = path.split('/')
     return bottle.static_file(filename, root=os.path.join(test_dir, *parts))
-
-
-@app.get("/")
-def index():
-    #return "Welcome"
-    return bottle.template("app/index.html")
 
 
 def parse_accept_header(header=None):
@@ -499,13 +480,16 @@ def parse_accept_header(header=None):
 #
 # Handle search requests
 #
-@app.get("/search")
+@app.route(API_ROOT + "/search", method=['OPTIONS', 'GET'])
 def get_search():
     #mimetype, depth = parse_accept_header()
     accepted = parse_accept_header()
     if JSON_MIMETYPE not in accepted:
         response.status = 400
         return
+
+    if(request.method == 'OPTIONS'):
+        return {}
 
     depth = 1
     if 'depth' in accepted[JSON_MIMETYPE]:
@@ -520,7 +504,7 @@ def get_search():
     return {'results': [r.json(depth=depth) for r in results]}
 
 
-def start():
+def start(host='localhost', port=8080, debug=False):
     """
     Start the Bauble server.
     """
@@ -537,5 +521,5 @@ def start():
     AccessionResource()
     PlantResource()
     LocationResource()
-    app.run(host='localhost', port=8080, reloader=True, debug=True)
+    app.run(host=host, port=port, reloader=True, debug=debug)
 
