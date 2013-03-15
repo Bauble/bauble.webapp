@@ -39,7 +39,7 @@ test_dir = os.path.join(cwd, 'test')
 
 bottle.TEMPLATE_PATH.insert(0, cwd)
 
-@app.hook('after_request')
+@app.hook('before_request')
 def enable_cors():
     """
     You need to add some headers to each request.
