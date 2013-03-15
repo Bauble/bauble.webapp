@@ -3,4 +3,4 @@
 import bauble
 import bauble.server as server
 
-server.start()
+server.start('localhost', 8080, True)

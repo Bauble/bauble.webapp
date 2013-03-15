@@ -94,8 +94,11 @@ class Resource:
         """
 
         accepted = parse_accept_header()
-        if JSON_MIMETYPE not in accepted:
+        if JSON_MIMETYPE not in accepted and '*/*' not in accepted:
             raise bottle.HTTPError('406 Not Accepted - Expected application/json')
+
+        if request.method == "OPTIONS":
+            return {}
 
         depth = 1
         if 'depth' in accepted[JSON_MIMETYPE]:
@@ -130,8 +133,11 @@ class Resource:
         the collection_name array.
         """
         accepted = parse_accept_header()
-        if JSON_MIMETYPE not in accepted:
+        if JSON_MIMETYPE not in accepted and '*/*' not in accepted:
             raise bottle.HTTPError('406 Not Accepted - Expected application/json')
+
+        if request.method == "OPTIONS":
+            return {}
 
         depth = 1
         if 'depth' in accepted[JSON_MIMETYPE]:
@@ -192,16 +198,19 @@ class Resource:
         """
         Handle GET /resource?q= requests on this resource.
         """
+        accepted = parse_accept_header()
+        if JSON_MIMETYPE not in accepted and '*/*' not in accepted:
+            raise bottle.HTTPError('406 Not Accepted - Expected application/json')
+
+        if request.method == "OPTIONS":
+            return {}
+
         q = request.query.q
         relations = request.query.relations
         if(relations):
             relations = [relation.strip() for relation in relations.split(',')]
         else:
             relations = []
-
-        accepted = parse_accept_header()
-        if JSON_MIMETYPE not in accepted:
-            raise bottle.HTTPError('406 Not Accepted - Expected application/json')
 
         depth = 1
         if 'depth' in accepted[JSON_MIMETYPE]:
@@ -265,6 +274,8 @@ class Resource:
         """
         Handle DELETE requests on this resource.
         """
+        if request.method == 'OPTIONS':
+            return {}
         session = db.connect()
         obj = session.query(self.mapped_class).get(resource_id)
         session.delete(obj)
@@ -282,8 +293,15 @@ class Resource:
         A JSON object that represents the created Family will be returned in the response.
         """
         accepted = parse_accept_header()
-        if JSON_MIMETYPE not in accepted:
+        if JSON_MIMETYPE not in accepted and '*/*' not in accepted:
             raise bottle.HTTPError('406 Not Accepted - Expected application/json')
+
+        if request.method == "OPTIONS":
+            return {}
+
+        # make sure the content is JSON
+        if JSON_MIMETYPE not in request.headers.get("Content-Type"):
+            raise bottle.HTTPError('415 Unsupported Media Type - Expected application/json')
 
         depth = 1
         if 'depth' in accepted[JSON_MIMETYPE]:
@@ -291,10 +309,6 @@ class Resource:
 
         response.content_type = '; '.join((JSON_MIMETYPE, "charset=utf8"))
         session = db.connect()
-
-        # make sure the content is JSON
-        if JSON_MIMETYPE not in request.headers.get("Content-Type"):
-            raise bottle.HTTPError('415 Unsupported Media Type - Expected application/json')
 
         # we assume all requests are in utf-8
         data = json.loads(request.body.read().decode('utf-8'))
@@ -385,6 +399,7 @@ class TaxonResource(Resource):
     def handle_genus(self, taxon, genus, session):
         taxon.genus_id = self.get_ref_id(genus)
 
+
     def apply_query(self, query, query_string):
         mapper = orm.class_mapper(Species)
         ilike = lambda col: \
@@ -403,9 +418,9 @@ class AccessionResource(Resource):
     relations = {'taxon': 'handle_taxon',
                  'species': 'handle_taxon'}
 
-
     def handle_taxon(self, accession, taxon, session):
         accession.species_id = self.get_ref_id(taxon)
+
 
     def apply_query(self, query, query_string):
         return query.filter(Accession.code.like(query_string))
@@ -424,7 +439,7 @@ class PlantResource(Resource):
     def handle_location(self, plant, location, session):
         plant.location_id = self.get_ref_id(location)
 
-    def apply_query(self, query, session):
+    def apply_query(self, query, query_string):
         # TODO: we also need to support searching will full accession.plant
         # strings like the PlantSearch mapper strategy from bauble 1
         return query.filter(Plant.code.like(query_string))
@@ -484,11 +499,12 @@ def parse_accept_header(header=None):
 def get_search():
     #mimetype, depth = parse_accept_header()
     accepted = parse_accept_header()
-    if JSON_MIMETYPE not in accepted:
+    if JSON_MIMETYPE not in accepted and request.method != 'OPTIONS':
         response.status = 400
         return
 
     if(request.method == 'OPTIONS'):
+        return ''
         return {}
 
     depth = 1
