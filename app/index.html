@@ -1,0 +1,147 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+  <head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+
+    <!--<script src="components/jquery/jquery.min.js"></script>-->
+    <script src="lib/jquery/jquery.min.js"></script>
+
+    <script src="components/angular/angular.js"></script>
+    <script src="components/angular-resource/angular-resource.js"></script>
+    <script src="components/angular-cookies/angular-cookies.js"></script>
+    <script src="components/angular-sanitize/angular-sanitize.js"></script>
+
+    <script src="lib/bootstrap/js/bootstrap.min.js"></script>
+    <script src="lib/angular-ui/angular-ui.min.js"></script>
+    <script src="lib/angular-ui/ui-bootstrap-tpls-0.2.0.min.js"></script>
+    <script src="lib/select2/select2.js"></script>
+
+    <!--<script src="components/bootstrap/docs/assets/js/bootstrap.min.js"></script>
+        <script src="components/angular-ui/build/angular-ui.min.js"></script> -->
+
+    <!-- <link rel="stylesheet" href="components/bootstrap/docs/assets/css/bootstrap.css"> -->
+    <link rel="stylesheet" href="lib/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="lib/angular-ui/angular-ui.min.css">
+    <link rel="stylesheet" href="lib/select2/select2.css"/>
+    <link rel="stylesheet" href="styles/main.css">
+
+  </head>
+  <body ng-app="BaubleApp" ng-controller="AppCtrl">
+    <!--[if lt IE 7]>
+      <p class="chromeframe">You are using an outdated browser. <a href="http://browsehappy.com/">Upgrade your browser today</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to better experience this site.</p>
+    <![endif]-->
+
+    <!--[if lt IE 9]>
+      <script src="components/es5-shim/es5-shim.js"></script>
+      <script src="components/json3/lib/json3.min.js"></script>
+    <![endif]-->
+
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+
+          <a class="brand" href="#">Bauble</a>
+          <div class="nav-collapse collapse">
+
+            <ul class="nav">
+              <li><a href="#search">Search</a></li>
+              <li class="dropdown">
+                <a class="dropdown-toggle">New
+                  <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu pull-right">
+                  <li>
+                    <a class="pull-right" ng-click="newEditor('family')">Family</a>
+                  </li>
+                  <li>
+                    <a class="pull-right" ng-click="newEditor('genus')">Genus</a>
+                  </li>
+                  <li>
+                    <a class="pull-right" ng-click="newEditor('taxon')">Taxon</a>
+                  </li>
+                  <li>
+                    <a class="pull-right" ng-click="newEditor('accession')">Accession</a>
+                  </li>
+                  <li>
+                    <a class="pull-right" ng-click="newEditor('plant')">Plant</a>
+                  </li>
+                  <li>
+                    <a class="pull-right" ng-click="newEditor('location')">Location</a>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+
+            <ul class="nav">
+              <li><a href="#reporter">Report</a></li>
+            </ul>
+
+            <ul class="nav pull-right">
+              <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">Menu
+                  <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu pull-right">
+                  <li><a class="pull-right" href="#admin">Admin</a></li>
+                  <li><a class="pull-right" href="#login">Login/Logout</a></li>
+                </ul>
+              </li>
+            </ul>
+
+          </div><!--/.nav-collapse -->
+        </div><!-- .container -->
+      </div> <!-- .navbar-inner -->
+    </div> <!-- .navbar -->
+
+    <div class="container" ng-view></div>
+
+    <!-- the editorContainer will hold the modal editor when a resource is selected from the New menu -->
+    <!-- <div id="editorContainer" ng-include="editorTemplate" onload="onEditorLoaded()"></div> -->
+
+    <!-- build:js scripts/scripts.js -->
+    <script src="scripts/app.js"></script>
+
+    <script src="scripts/controllers/Main.js"></script>
+    <script src="scripts/controllers/Search.js"></script>
+    <script src="scripts/controllers/App.js"></script>
+    <script src="scripts/controllers/FamilyEditor.js"></script>
+    <script src="scripts/controllers/GenusEditor.js"></script>
+    <script src="scripts/controllers/TaxonEditor.js"></script>
+    <script src="scripts/controllers/AccessionEditor.js"></script>
+    <script src="scripts/controllers/PlantEditor.js"></script>
+    <script src="scripts/controllers/LocationEditor.js"></script>
+    <script src="scripts/controllers/NotesEditor.js"></script>
+
+    <script src="scripts/services/Search.js"></script>
+    <script src="scripts/services/ViewMeta.js"></script>
+    <script src="scripts/services/Resource.js"></script>
+    <script src="scripts/services/globals.js"></script>
+    <script src="scripts/controllers/Reporter.js"></script>
+    <script src="scripts/controllers/Login.js"></script>
+    <script src="scripts/directives/schemaMenu.js"></script>
+    <script src="scripts/controllers/FamilyView.js"></script>
+    <script src="scripts/controllers/GenusView.js"></script>
+    <script src="scripts/controllers/TaxonView.js"></script>
+    <script src="scripts/controllers/AccessionView.js"></script>
+    <script src="scripts/controllers/PlantView.js"></script>
+    <script src="scripts/controllers/LocationView.js"></script>
+    <script src="scripts/directives/emit.js"></script>
+    <!-- endbuild -->
+
+    <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+    <script>
+      var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
+      (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+      g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+      s.parentNode.insertBefore(g,s)}(document,'script'));
+    </script>
+  </body>
+</html>
