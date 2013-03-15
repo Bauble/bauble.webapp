@@ -16,7 +16,7 @@ function MainCtrl($scope) {
         'taxon': "partials/taxon_editor.html",
         'accession': 'partials/accession_editor.html',
         'plant': 'partials/plant_editor.html',
-        'location': 'partials/location_editor.html'
+        'location': 'partials/.html'
     };
 
     $scope.newEditor = function(name) {
@@ -111,7 +111,7 @@ FamilyViewCtrl.$inject = ['$scope', 'globals', 'Family'];
 //
 // Controller for Family summary and editor views
 //
-function FamilyEditorCtrl($scope, globals, Family) {
+function FamilyEditorCtrlOld($scope, globals, Family) {
 
     $scope.family = {};
     $scope.Family = Family;
@@ -177,7 +177,7 @@ FamilyEditorCtrl.$inject = ['$scope', 'globals', 'Family'];
 //
 // Genus controller
 //
-function GenusViewCtrl($scope, globals, Family, Genus) {
+function GenusViewCtrlOld($scope, globals, Family, Genus) {
 
     $scope.Genus = Genus;
     $scope.genus = {};
