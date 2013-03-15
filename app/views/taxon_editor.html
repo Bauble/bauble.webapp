@@ -1,6 +1,7 @@
-<div id="taxonEditor" ui-modal ng-model="showEditor" class="bauble-editor" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width:940px; margin-left:-470px;">
+<div ng-controller="TaxonEditorCtrl" modal="showEditor" class="bauble-editor" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width:940px; margin-left:-470px;">
 
-  <div ng-controller="TaxonCtrl">
+<div id="taxon-editor">
+
     <div class="modal-header">
       <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
       <h3 id="myModalLabel">Taxon</h3>
@@ -10,19 +11,20 @@
         <form name="taxonForm">
 
           <label>Genus</label>
-          <input id="genusField" style="width: 200px" ui-select2="multiOptions" ng-model="genus"/>
+          <input id="genusField" style="width: 200px" ui-select2="selectOptions" ng-model="taxon.genus"/>
 
           <label>Species</label>
           <input ng-model="taxon.sp" required/>
 
         </form>
-    </div>
+    </div> <!-- .modal-body -->
+
 
     <div class="modal-footer">
-        <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-        <button class="btn btn-primary" ng-click="save()">Save changes</button>
+      <button class="btn" ng-click="close()" aria-hidden="true">Close</button>
+      <button class="btn btn-primary" ng-click="save()">Save changes</button>
     </div>
 
-  </div>
+  </div> <!-- #taxon-editor -->
 
 </div>

@@ -15,12 +15,8 @@ angular.module('BaubleApp')
                     return $http({ method: 'GET', url: url }).then(callback);
                 },
                 query: function(q, relations, callback) {
-                    console.log('relations: ', relations);
-                    console.log('callback: ', callback);
                     callback = (typeof relations === "function") ? relations : callback;
                     relations = (typeof relations !== "object") ? "" : relations;
-                    console.log('relations: ', relations);
-                    console.log('callback: ', callback);
                     q = (typeof q === "undefined") ? "" : q;
                     return $http({ method: 'GET', url: resourceUrl,
                                 params: { q: q, relations: relations }})

@@ -65,36 +65,58 @@ body {
   margin-left: 10px;
 }*/
 
-.bauble-editor label + textarea {
-  /*margin-left: 10px;*/
+.bauble-editor2 {
+  label + textarea {
+    /*margin-left: 10px;*/
+  }
+
+  /* usually when there's multple inputs/labels on a line */
+  input + label {
+    margin-left: 25px;
+  }
+
+  label {
+    margin-right: 10px;
+    min-width: 35px;
+    max-width: 85px;
+    width: 75px;
+    text-align: right;
+    font-weight: bold;
+  }
+
+  form div {
+    margin: 15px 0;
+  }
+
+  .accordion-group {
+    margin-bottom: 10px;
+  }
+
+  .accordion-heading {
+    background-color: #f7f7f7;
+  }
 }
 
-/* usually when there's multple inputs/labels on a line */
-.bauble-editor input + label {
-  margin-left: 25px;
-}
+#family-editor {
 
-.bauble-editor label {
-  margin-right: 10px;
-  min-width: 35px;
-  max-width: 85px;
-  width: 75px;
-  text-align: right;
-  font-weight: bold;
-}
+  .tab-content {
+    height: 200px;
+  }
 
-.bauble-editor form div {
-  margin: 15px 0;
+  $label-width: 75px;
+  .control-label {
+    width: $label-width
+  }
+  .controls {
+    margin-left: $label-width + 25px;
+  }
 }
 
 
-.bauble-editor .accordion-group {
-  margin-bottom: 10px;
+#genus-editor {
+
 }
 
-.bauble-editor .accordion-heading {
-  background-color: #f7f7f7;
-}
 
 .search-box {
   padding: 0 15px;

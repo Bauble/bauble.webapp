@@ -19,23 +19,16 @@ angular.module('BaubleApp')
             // remove the template after the dialog is hidden
             var el = $('#familyEditorContainer div').first();
             el.on('hide', function() {
-                $scope.editorTemplate = false;
+                $scope.editorTemplate = null;
                 $scope.showEditor = false;
-
             });
         };
 
         $scope.$on('family-edit', function(){
-            $scope.editorTemplate = "views/family_editor.html";
+            $scope.editorTemplate = $scope.viewMeta['editor'];
             // set this in apply since we're in an event "outside" of angular
             $scope.$apply('showEditor = true');
+            console.log('$scope.editorTemplate: ', $scope.editorTemplate);
+            console.log('$scope.showEditor: ', $scope.showEditor);
         });
-
-        $scope.$on('genus-edit', function(){
-            console.log('genus0edit');
-            $scope.editorTemplate = "views/genus_editor.html";
-            // set this in apply since we're in an event "outside" of angular
-            $scope.$apply('showEditor = true');
-        });
-
     });
