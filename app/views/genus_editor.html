@@ -1,11 +1,10 @@
-<div id="genusEditor" ng-controller="GenusEditorCtrl" modal="showEditor" class="bauble-editor"
-     class="modal hide fade" tabindex="-1" aria-labelledby="myModalLabel"
-     aria-hidden="true" style="width:940px; margin-left:-470px;">
+<div ng-controller="GenusEditorCtrl" modal="showEditor" tabindex="-1" role="dialog"
+     aria-hidden="true" options="modalOptions">
 
-    <!-- <div class="modal-header">
-      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-      <h3 id="myModalLabel">Genus</h3>
-    </div> -->
+  <div class="modal-header">
+    <button type="button" class="close" ng-click="close()" aria-hidden="true">×</button>
+    <h4>--</h4>
+  </div>
 
   <div class="modal-body">
 
@@ -23,7 +22,10 @@
           <input id="familyField" style="width: 200px" ui-select2="selectOptions" ng-model="genus.family"/>
 
           <label>Genus</label>
-          <input ng-model="genus.genus" required/>
+          <input type="text", ng-model="genus.genus" required/>
+
+          <label>Author</label>
+          <input type="text" ng-model="genus.author" required/>
 
         </form>
       </div>

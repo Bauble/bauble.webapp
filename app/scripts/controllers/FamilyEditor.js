@@ -5,6 +5,13 @@ angular.module('BaubleApp')
         $scope.family = {};
         $scope.Family = Family;
 
+        $scope.activeTab = "general";
+        $scope.qualifiers = ["s. lat.", "s. str."];
+
+        $scope.modalOptions = {
+            dialogClass: 'modal family-editor'
+        };
+
         // get the family details when the selection is changed
         if($scope.selected) {
             $scope.$watch('selected', function() {
@@ -14,8 +21,7 @@ angular.module('BaubleApp')
             });
         }
 
-        $scope.activeTab = "general";
-        $scope.qualifiers = ["s. lat.", "s. str."];
+
 
         $scope.selectOptions = {
             minimumInputLength: 1,

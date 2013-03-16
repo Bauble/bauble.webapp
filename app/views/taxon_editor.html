@@ -1,30 +1,192 @@
-<div ng-controller="TaxonEditorCtrl" modal="showEditor" class="bauble-editor" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width:940px; margin-left:-470px;">
+<div ng-controller="TaxonEditorCtrl" modal="showEditor" tabindex="-1" role="dialog"
+     aria-hidden="true" options="modalOptions">
 
-<div id="taxon-editor">
+  <div class="modal-header">
+    <button type="button" class="close" ng-click="close()" aria-hidden="true">×</button>
+    <h4>Species name</h4>
+    <!-- <h3 id="myModalLabel">Taxon</h3> -->
+  </div>
 
-    <div class="modal-header">
-      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-      <h3 id="myModalLabel">Taxon</h3>
+  <div class="modal-body">
+
+    <ul class="nav nav-tabs" id="genusEditorTabs">
+      <li ng-class="{active: activeTab=='general'}">
+        <a ng-click="activeTab='general'">General</a>
+      </li>
+      <li ng-class="{active: activeTab=='other'}">
+        <a ng-click="activeTab='other'">Additional Info</a>
+      </li>
+      <li ng-class="{active: activeTab=='notes'}">
+        <a ng-click="activeTab='notes'">Notes</a>
+      </li>
+    </ul>
+
+  <div class="tab-content" ng-switch="activeTab">
+
+    <div class="tab-pane active" ng-switch-when="general">
+
+      <form class="form-horizontal">
+
+        <div class="row">
+          <div class="span4 group1">
+            <div class="control-group">
+              <label class="control-label">Genus</label>
+                <div class="controls">
+                  <input id="genusField" style="width: 200px" ui-select2="genusSelectOptions" ng-model="taxon.genus"/>
+                </div>
+            </div>
+
+            <div class="control-group">
+              <label class="control-label">Hybrid</label>
+              <div class="controls">
+                <input type="checkbox" ng-model="taxon.hybrid"/>
+              </div>
+            </div>
+
+            <div class="control-group">
+              <label class="control-label">Species</label>
+              <div class="controls">
+                <input type="text" ng-model="taxon.sp"/>
+              </div>
+            </div>
+          </div> <!-- .group1 -->
+
+          <div class="span4 group2">
+            <div class="control-group">
+              <label class="control-label">Author</label>
+              <div class="controls">
+                <input type="text" ng-model="taxon.sp_author"/>
+              </div>
+            </div>
+
+            <div class="control-group">
+              <label class="control-label">Cultivar Group</label>
+              <div class="controls">
+                <input type="text" ng-model="taxon.cv_group"/>
+              </div>
+            </div>
+
+            <div class="control-group">
+              <label class="control-label">Species qualifier</label>
+              <div class="controls">
+                <select ng-model="taxon.sp_qual" ng-options="q for q in qualifiers" class="input-small"></select>
+              </div>
+            </div>
+          </div> <!-- .group2 -->
+        </div> <!-- .row -->
+
+        <div class="infraspecific-container">
+          <h4>Infraspecific parts</h4>
+          <table>
+            <thead>
+              <td>Rank</td>
+              <td>Epithet</td>
+              <td>Author</td>
+            </thead>
+            <tr>
+              <td><select ng-model="taxon.infrasp1_rank" ng-options="q for q in ranks" class="input-small"></select></td>
+              <td><input type="text" ng-model="taxon.infrasp1_epithet"/></td>
+              <td><input type="text" ng-model="taxon.infrasp1_author"/></td>
+            </tr>
+            <tr>
+              <td><select ng-model="taxon.infrasp2_rank" ng-options="q for q in ranks" class="input-small"></select></td>
+              <td><input type="text" ng-model="taxon.infrasp2_epithet"/></td>
+              <td><input type="text" ng-model="taxon.infrasp2_author"/></td>
+            </tr>
+            <tr>
+              <td><select ng-model="taxon.infrasp3_rank" ng-options="q for q in ranks" class="input-small"></select></td>
+              <td><input type="text" ng-model="taxon.infrasp3_epithet"/></td>
+              <td><input type="text" ng-model="taxon.infrasp3_author"/></td>
+            </tr>
+            <tr>
+              <td><select ng-model="taxon.infrasp4_rank" ng-options="q for q in ranks" class="input-small"></select></td>
+              <td><input type="text" ng-model="taxon.infrasp4_epithet"/></td>
+              <td><input type="text" ng-model="taxon.infrasp4_author"/></td>
+            </tr>
+          </table>
+        </div> <!-- .infraspecific-container -->
+
+      </form>
+
+    </div> <!-- general tab -->
+
+    <div ng-switch-when="other" class="tab-pane active" >
+      <form class="form-horizontal">
+
+      <div class="control-group">
+        <label class="control-label">Distribution</label>
+        <div class="controls">
+          <input type="text"/>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label">Label Distribution</label>
+        <div class="controls">
+          <input type="text"/>
+        </div>
+      </div>
+
+      <div class="control-group">
+        <label class="control-label">Habit</label>
+        <div class="controls">
+          <input type="text"/>
+        </div>
+      </div>
+
+      <div class="control-group">
+        <label class="control-label">Awards</label>
+        <div class="controls">
+          <input type="text"/>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="span6 vernacular-name-container">
+          <label>Vernacular Names</label>
+          <div class="contents">
+            <table>
+              <thead>
+                <td>Vernacular name</td>
+                <td>Language</td>
+                <td>Default</td>
+              </thead>
+              <tr ng-repeat="vernacular in taxon.vernacular_names">
+                <td><input type="text" value="{{vernacular.name}}"/></td>
+                <td><input type="text" value="{{vernacular.language}}"/></td>
+                <td><input type="checkbox" class="input-small" value="{{vernacular.default}}"/></td>
+              </tr>
+            </table>
+            <button class="btn" ng-click="addVernacularName()">Add</button>
+          </div> <!-- .contents -->
+        </div>
+
+        <div class="span6 synonyms-container">
+          <label>Synonyms</label>
+          <div class="contents">
+            <div>
+              <input id="taxonSynonymField" style="width: 200px" ui-select2="synSelectOptions" ng-model="selectedSyn"/>
+              <button class="btn" ng-click="addSynonym(selectedSyn); selectedSyn=null;" ng-disabled="!selectedSyn">Add</button>
+            </div>
+            <ul>
+              <li ng-repeat="synonym in taxon.synonyms">{{synonym.str}}</li>
+            </ul>
+          </div> <!-- .contents -->
+        </div>
+
+      </div> <!-- .row -->
+
+    </div> <!-- other tab -->
+
+    <div ng-switch-when="notes" class="tab-pane active">
+      <div ng-include="'views/notes_editor.html'"></div>
     </div>
 
-    <div class="modal-body">
-        <form name="taxonForm">
-
-          <label>Genus</label>
-          <input id="genusField" style="width: 200px" ui-select2="selectOptions" ng-model="taxon.genus"/>
-
-          <label>Species</label>
-          <input ng-model="taxon.sp" required/>
-
-        </form>
-    </div> <!-- .modal-body -->
+  </div> <!-- .modal-body -->
 
 
-    <div class="modal-footer">
-      <button class="btn" ng-click="close()" aria-hidden="true">Close</button>
-      <button class="btn btn-primary" ng-click="save()">Save changes</button>
-    </div>
+  <div class="modal-footer">
+    <button class="btn" ng-click="close()" aria-hidden="true">Close</button>
+    <button class="btn btn-primary" ng-click="save()">Save changes</button>
+  </div>
 
-  </div> <!-- #taxon-editor -->
-
-</div>
+</div> <!-- .taxon-editor -->

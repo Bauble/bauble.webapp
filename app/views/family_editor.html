@@ -1,11 +1,10 @@
+<div ng-controller="FamilyEditorCtrl" modal="showEditor" tabindex="-1" role="dialog"
+     aria-hidden="true" options="modalOptions">
 
-<div ng-controller="FamilyEditorCtrl" modal="showEditor" class="bauble-editor"
-tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-     aria-hidden="true"><!--  style="width:940px; margin-left:-470px;"> -->
-     <!-- class="modal hide fade"  -->
-
-
-  <div id="family-editor">
+    <div class="modal-header">
+      <button type="button" class="close" ng-click="close()" aria-hidden="true">×</button>
+      <h4>--</h4>
+    </div>
 
     <div class="modal-body">
 
@@ -71,5 +70,4 @@ tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
         <button class="btn btn-primary" ng-click="save()">Save changes</button>
     </div>
 
-  </div> <!-- #family-editor -->
-</div>
+</div> <!-- .family-editor .modal -->

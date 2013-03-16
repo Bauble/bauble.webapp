@@ -8,6 +8,10 @@ angular.module('BaubleApp')
         $scope.families = []; // the list of completions
         $scope.activeTab = "general";
 
+        $scope.modalOptions = {
+            dialogClass: 'modal genus-editor'
+        };
+
         // get the genus details when the selection is changed
         $scope.$watch('selected', function() {
             console.log('$scope.selected: ', $scope.selected);

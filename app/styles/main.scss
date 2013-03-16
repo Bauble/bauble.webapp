@@ -97,7 +97,7 @@ body {
   }
 }
 
-#family-editor {
+.family-editor {
 
   .tab-content {
     height: 200px;
@@ -113,8 +113,69 @@ body {
 }
 
 
-#genus-editor {
+.genus-editor {
 
+}
+
+.taxon-editor {
+    width: 900px;
+    margin-left: -450px;
+
+    $label-width: 75px;
+    .group1 .control-label {
+      width: $label-width
+    }
+    .group1 .controls {
+      margin-left: $label-width + 25px;
+    }
+
+    .infraspecific-container {
+
+      table {
+        margin-left: 25px;
+      }
+    }
+
+    .vernacular-name-container {
+      margin-bottom: 25px;
+
+      .contents {
+        margin-left: 25px;
+      }
+
+      label {
+        font-weight: bold;
+      }
+
+      table {
+        thead {
+          background-color: #eee;
+
+          td {
+            border: solid 2px white;
+            padding: 2px 5px;
+          }
+        }
+
+        tr {
+          // center the default checkbox
+          td:last-child {
+            text-align: center;
+          }
+        }
+      }
+    }
+
+    .synonyms-container {
+
+      label {
+        font-weight: bold;
+      }
+
+      .contents {
+        margin-left: 25px;
+      }
+    }
 }
 
 
