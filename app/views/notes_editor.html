@@ -1,13 +1,3 @@
-<link href="lib/datepicker/css/datepicker.css" rel="stylesheet">
-<script src="lib/datepicker/js/bootstrap-datepicker.js"> </script>
-<script>
-  $(document).ready(function() {
-      $('#inputDate').datepicker({
-          format: 'mm-dd-yyyy'
-      });
-  });
-</script>
-
 <div ng-controller="NotesEditorCtrl" id="notesEditor" class="bauble-editor">
 
   <button class="btn" ng-click="addNote()">Add Note</button>
@@ -30,7 +20,7 @@
 
             <div>
               <label class="control-label" for="inputDate">Date</label>
-              <input class="input-small" type="text" ng-model="note.date" id="inputDate">
+              <input ui-date type="text" class="input-small"  ng-model="note.date" id="inputDate">
 
               <label class="control-label" for="inputCategory">Category</label>
               <input class="input-large" type="text" ng-model="note.category" id="inputCategory">
