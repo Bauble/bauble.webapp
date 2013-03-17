@@ -1,18 +1,17 @@
 'use strict';
 
 angular.module('BaubleApp')
-    .controller('AppCtrl', function ($scope, ViewMeta) {
+    .controller('AppCtrl', function ($scope, $route, $location, globals) {
+        $scope.$on("$routeChangeStart", function(nextRoute, currentRoute) {
 
-        $scope.newEditor = function(name) {
-            $scope.editorTemplate = ViewMeta[name].editor;
-            $scope.showEditor = true;
-        };
+            console.log('$routeChangeStart');
+            console.log('$location.url(): ', $location.url());
+            console.log('arguments: ', arguments);
+        });
 
-        $scope.onEditorLoaded = function() {
-            // remove the template after the dialog is hidden
-            var el = $('#editorContainer div').first();
-            el.on('hide', function() {
-                $scope.editorTemplate = false;
-            });
-        };
+        $scope.$on("$routeChangeSuccess", function(event, currentRoute, prevRoute) {
+            console.log('$routeChangeSuccess');
+            console.log('$location.url(): ', $location.url());
+            console.log('prevRoute: ', prevRoute);
+        });
     });

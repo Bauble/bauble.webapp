@@ -1,27 +1,26 @@
-<div ng-controller="LocationEditorCtrl"  modal="showEditor" class="bauble-editor" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width:940px; margin-left:-470px;">
+<div ng-controller="LocationEditorCtrl" class="bauble-editor location-editor">
 
-  <div id="location-editor">
-    <div class="modal-header">
-      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-      <h3 id="myModalLabel">Location</h3>
-    </div>
+  <div class="row">
+    <div class="editor-header span12">
+      <div class="header-title span8">
+        <h4>--</h4>
+      </div>
+      <div class="header-buttons span3">
+        <button class="btn" ng-click="close()">Close</button>
+        <button class="btn btn-primary" ng-click="save()">Save</button>
+      </div>
+    </div> <!-- .editor-header -->
+  </div>
 
-    <div class="modal-body">
-        <form name="locationForm">
+  <div class="editor-body">
+      <form name="locationForm">
 
-          <label>Location</label>
-          <input ng-model="location.code" required/>
+        <label>Location</label>
+        <input type="text" ng-model="location.code" required/>
 
-          <!-- <label>Notes</label>
-          <textarea ng-model="location.notes" rows="5"></textarea> -->
-        </form>
-    </div>
+        <!-- <label>Notes</label>
+        <textarea ng-model="location.notes" rows="5"></textarea> -->
+      </form>
+  </div> <!-- .editor-body -->
 
-    <div class="modal-footer">
-      <button class="btn" ng-click="close()" aria-hidden="true">Close</button>
-      <button class="btn btn-primary" ng-click="save()">Save changes</button>
-    </div>
-
-  </div> <!-- #location-editor -->
-
-</div>
+</div> <!-- .location-editor -->

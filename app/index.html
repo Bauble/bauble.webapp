@@ -57,22 +57,22 @@
                 </a>
                 <ul class="dropdown-menu pull-right">
                   <li>
-                    <a class="pull-right" ng-click="newEditor('family')">Family</a>
+                    <a class="pull-right" href="#/new/family">Family</a>
                   </li>
                   <li>
-                    <a class="pull-right" ng-click="newEditor('genus')">Genus</a>
+                    <a class="pull-right" href="#/new/genus">Genus</a>
                   </li>
                   <li>
-                    <a class="pull-right" ng-click="newEditor('taxon')">Taxon</a>
+                    <a class="pull-right" href="#/new/taxon">Taxon</a>
                   </li>
                   <li>
-                    <a class="pull-right" ng-click="newEditor('accession')">Accession</a>
+                    <a class="pull-right" href="#/new/accession">Accession</a>
                   </li>
                   <li>
-                    <a class="pull-right" ng-click="newEditor('plant')">Plant</a>
+                    <a class="pull-right" href="#/new/plant">Plant</a>
                   </li>
                   <li>
-                    <a class="pull-right" ng-click="newEditor('location')">Location</a>
+                    <a class="pull-right" href="#/new/location">Location</a>
                   </li>
                 </ul>
               </li>
@@ -99,10 +99,10 @@
       </div> <!-- .navbar-inner -->
     </div> <!-- .navbar -->
 
-    <div class="container" ng-view></div>
-
-    <!-- the editorContainer will hold the modal editor when a resource is selected from the New menu -->
-    <div id="editorContainer" ng-include="editorTemplate" onload="onEditorLoaded()"></div>
+    <div class="container app-container" ng-view></div>
+    <div class="footer">
+      Bauble &copy; 2005-2013
+    </div>
 
     <!-- build:js scripts/scripts.js -->
     <script src="scripts/app.js"></script>
@@ -132,6 +132,8 @@
     <script src="scripts/controllers/PlantView.js"></script>
     <script src="scripts/controllers/LocationView.js"></script>
     <script src="scripts/directives/emit.js"></script>
+    <script src="scripts/controllers/New.js"></script>
+    <script src="scripts/controllers/Edit.js"></script>
     <!-- endbuild -->
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->

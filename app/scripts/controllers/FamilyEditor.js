@@ -56,7 +56,7 @@ angular.module('BaubleApp')
         };
 
         $scope.close = function() {
-            $scope.showEditor = false;
+            window.history.back();
         }
 
         $scope.save = function() {

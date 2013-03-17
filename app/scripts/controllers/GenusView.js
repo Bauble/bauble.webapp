@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('BaubleApp')
-    .controller('GenusViewCtrl', function ($scope, Genus) {
+    .controller('GenusViewCtrl', function ($scope, $location, Genus) {
 
         $scope.Genus = Genus;
         $scope.genus = {};
@@ -26,9 +26,6 @@ angular.module('BaubleApp')
         };
 
         $scope.$on('genus-edit', function(){
-            $scope.editorTemplate = $scope.viewMeta['editor'];
-            // set this in apply since we're in an event "outside" of angular
-            $scope.$apply('showEditor = true');
+            $location.url('/edit/genus');
         });
-
     });

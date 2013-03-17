@@ -1,12 +1,18 @@
-<div ng-controller="GenusEditorCtrl" modal="showEditor" tabindex="-1" role="dialog"
-     aria-hidden="true" options="modalOptions">
+<div ng-controller="GenusEditorCtrl" class="bauble-editor genus-editor">
 
-  <div class="modal-header">
-    <button type="button" class="close" ng-click="close()" aria-hidden="true">×</button>
-    <h4>--</h4>
+  <div class="row">
+    <div class="editor-header span12">
+      <div class="header-title span8">
+        <h4>--</h4>
+      </div>
+      <div class="header-buttons span3">
+        <button class="btn" ng-click="close()">Close</button>
+        <button class="btn btn-primary" ng-click="save()">Save</button>
+      </div>
+    </div> <!-- .editor-header -->
   </div>
 
-  <div class="modal-body">
+  <div class="editor-body">
 
     <ul class="nav nav-tabs" id="genusEditorTabs">
       <li ng-class="{active: activeTab=='general'}"><a ng-click="activeTab='general'">General</a></li>
@@ -35,11 +41,6 @@
       </div>
 
     </div> <!-- .tab-content -->
-  </div> <!-- .model-body -->
-
-  <div class="modal-footer">
-      <button class="btn" ng-click="close()" aria-hidden="true">Close</button>
-      <button class="btn btn-primary" ng-click="save()">Save changes</button>
-  </div>
+  </div> <!-- .editor-body -->
 
 </div>

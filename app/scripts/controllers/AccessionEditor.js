@@ -1,12 +1,72 @@
 'use strict';
 
+var prov_type_values = {
+    'Wild': 'Wild',
+    'Cultivated': 'Propagule of cultivated wild plant',
+    'NotWild': "Not of wild source",
+    'InsufficientData': "Insufficient Data",
+    'Unknown': "Unknown",
+    None: ''};
+
+
+var wild_prov_status_values = {
+    'WildNative': "Wild native",
+    'WildNonNative': "Wild non-native",
+    'CultivatedNative': "Cultivated native",
+    'InsufficientData': "Insufficient Data",
+    'Unknown': "Unknown",
+    None: ''};
+
+
+var recvd_type_values = {
+    'ALAY': 'Air layer',
+    'BBPL': 'Balled & burlapped plant',
+    'BRPL': 'Bare root plant',
+    'BUDC': 'Bud cutting',
+    'BUDD': 'Budded',
+    'BULB': 'Bulb',
+    'CLUM': 'Clump',
+    'CORM': 'Corm',
+    'DIVI': 'Division',
+    'GRAF': 'Graft',
+    'LAYE': 'Layer',
+    'PLNT': 'Plant',
+    'PSBU': 'Pseudobulb',
+    'RCUT': 'Rooted cutting',
+    'RHIZ': 'Rhizome',
+    'ROOC': 'Root cutting',
+    'ROOT': 'Root',
+    'SCIO': 'Scion',
+    'SEDL': 'Seedling',
+    'SEED': 'Seed',
+    'SPOR': 'Spore',
+    'SPRL': 'Sporeling',
+    'TUBE': 'Tuber',
+    'UNKN': 'Unknown',
+    'URCU': 'Unrooted cutting',
+    'BBIL': 'Bulbil',
+    'VEGS': 'Vegetative spreading',
+    'SCKR': 'Root sucker',
+    None: ''
+    };
+
 angular.module('BaubleApp')
     .controller('AccessionEditorCtrl', function ($scope, Taxon, Accession) {
         $scope.Accession = Accession;
         $scope.accession = {};
 
         $scope.families = []; // the list of completions
+        $scope.id_qualifiers = ["?", "aff.", "cf.", "forsan", "incorrect", "near"];
+
         $scope.activeTab = "general";
+
+        $scope.modalOptions = {
+            dialogClass: 'modal accession-editor'
+        };
+
+        $scope.prov_type_values = prov_type_values;
+        $scope.wild_prov_status_values = wild_prov_status_values;
+        $scope.recvd_type_values = recvd_type_values;
 
         // get the accession details when the selection is changed
         $scope.$watch('selected', function() {
@@ -16,7 +76,7 @@ angular.module('BaubleApp')
             });
         });
 
-        $scope.selectOptions = {
+        $scope.taxonSelectOptions = {
             minimumInputLength: 1,
 
             formatResult: function(object, container, query) { return object.str; },
@@ -41,7 +101,7 @@ angular.module('BaubleApp')
         };
 
         $scope.close = function() {
-            $scope.showEditor = false;
+            window.history.back();
         }
 
         // called when the save button is clicked on the editor

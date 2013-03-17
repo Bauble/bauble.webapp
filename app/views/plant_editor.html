@@ -1,29 +1,27 @@
-<div ng-controller="PlantEditorCtrl" modal="showEditor" class="bauble-editor" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width:940px; margin-left:-470px;">
+<div ng-controller="PlantEditorCtrl" class="bauble-editor plant-editor">
 
-  <div id="plant-editor">
-    <div class="modal-header">
-      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-      <h3 id="myModalLabel">Plant</h3>
-    </div>
+  <div class="row">
+    <div class="editor-header span12">
+      <div class="header-title span8">
+        <h4>--</h4>
+      </div>
+      <div class="header-buttons span3">
+        <button class="btn" ng-click="close()">Close</button>
+        <button class="btn btn-primary" ng-click="save()">Save</button>
+      </div>
+    </div> <!-- .editor-header -->
+  </div>
 
-    <div class="modal-body">
-        <form name="genusForm">
+  <div class="editor-body">
+      <form>
+        <label>Accession</label>
+        <input id="accessionField" style="width: 200px" ui-select2="multiOptions" ng-model="accession"/>
 
-          <label>Accession</label>
-          <input id="accessionField" style="width: 200px" ui-select2="multiOptions" ng-model="accession"/>
+        <label>Plant</label>
+        <input ng-model="plant.code" required/>
 
-          <label>Plant</label>
-          <input ng-model="plant.code" required/>
-
-          <!-- <label>Notes</label>
-          <textarea ng-model="genus.notes" rows="5"></textarea> -->
-        </form>
-    </div>
-
-    <div class="modal-footer">
-      <button class="btn" ng-click="close()" aria-hidden="true">Close</button>
-      <button class="btn btn-primary" ng-click="save()">Save changes</button>
-    </div>
-
-  </div> <!-- #plant-editor -->
-</div>
+        <!-- <label>Notes</label>
+        <textarea ng-model="genus.notes" rows="5"></textarea> -->
+      </form>
+  </div> <!-- .editor-body -->
+</div> <!-- .plant-editor -->

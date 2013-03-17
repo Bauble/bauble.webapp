@@ -1,76 +1,121 @@
-// @import "compass_twitter_bootstrap";
+
+$footer-height: 200px;
 
 // add padding to acount for the navbar
 body {
   padding-top: 40px;
 }
+
 @media (max-width: 979px) {
   body {
     padding-top: 0px;
   }
 }
 
+.app-container {
+
+}
+
 .menu {
   list-style: none;
   border-bottom: 0.1em solid black;
   margin-bottom: 2em;
+
+  &:before {
+    content: "[";
+  }
+
+  &:after {
+    content: "]";
+  }
+
+  & > li {
+    display: inline;
+  }
+
+  & > li:before {
+    content: "|";
+    padding-right: 0.3em;
+  }
+
+  & > li:nth-child(1):before {
+    content: "";
+    padding: 0;
+  }
 }
 
-.menu:before {
-  content: "[";
+.footer {
+  height: $footer-height;
+  background-color: #F5F5F5;
+  border: solid 1px #ccc;
+  margin-top: 50px;
 }
 
-.menu:after {
-  content: "]";
+.search-box {
+  padding: 15px 15px;
+  margin-bottom: 25px;
+  background-color: #F5F5F5;
+  border: solid 1px #CCC;
 }
 
-.menu > li {
-  display: inline;
+.results-list {
+  ul {
+    margin-left: 0;
+  }
+
+  .search-result-item {
+    list-style-type: none;
+    background-image: none;
+    background-color: #f7f7f7;
+    margin: 5px 0;
+    border: solid #ccc 1px;
+    padding: 10px 5px;
+  }
+
+  .search-result-item-hover {
+    background-color: #eee;
+  }
+
+  .search-result-item .search-result-expand {
+  }
+
+  .search-result-item .search-result-link {
+
+  }
 }
-
-.menu > li:before {
-  content: "|";
-  padding-right: 0.3em;
-}
-
-.menu > li:nth-child(1):before {
-  content: "";
-  padding: 0;
-}
-
-.search-result-item {
-  list-style-type: none;
-  background-image: none;
-  background-color: #f7f7f7;
-  margin: 5px 0;
-  border: solid #ccc 1px;
-  padding: 10px 5px;
-}
-
-.search-result-item-hover {
-  background-color: #eee;
-}
-
-/*.search-result-item {*/
-
-.search-result-item .search-result-expand {
-}
-
-.search-result-item .search-result-link {
-
-}
-
 
 /*.bauble-editor label + input {
   margin-left: 10px;
 }*/
 
-.bauble-editor2 {
+.bauble-editor {
   label + textarea {
     /*margin-left: 10px;*/
   }
 
+
+  .editor-header {
+    background-color: #F5F5F5;
+    border: solid 1px #ccc;
+    padding: 5px 5px;
+    margin-bottom: 10px;
+
+    .header-title {
+
+    }
+
+    .header-buttons {
+      text-align: right;
+    }
+  }
+
+  .editor-body {
+    margin-bottom: 25px;
+    height: 100%;
+  }
+
   /* usually when there's multple inputs/labels on a line */
+  /*
   input + label {
     margin-left: 25px;
   }
@@ -95,13 +140,14 @@ body {
   .accordion-heading {
     background-color: #f7f7f7;
   }
+  */
 }
 
 .family-editor {
 
-  .tab-content {
-    height: 200px;
-  }
+  // .tab-content {
+  //   height: 200px;
+  // }
 
   $label-width: 75px;
   .control-label {
@@ -118,8 +164,6 @@ body {
 }
 
 .taxon-editor {
-    width: 900px;
-    margin-left: -450px;
 
     $label-width: 75px;
     .group1 .control-label {
@@ -167,7 +211,6 @@ body {
     }
 
     .synonyms-container {
-
       label {
         font-weight: bold;
       }
@@ -179,10 +222,6 @@ body {
 }
 
 
-.search-box {
-  padding: 0 15px;
-  margin-bottom: 25px;
-}
 
 .filters-row {
   padding: 5px 0 5px 0;

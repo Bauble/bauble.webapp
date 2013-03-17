@@ -22,6 +22,16 @@ angular.module('BaubleApp', ['ui', 'ui.bootstrap'])
                 controller: 'AdminCtrl'
             })
 
+            .when('/new/:resource', {
+                templateUrl: 'views/new.html',
+                controller: 'NewCtrl'
+            })
+
+            .when('/edit/:resource', {
+                templateUrl: 'views/edit.html',
+                controller: 'EditCtrl'
+            })
+
             .when('/reporter', {
                 templateUrl: 'views/report_design.html',
                 controller: 'ReporterCtrl'

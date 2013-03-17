@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('BaubleApp')
-    .controller('FamilyViewCtrl', function ($scope, Family) {
+    .controller('FamilyViewCtrl', function ($scope, $location, Family) {
 
         $scope.family = {};
         $scope.Family = Family;
@@ -25,10 +25,6 @@ angular.module('BaubleApp')
         };
 
         $scope.$on('family-edit', function(){
-            $scope.editorTemplate = $scope.viewMeta['editor'];
-            // set this in apply since we're in an event "outside" of angular
-            $scope.$apply('showEditor = true');
-            console.log('$scope.editorTemplate: ', $scope.editorTemplate);
-            console.log('$scope.showEditor: ', $scope.showEditor);
+            $location.url('/edit/family');
         });
     });

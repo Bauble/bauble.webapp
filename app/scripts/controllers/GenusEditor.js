@@ -46,7 +46,7 @@ angular.module('BaubleApp')
         };
 
         $scope.close = function() {
-            $scope.showEditor = false;
+            window.history.back();
         }
 
         // called when the save button is clicked on the editor
