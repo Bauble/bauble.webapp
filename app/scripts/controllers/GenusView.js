@@ -13,19 +13,9 @@ angular.module('BaubleApp')
             });
         });
 
-        $scope.onEditorLoaded = function() {
-            // remove the template after the dialog is hidden
-            console.log('onEditorLoaded');
-            var el = $('#genusEditorContainer div').first();
-            el.on('hide', function() {
-                $scope.editorTemplate = false;
-                //$scope.showEditor = false;
-                $scope.testShow = false;
-
-            });
-        };
-
         $scope.$on('genus-edit', function(){
-            $location.url('/edit/genus');
+            $scope.$apply(function() {
+                $location.path('/edit/genus')
+            });
         });
     });

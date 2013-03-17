@@ -15,16 +15,9 @@ angular.module('BaubleApp')
             });
         //}
 
-        $scope.onEditorLoaded = function() {
-            // remove the template after the dialog is hidden
-            var el = $('#familyEditorContainer div').first();
-            el.on('hide', function() {
-                $scope.editorTemplate = null;
-                $scope.showEditor = false;
-            });
-        };
-
         $scope.$on('family-edit', function(){
-            $location.url('/edit/family');
+            $scope.$apply(function() {
+                $location.path('/edit/family')
+            });
         });
     });

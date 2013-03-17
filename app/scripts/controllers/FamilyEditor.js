@@ -21,8 +21,6 @@ angular.module('BaubleApp')
             });
         }
 
-
-
         $scope.selectOptions = {
             minimumInputLength: 1,
 
