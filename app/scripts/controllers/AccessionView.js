@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('BaubleApp')
-    .controller('AccessionViewCtrl', function ($scope, Accession) {
+    .controller('AccessionViewCtrl', function ($scope, $location, Accession) {
         $scope.Accession = Accession;
         $scope.accession = {};
 

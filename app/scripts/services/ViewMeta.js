@@ -5,6 +5,32 @@ angular.module('BaubleApp')
         ['FamilyView', 'GenusView', 'TaxonView', 'AccessionView', 'PlantView', 'LocationView',
             function(FamilyView, GenusView, TaxonView, AccessionView, PlantView, LocationView) {
         return {
+            getView: function(ref)  {
+                // allow get the view based on the ref
+                switch(true) {
+                    case /\/family/.test(ref):
+                        return FamilyView;
+                        break
+                    case /\/genus/.test(ref):
+                        return GenusView;
+                        break
+                    case /\/taxon/.test(ref):
+                        return TaxonView;
+                        break
+                    case /\/accession/.test(ref):
+                        return AccessionView;
+                        break
+                    case /\/plant/.test(ref):
+                        return PlantView;
+                        break
+                    case /\/location/.test(ref):
+                        return LocationView;
+                        break
+                    default:
+                        return null;
+                        break;
+                }
+            },
             'family': FamilyView,
             'genus': GenusView,
             'taxon': TaxonView,
@@ -59,9 +85,9 @@ angular.module('BaubleApp')
             view: "views/accession_view.html",
 
             buttons: [
-                { name: "Edit", event: "acc-edit" },
-                { name: "Add Plant", event: 'acc-addplant' }, // add plant to selected Accession,
-                { name: "Delete",  event: 'acc-delete' } // delete the selected Accession
+                { name: "Edit", event: "accession-edit" },
+                { name: "Add Plant", event: 'accession-addplant' }, // add plant to selected Accession,
+                { name: "Delete",  event: 'accession-delete' } // delete the selected Accession
             ]
         };
     }])

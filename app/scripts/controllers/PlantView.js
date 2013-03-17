@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('BaubleApp')
-    .controller('PlantViewCtrl', function ($scope, Plant) {
+    .controller('PlantViewCtrl', function ($scope, $location, Plant) {
         $scope.Plant = Plant;
         $scope.plant = {};
 

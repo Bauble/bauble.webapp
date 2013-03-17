@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('BaubleApp')
-    .controller('TaxonViewCtrl', function ($scope, Taxon) {
+    .controller('TaxonViewCtrl', function ($scope, $location, Taxon) {
         $scope.Taxon = Taxon;
         $scope.taxon = {};
 

@@ -24,10 +24,8 @@ angular.module('BaubleApp')
     };
 
     $scope.itemSelected = function(selected) {
-        $scope.viewMeta = ViewMeta[selected.resource];
+        $scope.viewMeta = ViewMeta.getView(selected.ref);
         $scope.selected = selected;
-        console.log('$scope.viewMeta: ', $scope.viewMeta);
-        console.log('$scope.selected: ', $scope.selected);
     };
 
     $scope.itemExpanded = function() {

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('BaubleApp')
-    .controller('LocationViewCtrl', function ($scope, Location) {
+    .controller('LocationViewCtrl', function ($scope, $location, Location) {
         $scope.Location = Location;
         $scope.location = {};
 
