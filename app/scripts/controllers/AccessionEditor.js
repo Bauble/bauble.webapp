@@ -53,7 +53,7 @@ var recvd_type_values = {
 angular.module('BaubleApp')
     .controller('AccessionEditorCtrl', function ($scope, Taxon, Accession) {
         $scope.Accession = Accession;
-        $scope.accession = {date_accd: new Date(), accession.date_recvd: new Date()};
+        $scope.accession = {date_accd: new Date(), date_recvd: new Date()};
 
         $scope.families = []; // the list of completions
         $scope.id_qualifiers = ["?", "aff.", "cf.", "forsan", "incorrect", "near"];
