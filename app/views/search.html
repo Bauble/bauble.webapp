@@ -1,21 +1,24 @@
-
-<!-- <div class="container"> -->
-
-  <!-- <div class="row-fluid"> -->
+<div class="row">
+  <div class="span12">
     <div class="search-box">
-      <form>
-      <div class="input-prepend input-append">
-        <span class="addon-on"><button class="btn" type="button"><i class="icon-cog"></i></button></span>
-        <input id="search-field" ng-model="q" type="search" class="appendedInputButtons input-xxlarge"/>
-        <input class="btn" type="submit" ng-click="Search(q)">Search</input>
-      </div>
-    </form>
-    </div>
-  <!-- </div> -->
+      <!-- <form> -->
+        <div class="input-prepend input-append">
+          <span class="addon-on"><button class="btn" type="button"><i class="icon-cog"></i></button></span>
+          <input id="search-field" ng-model="q" type="search" class="appendedInputButtons input-xxlarge"/>
+          <input class="btn" type="submit" ng-click="Search(q)">Search</input>
+        </div>
+      <!-- </form>-->
+    </div> <!-- .search-box -->
+  </div> <!-- .span12 -->
+</div> <!-- .row -->
 
-<!-- <div class="container"> -->
-  <div class="row">
-    <div class="span4">
+<div>
+  TODO: List of saved searches or search history
+</div>
+
+<div class="row">
+  <div class="span12">
+    <div class="span4 results-list">
       <ul>
         <div ng-repeat="result in results">
             <li class="search-result-item"  ng-click="itemSelected(result)" ng-mouseenter="mouseEnterItem($event)" ng-mouseleave="mouseLeaveItem($event)">
@@ -26,16 +29,11 @@
             </li>
         </div>
       </ul>
-    </div>
+    </div> <!-- .span4 -->
 
     <div class="span8">
       <div ng-include src="viewMeta.view" class="resource-view"></div>
-    </div>
+    </div> <!-- .span8 -->
 
-    <div id="editorModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-      <div ng-include src="editor"></div>
-    </div>
-
-  </div>
-
-<!-- </div> -->
+  </div> <!-- .span12 -->
+</div> <!-- .row -->
