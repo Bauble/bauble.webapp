@@ -21,7 +21,7 @@ angular.module('BaubleApp')
             });
         });
 
-        $scope.selectOptions = {
+        $scope.familySelectOptions = {
             minimumInputLength: 1,
 
             formatResult: function(object, container, query) { return object.str; },
