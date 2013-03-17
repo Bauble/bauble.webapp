@@ -22,16 +22,27 @@
     <div class="tab-content" ng-switch="activeTab">
 
       <div class="tab-pane active" ng-switch-when="general">
-        <form name="genusForm">
+        <form class="form-horizontal">
+          <div class="control-group">
+            <label class="control-label">Family</label>
+            <div class="controls">
+              <input ui-select2="familySelectOptions" id="familyField" style="width: 200px" ng-model="genus.family"/>
+            </div>
+          </div>
 
-          <label>Family</label>
-          <input id="familyField" style="width: 200px" ui-select2="selectOptions" ng-model="genus.family"/>
+          <div class="control-group">
+            <label class="control-label">Genus</label>
+            <div class="controls">
+              <input type="text", ng-model="genus.genus" required/>
+            </div>
+          </div>
 
-          <label>Genus</label>
-          <input type="text", ng-model="genus.genus" required/>
-
-          <label>Author</label>
-          <input type="text" ng-model="genus.author" required/>
+          <div class="control-group">
+            <label class="control-label">Author</label>
+            <div class="controls">
+              <input type="text" ng-model="genus.author" required/>
+            </div>
+          </div>
 
         </form>
       </div>
