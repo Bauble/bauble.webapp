@@ -97,7 +97,6 @@ body {
     /*margin-left: 10px;*/
   }
 
-
   .editor-header {
     background-color: #F5F5F5;
     border: solid 1px #ccc;
@@ -116,6 +115,17 @@ body {
   .editor-body {
     margin-bottom: 25px;
     height: 100%;
+  }
+
+  .editor-section {
+    h5 {
+      background-color: #F5F5F5;
+      padding-left: 10px;
+      line-height: 2em;
+    }
+    // & > div {
+    //   margin-left: 25px;
+    // }
   }
 
   /* usually when there's multple inputs/labels on a line */
@@ -225,6 +235,68 @@ body {
     }
 }
 
+
+.accession-editor {
+  $label-width: 100px;
+
+  .taxon-section {
+    .select2-container {
+      width: 50%;
+    }
+    label {
+      width: $label-width;
+    }
+    .controls {
+      margin-left: $label-width + 10px;
+    }
+  }
+
+  .accession-section {
+    label {
+      width: $label-width;
+    }
+    .controls {
+      margin-left: $label-width + 10px;
+    }
+    .group1 {
+      display: inline-block;
+    }
+
+    .group2 {
+      display: inline-block;
+      vertical-align: top;
+      label {
+        width: $label-width+25px;
+      }
+      .controls {
+        margin-left: $label-width + 25px + 10px;
+      }
+    }
+
+  }
+  .id-qual-group {
+    display: inline-block;
+  }
+  .qual-rank-group {
+    margin-left: 25px;
+    display: inline-block;
+  }
+
+  .source-tab {
+    .source-select-box {
+      $label-width: 75px;
+      label {
+        width: $label-width;
+      }
+      .controls {
+        margin-left: $label-width + 10px;
+      }
+      .select2-container {
+        width: 50%;
+      }
+    }
+  }
+}
 
 
 .filters-row {
