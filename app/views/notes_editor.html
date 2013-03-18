@@ -1,4 +1,4 @@
-<div ng-controller="NotesEditorCtrl" id="notesEditor" class="bauble-editor">
+<div ng-form name="notesForm" ng-controller="NotesEditorCtrl" id="notesEditor" class="bauble-editor">
 
   <button class="btn" ng-click="addNote()">Add Note</button>
 
@@ -13,8 +13,7 @@
       <div id="collapseOne" class="accordion-body collapse in">
         <div class="accordion-inner">
 
-          <form class="form-inline">
-
+          <div ng-form class="form-inline" novalidate>
             <label class="control-label" for="inputUser">User</label>
             <input class="input-large" type="text" ng-model="note.user" id="inputUser" placeholder="Your name">
 
@@ -29,11 +28,12 @@
             <label class="control-label" for="inputNote">Note</label>
             <textarea class="span5" id="inputNote" ng-model="note.note" rows="5"></textarea>
 
-          </form>
-
+          </div> <!-- ng-form -->
         </div> <!-- accordion-inner -->
       </div> <!-- accordion-body -->
     </div> <!-- accordion-group -->
+
   </div> <!-- accordion -->
+
 
 </div> <!-- notedEditor -->
