@@ -96,14 +96,14 @@
             <div class="control-group">
               <label class="control-label">Date Received</label>
               <div class="controls">
-                <input ui-date ng-model="accession.date_recvd" type="text" class="input-small"/>
+                <input ui-date ng-model="accession.date_recvd" type="text"/>
               </div>
             </div>
 
             <div class="control-group">
               <label class="control-label">Date Accessioned</label>
               <div class="controls">
-                <input ui-date ng-model="accession.date_accd" type="text" class="input-small"/>
+                <input ui-date ng-model="accession.date_accd" type="text"/>
               </div>
             </div>
           </div> <!-- .group2 -->
@@ -175,100 +175,131 @@
               <div class="control-group">
                 <label class="control-label">Locale</label>
                 <div class="controls">
-                  <input type=text ng-model="source.collection.locale"/>
+                  <input type="text" ng-model="source.collection.locale" class="span6"/>
                 </div> <!-- .controls -->
               </div> <!-- .control-group -->
 
               <div class="control-group">
                 <label class="control-label">Region</label>
                 <div class="controls">
-                  <input type=text ng-model="source.collection.region"/>
+                  <input type="text" ng-model="source.collection.region"/>
                 </div> <!-- .controls -->
               </div> <!-- .control-group -->
 
               <div class="control-group">
                 <label class="control-label">Collector</label>
                 <div class="controls">
-                  <input type=text ng-model="source.collection.collector"/>
+                  <input type="text" ng-model="source.collection.collector"/>
                 </div> <!-- .controls -->
               </div> <!-- .control-group -->
 
               <div class="control-group">
                 <label class="control-label">Collection ID</label>
                 <div class="controls">
-                  <input type=text ng-model="source.collection.collectors_code"/>
+                  <input type="text" ng-model="source.collection.collectors_code"/>
                 </div> <!-- .controls -->
               </div> <!-- .control-group -->
 
               <div class="control-group">
                 <label class="control-label">Date</label>
                 <div class="controls">
-                  <input type=text ng-model="source.collection.date"/>
+                  <input ui-date ng-model="source.collection.date" type="text"/>
                 </div> <!-- .controls -->
               </div> <!-- .control-group -->
 
               <div class="control-group">
                 <label class="control-label">Notes</label>
                 <div class="controls">
-                  <input type=text ng-model="source.collection.notes"/>
+                  <textarea ng-model="source.collection.notes" class="span6"></textarea>
                 </div> <!-- .controls -->
               </div> <!-- .control-group -->
 
               <div class="editor-section">
                 <h5>Location Details</h5>
-                <div class="control-group">
-                  <label class="control-label">Latitude</label>
-                  <div class="controls">
-                    <input type=text ng-model="source.collection.latitude"/>
-                  </div> <!-- .controls -->
-                </div> <!-- .control-group -->
 
-                <div class="control-group">
-                  <label class="control-label">Longitude</label>
-                  <div class="controls">
-                    <input type=text ng-model="source.collection.longitude"/>
-                  </div> <!-- .controls -->
-                </div> <!-- .control-group -->
+                <div class="long-lat-group">
+                  <div class="control-group">
+                    <label class="control-label">Latitude</label>
+                    <div class="controls">
+                      <input type="text" ng-model="source.collection.latitude" class="input-small"/>
+                      <input type="radio" name="north_south_group" value="North" checked/>North
+                      <input type="radio" name="north_south_group" value="South"/>South
+                    </div> <!-- .controls -->
+                  </div> <!-- .control-group -->
+
+                  <div class="control-group">
+                    <label class="control-label">Longitude</label>
+                    <div class="controls">
+                      <input type="text" ng-model="source.collection.longitude" class="input-small"/>
+                      <input type="radio" name="east_west_group" value="East" checked/>East
+                      <input type="radio" name="east_west_group" value="West"/>West
+                    </div> <!-- .controls -->
+                  </div> <!-- .control-group -->
+                </div> <!-- long-lat-group -->
 
                 <div class="control-group">
                   <label class="control-label">Accuracy</label>
                   <div class="controls">
-                    <input type=text ng-model="source.collection.geo_accy"/>
+                    <div class="input-prepend input-append">
+                        <span class="add-on">+/-</span>
+                        <input type="text" ng-model="source.collection.geo_accy" class="span1"/>
+                        <span class="add-on">m</span>
+                      </div>
                   </div> <!-- .controls -->
                 </div> <!-- .control-group -->
 
                 <div class="control-group">
                   <label class="control-label">GPS Datum</label>
                   <div class="controls">
-                    <input type=text ng-model="source.collection.gps_datum"/>
+                    <input type="text" ng-model="source.collection.gps_datum" class="input-medium"/>
                   </div> <!-- .controls -->
                 </div> <!-- .control-group -->
 
-                <div class="control-group">
-                  <label class="control-label">Altitude/Depth</label>
-                  <div class="controls">
-                    <input type=text ng-model="source.collection.elevation"/>
-                  </div> <!-- .controls -->
-                </div> <!-- .control-group -->
-
-                <div class="control-group">
-                  <label class="control-label">+/-</label>
-                  <div class="controls">
-                    <input type=text ng-model="source.collection.elevation_accy"/>
-                  </div> <!-- .controls -->
-                </div> <!-- .control-group -->
+                <div class="altitude-group">
+                  <div class="control-group">
+                    <label class="control-label">Altitude/Depth</label>
+                    <div class="controls">
+                      <input type="text" ng-model="source.collection.elevation" class="span1"/>
+                      <div class="input-prepend input-append">
+                        <span class="add-on">+/-</span>
+                        <input type="text" ng-model="source.collection.elevation_accy" class="span1"/>
+                        <span class="add-on">m</span>
+                      </div>
+                    </div> <!-- .controls -->
+                  </div> <!-- .control-group -->
+                </div> <!-- .altitude-group -->
 
                 <div class="control-group">
                   <label class="control-label">Habitat description</label>
                   <div class="controls">
-                    <input type=text ng-model="source.collection.habitate"/>
+                    <textarea class="span6" ng-model="source.collection.habitat"></textarea>
                   </div> <!-- .controls -->
                 </div> <!-- .control-group -->
               </div> <!-- .editor-section -->
             </accordion-group>
 
             <accordion-group heading="Propagation of source material">
-              Source material propm
+
+            <div class="control-group">
+              <label class="control-label">Propgation Type</label>
+              <div class="controls">
+                <select ng-model="accession.source.propagation.prop_type">
+                  <option value="Seed">Seed</option>
+                  <option value="UnrootedCutting">Cutting</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+            </div> <!-- .control-group -->
+
+            <div class="control-group">
+              <label class="control-label">Date</label>
+              <div class="controls">
+                <input ui-date ng-model="accession.source.propagation.date" type="text"/>
+              </div>
+            </div>
+
+            <div ng-include="propagation_views[accession.source.propagation.prop_type]"></div>
+
             </accordion-group>
           </accordion>
 
@@ -277,6 +308,59 @@
       </div> <!-- .tab-pane source -->
 
       <div class="tab-pane active" ng-switch-when="verification">
+
+        <accordion>
+            <accordion-group ng-repeat="verification in accession.verifications" heading="Verification">
+            <div class="control-group">
+              <label class="control-label">Verifier</label>
+              <div class="controls">
+                <input type="text" ng-model="verification.verifier"/>
+              </div> <!-- .controls -->
+            </div> <!-- .control-group -->
+
+            <div class="control-group">
+              <label class="control-label">Date</label>
+              <div class="controls">
+                <input ui-date type="text" ng-model="verification.date"/>
+              </div> <!-- .controls -->
+            </div> <!-- .control-group -->
+
+            <div class="control-group">
+              <label class="control-label">New taxon</label>
+              <div class="controls">
+                <input type="text" ng-model="verification.taxon"/>
+              </div> <!-- .controls -->
+            </div> <!-- .control-group -->
+
+            <div class="control-group">
+              <label class="control-label">Previous taxon</label>
+              <div class="controls">
+                <input type="text" ng-model="verification.prev_taxon"/>
+              </div> <!-- .controls -->
+            </div> <!-- .control-group -->
+
+            <div class="control-group">
+              <label class="control-label">Level</label>
+              <div class="controls">
+                <input type="text" ng-model="verification.level"/>
+              </div> <!-- .controls -->
+            </div> <!-- .control-group -->
+
+            <div class="control-group">
+              <label class="control-label">Reference</label>
+              <div class="controls">
+                <input type="text" ng-model="verification.reference"/>
+              </div> <!-- .controls -->
+            </div> <!-- .control-group -->
+
+            <div class="control-group">
+              <label class="control-label">Notes</label>
+              <div class="controls">
+                <textarea type="text" ng-model="verification.notes"></textarea>
+              </div> <!-- .controls -->
+            </div> <!-- .control-group -->
+
+
       </div> <!-- .tab-pane verification -->
 
       <div class="tab-pane active" ng-switch-when="voucher">

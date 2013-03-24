@@ -128,6 +128,10 @@ body {
     // }
   }
 
+  input[ui-date] {
+    width: 90px;  // same size as .input-small
+  }
+
   /* usually when there's multple inputs/labels on a line */
   /*
   input + label {
@@ -293,6 +297,24 @@ body {
       }
       .select2-container {
         width: 50%;
+      }
+    }
+
+    // .locale-group input {
+    //   width: 50%;
+    // }
+
+    .long-lat-group {
+      .control-group {
+        display: inline-block;
+      }
+
+      input {
+        display: inline-block;
+      }
+
+      input[type="radio"] {
+        margin: 0 5px 0 10px;
       }
     }
   }

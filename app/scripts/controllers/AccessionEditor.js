@@ -68,6 +68,16 @@ angular.module('BaubleApp')
         $scope.wild_prov_status_values = wild_prov_status_values;
         $scope.recvd_type_values = recvd_type_values;
 
+        $scope.propagation_views = {
+            "Seed": "views/prop_seed.html",
+            "UnrootedCutting": "views/prop_cutting.html",
+            "Other": null
+        }
+
+        if(angular.isUndefined($scope.accession.verifications)) {
+            $scope.accession.verifications = [{}];
+        }
+
         // get the accession details when the selection is changed
         $scope.$watch('selected', function() {
             if(! $scope.selected) return;
