@@ -22,15 +22,15 @@
 
           <div class="tab-pane active" ng-switch-when="general">
 
-              <form name="familyForm" class="form-horizontal">
-
+              <form class="form-horizontal" novalidate>
                 <div class="control-group">
-                  <label class="control-label" for="inputFamily">Family</label>
+                  <label class="control-label" for="inputFamily" novalidate>Family</label>
                   <div class="controls">
-                    <input type="text" ng-model="family.family" id="inputFamily" required>
+                    <input type="text" ng-model="family.family" id="inputFamily" name="family" required>
                   </div>
                 </div>
 
+                <!--
                 <div class="control-group">
                   <label class="control-label" for="inputQualifier">Qualifier</label>
                   <div class="controls">
@@ -40,14 +40,14 @@
                     </select>
                   </span>
                 </div>
-                </div>
+                </div> -->
 
-              </form>
+              </form> <!-- ng-form -->
 
             <div>
               <label>Synonyms</label>
               <div>
-                <input id="familySynonymField" style="width: 200px" ui-select2="selectOptions" ng-model="selectedSyn"/>
+                <input id="familySynonymField" ui-select2="selectOptions" ng-model="selectedSyn" class="input-large" /></input>
                 <button class="btn" ng-click="addSynonym(selectedSyn); selectedSyn=null;" ng-disabled="!selectedSyn">Add</button>
               </div>
               <ul>
