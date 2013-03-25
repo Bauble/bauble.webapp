@@ -1,4 +1,4 @@
-<div ng-controller="PlantEditorCtrl" class="bauble-editor plant-editor">
+<div ng-form ng-controller="PlantEditorCtrl" class="bauble-editor plant-editor">
 
   <div class="row">
     <div class="editor-header span12">
@@ -10,18 +10,104 @@
         <button class="btn btn-primary" ng-click="save()">Save</button>
       </div>
     </div> <!-- .editor-header -->
-  </div>
+  </div> <!-- .row -->
 
   <div class="editor-body">
-      <form>
-        <label>Accession</label>
-        <input id="accessionField" style="width: 200px" ui-select2="multiOptions" ng-model="accession"/>
 
-        <label>Plant</label>
-        <input ng-model="plant.code" required/>
+    <ul class="nav nav-tabs">
+      <li ng-class="{active: activeTab=='general'}">
+        <a ng-click="activeTab='general'">General</a>
+      </li>
+      <li ng-class="{active: activeTab=='propagation'}">
+        <a ng-click="activeTab='propagation'">Propagation</a>
+      </li>
+      <li ng-class="{active: activeTab=='notes'}">
+        <a ng-click="activeTab='notes'">Notes</a>
+      </li>
+    </ul> <!-- .nav .nav-tabs -->
 
-        <!-- <label>Notes</label>
-        <textarea ng-model="genus.notes" rows="5"></textarea> -->
-      </form>
+      <div class="tab-content" ng-switch="activeTab">
+
+        <div class="tab-pane active" ng-switch-when="general">
+
+          <div class="form-horizontal">
+
+            <div class="control-group">
+              <label class="control-label">Accession</label>
+              <div class="controls">
+                <input ui-select2="accSelectOptions" ng-model="plant.accession_id" class="input-large"/>
+              </div>
+            </div> <!-- .control-group -->
+
+            <div class="control-group">
+              <label class="control-label">Plant code</label>
+              <div class="controls">
+                <input type="text" ng-model="plant.code" class="input-small" required/>
+              </div>
+            </div> <!-- .control-group -->
+
+            <div class="control-group">
+              <label class="control-label">Accession type</label>
+              <div class="controls">
+                <select ng-model="plant.acc_type" ng-options="value as text for (value, text) in acc_type_values"></select>
+              </div>
+            </div> <!-- .control-group -->
+
+
+            <div class="control-group">
+              <label class="control-label">Memorial</label>
+              <div class="controls">
+                <input type="text" ng-model="plant.code" required/>
+              </div>
+            </div> <!-- .control-group -->
+
+            <div class="control-group">
+              <label class="control-label">Quantity</label>
+              <div class="controls">
+                <input type="text" ng-model="plant.code" class="span1" required/>
+              </div>
+            </div> <!-- .control-group -->
+
+            <div class="control-group">
+              <label class="control-label">Location</label>
+              <div class="controls">
+
+              </div>
+            </div> <!-- .control-group -->
+
+            <div class="editor-section">
+              <h5>Current change</h5>
+              <div class="control-group">
+                <label class="control-label">Reason</label>
+                <div class="controls">
+                  <input type="text" ng-model="plant.code" required/>
+                </div>
+              </div> <!-- .control-group -->
+
+              <div class="control-group">
+                <label class="control-label">Date</label>
+                <div class="controls">
+                  <input ui-date type="text" ng-model="plant.code" required/>
+                </div>
+              </div> <!-- .control-group -->
+            </div> <!-- .editor-section -->
+
+
+          </div> <!-- .form-horizontal -->
+
+        </div> <!-- .tab-pane -->
+
+        <div class="tab-pane active" ng-switch-when="propagation">
+          <div ng-include="'views/prop_editor.html'"></div>
+        </div> <!-- .tab-pane -->
+
+
+        <div class="tab-pane active" ng-switch-when="notes">
+          <div ng-include="'views/notes_editor.html'"></div>
+        </div> <!-- .tab-pane -->
+
+
+      </div>  <!-- .tab-content -->
+
   </div> <!-- .editor-body -->
 </div> <!-- .plant-editor -->

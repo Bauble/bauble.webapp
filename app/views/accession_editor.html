@@ -36,7 +36,7 @@
 
       <div class="tab-pane active" ng-switch-when="general">
 
-        <form class="form-horizontal">
+        <div ng-form class="form-horizontal">
 
           <div class="editor-section taxon-section">
             <h5>Taxon</h5>
@@ -153,12 +153,12 @@
             </div>
           </div> <!-- .editor-section -->
 
-        </form>
+        </div> <!-- .form-horizontal -->
 
       </div> <!-- .tab-pane general -->
 
       <div class="tab-pane active source-tab" ng-switch-when="source">
-        <form class="form-horizontal">
+        <div ng-form class="form-horizontal">
 
           <div class="control-group source-select-box">
             <label class="control-label">Source</label>
@@ -279,31 +279,11 @@
             </accordion-group>
 
             <accordion-group heading="Propagation of source material">
-
-            <div class="control-group">
-              <label class="control-label">Propgation Type</label>
-              <div class="controls">
-                <select ng-model="accession.source.propagation.prop_type">
-                  <option value="Seed">Seed</option>
-                  <option value="UnrootedCutting">Cutting</option>
-                  <option value="Other">Other</option>
-                </select>
-              </div>
-            </div> <!-- .control-group -->
-
-            <div class="control-group">
-              <label class="control-label">Date</label>
-              <div class="controls">
-                <input ui-date ng-model="accession.source.propagation.date" type="text"/>
-              </div>
-            </div>
-
-            <div ng-include="propagation_views[accession.source.propagation.prop_type]"></div>
-
+              <div ng-include="'views/prop_editor.html'"></div>
             </accordion-group>
           </accordion>
 
-        </form>
+        </div> <!-- .form-horizontal -->
 
       </div> <!-- .tab-pane source -->
 

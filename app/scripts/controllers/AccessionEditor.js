@@ -55,6 +55,8 @@ angular.module('BaubleApp')
         $scope.Accession = Accession;
         $scope.accession = {date_accd: new Date(), date_recvd: new Date()};
 
+        $scope.propagation = {};
+
         $scope.families = []; // the list of completions
         $scope.id_qualifiers = ["?", "aff.", "cf.", "forsan", "incorrect", "near"];
 
@@ -67,12 +69,6 @@ angular.module('BaubleApp')
         $scope.prov_type_values = prov_type_values;
         $scope.wild_prov_status_values = wild_prov_status_values;
         $scope.recvd_type_values = recvd_type_values;
-
-        $scope.propagation_views = {
-            "Seed": "views/prop_seed.html",
-            "UnrootedCutting": "views/prop_cutting.html",
-            "Other": null
-        }
 
         if(angular.isUndefined($scope.accession.verifications)) {
             $scope.accession.verifications = [{}];
