@@ -25,7 +25,11 @@ pip install -r requirements
 For testing you'll probably also want to install PhantomJS (http://phantomjs.org/).
 
 ### Start the API server with:
+```shell
 ./run.py
+```
 
 ### Start the web app with:
+```shell
 grunt server
+```
