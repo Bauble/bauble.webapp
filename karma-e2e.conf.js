@@ -7,6 +7,8 @@ basePath = '';
 files = [
   ANGULAR_SCENARIO,
   ANGULAR_SCENARIO_ADAPTER,
+  'app/components/angular/angular.js',
+  'app/components/angular-mocks/angular-mocks.js',
   'test/e2e/**/*.js'
 ];
 

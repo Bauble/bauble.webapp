@@ -4,7 +4,7 @@ import random
 import requests
 
 
-server = "http://localhost:8080"
+server = "http://localhost:8010"
 api_root = server + "/api/v1"
 
 

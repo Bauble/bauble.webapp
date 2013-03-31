@@ -2,7 +2,7 @@ import json
 
 import requests
 
-from test import *
+from api import *
 
 
 def test_basics():

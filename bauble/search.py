@@ -112,10 +112,10 @@ class MapperSearch(SearchStrategy):
         :param properties: a list of string names of the properties to
         search by default
         """
-        check(isinstance(properties, list), _('MapperSearch.add_meta(): '\
-        'default_columns argument must be list'))
-        check(len(properties) > 0, _('MapperSearch.add_meta(): '\
-        'default_columns argument cannot be empty'))
+        check(isinstance(properties, list), _('MapperSearch.add_meta(): '
+                                              'default_columns argument must be list'))
+        check(len(properties) > 0, _('MapperSearch.add_meta(): '
+                                     'default_columns argument cannot be empty'))
         if isinstance(domain, (list, tuple)):
             self._domains[domain[0]] = cls, properties
             for d in domain[1:]:

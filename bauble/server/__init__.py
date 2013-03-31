@@ -83,9 +83,9 @@ def parse_accept_header(header=None):
 def get_search():
     #mimetype, depth = parse_accept_header()
     accepted = parse_accept_header()
-    if JSON_MIMETYPE not in accepted and request.method != 'OPTIONS':
-        response.status = 400
-        return
+
+    if JSON_MIMETYPE not in accepted and '*/*' not in accepted and request.method != 'OPTIONS':
+        raise bottle.HTTPError('406 Not Accepted - Expected application/json')
 
     if(request.method == 'OPTIONS'):
         return ''
@@ -96,10 +96,11 @@ def get_search():
         depth = accepted[JSON_MIMETYPE]['depth']
 
     query = request.query.q
+    if not query:
+        raise bottle.HTTPError('400 Bad Request')
+
     session = db.connect()
-    results = {}
-    if query:
-        results = search.search(query, session)
+    results = search.search(query, session)
     response.content_type = '; '.join((JSON_MIMETYPE, "charset=utf8"))
     return {'results': [r.json(depth=depth) for r in results]}
 
