@@ -14,9 +14,10 @@ from bauble.model.family import Family, FamilySynonym, FamilyNote
 from bauble.model.genus import Genus
 from bauble.model.species import Species
 from bauble.model.accession import Accession
+from bauble.model.source import Source, SourceDetail, Collection
 from bauble.model.plant import Plant
+from bauble.model.propagation import Propagation, PlantPropagation
 from bauble.model.location import Location
-import bauble.search as search
 from bauble.server import app, API_ROOT, parse_accept_header, JSON_MIMETYPE
 import bauble.utils as utils
 
@@ -303,11 +304,10 @@ class Resource:
             instance = self.mapped_class(**data)
             response.status = 201
 
-        # TODO: how many relations deep do we support saving, e.g.
-        # family.genera or family.genera.species, or maybe we only support
-        # non-list relations, e.g genus.family
+        # TODO: we should check for any fields that aren't defined in the class or
+        # in self.relations and show an error instead waiting for SQLAlchemy to catch it
 
-        # handle the relations
+        # this should only contain relations that are already in self.relations
         for name in relation_data:
             getattr(self, self.relations[name])(instance, relation_data[name], session)
 
@@ -386,7 +386,32 @@ class AccessionResource(Resource):
     ignore = ['ref', 'str', 'species_str']
 
     relations = {'taxon': 'handle_taxon',
-                 'species': 'handle_taxon'}
+                 'species': 'handle_taxon',
+                 'source': 'handle_source'}
+
+    def handle_source(self, accession, source, session):
+        print('source: ', source)
+        accession.source = Source()
+        if 'source_detail' in source:
+            accession.source.source_detaild_id = self.get_ref_id(source['source_detail'])
+
+        if 'collection' in source:
+            accession.source.collection = Collection(**source['collection'])
+
+        if 'propagation' in source:
+            propagation = source['propagation']
+            details = propagation.pop('details')
+            accession.source.propagation = Propagation(**source['propagation'])
+            accession.source.propagation.details = details
+
+        if 'plant_propagation' in source:
+            plant_propagation = source['plant_propagation']
+            propagation = plant_propagation.pop('propagation')
+            details = propagation.pop('details')
+            accession.source.plant_propagation = PlantPropagation(**plant_propagation)
+            accession.source.plant_propagation.propagation = Propagation(**propagation)
+            accession.source.plant_propagation.propagation.details = details
+
 
     def handle_taxon(self, accession, taxon, session):
         accession.species_id = self.get_ref_id(taxon)
@@ -421,3 +446,8 @@ class LocationResource(Resource):
 
     def apply_query(self, query, query_string):
         return query.filter(Location.code.like(query_string))
+
+
+class SourceDetailResource(Resource):
+    resource = "/sourcedetail"
+    mapped_class = SourceDetail

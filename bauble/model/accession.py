@@ -6,9 +6,6 @@ from sqlalchemy.orm.session import object_session
 
 import bauble.db as db
 import bauble.types as types
-from bauble.model.source import Source, Collection
-from bauble.model.propagation import Propagation
-from bauble.model.plant import Plant
 from bauble.model.species import Species
 
 prov_type_values = {'Wild': 'Wild',
@@ -341,23 +338,22 @@ class Accession(db.Base):
                       backref=backref('accession', uselist=False))
 
     # relations
-    species = relation('Species', uselist=False, backref=backref('accessions',
-                                                cascade='all, delete-orphan'))
-
+    species = relation('Species', uselist=False,
+                       backref=backref('accessions', cascade='all, delete-orphan'))
 
     # use Plant.code for the order_by to avoid ambiguous column names
     plants = relation('Plant', cascade='all, delete-orphan',
                       #order_by='plant.code',
                       backref=backref('accession', uselist=False))
-    verifications = relation('Verification', #order_by='date',
+    verifications = relation('Verification',  # order_by='date',
                              cascade='all, delete-orphan',
                              backref=backref('accession', uselist=False))
     vouchers = relation('Voucher', cascade='all, delete-orphan',
                         backref=backref('accession', uselist=False))
     intended_location = relation('Location',
-                     primaryjoin='Accession.intended_location_id==Location.id')
+                                 primaryjoin='Accession.intended_location_id==Location.id')
     intended2_location = relation('Location',
-                  primaryjoin='Accession.intended2_location_id==Location.id')
+                                  primaryjoin='Accession.intended2_location_id==Location.id')
 
     def __init__(self, *args, **kwargs):
         super(Accession, self).__init__(*args, **kwargs)

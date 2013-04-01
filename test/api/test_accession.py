@@ -21,8 +21,10 @@ def test_accession_json():
     source.propagation = Propagation(prop_type='Seed')
     source.propagation._seed = PropSeed(nseeds=100, date_sown="1/1/11")
 
-    source.plant_propagation = Propagation(prop_type='Seed')
-    source.plant_propagation._seed = PropSeed(nseeds=100, date_sown="1/1/11")
+    # TODO: plant propagations require a plant.id
+    # source.plant_propagation = PlantPropagation(plant_id=)
+    # source.plant_propagation.propagation = PlantPropagation(prop_type='Seed')
+    # source.plant_propagation._seed = PropSeed(nseeds=100, date_sown="1/1/11")
 
     verification = Verification(accession=acc, verifier=test.get_random_name(), date="1/1/11",
                                 level=1, species=species, prev_species=species)
@@ -65,8 +67,8 @@ def test_accession_json():
     source.propagation = Propagation(prop_type='UnrootedCutting')
     source.propagation._cutting = PropCutting()
 
-    source.plant_propagation = Propagation(prop_type='UnrootedCutting')
-    source.plant_propagation._cutting = PropCutting()
+    # source.plant_propagation = Propagation(prop_type='UnrootedCutting')
+    # source.plant_propagation._cutting = PropCutting()
 
     source_json = source.json(depth=0)
     source_json = source.json(depth=1)
@@ -80,7 +82,6 @@ def test_accession_json():
     voucher_json = voucher.json(depth=1)
     voucher_json = voucher.json(depth=2)
 
-
     map(lambda o: session.delete(o), all_objs)
     session.commit()
     session.close()
@@ -93,12 +94,33 @@ def test_server():
 
     family = test.create_resource('/family', {'family': test.get_random_name()})
     genus = test.create_resource('/genus', {'genus': test.get_random_name(),
-        'family': family})
+                                 'family': family})
     taxon = test.create_resource('/taxon', {'genus': genus, 'sp': test.get_random_name()})
 
+    source_detail = test.create_resource('/sourcedetail', {
+        'name': test.get_random_name(),
+        'source_type': "BG"
+    })
+
     # create a accession accession
-    first_accession = test.create_resource('/accession',
-        {'taxon': taxon, 'code': test.get_random_name()})
+    first_accession = test.create_resource('/accession', {
+        'taxon': taxon,
+        'code': test.get_random_name(),
+        'source': {
+            'sources_id': test.get_random_name(),
+            'source_detail': source_detail,
+            'collection': {
+                "locale": test.get_random_name()
+            },
+            'propagation': {
+                'prop_type': 'UnrootedCutting',
+                'details': {
+                    'media': "Fafard 3B"
+                }
+            }
+        },
+        #'plant_propagation': {}
+    })
 
     # create another accession and use the first as a synonym
     data = {'taxon': taxon, 'code': test.get_random_name()

@@ -124,4 +124,5 @@ def start(host='localhost', port=8080, debug=False):
     resource.AccessionResource()
     resource.PlantResource()
     resource.LocationResource()
+    resource.SourceDetailResource()
     app.run(host=host, port=port, reloader=True, debug=debug)

@@ -70,14 +70,15 @@ class Propagation(db.Base):
     notes = Column(UnicodeText)
     date = Column(types.Date)
 
-    _cutting = relation('PropCutting',
-                      primaryjoin='Propagation.id==PropCutting.propagation_id',
-                      cascade='all,delete-orphan', uselist=False,
-                      backref=backref('propagation', uselist=False))
-    _seed = relation('PropSeed',
-                     primaryjoin='Propagation.id==PropSeed.propagation_id',
-                     cascade='all,delete-orphan', uselist=False,
-                     backref=backref('propagation', uselist=False))
+    cutting = relation('PropCutting',
+                       primaryjoin='Propagation.id==PropCutting.propagation_id',
+                       cascade='all,delete-orphan', uselist=False,
+                       backref=backref('propagation', uselist=False))
+
+    seed = relation('PropSeed',
+                    primaryjoin='Propagation.id==PropSeed.propagation_id',
+                    cascade='all,delete-orphan', uselist=False,
+                    backref=backref('propagation', uselist=False))
 
     def _get_details(self):
         if self.prop_type == 'Seed':
@@ -89,10 +90,17 @@ class Propagation(db.Base):
         else:
             raise NotImplementedError
 
-    #def _set_details(self, details):
-    #    return self._details
+    def _set_details(self, details):
+        if self.prop_type == 'Seed':
+            self.cutting = None
+            self.seed = PropSeed(**details)
+        elif self.prop_type == 'UnrootedCutting':
+            self.seed = None
+            self.cutting = PropCutting(**details)
+        elif self.prop_type != 'Other':
+            raise NotImplementedError("Unknown propagation type: " + self.prop_type)
 
-    details = property(_get_details)
+    details = property(_get_details, _set_details)
 
     def get_summary(self):
         """
@@ -111,8 +119,8 @@ class Propagation(db.Base):
             c = self._cutting
             values = []
             if c.cutting_type is not None:
-                values.append(_('Cutting type: %s') % \
-                                  cutting_type_values[c.cutting_type])
+                values.append(_('Cutting type: %s') %
+                              cutting_type_values[c.cutting_type])
             if c.length:
                 values.append(_('Length: %(length)s%(unit)s') %
                               dict(length=c.length,
@@ -125,8 +133,8 @@ class Propagation(db.Base):
                     s.append('(%s%%)' % c.leaves_reduced_pct)
                 values.append(s)
             if c.flower_buds:
-                values.append(_('Flower buds: %s') % \
-                                  flower_buds_values[c.flower_buds])
+                values.append(_('Flower buds: %s') %
+                              flower_buds_values[c.flower_buds])
             if c.wound is not None:
                 values.append(_('Wounded: %s' % wound_values[c.wound]))
             if c.fungicide:
@@ -135,8 +143,8 @@ class Propagation(db.Base):
                 values.append(_('Hormone treatment: %s' % c.hormone))
             if c.bottom_heat_temp:
                 values.append(_('Bottom heat: %(temp)s%(unit)s') %
-                               dict(temp=c.bottom_heat_temp,
-                                    unit=bottom_heat_unit_values[c.bottom_heat_unit]))
+                              dict(temp=c.bottom_heat_temp,
+                                   unit=bottom_heat_unit_values[c.bottom_heat_unit]))
             if c.container:
                 values.append(_('Container: %s' % c.container))
             if c.media:

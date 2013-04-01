@@ -46,19 +46,18 @@ class Source(db.Base):
                           cascade='all, delete-orphan',
                           backref=backref('source', uselist=False))
 
-    # relation to a propagation that is specific to this Source and
-    # not attached to a Plant
+    # Relation to a propagation that is specific to this Source and
+    # not attached to a Plant.
     propagation_id = Column(Integer, ForeignKey('propagation.id'))
-    propagation = relation('Propagation', uselist=False, single_parent=True,
-                           primaryjoin='Source.propagation_id==Propagation.id',
-                           cascade='all, delete-orphan',
-                           backref=backref('source', uselist=False))
+    propagation = relationship("Propagation", foreign_keys=propagation_id,
+                               cascade='all, delete-orphan', single_parent=True,
+                               backref=backref('source', uselist=False))
 
     # relation to a Propagation that already exists and is attached
     # to a Plant
-    plant_propagation_id = Column(Integer, ForeignKey('propagation.id'))
-    plant_propagation = relation('Propagation', uselist=False,
-                     primaryjoin='Source.plant_propagation_id==Propagation.id')
+    plant_propagation_id = Column(Integer, ForeignKey('plant_prop.id'))
+    plant_propagation = relationship("PlantPropagation", foreign_keys=plant_propagation_id,
+                                     uselist=False)
 
 
     def json(self, depth=1):
@@ -123,7 +122,12 @@ class SourceDetail(db.Base):
         """
         Returns the JSON for the parent source of this SourceDetail
         """
-        return self.source.json(depth=depth)
+        d = dict(ref="/sourcedetail/" + str(self.id))
+        if depth > 0:
+            d['name'] = self.name
+            d['description'] = self.description
+            d['source_type'] = self.source_type
+        return d
 
 
 # TODO: should provide a collection type: alcohol, bark, boxed,
