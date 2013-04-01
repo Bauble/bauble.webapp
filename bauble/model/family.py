@@ -1,11 +1,6 @@
 #
 # Family table definition
 #
-import json
-import os
-import traceback
-import weakref
-
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from sqlalchemy.orm.session import object_session
@@ -28,7 +23,6 @@ def family_markup_func(family):
     text in the results view
     """
     return family
-
 
 #
 # Family
@@ -77,9 +71,9 @@ class Family(db.Base):
     synonyms = association_proxy('_synonyms', 'synonym')
    #genera = relation('Genus', backref='family', cascade='all, delete-orphan')
     _synonyms = relation('FamilySynonym',
-                          primaryjoin='Family.id==FamilySynonym.family_id',
-                          cascade='all, delete-orphan', uselist=True,
-                          backref='family')
+                         primaryjoin='Family.id==FamilySynonym.family_id',
+                         cascade='all, delete-orphan', uselist=True,
+                         backref='family')
 
     # this is a dummy relation, it is only here to make cascading work
     # correctly and to ensure that all synonyms related to this family
@@ -96,8 +90,9 @@ class Family(db.Base):
         if family.family is None:
             return repr(family)
         else:
-            return ' '.join([s for s in [family.family,
-                                    family.qualifier] if s not in (None, '')])
+            return ' '.join([s for s in [family.family, family.qualifier]
+                             if s not in (None, '')])
+
 
     def json(self, depth=1, markup=True):
         """Return a dictionary representation of the Family.
@@ -137,7 +132,6 @@ class FamilyNote(db.Base):
     family = relation('Family', uselist=False,
                       backref=backref('notes', cascade='all, delete-orphan'))
 
-
     def json(self, depth=1):
         """Return a JSON representation of this FamilyNote
         """
@@ -149,7 +143,6 @@ class FamilyNote(db.Base):
             d['note'] = self.note
             d['family'] = self.family.json(depth=depth - 1)
         return d
-
 
 
 class FamilySynonym(db.Base):
