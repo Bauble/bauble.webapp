@@ -14,7 +14,7 @@ def connect():
     from sqlalchemy import create_engine
     global engine, Session, metadata
     engine = create_engine('sqlite:///test.db')#, echo=True)
-    Session = orm.sessionmaker(bind=engine)    
+    Session = orm.sessionmaker(bind=engine)
     return Session()
 
 

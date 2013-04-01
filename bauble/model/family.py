@@ -63,7 +63,7 @@ class Family(db.Base):
         The family table has a unique constraint on family/qualifier.
     """
     __tablename__ = 'family'
-    __table_args__ = (UniqueConstraint('family', 'qualifier'), {})
+    __table_args__ = (UniqueConstraint('family', 'qualifier'),)
     __mapper_args__ = {'order_by': ['Family.family', 'Family.qualifier']}
 
     # columns
@@ -71,8 +71,7 @@ class Family(db.Base):
 
     # we use the blank string here instead of None so that the
     # contraints will work properly,
-    qualifier = Column(types.Enum(values=['s. lat.', 's. str.', '']),
-                       default='')
+    qualifier = Column(types.Enum(values=['s. lat.', 's. str.', '']), default='')
 
     # relations
     synonyms = association_proxy('_synonyms', 'synonym')

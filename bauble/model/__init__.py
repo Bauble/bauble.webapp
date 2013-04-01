@@ -5,7 +5,8 @@ from bauble.model.species import Species
 from bauble.model.accession import Accession
 from bauble.model.plant import Plant
 from bauble.model.location import Location
-from bauble.model.source import SourceDetail, Collection
+from bauble.model.source import Source, SourceDetail, Collection
+from bauble.model.geography import Geography
 
 
 
