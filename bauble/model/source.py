@@ -1,26 +1,16 @@
 #
 # source.py
 #
-import os
-import sys
-import traceback
-import weakref
-from random import random
-
 from sqlalchemy import *
 from sqlalchemy.orm import *
-from sqlalchemy.orm.session import object_session
 
 import bauble
 import bauble.i18n
 import bauble.db as db
-#import bauble.editor as editor
 from bauble.model.geography import Geography
 #import bauble.utils as utils
 import bauble.types as types
 #from bauble.utils.log import debug
-#import bauble.view as view
-#from bauble.plugins.garden.propagation import *
 
 def coll_markup_func(coll):
     acc = coll.source.accession
@@ -86,7 +76,6 @@ class Source(db.Base):
                 d['plant_propagation'] = self.plant_propagation.json(depth=depth - 1)
 
         return d
-
 
 
 source_type_values = {'Expedition': _('Expedition'),
