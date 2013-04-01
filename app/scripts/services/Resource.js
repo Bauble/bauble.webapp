@@ -12,7 +12,7 @@ angular.module('BaubleApp')
                         // if an object then use the ref
                         url = resource.ref.indexOf(globals.apiRoot) === 0 ? resource.ref : globals.apiRoot + resource.ref;
                     }
-                    return $http({ method: 'GET', url: url }).then(callback);
+                    return $http({ method: 'GET', url: url }).then(callback, callback);
                 },
                 query: function(q, relations, callback) {
                     callback = (typeof relations === "function") ? relations : callback;
@@ -20,7 +20,7 @@ angular.module('BaubleApp')
                     q = (typeof q === "undefined") ? "" : q;
                     return $http({ method: 'GET', url: resourceUrl,
                                 params: { q: q, relations: relations }})
-                        .then(callback);
+                        .then(callback, callback);
                 },
                 save: function (data, callback) {
                     // if the data has a ref then it already exists in the database
@@ -33,7 +33,7 @@ angular.module('BaubleApp')
                     return $http({ method: method, url: url, data: data,
                                    headers: { 'Content-Type': 'application/json',
                                               'Accept': 'application/json'}})
-                                .then(callback);
+                                .then(callback, callback);
                 },
                 del: function(resource, callback) {
                     var url = resourceUrl + '/' + resource; // if an ID
@@ -41,7 +41,7 @@ angular.module('BaubleApp')
                         // if an object then use the ref
                         url = resource.ref.indexOf(globals.apiRoot) === 0 ? resource.ref : globals.apiRoot + resource.ref;
                     }
-                    return $http({ method: 'DELETE', url: url }).then(callback);
+                    return $http({ method: 'DELETE', url: url }).then(callback, callback);
                 },
                 details: function(resource, callback) {
                     // resource can be an id or an JSON object with a ref property
@@ -52,13 +52,13 @@ angular.module('BaubleApp')
                     }
                     return $http({ method: 'GET', url: url,
                                headers: { 'Accept': 'application/json;depth=2' }})
-                            .then(callback);
+                            .then(callback, callback);
                 },
                 get_schema: function(scalars_only, callback) {
                     var url = resourceUrl + '/schema',
                         params = scalars_only ? { flags: 'scalars_only' } : undefined,
                         callback = typeof scalars_only == 'function' ? scalars_only : callback;
-                    return $http({ method: 'GET', url: url, params: params }).then(callback);
+                    return $http({ method: 'GET', url: url, params: params }).then(callback, callback);
                 }
             };
         };

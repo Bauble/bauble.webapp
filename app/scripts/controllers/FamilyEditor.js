@@ -57,14 +57,27 @@ angular.module('BaubleApp')
             window.history.back();
         }
 
-        $scope.save = function() {
-            // TODO: we need a way to determine if this is a save on a new or existing
-            // object an whether we whould be calling save or edit
+        $scope.alerts = [];
+        $scope.closeAlert = function(index) {
+            $scope.alerts.splice(index, 1);
+        };
 
-            // TODO: we could probably also update the selected result to reflect
+        $scope.save = function() {
+            // TODO: we should probably also update the selected result to reflect
             // any changes in the search result
-            $scope.family = $scope.Family.save($scope.family);
-            $scope.close();
+            $scope.Family.save($scope.family, function(response) {
+                console.log('response: ', response);
+                if(response.status < 200 || response.status >= 400) {
+                    if(response.data) {
+                        $scope.alerts.push({type: 'error', msg: "Error!<br/><br/>" + response.data});
+                    } else {
+                        $scope.alerts.push({type: 'error', msg: "Unknown error!"});
+                    }
+                    return;
+                }
+
+                $scope.close();
+            });
         };
 
     });
