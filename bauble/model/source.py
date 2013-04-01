@@ -84,14 +84,13 @@ source_type_values = {'Expedition': _('Expedition'),
                       'Research/FieldStation': _('Research/Field Station'),
                       'Staff': _('Staff member'),
                       'UniversityDepartment': _('University Department'),
-                      'Club': \
-                          _('Horticultural Association/Garden Club'),
+                      'Club': _('Horticultural Association/Garden Club'),
                       'MunicipalDepartment': _('Municipal department'),
                       'Commercial': _('Nursery/Commercial'),
                       'Individual': _('Individual'),
                       'Other': _('Other'),
                       'Unknown': _('Unknown'),
-                     None: ''}
+                      None: ''}
 
 
 class SourceDetail(db.Base):
@@ -195,7 +194,7 @@ class Collection(db.Base):
         """
         """
         d = dict(ref="/accession/" + str(self.source.accession_id) + "/source/" +
-                str(self.source.id) + "/collection/" + str(self.id))
+                 str(self.source.id) + "/collection/" + str(self.id))
         if depth > 0:
             d['collector'] = self.collector
             d['collectors_code'] = self.collectors_code
