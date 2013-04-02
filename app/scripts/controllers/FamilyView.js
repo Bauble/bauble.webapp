@@ -20,4 +20,10 @@ angular.module('BaubleApp')
                 $location.path('/edit/family')
             });
         });
+
+        $scope.$on('family-addgenus', function(){
+            $scope.$apply(function() {
+                $location.path('/new/genus').search({'family': $scope.family.ref});
+            });
+        });
     });

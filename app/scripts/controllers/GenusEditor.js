@@ -1,9 +1,17 @@
 'use strict';
 
 angular.module('BaubleApp')
-    .controller('GenusEditorCtrl', function ($scope, Family, Genus) {
-        $scope.Genus = Genus;
+    .controller('GenusEditorCtrl', function ($scope, $location, Family, Genus) {
         $scope.genus = {};
+
+        if($location.search().family) {
+            Family.get($location.search().family, function(response) {
+                console.log('family: ', response.data);
+                if(response.status < 200 || response.status >= 400) {
+                }
+                $scope.genus.family = response.data
+            });
+        }
 
         $scope.families = []; // the list of completions
         $scope.activeTab = "general";
@@ -53,7 +61,7 @@ angular.module('BaubleApp')
         $scope.save = function() {
             // TODO: we need a way to determine if this is a save on a new or existing
             // object an whether we whould be calling save or edit
-            $scope.Genus.save($scope.genus);
+            Genus.save($scope.genus);
             $scope.close();
         };
   });

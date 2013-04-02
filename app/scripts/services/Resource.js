@@ -6,11 +6,19 @@ angular.module('BaubleApp')
         return function(resourceRoot) {
             var resourceUrl = globals.apiRoot + resourceRoot;
             return {
+                /*
+                 * resource can be an ID, a ref or an object with a ref
+                 */
                 get: function(resource, callback) {
                     var url = resourceUrl + '/' + resource; // if an ID
                     if(isNaN(Number(resource))) {
-                        // if an object then use the ref
-                        url = resource.ref.indexOf(globals.apiRoot) === 0 ? resource.ref : globals.apiRoot + resource.ref;
+                        if(angular.isObject(resource)) {
+                            // if an object then use the ref
+                            url = resource.ref.indexOf(globals.apiRoot) === 0 ? resource.ref : globals.apiRoot + resource.ref;
+                        } else {
+                            // assume it a string and a ref
+                            var url = globals.apiRoot + resource;
+                        }
                     }
                     return $http({ method: 'GET', url: url }).then(callback, callback);
                 },
