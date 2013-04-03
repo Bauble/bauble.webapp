@@ -2,11 +2,22 @@
 
   <div id="actionButtons" class="pull-right">
     <span ng-repeat="button in viewMeta.buttons">
-      <button class="btn" emit="{{button.event}}">{{button.name}}</button>
+      <button class="btn" data-emit="{{button.event}}">{{button.name}}</button>
     </span>
   </div>
 
-  {{taxon.str}}
+  <h3>{{taxon.str}}</h3>
+
+  <div># of Accessions</div>
+  <div># of Plants</div>
+
+  <h4>Syonyms</h4>
+  <div ng-show="!taxon.synonyms || taxon.synonyms.length < 1" style="color: #aaa">
+    This taxon has no synonyms.
+  </div>
+  <ul>
+      <li ng-repeat="synonym in taxon.synonyms">
+  </ul>
 
   <div id="taxonEditorContainer" ng-include="editorTemplate" onload="onEditorLoaded()"></div>
 
