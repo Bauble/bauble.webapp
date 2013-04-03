@@ -46,7 +46,7 @@ default_plant_delimiter = '.'
 def plant_markup_func(plant):
     '''
     '''
-    sp_str = plant.accession.species_str(markup=True)
+    sp_str = plant.accession.taxon_str(markup=True)
     #dead_color = "#777"
     dead_color = "#9900ff"
     if plant.quantity <= 0:
@@ -251,8 +251,8 @@ fruiting_values = {
     None: '',
 }
 
-# TODO: should sex be recorded at the species, accession or plant
-# level or just as part of a check since sex can change in some species
+# TODO: should sex be recorded at the taxon, accession or plant
+# level or just as part of a check since sex can change in some taxon
 sex_values = {
     'Female': _('Female'),
     'Male': _('Male'),
@@ -469,7 +469,7 @@ class Plant(db.Base):
         # plant names around but makes expanding the location essential
         # or you don't know what plants you are looking at
         return "%s%s%s (%s)" % (self.accession, self.delimiter, self.code,
-                                self.accession.species_str(markup=True))
+                                self.accession.taxon_str(markup=True))
 
 
     def json(self, depth=1):

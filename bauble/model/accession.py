@@ -6,7 +6,7 @@ from sqlalchemy.orm.session import object_session
 
 import bauble.db as db
 import bauble.types as types
-from bauble.model.species import Species
+from bauble.model.taxon import Taxon
 
 prov_type_values = {'Wild': 'Wild',
                     'Cultivated': 'Propagule of cultivated wild plant',
@@ -89,10 +89,10 @@ class Verification(db.Base):
         Notes about this verification.
       accession_id: :class:`sqlalchemy.types.Integer`
         Foreign Key to the :class:`Accession` table.
-      species_id: :class:`sqlalchemy.types.Integer`
-        Foreign Key to the :class:`~bauble.plugins.plants.Species` table.
-      prev_species_id: :class:`~sqlalchemy.types.Integer`
-        Foreign key to the :class:`~bauble.plugins.plants.Species`
+      taxon_id: :class:`sqlalchemy.types.Integer`
+        Foreign Key to the :class:`~bauble.plugins.plants.Taxon` table.
+      prev_taxon_id: :class:`~sqlalchemy.types.Integer`
+        Foreign key to the :class:`~bauble.plugins.plants.Taxon`
         table. What it was verified from.
 
     """
@@ -109,15 +109,14 @@ class Verification(db.Base):
     level = Column(Integer, nullable=False, autoincrement=False)
 
     # what it was verified as
-    species_id = Column(Integer, ForeignKey('species.id'), nullable=False)
+    taxon_id = Column(Integer, ForeignKey('taxon.id'), nullable=False)
 
     # what it was verified from
-    prev_species_id = Column(Integer, ForeignKey('species.id'), nullable=False)
+    prev_taxon_id = Column(Integer, ForeignKey('taxon.id'), nullable=False)
 
-    species = relation('Species',
-                       primaryjoin='Verification.species_id==Species.id')
-    prev_species = relation('Species',
-                        primaryjoin='Verification.prev_species_id==Species.id')
+    taxon = relation('Taxon', primaryjoin='Verification.taxon_id==Taxon.id')
+    prev_taxon = relation('Taxon',
+                          primaryjoin='Verification.prev_taxon_id==Taxon.id')
 
     notes = Column(UnicodeText)
 
@@ -131,8 +130,8 @@ class Verification(db.Base):
             d['date'] = self.date
             d['reference'] = self.reference
             d['accession'] = self.accession.json(depth=depth - 1)
-            d['taxon'] = self.species.json(depth=depth - 1)
-            d['prev_species'] = self.prev_species.json(depth=depth - 1)
+            d['taxon'] = self.taxon.json(depth=depth - 1)
+            d['prev_taxon'] = self.prev_taxon.json(depth=depth - 1)
             d['level'] = self.level
             d['notes'] = None
             d['resource'] = 'accession'
@@ -268,18 +267,18 @@ class Accession(db.Base):
                 * incorrect
 
         *id_qual_rank*: :class:`sqlalchemy.types.Unicode`
-            The rank of the species that the id_qaul refers to.
+            The rank of the taxon that the id_qaul refers to.
 
         *private*: :class:`sqlalchemy.types.Boolean`
             Flag to indicate where this information is sensitive and
             should be kept private
 
-        *species_id*: :class:`sqlalchemy.types.Integer()`
-            foreign key to the species table
+        *taxon_id*: :class:`sqlalchemy.types.Integer()`
+            foreign key to the taxon table
 
     :Properties:
-        *species*:
-            the species this accession refers to
+        *taxon*:
+            the taxon this accession refers to
 
         *source*:
             source is a relation to a Source instance
@@ -322,12 +321,12 @@ class Accession(db.Base):
                      default=None)
 
     # new in 0.9, this column should contain the name of the column in
-    # the species table that the id_qual refers to, e.g. genus, sp, etc.
+    # the taxon table that the id_qual refers to, e.g. genus, sp, etc.
     id_qual_rank = Column(Unicode(10))
 
     # "private" new in 0.8b2
     private = Column(Boolean, default=False)
-    species_id = Column(Integer, ForeignKey('species.id'), nullable=False)
+    taxon_id = Column(Integer, ForeignKey('taxon.id'), nullable=False)
 
     # intended location
     intended_location_id = Column(Integer, ForeignKey('location.id'))
@@ -338,7 +337,7 @@ class Accession(db.Base):
                       backref=backref('accession', uselist=False))
 
     # relations
-    species = relation('Species', uselist=False,
+    taxon = relation('Taxon', uselist=False,
                        backref=backref('accessions', cascade='all, delete-orphan'))
 
     # use Plant.code for the order_by to avoid ambiguous column names
@@ -357,7 +356,7 @@ class Accession(db.Base):
 
     def __init__(self, *args, **kwargs):
         super(Accession, self).__init__(*args, **kwargs)
-        self.__cached_species_str = {}
+        self.__cached_taxon_str = {}
 
 
     @reconstructor
@@ -366,41 +365,41 @@ class Accession(db.Base):
         Called instead of __init__() when an Accession is loaded from
         the database.
         """
-        self.__cached_species_str = {}
+        self.__cached_taxon_str = {}
 
 
     def invalidate_str_cache(self):
-        self.__cached_species_str = {}
+        self.__cached_taxon_str = {}
 
 
     def __str__(self):
         return self.code
 
 
-    def species_str(self, authors=False, markup=False):
+    def taxon_str(self, authors=False, markup=False):
         """
-        Return the string of the species with the id qualifier(id_qual)
+        Return the string of the taxon with the id qualifier(id_qual)
         injected into the proper place.
 
-        If the species isn't part of a session of if the species is dirty,
-        i.e. in object_session(species).dirty, then a new string will be
-        built even if the species hasn't been changeq since the last call
+        If the taxon isn't part of a session of if the taxon is dirty,
+        i.e. in object_session(taxon).dirty, then a new string will be
+        built even if the taxon hasn't been changeq since the last call
         to this method.
         """
         # WARNING: don't use session.is_modified() here because it
         # will query lots of dependencies
         try:
-            cached = self.__cached_species_str[(markup, authors)]
+            cached = self.__cached_taxon_str[(markup, authors)]
         except KeyError:
-            self.__cached_species_str[(markup, authors)] = None
+            self.__cached_taxon_str[(markup, authors)] = None
             cached = None
-        session = object_session(self.species)
+        session = object_session(self.taxon)
         if session:
-            # if not part of a session or if the species is dirty then
+            # if not part of a session or if the taxon is dirty then
             # build a new string
-            if cached is not None and self.species not in session.dirty:
+            if cached is not None and self.taxon not in session.dirty:
                 return cached
-        if not self.species:
+        if not self.taxon:
             return None
 
         # show a warning if the id_qual is aff. or cf. but the
@@ -416,47 +415,47 @@ class Accession(db.Base):
             warning(msg)
             self.__warned_about_id_qual = True
 
-        # copy the species so we don't affect the original
+        # copy the taxon so we don't affect the original
         session = db.Session()
-        species = session.merge(self.species)#, dont_load=True)
+        taxon = session.merge(self.taxon)#, dont_load=True)
 
         # generate the string
         if self.id_qual in ('aff.', 'cf.'):
             if self.id_qual_rank == 'infrasp':
-                species.sp = '%s %s' % (species.sp, self.id_qual)
+                taxon.sp = '%s %s' % (taxon.sp, self.id_qual)
             elif self.id_qual_rank:
-                setattr(species, self.id_qual_rank,
+                setattr(taxon, self.id_qual_rank,
                         '%s %s' % (self.id_qual,
-                                   getattr(species, self.id_qual_rank)))
-            sp_str = Species.str(species, authors, markup)
+                                   getattr(taxon, self.id_qual_rank)))
+            sp_str = Taxon.str(taxon, authors, markup)
         elif self.id_qual:
-            sp_str = '%s(%s)' % (Species.str(species, authors, markup),
+            sp_str = '%s(%s)' % (Taxon.str(taxon, authors, markup),
                                  self.id_qual)
         else:
-            sp_str = Species.str(species, authors, markup)
+            sp_str = Taxon.str(taxon, authors, markup)
 
         # clean up and return the string
-        del species
+        del taxon
         session.close()
-        self.__cached_species_str[(markup, authors)] = sp_str
+        self.__cached_taxon_str[(markup, authors)] = sp_str
         return sp_str
 
 
     def markup(self):
-        return '%s (%s)' % (self.code, self.species.markup())
+        return '%s (%s)' % (self.code, self.taxon.markup())
 
 
     def json(self, depth=1, markup=False):
         d = dict(ref="/accession/" + str(self.id))
         if(depth > 0):
             d['code'] = self.code
-            d['taxon'] = self.species.json(depth=depth-1)
+            d['taxon'] = self.taxon.json(depth=depth-1)
             d['str'] = str(self)
             d['id_qual'] = self.id_qual
 
 
         if(depth > 1):
-            d['species_str'] = self.species_str(markup=markup)
+            d['taxon_str'] = self.taxon_str(markup=markup)
             d['prov_type'] = self.prov_type
             d['wild_prov_status'] = self.wild_prov_status
             d['date_accd'] = self.date_accd

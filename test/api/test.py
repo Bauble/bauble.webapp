@@ -1,6 +1,3 @@
-import json
-
-import requests
 
 from api import *
 
@@ -15,14 +12,14 @@ def test_basics():
                                     genus=get_random_name())
     genus = response_json['genera'][0]
 
-    # create the species
-    response_json = create_resource('/species', sp=get_random_name(),
+    # create the taxon
+    response_json = create_resource('/taxon', sp=get_random_name(),
                                     genus_id=genus['id'])
-    species = response_json['species'][0]
+    taxon = response_json['taxon'][0]
 
     # create the accession
     response_json = create_resource('/accession', code=get_random_name(),
-                                    species_id=species['id'])
+                                    taxon_id=taxon['id'])
     accession = response_json['accessions'][0]
 
     # create the location
@@ -39,7 +36,7 @@ def test_basics():
     # get each of the resources we created
     get_resource('/family', family['id'])
     get_resource('/genus', genus['id'])
-    get_resource('/species', species['id'])
+    get_resource('/taxon', taxon['id'])
     get_resource('/accession', accession['id'])
     get_resource('/plant', plant['id'])
     get_resource('/location', location['id'])
@@ -48,7 +45,7 @@ def test_basics():
     delete_resource('/plant', plant['id'])
     delete_resource('/location', location['id'])
     delete_resource('/accession', accession['id'])
-    delete_resource('/species', species['id'])
+    delete_resource('/taxon', taxon['id'])
     delete_resource('/genus', genus['id'])
     delete_resource('/family', family['id'])
 

@@ -1,3 +1,4 @@
+from collections import OrderedDict
 
 import json
 import os
@@ -11,7 +12,7 @@ import bauble.db as db
 import bauble.i18n
 from bauble.model.family import Family, FamilySynonym, FamilyNote
 from bauble.model.genus import Genus, GenusNote
-from bauble.model.species import Species, SpeciesNote
+from bauble.model.taxon import Taxon, TaxonSynonym, TaxonNote
 from bauble.model.accession import Accession, AccessionNote
 from bauble.model.source import Source, SourceDetail, Collection
 from bauble.model.plant import Plant, PlantNote
@@ -58,8 +59,8 @@ class Resource:
         Handle GET requests on relation rooted at this resource.
 
         Return a JSON object where the results property represents the items
-        from the relation end point.  e.g. /family/1/genera/species would return
-        all the species related to the family with id=1.
+        from the relation end point.  e.g. /family/1/genera/taxa would return
+        all the taxa related to the family with id=1.
         """
 
         accepted = parse_accept_header()
@@ -204,7 +205,7 @@ class Resource:
             unique_objs = OrderedDict()
 
             # get the json objects for each of the relations and add them to the
-            # main resource json at resource[relation_name], e.g. resource['genera.species']
+            # main resource json at resource[relation_name], e.g. resource['genera.taxa']
             for relation in relations:
                 query = session.query(self.mapped_class, get_relation_class(relation)).\
                     join(*relation.split('.'))
@@ -388,15 +389,45 @@ class GenusResource(Resource):
 
 class TaxonResource(Resource):
     resource = "/taxon"
-    mapped_class = Species
-    relations = {'genus': 'handle_genus'}
+    mapped_class = Taxon
+    relations = {
+        'genus': 'handle_genus',
+        'notes': 'handle_notes',
+        'vernacular_names': 'handle_vernacular_names',
+        'synonyms': 'handle_synonyms'
+    }
+
+    def handle_synonyms(self, taxon, synonyms, session):
+        # synonyms can be a list of taxon objects or a list of taxon refs
+        for syn in synonyms:
+            if isinstance(syn, str):
+                synonym_id = self.get_ref_id(syn)
+            elif isinstance(syn, dict):
+                synonym_id = self.get_ref_id(syn['ref'])
+            else:
+                raise Exception("Synonym in unsupported format")
+
+            # make sure this synonym doesn't already have this id since
+            # we can't have dupliation ids
+            query = session.query(TaxonSynonym).filter_by(synonym_id=synonym_id)
+            if(query.count() < 0):
+                synonym = TaxonSynonym(taxon=taxon)
+                synonym.synonym_id = synonym_id
+
 
     def handle_genus(self, taxon, genus, session):
         taxon.genus_id = self.get_ref_id(genus)
 
 
+    def handle_vernacular_names(self, taxon, vernacular_names, session):
+        pass
+
+    def handle_notes(self, taxon, vernacular_names, session):
+        self.note_handler(taxon, vernacular_names, TaxonNote, session)
+
+
     def apply_query(self, query, query_string):
-        mapper = orm.class_mapper(Species)
+        mapper = orm.class_mapper(Taxon)
         ilike = lambda col: lambda val: utils.ilike(mapper.c[col], '%%%s%%' % val)
         properties = ['sp', 'sp2', 'infrasp1', 'infrasp2',
                       'infrasp3', 'infrasp4']
@@ -408,10 +439,8 @@ class TaxonResource(Resource):
 class AccessionResource(Resource):
     resource = "/accession"
     mapped_class = Accession
-    ignore = ['ref', 'str', 'species_str']
 
     relations = {'taxon': 'handle_taxon',
-                 'species': 'handle_taxon',
                  'source': 'handle_source'}
 
     def handle_source(self, accession, source, session):
@@ -439,7 +468,7 @@ class AccessionResource(Resource):
 
 
     def handle_taxon(self, accession, taxon, session):
-        accession.species_id = self.get_ref_id(taxon)
+        accession.taxon_id = self.get_ref_id(taxon)
 
 
     def apply_query(self, query, query_string):

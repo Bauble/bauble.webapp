@@ -1,8 +1,8 @@
-import api as test
+import test.api as test
 import bauble.db as db
 from bauble.model.family import Family
 from bauble.model.genus import Genus
-from bauble.model.species import Species
+from bauble.model.taxon import Taxon
 from bauble.model.accession import Accession
 from bauble.model.plant import Plant, PlantNote
 from bauble.model.location import Location
@@ -13,15 +13,15 @@ def test_plant_json():
     family = Family(family=test.get_random_name())
     genus_name = test.get_random_name()
     genus = Genus(family=family, genus=genus_name)
-    species = Species(genus=genus, sp=test.get_random_name())
-    acc = Accession(species=species, code=test.get_random_name())
+    taxon = Taxon(genus=genus, sp=test.get_random_name())
+    acc = Accession(taxon=taxon, code=test.get_random_name())
     location = Location(code=test.get_random_name())
     plant = Plant(accession=acc, code=test.get_random_name(), quantity=1, location=location)
 
     note = PlantNote(plant=plant, note="this is a test")
 
     session = db.connect()
-    all_objs = [family, genus, species, note, acc, plant, location]
+    all_objs = [family, genus, taxon, note, acc, plant, location]
     session.add_all(all_objs)
     session.commit()
 

@@ -3,7 +3,7 @@ import json
 import requests
 
 import bauble.search as search
-import api as test
+import test.api as test
 
 
 def test_parser():

@@ -1,9 +1,11 @@
-import api as test
+import test.api as test
 
+import bauble
 import bauble.db as db
+import bauble.i18n
 from bauble.model.family import Family
 from bauble.model.genus import Genus
-from bauble.model.species import Species
+from bauble.model.taxon import Taxon
 from bauble.model.accession import Accession, AccessionNote, Verification, Voucher
 from bauble.model.source import Source, SourceDetail, Collection
 from bauble.model.propagation import Propagation, PlantPropagation, PropSeed, PropCutting
@@ -13,28 +15,28 @@ def test_accession_json():
     family = Family(family=test.get_random_name())
     genus_name = test.get_random_name()
     genus = Genus(family=family, genus=genus_name)
-    species = Species(genus=genus, sp=test.get_random_name())
-    acc = Accession(species=species, code=test.get_random_name())
+    taxon = Taxon(genus=genus, sp=test.get_random_name())
+    acc = Accession(taxon=taxon, code=test.get_random_name())
     source = Source(accession=acc, sources_code=test.get_random_name())
     source.source_detail = SourceDetail(name=test.get_random_name(), description="the description")
     source.collection = Collection(locale=test.get_random_name())
     source.propagation = Propagation(prop_type='Seed')
-    source.propagation._seed = PropSeed(nseeds=100, date_sown="1/1/11")
+    source.propagation.seed = PropSeed(nseeds=100, date_sown="1/1/11")
 
     # TODO: plant propagations require a plant.id
     # source.plant_propagation = PlantPropagation(plant_id=)
     # source.plant_propagation.propagation = PlantPropagation(prop_type='Seed')
-    # source.plant_propagation._seed = PropSeed(nseeds=100, date_sown="1/1/11")
+    # source.plant_propagation.seed = PropSeed(nseeds=100, date_sown="1/1/11")
 
     verification = Verification(accession=acc, verifier=test.get_random_name(), date="1/1/11",
-                                level=1, species=species, prev_species=species)
+                                level=1, taxon=taxon, prev_taxon=taxon)
     voucher = Voucher(accession=acc, herbarium=test.get_random_name(), code=test.get_random_name())
 
 
     note = AccessionNote(accession=acc, note="this is a test")
 
     session = db.connect()
-    all_objs = [family, genus, species, note, acc, source]
+    all_objs = [family, genus, taxon, note, acc, source]
     session.add_all(all_objs)
     session.commit()
 
@@ -44,7 +46,7 @@ def test_accession_json():
 
     acc_json = acc.json(depth=1)
     assert 'str' in acc_json
-    assert acc_json['taxon'] == species.json(depth=0)
+    assert acc_json['taxon'] == taxon.json(depth=0)
 
     acc_json = acc.json(depth=2)
     assert 'str' in acc_json
@@ -65,10 +67,10 @@ def test_accession_json():
 
     # now switch the source propagation to UnrootedCuttings
     source.propagation = Propagation(prop_type='UnrootedCutting')
-    source.propagation._cutting = PropCutting()
+    source.propagation.cutting = PropCutting()
 
     # source.plant_propagation = Propagation(prop_type='UnrootedCutting')
-    # source.plant_propagation._cutting = PropCutting()
+    # source.plant_propagation.cutting = PropCutting()
 
     source_json = source.json(depth=0)
     source_json = source.json(depth=1)
@@ -97,28 +99,29 @@ def test_server():
                                  'family': family})
     taxon = test.create_resource('/taxon', {'genus': genus, 'sp': test.get_random_name()})
 
-    source_detail = test.create_resource('/sourcedetail', {
-        'name': test.get_random_name(),
-        'source_type': "BG"
-    })
+    # source_detail = test.create_resource('/sourcedetail', {
+    #     'name': test.get_random_name(),
+    #     'source_type': "BG"
+    # })
 
     # create a accession accession
     first_accession = test.create_resource('/accession', {
         'taxon': taxon,
-        'code': test.get_random_name(),
-        'source': {
-            'sources_id': test.get_random_name(),
-            'source_detail': source_detail,
-            'collection': {
-                "locale": test.get_random_name()
-            },
-            'propagation': {
-                'prop_type': 'UnrootedCutting',
-                'details': {
-                    'media': "Fafard 3B"
-                }
-            }
-        },
+        'code': test.get_random_name()#,
+
+        # 'source': {
+        #     'sources_id': test.get_random_name(),
+        #     'source_detail': source_detail,
+        #     'collection': {
+        #         "locale": test.get_random_name()
+        #     },
+        #     'propagation': {
+        #         'prop_type': 'UnrootedCutting',
+        #         'details': {
+        #             'media': "Fafard 3B"
+        #         }
+        #     }
+        # },
         #'plant_propagation': {}
     })
 

@@ -1,6 +1,5 @@
-
 #
-# species.py
+# taxon.py
 #
 
 import traceback
@@ -13,7 +12,7 @@ from sqlalchemy.orm.session import object_session
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.orm.collections import collection
 
-#import bauble
+import bauble
 import bauble.db as db
 #import bauble.utils as utils
 #from bauble.utils.log import debug
@@ -24,7 +23,7 @@ from bauble.model.genus import Genus
 
 class VNList(list):
     """
-    A Collection class for Species.vernacular_names
+    A Collection class for Taxon.vernacular_names
 
     This makes it possible to automatically remove a
     default_vernacular_name if the vernacular_name is removed from the
@@ -33,8 +32,8 @@ class VNList(list):
     def remove(self, vn):
         super(VNList, self).remove(vn)
         try:
-            if vn.species.default_vernacular_name == vn:
-                del vn.species.default_vernacular_name
+            if vn.taxon.default_vernacular_name == vn:
+                del vn.taxon.default_vernacular_name
         except Exception as e:
             debug(e)
 
@@ -51,16 +50,16 @@ infrasp_rank_values = {'subsp.': _('subsp.'),
 
 # TODO: there is a trade_name column but there's no support yet for editing
 # the trade_name or for using the trade_name when building the string
-# for the species, for more information about trade_names see,
+# for the taxon, for more information about trade_names see,
 # http://www.hortax.org.uk/gardenplantsnames.html
 
 # TODO: the specific epithet should not be non-nullable but instead
 # make sure that at least one of the specific epithet, cultivar name
 # or cultivar group is specificed
 
-class Species(db.Base):
+class Taxon(db.Base):
     """
-    :Table name: species
+    :Table name: taxon
 
     :Columns:
         *sp*:
@@ -90,14 +89,14 @@ class Species(db.Base):
         *trade_name*:
 
         *sp_qual*:
-            Species qualifier
+            Taxon qualifier
 
             Possible values:
-                *agg.*: An aggregate species
+                *agg.*: An aggregate taxon
 
-                *s. lat.*: aggregrate species (sensu lato)
+                *s. lat.*: aggregrate taxon (sensu lato)
 
-                *s. str.*: segregate species (sensu stricto)
+                *s. str.*: segregate taxon (sensu stricto)
 
         *label_distribution*:
             UnicodeText
@@ -119,7 +118,7 @@ class Species(db.Base):
         The combination of sp, sp_author, hybrid, sp_qual,
         cv_group, trade_name, genus_id
     """
-    __tablename__ = 'species'
+    __tablename__ = 'taxon'
     __mapper_args__ = {'order_by': ['sp', 'sp_author']}
 
     # columns
@@ -158,48 +157,48 @@ class Species(db.Base):
 
     # relations
     synonyms = association_proxy('_synonyms', 'synonym')
-    _synonyms = relation('SpeciesSynonym',
-                         primaryjoin='Species.id==SpeciesSynonym.species_id',
+    _synonyms = relation('TaxonSynonym',
+                         primaryjoin='Taxon.id==TaxonSynonym.taxon_id',
                          cascade='all, delete-orphan', uselist=True,
-                         backref='species')
+                         backref='taxon')
 
     # this is a dummy relation, it is only here to make cascading work
     # correctly and to ensure that all synonyms related to this genus
     # get deleted if this genus gets deleted
-    _syn = relation('SpeciesSynonym',
-                     primaryjoin='Species.id==SpeciesSynonym.synonym_id',
+    _syn = relation('TaxonSynonym',
+                     primaryjoin='Taxon.id==TaxonSynonym.synonym_id',
                      cascade='all, delete-orphan', uselist=True)
 
     vernacular_names = relation('VernacularName', cascade='all, delete-orphan',
                                  collection_class=VNList,
-                                backref=backref('species', uselist=False))
+                                backref=backref('taxon', uselist=False))
     _default_vernacular_name = relation('DefaultVernacularName', uselist=False,
                                          cascade='all, delete-orphan',
-                                         backref=backref('species',
+                                         backref=backref('taxon',
                                                          uselist=False))
-    distribution = relation('SpeciesDistribution',
+    distribution = relation('TaxonDistribution',
                             cascade='all, delete-orphan',
-                            backref=backref('species', uselist=False))
+                            backref=backref('taxon', uselist=False))
 
     habit_id = Column(Integer, ForeignKey('habit.id'), default=None)
-    habit = relation('Habit', uselist=False, backref='species')
+    habit = relation('Habit', uselist=False, backref='taxa')
 
     flower_color_id = Column(Integer, ForeignKey('color.id'), default=None)
-    flower_color = relation('Color', uselist=False, backref='species')
+    flower_color = relation('Color', uselist=False, backref='taxa')
 
     #hardiness_zone = Column(Unicode(4))
 
     awards = Column(UnicodeText)
 
     def __init__(self, *args, **kwargs):
-        super(Species, self).__init__(*args, **kwargs)
+        super(Taxon, self).__init__(*args, **kwargs)
 
     def __str__(self):
         '''
-        returns a string representation of this species,
-        calls Species.str(self)
+        returns a string representation of this taxon,
+        calls Taxon.str(self)
         '''
-        return Species.str(self)
+        return Taxon.str(self)
 
     def _get_default_vernacular_name(self):
         if self._default_vernacular_name is None:
@@ -238,18 +237,18 @@ class Species(db.Base):
         :param authors: flag to toggle whethe the author names should be
         included
         '''
-        return Species.str(self, authors, True)
+        return Taxon.str(self, authors, True)
 
 
     # in PlantPlugins.init() we set this to 'x' for win32
     hybrid_char = '\u2a09' # U+2A09
 
     @staticmethod
-    def str(species, authors=False, markup=False):
+    def str(taxon, authors=False, markup=False):
         '''
-        returns a string for species
+        returns a string for taxon
 
-        :param species: the species object to get the values from
+        :param taxon: the taxon object to get the values from
         :param authors: flags to toggle whether the author names should be
         included
         :param markup: flags to toggle whether the returned text is marked up
@@ -258,43 +257,43 @@ class Species(db.Base):
         # TODO: this method will raise an error if the session is none
         # since it won't be able to look up the genus....we could
         # probably try to query the genus directly with the genus_id
-        genus = str(species.genus)
-        sp = species.sp
-        sp2 = species.sp2
+        genus = str(taxon.genus)
+        sp = taxon.sp
+        sp2 = taxon.sp2
         if markup:
             # escape = utils.xml_safe_utf8
             escape = str  # from bauble2 conversion
             italicize = lambda s: '<i>%s</i>' % escape(s)
             genus = italicize(genus)
             if sp is not None:
-                sp = italicize(species.sp)
+                sp = italicize(taxon.sp)
             if sp2 is not None:
-                sp2 = italicize(species.sp2)
+                sp2 = italicize(taxon.sp2)
         else:
             italicize = lambda s: '%s' % s
             escape = lambda x: x
 
         author = None
-        if authors and species.sp_author:
-            author = escape(species.sp_author)
+        if authors and taxon.sp_author:
+            author = escape(taxon.sp_author)
 
-        infrasp = ((species.infrasp1_rank, species.infrasp1,
-                    species.infrasp1_author),
-                   (species.infrasp2_rank, species.infrasp2,
-                    species.infrasp2_author),
-                   (species.infrasp3_rank, species.infrasp3,
-                    species.infrasp3_author),
-                   (species.infrasp4_rank, species.infrasp4,
-                    species.infrasp4_author))
+        infrasp = ((taxon.infrasp1_rank, taxon.infrasp1,
+                    taxon.infrasp1_author),
+                   (taxon.infrasp2_rank, taxon.infrasp2,
+                    taxon.infrasp2_author),
+                   (taxon.infrasp3_rank, taxon.infrasp3,
+                    taxon.infrasp3_author),
+                   (taxon.infrasp4_rank, taxon.infrasp4,
+                    taxon.infrasp4_author))
 
         infrasp_parts = []
         group_added = False
         for rank, epithet, iauthor in infrasp:
             if rank == 'cv.' and epithet:
-                if species.cv_group and not group_added:
+                if taxon.cv_group and not group_added:
                     group_added = True
                     infrasp_parts.append(_("(%(group)s Group)") % \
-                                             dict(group=species.cv_group))
+                                             dict(group=taxon.cv_group))
                 infrasp_parts.append("'%s'" % escape(epithet))
             else:
                 if rank:
@@ -306,24 +305,24 @@ class Species(db.Base):
 
             if authors and iauthor:
                 infrasp_parts.append(escape(iauthor))
-        if species.cv_group and not group_added:
+        if taxon.cv_group and not group_added:
             infrasp_parts.append(_("%(group)s Group") % \
-                                     dict(group=species.cv_group))
+                                     dict(group=taxon.cv_group))
 
         # create the binomial part
         binomial = []
-        if species.hybrid:
-            if species.sp2:
-                binomial = [genus, sp, species.hybrid_char, sp2, author]
+        if taxon.hybrid:
+            if taxon.sp2:
+                binomial = [genus, sp, taxon.hybrid_char, sp2, author]
             else:
-                binomial = [genus, species.hybrid_char, sp, author]
+                binomial = [genus, taxon.hybrid_char, sp, author]
         else:
             binomial = [genus, sp, sp2, author]
 
         # create the tail a.k.a think to add on to the end
         tail = []
-        if species.sp_qual:
-            tail = [species.sp_qual]
+        if taxon.sp_qual:
+            tail = [taxon.sp_qual]
 
         parts = chain(binomial, infrasp_parts, tail)
         s = ' '.join(filter(lambda x: x not in ('', None), parts))
@@ -345,7 +344,7 @@ class Species(db.Base):
 
 
     def json(self, depth=1, markup=False):
-        """Return a dictionary representation of the Species.
+        """Return a dictionary representation of the Taxon.
 
         Kwargs:
            depth (int): The level of detail to return in the dict
@@ -356,10 +355,8 @@ class Species(db.Base):
         """
         d = dict(ref="/taxon/" + str(self.id))
         if(depth > 0):
-            d['id'] = self.id
-            d['str'] = Species.str(self, markup=markup)
+            d['str'] = Taxon.str(self, markup=markup)
             d['genus'] = self.genus.json(depth=depth - 1)
-            d['resource'] = 'taxon'
         if(depth > 1):
             d['sp'] = self.sp
             d['sp2'] = self.sp2
@@ -413,57 +410,57 @@ class Species(db.Base):
 
 
 
-class SpeciesNote(db.Base):
+class TaxonNote(db.Base):
     """
-    Notes for the species table
+    Notes for the taxon table
     """
-    __tablename__ = 'species_note'
-    __mapper_args__ = {'order_by': 'species_note.date'}
+    __tablename__ = 'taxon_note'
+    __mapper_args__ = {'order_by': 'taxon_note.date'}
 
     date = Column(types.Date, default=func.now())
     user = Column(Unicode(64))
     category = Column(Unicode(32))
     note = Column(UnicodeText, nullable=False)
-    species_id = Column(Integer, ForeignKey('species.id'), nullable=False)
-    species = relation('Species', uselist=False,
-                       backref=backref('notes', cascade='all, delete-orphan'))
+    taxon_id = Column(Integer, ForeignKey('taxon.id'), nullable=False)
+    taxon = relation('Taxon', uselist=False,
+                     backref=backref('notes', cascade='all, delete-orphan'))
 
 
     def json(self, depth=1):
-        """Return a JSON representation of this SpeciesNote
+        """Return a JSON representation of this TaxonNote
         """
-        d = dict(ref="/taxon/" + str(self.species_id) + "/note/" + str(self.id))
+        d = dict(ref="/taxon/" + str(self.taxon_id) + "/note/" + str(self.id))
         if(depth > 0):
             d['date'] = self.date
             d['user'] = self.user
             d['category'] = self.category
             d['note'] = self.note
-            d['taxon'] = self.species.json(depth=depth - 1)
+            d['taxon'] = self.taxon.json(depth=depth - 1)
         return d
 
 
 
-class SpeciesSynonym(db.Base):
+class TaxonSynonym(db.Base):
     """
-    :Table name: species_synonym
+    :Table name: taxon_synonym
     """
-    __tablename__ = 'species_synonym'
+    __tablename__ = 'taxon_synonym'
 
     # columns
-    species_id = Column(Integer, ForeignKey('species.id'),
+    taxon_id = Column(Integer, ForeignKey('taxon.id'),
                         nullable=False)
-    synonym_id = Column(Integer, ForeignKey('species.id'),
+    synonym_id = Column(Integer, ForeignKey('taxon.id'),
                         nullable=False, unique=True)
 
     # relations
-    synonym = relation('Species', uselist=False,
-                       primaryjoin='SpeciesSynonym.synonym_id==Species.id')
+    synonym = relation('Taxon', uselist=False,
+                       primaryjoin='TaxonSynonym.synonym_id==Taxon.id')
 
     def __init__(self, synonym=None, **kwargs):
         # it is necessary that the first argument here be synonym for
-        # the Species.synonyms association_proxy to work
+        # the Taxon.synonyms association_proxy to work
         self.synonym = synonym
-        super(SpeciesSynonym, self).__init__(**kwargs)
+        super(TaxonSynonym, self).__init__(**kwargs)
 
 
     def __str__(self):
@@ -471,11 +468,11 @@ class SpeciesSynonym(db.Base):
 
 
     def json(self, depth=1):
-        """Return a JSON representation of this SpeciesSynonym
+        """Return a JSON representation of this TaxonSynonym
         """
-        d = dict(ref="/species/" + str(self.species_id) + "/synonym/" + str(self.id))
+        d = dict(ref="/taxon/" + str(self.taxon_id) + "/synonym/" + str(self.id))
         if(depth > 0):
-            d['taxon'] = self.species.json(depth=depth - 1)
+            d['taxon'] = self.taxon.json(depth=depth - 1)
             d['synonym'] = self.synonym.json(depth=depth - 1)
         return d
 
@@ -493,8 +490,8 @@ class VernacularName(db.Base):
             language is free text and could include something like UK
             or US to identify the origin of the name
 
-        *species_id*:
-            key to the species this vernacular name refers to
+        *taxon_id*:
+            key to the taxon this vernacular name refers to
 
     :Properties:
 
@@ -503,9 +500,9 @@ class VernacularName(db.Base):
     __tablename__ = 'vernacular_name'
     name = Column(Unicode(128), nullable=False)
     language = Column(Unicode(128))
-    species_id = Column(Integer, ForeignKey('species.id'), nullable=False)
+    taxon_id = Column(Integer, ForeignKey('taxon.id'), nullable=False)
     __table_args__ = (UniqueConstraint('name', 'language',
-                                       'species_id', name='vn_index'), {})
+                                       'taxon_id', name='vn_index'), {})
 
     def __str__(self):
         if self.name:
@@ -524,15 +521,15 @@ class VernacularName(db.Base):
         """
 
         # TODO: we probably don't need the self.id part here since there's should only be one default vernacular
-        # name for the species
-        d = dict(ref="/species/" + str(self.species_id) + "/vernacular_name/" + str(self.id))
+        # name for the taxon
+        d = dict(ref="/taxon/" + str(self.taxon_id) + "/vernacular_name/" + str(self.id))
         if(depth > 0):
             d['name'] = self.name
             d['language'] = self.language
-            d['taxon'] = self.species.json(depth=depth - 1)
+            d['taxon'] = self.taxon.json(depth=depth - 1)
             d['str'] = str(self)
             d['default'] = False
-            if(self.species.default_vernacular_name == self):
+            if(self.taxon.default_vernacular_name == self):
                 d['default'] = True
         return d
 
@@ -543,16 +540,16 @@ class DefaultVernacularName(db.Base):
     :Table name: default_vernacular_name
 
     DefaultVernacularName is not meant to be instantiated directly.
-    Usually the default vernacular name is set on a species by setting
-    the default_vernacular_name property on Species to a
+    Usually the default vernacular name is set on a taxon by setting
+    the default_vernacular_name property on Taxon to a
     VernacularName instance
 
     :Columns:
         *id*:
             Integer, primary_key
 
-        *species_id*:
-            foreign key to species.id, nullable=False
+        *taxon_id*:
+            foreign key to taxon.id, nullable=False
 
         *vernacular_name_id*:
 
@@ -561,11 +558,11 @@ class DefaultVernacularName(db.Base):
     :Constraints:
     """
     __tablename__ = 'default_vernacular_name'
-    __table_args__ = (UniqueConstraint('species_id', 'vernacular_name_id',
+    __table_args__ = (UniqueConstraint('taxon_id', 'vernacular_name_id',
                                        name='default_vn_index'), {})
 
     # columns
-    species_id = Column(Integer, ForeignKey('species.id'), nullable=False)
+    taxon_id = Column(Integer, ForeignKey('taxon.id'), nullable=False)
     vernacular_name_id = Column(Integer, ForeignKey('vernacular_name.id'),
                                 nullable=False)
 
@@ -586,10 +583,10 @@ class DefaultVernacularName(db.Base):
         """
 
         # TODO: we probably don't need the self.id part here since there's should only be one default vernacular
-        # name for the species
-        d = dict(ref="/taxon/" + str(self.species_id) + "/default_vernacular_name/" + str(self.id))
+        # name for the taxon
+        d = dict(ref="/taxon/" + str(self.taxon_id) + "/default_vernacular_name/" + str(self.id))
         if(depth > 0):
-            d['taxon'] = self.species(depth=depth - 1)
+            d['taxon'] = self.taxon(depth=depth - 1)
             d['str'] = str(self)
             d['vernacular_name'] = None
             if(self.vernacular_name):
@@ -597,9 +594,9 @@ class DefaultVernacularName(db.Base):
         return d
 
 
-class SpeciesDistribution(db.Base):
+class TaxonDistribution(db.Base):
     """
-    :Table name: species_distribution
+    :Table name: taxon_distribution
 
     :Columns:
 
@@ -607,34 +604,34 @@ class SpeciesDistribution(db.Base):
 
     :Constraints:
     """
-    __tablename__ = 'species_distribution'
+    __tablename__ = 'taxon_distribution'
 
     # columns
     geography_id = Column(Integer, ForeignKey('geography.id'), nullable=False)
-    species_id = Column(Integer, ForeignKey('species.id'), nullable=False)
+    taxon_id = Column(Integer, ForeignKey('taxon.id'), nullable=False)
 
     def __str__(self):
         return str(self.geography)
 
 
     def json(self, depth=1):
-        """Return a dictionary representation of the SpeciesDistribution.
+        """Return a dictionary representation of the TaxonDistribution.
 
         Kwargs:
            depth (int): The level of detail to return in the dict
         Returns:
            dict.
         """
-        d = dict(ref="/taxon/" + str(self.species_id) + "/distribution/" + str(self.id))
+        d = dict(ref="/taxon/" + str(self.taxon_id) + "/distribution/" + str(self.id))
         if(depth > 0):
-            d['taxon'] = self.species.json(depth=depth - 1)
+            d['taxon'] = self.taxon.json(depth=depth - 1)
             d['geography'] = self.geography.json(depth=depth - 1)
             d['str'] = str(self)
         return d
 
 # late bindings
-SpeciesDistribution.geography = relation('Geography',
-                primaryjoin='SpeciesDistribution.geography_id==Geography.id',
+TaxonDistribution.geography = relation('Geography',
+                primaryjoin='TaxonDistribution.geography_id==Geography.id',
                                          uselist=False)
 
 class Habit(db.Base):

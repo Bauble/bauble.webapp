@@ -16,7 +16,7 @@ def coll_markup_func(coll):
     acc = coll.source.accession
     safe = utils.xml_safe_utf8
     return '%s - <small>%s</small>' %  \
-        (safe(acc), safe(acc.species_str())), safe(coll)
+        (safe(acc), safe(acc.taxon_str())), safe(coll)
 
 
 class Source(db.Base):

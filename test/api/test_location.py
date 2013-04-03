@@ -1,5 +1,5 @@
 
-import api as test
+import test.api as test
 import bauble.db as db
 from bauble.model.location import Location
 

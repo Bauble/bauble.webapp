@@ -1,4 +1,4 @@
-import api as test
+import test.api as test
 import bauble.db as db
 from bauble.model.family import Family
 from bauble.model.genus import Genus, GenusSynonym, GenusNote

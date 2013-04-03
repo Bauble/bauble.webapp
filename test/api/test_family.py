@@ -1,5 +1,5 @@
 
-import api as test
+import test.api as test
 import bauble.db as db
 from bauble.model.family import Family, FamilySynonym, FamilyNote
 
@@ -50,13 +50,13 @@ def test_get_schema():
 
     schema = test.get_resource("/family/genera/schema")
     assert 'genus' in schema['columns']
-    assert 'species' in schema['relations']
+    assert 'taxa' in schema['relations']
 
     schema = test.get_resource("/family/notes/schema")
     assert 'note' in schema['columns']
-    #assert 'species' in schema['relations']
+    #assert 'taxon' in schema['relations']
 
-    schema = test.get_resource("/family/genera/species/schema")
+    schema = test.get_resource("/family/genera/taxa/schema")
     assert 'sp' in schema['columns']
     assert 'accessions' in schema['relations']
 
@@ -71,7 +71,7 @@ def test_server():
     data = {'family': test.get_random_name(),
             'notes': [{'user': 'me', 'category': 'test', 'date': '1/1/2001', 'note': 'test note'},
                       {'user': 'me', 'category': 'test', 'date': '2/2/2001', 'note': 'test note2'}],
-            'synonyms': [{'synonym': first_family}]
+            'synonyms': [first_family]
             }
 
     second_family = test.create_resource('/family', data)

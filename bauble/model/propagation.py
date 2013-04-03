@@ -395,5 +395,5 @@ class PropSeed(db.Base):
 
     def __str__(self):
         # what would the string be...???
-        # cuttings of self.accession.species_str() and accession number
+        # cuttings of self.accession.taxon_str() and accession number
         return repr(self)

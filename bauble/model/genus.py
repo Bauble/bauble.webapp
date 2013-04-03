@@ -218,7 +218,7 @@ class GenusSynonym(db.Base):
 
 
 # TODO: could probably incorporate this into the class since if we can
-# avoid using the Species class name in the order_by
-Genus.species = relation('Species', cascade='all, delete-orphan',
-                         #order_by=[Species.sp],
-                         backref=backref('genus', uselist=False))
+# avoid using the Taxon class name in the order_by
+Genus.taxa = relation('Taxon', cascade='all, delete-orphan',
+                      #order_by=[Taxon.sp],
+                      backref=backref('genus', uselist=False))

@@ -11,24 +11,24 @@ import bauble.db as db
 #from bauble.utils.log import debug
 
 
-def get_species_in_geography(geo):#, session=None):
+def get_taxa_in_geography(geo):#, session=None):
     """
-    Return all the Species that have distribution in geo
+    Return all the Taxon that have distribution in geo
     """
     session = object_session(geo)
     if not session:
-        ValueError('get_species_in_geography(): geography is not in a session')
+        ValueError('get_taxa_in_geography(): geography is not in a session')
 
     # get all the geography children under geo
-    from bauble.plugins.plants.species_model import SpeciesDistribution, \
-        Species
+    from bauble.model import TaxonDistribution, Taxon
     # get the children of geo
     geo_table = geo.__table__
     master_ids = set([geo.id])
+
     # populate master_ids with all the geography ids that represent
     # the children of particular geography id
     def get_geography_children(parent_id):
-        stmt = select([geo_table.c.id], geo_table.c.parent_id==parent_id)
+        stmt = select([geo_table.c.id], geo_table.c.parent_id == parent_id)
         kids = [r[0] for r in db.engine.execute(stmt).fetchall()]
         for kid in kids:
             grand_kids = get_geography_children(kid)
@@ -36,8 +36,8 @@ def get_species_in_geography(geo):#, session=None):
         return kids
     geokids = get_geography_children(geo.id)
     master_ids.update(geokids)
-    q = session.query(Species).join(SpeciesDistribution).\
-        filter(SpeciesDistribution.geography_id.in_(master_ids))
+    q = session.query(Taxon).join(TaxonDistribution).\
+        filter(TaxonDistribution.geography_id.in_(master_ids))
     return list(q)
 
 
