@@ -1,6 +1,7 @@
 
 <div ng-form name="familyForm" ng-controller="FamilyEditorCtrl" class="bauble-editor family-editor" novalidate>
   <alert class="span6 offset3" ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">{{alert.msg}}</alert>
+
   <div class="row">
     <div class="editor-header span12">
       <div class="header-title span8">

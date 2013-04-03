@@ -13,7 +13,6 @@
   <div># of Accessions</div>
   <div># of Plants</div>
 
-
   <h4>Syonyms</h4>
   <div ng-show="!family.synonyms || family.synonyms.length < 1" style="color: #aaa">
     This family has no synonyms.
@@ -21,8 +20,6 @@
   <ul>
       <li ng-repeat="synonym in family.synonyms">{{synonym.str}}</li>
   </ul>
-
-  <div id="familyEditorContainer" ng-include="editorTemplate" onload="onEditorLoaded()"></div>
 
 </div>
 
