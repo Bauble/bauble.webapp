@@ -90,8 +90,10 @@ module.exports = function (grunt) {
     },
     karma: {
       unit: {
-        configFile: 'karma.conf.js',
-        singleRun: true
+        configFile: 'test/karma.conf.js',
+      },
+      e2e: {
+        configFile: 'test/karma-e2e.conf.js'
       }
     },
     coffee: {
