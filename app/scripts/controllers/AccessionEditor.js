@@ -135,6 +135,10 @@ angular.module('BaubleApp')
             }
         };
 
+        $scope.alerts = [];
+        $scope.closeAlert = function(index) {
+            $scope.alerts.splice(index, 1);
+        };
 
         $scope.newSource = function() {
             $scope.showSourceEditor = true;
