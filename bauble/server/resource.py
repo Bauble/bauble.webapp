@@ -1,7 +1,6 @@
-from collections import namedtuple, OrderedDict
+
 import json
 import os
-import os.path
 
 import bottle
 from bottle import request, response
@@ -11,11 +10,11 @@ import sqlalchemy.orm as orm
 import bauble.db as db
 import bauble.i18n
 from bauble.model.family import Family, FamilySynonym, FamilyNote
-from bauble.model.genus import Genus
-from bauble.model.species import Species
-from bauble.model.accession import Accession
+from bauble.model.genus import Genus, GenusNote
+from bauble.model.species import Species, SpeciesNote
+from bauble.model.accession import Accession, AccessionNote
 from bauble.model.source import Source, SourceDetail, Collection
-from bauble.model.plant import Plant
+from bauble.model.plant import Plant, PlantNote
 from bauble.model.propagation import Propagation, PlantPropagation
 from bauble.model.location import Location
 from bauble.server import app, API_ROOT, parse_accept_header, JSON_MIMETYPE
@@ -317,6 +316,23 @@ class Resource:
         return response_json
 
 
+    @classmethod
+    def note_handler(self, obj, notes, note_class, session):
+        for note in notes:
+            if 'ref'in note:
+                note_id = self.get_ref_id(note.pop('ref'))
+                existing = session.query(note_class).get(note_id)
+                relations = sa.inspect(note_class).relationships.keys()
+                for key, value in note.items():
+                    if not key in relations:
+                        setattr(existing, key, value)
+                session.add(existing)
+            else:
+                obj_note = note_class(**note)
+                obj.notes.append(obj_note)
+
+
+
 class FamilyResource(Resource):
 
     resource = '/family'
@@ -345,18 +361,19 @@ class FamilyResource(Resource):
 
 
     def handle_notes(self, family, notes, session):
-        for note in notes:
-            if 'ref'in note:
-                note_id = self.get_ref_id(note.pop('ref'))
-                existing = session.query(FamilyNote).get(note_id)
-                relations = sa.inspect(FamilyNote).relationships.keys()
-                for key, value in note.items():
-                    if not key in relations:
-                        setattr(existing, key, value)
-                session.add(existing)
-            else:
-                family_note = FamilyNote(**note)
-                family.notes.append(family_note)
+        self.note_handler(family, notes, FamilyNote, session)
+        # for note in notes:
+        #     if 'ref'in note:
+        #         note_id = self.get_ref_id(note.pop('ref'))
+        #         existing = session.query(FamilyNote).get(note_id)
+        #         relations = sa.inspect(FamilyNote).relationships.keys()
+        #         for key, value in note.items():
+        #             if not key in relations:
+        #                 setattr(existing, key, value)
+        #         session.add(existing)
+        #     else:
+        #         family_note = FamilyNote(**note)
+        #         family.notes.append(family_note)
 
 
     def apply_query(self, query, query_string):
@@ -366,11 +383,16 @@ class FamilyResource(Resource):
 class GenusResource(Resource):
     resource = "/genus"
     mapped_class = Genus
-    relations = {'family': 'handle_family'}
+    relations = {
+        'family': 'handle_family',
+        'notes': 'handle_notes'
+    }
 
     def handle_family(self, genus, family, session):
         genus.family_id = self.get_ref_id(family)
 
+    def handle_notes(self, genus, notes, session):
+        self.note_handler(genus, notes, GenusNote, session)
 
     def apply_query(self, query, query_string):
         return query.filter(Genus.genus.like(query_string))
