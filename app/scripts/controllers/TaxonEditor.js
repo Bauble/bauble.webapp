@@ -1,27 +1,29 @@
 'use strict';
 
 angular.module('BaubleApp')
-    .controller('TaxonEditorCtrl', function ($scope, Genus, Taxon) {
-        $scope.Taxon = Taxon;
-        $scope.taxon = {};
+    .controller('TaxonEditorCtrl', function ($scope, $location, globals, Genus, Taxon) {
+        // isNew is inherited from the NewCtrl if this is a /new editor
+        $scope.taxon = globals.selected && !$scope.isNew ? globals.selected : {};
+        $scope.notes = $scope.taxon.notes ? $scope.taxon.notes : [];
 
-        $scope.modalOptions = {
-            dialogClass: 'modal taxon-editor'
-        };
+        // make sure we have the family details
+        if($scope.taxon && angular.isDefined($scope.taxon.ref)) {
+            Genus.details($scope.taxon, function(result) {
+                $scope.taxon = result.data;
+                $scope.notes = $scope.taxon.notes;
+            });
+        } else if($location.search().genus) {
+            Genus.get($location.search().genus, function(response) {
+                if(response.status < 200 || response.status >= 400) {
+                }
+                $scope.taxon.genus = response.data
+            });
+        }
 
-        $scope.families = []; // the list of completions
         $scope.activeTab = "general";
 
         $scope.qualifiers = ["agg.", "s. lat.", "s. str."];
         $scope.ranks = ["cv.", "f.", "subf.", "subsp.", "subvar.", "var."];
-
-        // get the taxon details when the selection is changed
-        $scope.$watch('selected', function() {
-            if(! $scope.selected) return;
-            $scope.Taxon.details($scope.selected, function(result) {
-                $scope.taxon = result.data;
-            });
-        });
 
         $scope.addSynonym = function(synonym) {
             if(!$scope.taxon.synonyms) {
@@ -86,6 +88,11 @@ angular.module('BaubleApp')
             }
         };
 
+        $scope.alerts = [];
+        $scope.closeAlert = function(index) {
+            $scope.alerts.splice(index, 1);
+        };
+
         $scope.close = function() {
             window.history.back();
         }
@@ -94,7 +101,23 @@ angular.module('BaubleApp')
         $scope.save = function() {
             // TODO: we need a way to determine if this is a save on a new or existing
             // object an whether we whould be calling save or edit
-            $scope.Taxon.save($scope.taxon);
-            $scope.close();
+            // TODO: we need a way to determine if this is a save on a new or existing
+            // object an whether we whould be calling save or edit
+            // TODO: we should probably also update the selected result to reflect
+            // any changes in the search result
+            $scope.taxon.notes = $scope.notes
+            Taxon.save($scope.taxon, function(response) {
+                console.log('response: ', response);
+                if(response.status < 200 || response.status >= 400) {
+                    if(response.data) {
+                        $scope.alerts.push({type: 'error', msg: "Error!\n" + response.data});
+                    } else {
+                        $scope.alerts.push({type: 'error', msg: "Unknown error!"});
+                    }
+                    return;
+                }
+
+                $scope.close();
+            });
         };
     });

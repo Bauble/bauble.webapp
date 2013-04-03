@@ -1,9 +1,11 @@
-<div ng-controller="TaxonEditorCtrl" class="bauble-editor taxon-editor">
+
+<div ng-form name="taxonForm" ng-controller="TaxonEditorCtrl" class="bauble-editor taxon-editor">
+  <alert class="span6 offset3" ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">{{alert.msg}}</alert>
 
   <div class="row">
     <div class="editor-header span12">
       <div class="header-title span8">
-        <h4>--</h4>
+        <h4>{{taxon.str || 'New taxon'}}</h4>
       </div>
       <div class="header-buttons span3">
         <button class="btn" ng-click="close()">Close</button>
@@ -90,22 +92,22 @@
             </thead>
             <tr>
               <td><select ng-model="taxon.infrasp1_rank" ng-options="q for q in ranks" class="input-small"></select></td>
-              <td><input type="text" ng-model="taxon.infrasp1_epithet"/></td>
+              <td><input type="text" ng-model="taxon.infrasp1"/></td>
               <td><input type="text" ng-model="taxon.infrasp1_author"/></td>
             </tr>
             <tr>
               <td><select ng-model="taxon.infrasp2_rank" ng-options="q for q in ranks" class="input-small"></select></td>
-              <td><input type="text" ng-model="taxon.infrasp2_epithet"/></td>
+              <td><input type="text" ng-model="taxon.infrasp2"/></td>
               <td><input type="text" ng-model="taxon.infrasp2_author"/></td>
             </tr>
             <tr>
               <td><select ng-model="taxon.infrasp3_rank" ng-options="q for q in ranks" class="input-small"></select></td>
-              <td><input type="text" ng-model="taxon.infrasp3_epithet"/></td>
+              <td><input type="text" ng-model="taxon.infrasp3"/></td>
               <td><input type="text" ng-model="taxon.infrasp3_author"/></td>
             </tr>
             <tr>
               <td><select ng-model="taxon.infrasp4_rank" ng-options="q for q in ranks" class="input-small"></select></td>
-              <td><input type="text" ng-model="taxon.infrasp4_epithet"/></td>
+              <td><input type="text" ng-model="taxon.infrasp4"/></td>
               <td><input type="text" ng-model="taxon.infrasp4_author"/></td>
             </tr>
           </table>
