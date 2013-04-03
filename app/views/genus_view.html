@@ -13,11 +13,11 @@
   <div># of Plants</div>
 
   <h4>Syonyms</h4>
-  <div ng-show="genus.synonyms.length < 1" style="color: #aaa">
+  <div ng-show="!genus.synonyms || genus.synonyms.length < 1" style="color: #aaa">
     This genus has no synonyms.
   </div>
   <ul>
-      <li ng-repeat="synonym in synonyms">
+      <li ng-repeat="synonym in genus.synonyms">
   </ul>
 
   <div id="genusEditorContainer" ng-include="editorTemplate" onload="onEditorLoaded()"></div>

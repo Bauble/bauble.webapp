@@ -15,7 +15,7 @@
 
 
   <h4>Syonyms</h4>
-  <div ng-show="family.synonyms.length < 1" style="color: #aaa">
+  <div ng-show="!family.synonyms || family.synonyms.length < 1" style="color: #aaa">
     This family has no synonyms.
   </div>
   <ul>
