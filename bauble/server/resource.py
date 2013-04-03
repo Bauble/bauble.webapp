@@ -422,8 +422,8 @@ class TaxonResource(Resource):
     def handle_vernacular_names(self, taxon, vernacular_names, session):
         pass
 
-    def handle_notes(self, taxon, vernacular_names, session):
-        self.note_handler(taxon, vernacular_names, TaxonNote, session)
+    def handle_notes(self, taxon, notes, session):
+        self.note_handler(taxon, notes, TaxonNote, session)
 
 
     def apply_query(self, query, query_string):
