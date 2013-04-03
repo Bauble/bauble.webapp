@@ -327,20 +327,36 @@ class FamilyResource(Resource):
     }
 
     def handle_synonyms(self, family, synonyms, session):
-        # syn objects can be of the form {'synonym': {'ref': '/family/<id>'}}
-        # or {'synonym_id': <id>}
+        # synonyms can be a list of family objects or a list of family refs
         for syn in synonyms:
-            family_synonym = FamilySynonym(family=family)
-            if 'synonym_id' in syn:
-                family_synonym.synonym_id = syn['synonym_id']
-            elif 'synonym' in syn:
-                family_synonym.synonym_id = syn['synonym']['ref'].split('/')[-1]
+            if isinstance(syn, str):
+                synonym_id = self.get_ref_id(syn)
+            elif isinstance(syn, dict):
+                synonym_id = self.get_ref_id(syn['ref'])
+            else:
+                raise Exception("Synonym in unsupported format")
+
+            # make sure this synonym doesn't already have this id since
+            # we can't have dupliation ids
+            query = session.query(FamilySynonym).filter_by(synonym_id=synonym_id)
+            if(query.count() < 0):
+                synonym = FamilySynonym(family=family)
+                synonym.synonym_id = synonym_id
 
 
     def handle_notes(self, family, notes, session):
         for note in notes:
-            family_note = FamilyNote(**note)
-            family.notes.append(family_note)
+            if 'ref'in note:
+                note_id = self.get_ref_id(note.pop('ref'))
+                existing = session.query(FamilyNote).get(note_id)
+                relations = sa.inspect(FamilyNote).relationships.keys()
+                for key, value in note.items():
+                    if not key in relations:
+                        setattr(existing, key, value)
+                session.add(existing)
+            else:
+                family_note = FamilyNote(**note)
+                family.notes.append(family_note)
 
 
     def apply_query(self, query, query_string):
