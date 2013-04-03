@@ -51,12 +51,20 @@ angular.module('BaubleApp')
                     }
                     return $http({ method: 'DELETE', url: url }).then(callback, callback);
                 },
+
+                /*
+                 * resource can be an ID, a ref or an object with a ref
+                 */
                 details: function(resource, callback) {
-                    // resource can be an id or an JSON object with a ref property
                     var url = resourceUrl + '/' + resource; // if an ID
-                    if(isNaN(Number(resource)) && typeof resource != "undefined") {
-                        // if an object then use the ref
-                        url = resource.ref.indexOf(globals.apiRoot) === 0 ? resource.ref : globals.apiRoot + resource.ref;
+                    if(isNaN(Number(resource))) {
+                        if(angular.isObject(resource)) {
+                            // if an object then use the ref
+                            url = resource.ref.indexOf(globals.apiRoot) === 0 ? resource.ref : globals.apiRoot + resource.ref;
+                        } else {
+                            // assume it a string and a ref
+                            var url = globals.apiRoot + resource;
+                        }
                     }
                     return $http({ method: 'GET', url: url,
                                headers: { 'Accept': 'application/json;depth=2' }})
