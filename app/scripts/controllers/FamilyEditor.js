@@ -1,25 +1,21 @@
 'use strict';
 
 angular.module('BaubleApp')
-    .controller('FamilyEditorCtrl', function ($scope, Family) {
-        $scope.family = {};
-        $scope.Family = Family;
+    .controller('FamilyEditorCtrl', function ($scope, globals, Family) {
+
+        // isNew is inherited from the NewCtrl if this is a /new editor
+        $scope.family = globals.selected && !$scope.isNew ? globals.selected : {};
+
+        // make sure we have the family details
+        if($scope.family && angular.isDefined($scope.family.ref)) {
+            Family.details($scope.family, function(result) {
+                $scope.family = result.data;
+                $scope.notes = $scope.family.notes;
+            });
+        }
 
         $scope.activeTab = "general";
         $scope.qualifiers = ["s. lat.", "s. str."];
-
-        $scope.modalOptions = {
-            dialogClass: 'modal family-editor'
-        };
-
-        // get the family details when the selection is changed
-        if($scope.selected) {
-            $scope.$watch('selected', function() {
-                $scope.Family.details($scope.selected, function(result) {
-                    $scope.family = result.data;
-                });
-            });
-        }
 
         $scope.selectOptions = {
             minimumInputLength: 1,
@@ -65,11 +61,13 @@ angular.module('BaubleApp')
         $scope.save = function() {
             // TODO: we should probably also update the selected result to reflect
             // any changes in the search result
-            $scope.Family.save($scope.family, function(response) {
+            $scope.family.notes = $scope.notes
+            console.log('$scope.family.notes: ', $scope.family.notes);
+            Family.save($scope.family, function(response) {
                 console.log('response: ', response);
                 if(response.status < 200 || response.status >= 400) {
                     if(response.data) {
-                        $scope.alerts.push({type: 'error', msg: "Error!<br/><br/>" + response.data});
+                        $scope.alerts.push({type: 'error', msg: "Error!\n" + response.data});
                     } else {
                         $scope.alerts.push({type: 'error', msg: "Unknown error!"});
                     }

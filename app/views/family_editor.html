@@ -32,7 +32,6 @@
                   </div>
                 </div>
 
-                <!--
                 <div class="control-group">
                   <label class="control-label" for="inputQualifier">Qualifier</label>
                   <div class="controls">
@@ -42,15 +41,16 @@
                     </select>
                   </span>
                 </div>
-                </div> -->
+                </div>
 
               </form> <!-- ng-form -->
 
             <div>
               <label>Synonyms</label>
               <div>
-                <input id="familySynonymField" ui-select2="selectOptions" ng-model="selectedSyn" class="input-large" /></input>
-                <button class="btn" ng-click="addSynonym(selectedSyn); selectedSyn=null;" ng-disabled="!selectedSyn">Add</button>
+                <input ui-select2="selectOptions" ng-model="selectedSyn" class="input-large" /></input>
+                <button class="btn" ng-click="addSynonym(selectedSyn); selectedSyn={};" ng-disabled="!selectedSyn">Add</button>
+                <!-- <button class="btn" ng-click="addSynonym(selectedSyn)" ng-disabled="!selectedSyn">Add</button> -->
               </div>
               <ul>
                 <li ng-repeat="synonym in family.synonyms">{{synonym.str}}</li>

@@ -19,7 +19,7 @@
     This family has no synonyms.
   </div>
   <ul>
-      <li ng-repeat="synonym in synonyms">
+      <li ng-repeat="synonym in family.synonyms">{{synonym.str}}</li>
   </ul>
 
   <div id="familyEditorContainer" ng-include="editorTemplate" onload="onEditorLoaded()"></div>

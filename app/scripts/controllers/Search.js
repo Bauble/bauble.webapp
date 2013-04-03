@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('BaubleApp')
-  .controller('SearchCtrl', function ($scope, Search, ViewMeta) {
+  .controller('SearchCtrl', function ($scope, globals, Search, ViewMeta) {
     $scope.viewMeta = null;
     $scope.selected = null;
     $scope.results = []; // the results of the search
@@ -25,7 +25,9 @@ angular.module('BaubleApp')
 
     $scope.itemSelected = function(selected) {
         $scope.viewMeta = ViewMeta.getView(selected.ref);
+        console.log('selected: ', selected);
         $scope.selected = selected;
+        globals.selected = selected;
     };
 
     $scope.itemExpanded = function() {
