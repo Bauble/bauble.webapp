@@ -362,18 +362,6 @@ class FamilyResource(Resource):
 
     def handle_notes(self, family, notes, session):
         self.note_handler(family, notes, FamilyNote, session)
-        # for note in notes:
-        #     if 'ref'in note:
-        #         note_id = self.get_ref_id(note.pop('ref'))
-        #         existing = session.query(FamilyNote).get(note_id)
-        #         relations = sa.inspect(FamilyNote).relationships.keys()
-        #         for key, value in note.items():
-        #             if not key in relations:
-        #                 setattr(existing, key, value)
-        #         session.add(existing)
-        #     else:
-        #         family_note = FamilyNote(**note)
-        #         family.notes.append(family_note)
 
 
     def apply_query(self, query, query_string):
