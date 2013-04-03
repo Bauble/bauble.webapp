@@ -33,3 +33,7 @@ For testing you'll probably also want to install PhantomJS (http://phantomjs.org
 ```shell
 grunt server
 ```
+
+# License
+This software is licensed under the GNU AGPL License.  See https://www.gnu.org/licenses/agpl.html
+for more information.
