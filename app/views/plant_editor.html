@@ -1,4 +1,5 @@
-<div ng-form ng-controller="PlantEditorCtrl" class="bauble-editor plant-editor">
+<div ng-form name="plantForm" ng-controller="PlantEditorCtrl" class="bauble-editor plant-editor">
+  <alert class="span6 offset3" ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">{{alert.msg}}</alert>
 
   <div class="row">
     <div class="editor-header span12">

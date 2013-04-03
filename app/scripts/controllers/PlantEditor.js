@@ -10,24 +10,32 @@ var acc_type_values ={
 };
 
 angular.module('BaubleApp')
-    .controller('PlantEditorCtrl', function ($scope, Accession, Plant) {
-        $scope.Plant = Plant;
-        $scope.plant = {};
+    .controller('PlantEditorCtrl', function ($scope, $location, globals, Accession, Plant) {
+
+        // isNew is inherited from the NewCtrl if this is a /new editor
+        $scope.plant = globals.selected && !$scope.isNew ? globals.selected : {}
+        $scope.notes = $scope.plant.notes || []
+        $scope.propagation = {};
+
+        // make sure we have the details
+        if($scope.plant && angular.isDefined($scope.plant.ref)) {
+            Plant.details($scope.plant, function(result) {
+                $scope.plant = result.data;
+                $scope.notes = $scope.plant.notes || [];
+            });
+        } else if($location.search().accession) {
+            Accession.details($location.search().accession, function(response) {
+                if(response.status < 200 || response.status >= 400) {
+                }
+                $scope.plant.accession = response.data
+            });
+        }
+
         $scope.propagation = {};  // inherited by the PropagationEditorCtrl
 
         $scope.activeTab = "general";
 
-
-
         $scope.acc_type_values = acc_type_values;
-
-        // get the accessiong details when the selection is changed
-        $scope.$watch('selected', function() {
-            if(! $scope.selected) return;
-            $scope.Plant.details($scope.selected, function(result) {
-                $scope.plant = result.data;
-            });
-        });
 
         $scope.accSelectOptions = {
             minimumInputLength: 1,
@@ -46,7 +54,6 @@ angular.module('BaubleApp')
                 // console.log('query: ', options);....i think this is what the
                 // options.context is for
                 Accession.query(options.term + '%', function(response){
-                    $scope.families = response.data.results;
                     if(response.data.results && response.data.results.length > 0)
                         options.callback({results: response.data.results});
                 });
@@ -70,14 +77,16 @@ angular.module('BaubleApp')
                 // console.log('query: ', options);....i think this is what the
                 // options.context is for
                 Location.query(options.term + '%', function(response){
-                    $scope.families = response.data.results;
                     if(response.data.results && response.data.results.length > 0)
                         options.callback({results: response.data.results});
                 });
             }
         };
 
-
+        $scope.alerts = [];
+        $scope.closeAlert = function(index) {
+            $scope.alerts.splice(index, 1);
+        };
 
         $scope.close = function() {
             window.history.back();
@@ -85,9 +94,18 @@ angular.module('BaubleApp')
 
         // called when the save button is clicked on the editor
         $scope.save = function() {
-            // TODO: we need a way to determine if this is a save on a new or existing
-            // object an whether we whould be calling save or edit
-            $scope.Plant.save($scope.plant);
-            $scope.close();
+            $scope.plant.notes = $scope.notes
+            Plant.save($scope.plant, function(response) {
+                console.log('response: ', response);
+                if(response.status < 200 || response.status >= 400) {
+                    if(response.data) {
+                        $scope.alerts.push({type: 'error', msg: "Error!\n" + response.data});
+                    } else {
+                        $scope.alerts.push({type: 'error', msg: "Unknown error!"});
+                    }
+                    return;
+                }
+                $scope.close();
+            });
         };
     });
