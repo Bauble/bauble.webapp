@@ -162,14 +162,14 @@ class GenusNote(db.Base):
     note = Column(UnicodeText, nullable=False)
     genus_id = Column(Integer, ForeignKey('genus.id'), nullable=False)
     genus = relation('Genus', uselist=False,
-                      backref=backref('notes', cascade='all, delete-orphan'))
+                     backref=backref('notes', cascade='all, delete-orphan'))
 
     def json(self, depth=1):
         """Return a JSON representation of this GenusNote
         """
         d = dict(ref="/genus/" + str(self.genus_id) + "/note/" + str(self.id))
         if(depth > 0):
-            d['date'] = self.date
+            d['date'] = self.date.strftime("%d/%m/%Y")
             d['user'] = self.user
             d['category'] = self.category
             d['note'] = self.note
