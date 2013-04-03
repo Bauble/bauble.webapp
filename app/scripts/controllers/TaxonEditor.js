@@ -100,12 +100,6 @@ angular.module('BaubleApp')
 
         // called when the save button is clicked on the editor
         $scope.save = function() {
-            // TODO: we need a way to determine if this is a save on a new or existing
-            // object an whether we whould be calling save or edit
-            // TODO: we need a way to determine if this is a save on a new or existing
-            // object an whether we whould be calling save or edit
-            // TODO: we should probably also update the selected result to reflect
-            // any changes in the search result
             $scope.taxon.notes = $scope.notes
             Taxon.save($scope.taxon, function(response) {
                 console.log('response: ', response);
