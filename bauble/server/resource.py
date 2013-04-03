@@ -25,7 +25,6 @@ import bauble.utils as utils
 class Resource:
     """
     """
-
     ignore = ['ref', 'str']
     relations = {}
     mapped_class = None
@@ -66,7 +65,7 @@ class Resource:
 
         accepted = parse_accept_header()
         if JSON_MIMETYPE not in accepted and '*/*' not in accepted:
-            raise bottle.HTTPError('406 Not Accepted - Expected application/json')
+            raise bottle.HTTPError('406 Not Accepted', 'Expected application/json')
 
         if request.method == "OPTIONS":
             return {}
@@ -105,7 +104,7 @@ class Resource:
         """
         accepted = parse_accept_header()
         if JSON_MIMETYPE not in accepted and '*/*' not in accepted:
-            raise bottle.HTTPError('406 Not Accepted - Expected application/json')
+            raise bottle.HTTPError('406 Not Accepted', 'Expected application/json')
 
         if request.method == "OPTIONS":
             return {}
@@ -162,7 +161,7 @@ class Resource:
 
 
     def apply_query(self, query, query_string):
-        raise bottle.HTTPError("404 Not Found - Query on " + self.resource + " not supported")
+        raise bottle.HTTPError("404 Not Found", "Query on " + self.resource + " not supported")
 
 
     def query(self):
@@ -171,7 +170,7 @@ class Resource:
         """
         accepted = parse_accept_header()
         if JSON_MIMETYPE not in accepted and '*/*' not in accepted:
-            raise bottle.HTTPError('406 Not Accepted - Expected application/json')
+            raise bottle.HTTPError('406 Not Accepted', 'Expected application/json')
 
         if request.method == "OPTIONS":
             return {}
@@ -265,14 +264,14 @@ class Resource:
         """
         accepted = parse_accept_header()
         if JSON_MIMETYPE not in accepted and '*/*' not in accepted:
-            raise bottle.HTTPError('406 Not Accepted - Expected application/json')
+            raise bottle.HTTPError('406 Not Accepted', 'Expected application/json')
 
         if request.method == "OPTIONS":
             return {}
 
         # make sure the content is JSON
         if JSON_MIMETYPE not in request.headers.get("Content-Type"):
-            raise bottle.HTTPError('415 Unsupported Media Type - Expected application/json')
+            raise bottle.HTTPError('415 Unsupported Media Type', 'Expected application/json')
 
         depth = 1
         if 'depth' in accepted[JSON_MIMETYPE]:
@@ -372,12 +371,12 @@ class TaxonResource(Resource):
 
     def apply_query(self, query, query_string):
         mapper = orm.class_mapper(Species)
-        ilike = lambda col: \
-                lambda val: utils.ilike(mapper.c[col], '%%%s%%' % val)
+        ilike = lambda col: lambda val: utils.ilike(mapper.c[col], '%%%s%%' % val)
         properties = ['sp', 'sp2', 'infrasp1', 'infrasp2',
-                                'infrasp3', 'infrasp4']
+                      'infrasp3', 'infrasp4']
         ors = sa.or_(*[ilike(prop)(query) for prop in properties])
         return query.filter(ors)
+
 
 
 class AccessionResource(Resource):

@@ -27,6 +27,15 @@ test_dir = os.path.join(cwd, 'test')
 bottle.TEMPLATE_PATH.insert(0, cwd)
 
 
+@app.error()
+def error_handler(error):
+    enable_cors()
+    if error.body:
+        return str(error.body)
+    elif error.exception:
+        return str(error.exception)
+
+
 @app.hook('before_request')
 def enable_cors():
     """
