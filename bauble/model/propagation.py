@@ -82,9 +82,9 @@ class Propagation(db.Base):
 
     def _get_details(self):
         if self.prop_type == 'Seed':
-            return self._seed
+            return self.seed
         elif self.prop_type == 'UnrootedCutting':
-            return self._cutting
+            return self.cutting
         elif self.notes:
             return self.notes
         else:
@@ -116,7 +116,7 @@ class Propagation(db.Base):
 
         s = str(self)
         if self.prop_type == 'UnrootedCutting':
-            c = self._cutting
+            c = self.cutting
             values = []
             if c.cutting_type is not None:
                 values.append(_('Cutting type: %s') %
@@ -159,7 +159,7 @@ class Propagation(db.Base):
             s = ', '.join(values)
         elif self.prop_type == 'Seed':
             s = str(self)
-            seed = self._seed
+            seed = self.seed
             values = []
             if seed.pretreatment:
                 values.append(_('Pretreatment: %s') % seed.pretreatment)
@@ -205,35 +205,35 @@ class Propagation(db.Base):
 
     def _json_cutting(self, depth):
         d = dict()
-        d['cutting_type'] = self._cutting.cutting_type
-        d['tip'] = self._cutting.tip
-        d[' leaves'] = self._cutting.leaves
-        d['leaves_reduced_pct'] = self._cutting.leaves_reduced_pct
-        d['length'] = self._cutting.length
-        d['length_unit'] = self._cutting.length_unit
+        d['cutting_type'] = self.cutting.cutting_type
+        d['tip'] = self.cutting.tip
+        d[' leaves'] = self.cutting.leaves
+        d['leaves_reduced_pct'] = self.cutting.leaves_reduced_pct
+        d['length'] = self.cutting.length
+        d['length_unit'] = self.cutting.length_unit
 
         # single/double/slice
-        d['wound'] = self._cutting.wound
+        d['wound'] = self.cutting.wound
 
         # removed/None
-        d['flower_buds'] = self._cutting.flower_buds
+        d['flower_buds'] = self.cutting.flower_buds
 
-        d['fungicide'] = self._cutting.fungicide  # fungal soak
-        d['hormone'] = self._cutting.hormone  # powder/liquid/None....solution
+        d['fungicide'] = self.cutting.fungicide  # fungal soak
+        d['hormone'] = self.cutting.hormone  # powder/liquid/None....solution
 
-        d['media'] = self._cutting.media
-        d['container'] = self._cutting.container
-        d['location'] = self._cutting.location
-        d['cover'] = self._cutting.cover  # vispore, poly, plastic dome, poly bag
+        d['media'] = self.cutting.media
+        d['container'] = self.cutting.container
+        d['location'] = self.cutting.location
+        d['cover'] = self.cutting.cover  # vispore, poly, plastic dome, poly bag
 
-        d['bottom_heat_temp'] = self._cutting.bottom_heat_temp  # temperature of bottom heat
+        d['bottom_heat_temp'] = self.cutting.bottom_heat_temp  # temperature of bottom heat
 
         # F/C
-        d['bottom_heat_unit'] = self._cutting.bottom_heat_unit
-        d['rooted_pct'] = self._cutting.rooted_pct
+        d['bottom_heat_unit'] = self.cutting.bottom_heat_unit
+        d['rooted_pct'] = self.cutting.rooted_pct
 
         d['rooted'] = []
-        for rooted in self._cutting.rooted:
+        for rooted in self.cutting.rooted:
             d['rooted'].append(dict(date=rooted.date, quantity=rooted.quantity))
 
         return d
@@ -241,20 +241,20 @@ class Propagation(db.Base):
 
     def _json_seed(self, depth):
         d = dict()
-        d['pretreatment'] = self._seed.pretreatment
-        d['nseeds'] = self._seed.nseeds
-        d['date_sown'] = self._seed.date_sown
-        d['container'] = self._seed.container
-        d['media'] = self._seed.media
-        d['covered'] = self._seed.covered
-        d['location'] = self._seed.location
-        d['moved_from'] = self._seed.moved_from
-        d['moved_to'] = self._seed.moved_to
-        d['moved_date'] = self._seed.moved_date
-        d['germ_date'] = self._seed.germ_date
-        d['nseedlings'] = self._seed.nseedlings
-        d['germ_pct'] = self._seed.germ_pct
-        d['date_planted'] = self._seed.date_planted
+        d['pretreatment'] = self.seed.pretreatment
+        d['nseeds'] = self.seed.nseeds
+        d['date_sown'] = self.seed.date_sown
+        d['container'] = self.seed.container
+        d['media'] = self.seed.media
+        d['covered'] = self.seed.covered
+        d['location'] = self.seed.location
+        d['moved_from'] = self.seed.moved_from
+        d['moved_to'] = self.seed.moved_to
+        d['moved_date'] = self.seed.moved_date
+        d['germ_date'] = self.seed.germ_date
+        d['nseedlings'] = self.seed.nseedlings
+        d['germ_pct'] = self.seed.germ_pct
+        d['date_planted'] = self.seed.date_planted
         return d
 
 
