@@ -51,36 +51,41 @@ var recvd_type_values = {
     };
 
 angular.module('BaubleApp')
-    .controller('AccessionEditorCtrl', function ($scope, Taxon, Accession) {
-        $scope.Accession = Accession;
-        $scope.accession = {date_accd: new Date(), date_recvd: new Date()};
+    .controller('AccessionEditorCtrl', function ($scope, $location, globals, Taxon, Accession) {
 
+        // isNew is inherited from the NewCtrl if this is a /new editor
+        $scope.accession = globals.selected && !$scope.isNew ? globals.selected :
+            {date_accd: new Date(), date_recvd: new Date()};
+        $scope.notes = $scope.accession.notes || []
         $scope.propagation = {};
 
-        $scope.families = []; // the list of completions
+        // make sure we have the accession details
+        if($scope.accession && angular.isDefined($scope.accession.ref)) {
+            Accession.details($scope.accession, function(result) {
+                $scope.accession = result.data;
+                $scope.notes = $scope.accession.notes || [];
+                $scope.header = $scope.accession.ref ? $scope.accession.code + ' ' + $scope.accession.taxon_str
+                    : 'New Accession';
+            });
+        } else if($location.search().taxon) {
+            Taxon.get($location.search().taxon, function(response) {
+                if(response.status < 200 || response.status >= 400) {
+                }
+                $scope.accession.taxon = response.data
+            });
+        }
+
         $scope.id_qualifiers = ["?", "aff.", "cf.", "forsan", "incorrect", "near"];
-
-        $scope.activeTab = "general";
-
-        $scope.modalOptions = {
-            dialogClass: 'modal accession-editor'
-        };
-
         $scope.prov_type_values = prov_type_values;
         $scope.wild_prov_status_values = wild_prov_status_values;
         $scope.recvd_type_values = recvd_type_values;
+        $scope.accession.verifications ? $scope.accession.verifications : [{}]
 
-        if(angular.isUndefined($scope.accession.verifications)) {
-            $scope.accession.verifications = [{}];
-        }
+        $scope.activeTab = "general";
 
-        // get the accession details when the selection is changed
-        $scope.$watch('selected', function() {
-            if(! $scope.selected) return;
-            $scope.Accession.details($scope.selected, function(result) {
-                $scope.accession = result.data;
-            });
-        });
+        // we need to put a watch on $scope.accession to update this when it changes
+        $scope.header = $scope.accession.ref ? $scope.accession.code + ' ' + $scope.accession.taxon_str
+            : 'New Accession';
 
         $scope.taxonSelectOptions = {
             minimumInputLength: 1,
@@ -99,7 +104,7 @@ angular.module('BaubleApp')
                 // console.log('query: ', options);....i think this is what the
                 // options.context is for
                 Taxon.query(options.term + '%', function(response){
-                    $scope.families = response.data.results;
+                    //$scope. = response.data.results;
                     if(response.data.results && response.data.results.length > 0)
                         options.callback({results: response.data.results});
                 });
@@ -123,7 +128,7 @@ angular.module('BaubleApp')
                 // console.log('query: ', options);....i think this is what the
                 // options.context is for
                 Source.query(options.term + '%', function(response){
-                    $scope.families = response.data.results;
+                    //$scope.families = response.data.results;
                     if(response.data.results && response.data.results.length > 0)
                         options.callback({results: response.data.results});
                 });
@@ -145,7 +150,7 @@ angular.module('BaubleApp')
         $scope.save = function() {
             // TODO: we need a way to determine if this is a save on a new or existing
             // object an whether we whould be calling save or edit
-            $scope.Accession.save($scope.accession);
+            Accession.save($scope.accession);
             $scope.close();
         };
     });

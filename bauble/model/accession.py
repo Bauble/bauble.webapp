@@ -127,7 +127,7 @@ class Verification(db.Base):
         d = dict(ref="/accession/" + str(self.accession_id) + "/verification/" + str(self.id))
         if depth > 0:
             d['verifier'] = self.verifier
-            d['date'] = self.date
+            d['date'] = self.date.strftime("%d/%m/%Y")
             d['reference'] = self.reference
             d['accession'] = self.accession.json(depth=depth - 1)
             d['taxon'] = self.taxon.json(depth=depth - 1)
@@ -205,7 +205,7 @@ class AccessionNote(db.Base):
         """
         d = dict(ref="/accession/" + str(self.accession_id) + "/note/" + str(self.id))
         if(depth > 0):
-            d['date'] = self.date
+            d['date'] = self.date.strftime("%d/%m/%Y")
             d['user'] = self.user
             d['category'] = self.category
             d['note'] = self.note
@@ -458,8 +458,8 @@ class Accession(db.Base):
             d['taxon_str'] = self.taxon_str(markup=markup)
             d['prov_type'] = self.prov_type
             d['wild_prov_status'] = self.wild_prov_status
-            d['date_accd'] = self.date_accd
-            d['date_recvd'] = self.date_recvd
+            d['date_accd'] = self.date_accd.strftime("%d/%m/%Y")
+            d['date_recvd'] = self.date_recvd.strftime("%d/%m/%Y")
             d['quantity_recvd'] = self.quantity_recvd
             d['recvd_type'] = self.recvd_type
             d['private'] = self.private
