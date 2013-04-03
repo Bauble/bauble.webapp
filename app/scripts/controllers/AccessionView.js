@@ -17,4 +17,10 @@ angular.module('BaubleApp')
                 $location.path('/edit/accession')
             });
         });
+
+        $scope.$on('accession-addplant', function(){
+            $scope.$apply(function() {
+                $location.path('/new/plant').search({'accession': $scope.accession.ref});
+            });
+        });
     });
