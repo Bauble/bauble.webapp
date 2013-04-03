@@ -5,13 +5,13 @@ angular.module('BaubleApp')
 
         // isNew is inherited from the NewCtrl if this is a /new editor
         $scope.genus = globals.selected && !$scope.isNew ? globals.selected : {};
-        $scope.notes = $scope.genus.notes ? $scope.genus.notes : [];
+        $scope.notes = $scope.genus.notes || [];
 
         // make sure we have the family details
         if($scope.genus && angular.isDefined($scope.genus.ref)) {
             Genus.details($scope.genus, function(result) {
                 $scope.genus = result.data;
-                $scope.notes = $scope.genus.notes;
+                $scope.notes = $scope.genus.notes || [];
             });
         } else if($location.search().family) {
             Family.get($location.search().family, function(response) {

@@ -5,12 +5,13 @@ angular.module('BaubleApp')
 
         // isNew is inherited from the NewCtrl if this is a /new editor
         $scope.family = globals.selected && !$scope.isNew ? globals.selected : {};
+        $scope.notes = $scope.family.notes || [];
 
         // make sure we have the family details
         if($scope.family && angular.isDefined($scope.family.ref)) {
             Family.details($scope.family, function(result) {
                 $scope.family = result.data;
-                $scope.notes = $scope.family.notes;
+                $scope.notes = $scope.family.notes || [];
             });
         }
 
@@ -62,7 +63,6 @@ angular.module('BaubleApp')
             // TODO: we should probably also update the selected result to reflect
             // any changes in the search result
             $scope.family.notes = $scope.notes
-            console.log('$scope.family.notes: ', $scope.family.notes);
             Family.save($scope.family, function(response) {
                 console.log('response: ', response);
                 if(response.status < 200 || response.status >= 400) {

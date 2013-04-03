@@ -387,6 +387,9 @@ class Taxon(db.Base):
             if self.habit:
                 d['habit'] = self.habit.json(depth=depth - 1)
 
+            d['synonyms'] = [syn.json(depth=depth - 1) for syn in self.synonyms]
+            d['notes'] = [note.json(depth=depth - 1) for note in self.notes]
+
         return d
 
 
@@ -431,7 +434,7 @@ class TaxonNote(db.Base):
         """
         d = dict(ref="/taxon/" + str(self.taxon_id) + "/note/" + str(self.id))
         if(depth > 0):
-            d['date'] = self.date
+            d['date'] = self.date.strftime("%d/%m/%Y")
             d['user'] = self.user
             d['category'] = self.category
             d['note'] = self.note

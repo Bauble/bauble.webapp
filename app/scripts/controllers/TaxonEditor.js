@@ -4,13 +4,14 @@ angular.module('BaubleApp')
     .controller('TaxonEditorCtrl', function ($scope, $location, globals, Genus, Taxon) {
         // isNew is inherited from the NewCtrl if this is a /new editor
         $scope.taxon = globals.selected && !$scope.isNew ? globals.selected : {};
-        $scope.notes = $scope.taxon.notes ? $scope.taxon.notes : [];
+        $scope.notes = $scope.taxon.notes || []
 
         // make sure we have the family details
         if($scope.taxon && angular.isDefined($scope.taxon.ref)) {
-            Genus.details($scope.taxon, function(result) {
+            Taxon.details($scope.taxon, function(result) {
+                console.log('result.data: ', result.data);
                 $scope.taxon = result.data;
-                $scope.notes = $scope.taxon.notes;
+                $scope.notes = $scope.taxon.notes || [];
             });
         } else if($location.search().genus) {
             Genus.get($location.search().genus, function(response) {
