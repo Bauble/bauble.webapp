@@ -40,8 +40,8 @@ angular.module('BaubleApp')
         $scope.accSelectOptions = {
             minimumInputLength: 1,
 
-            formatResult: function(object, container, query) { return object.str; },
-            formatSelection: function(object, container) { return object.str; },
+            formatResult: function(object, container, query) { return object.code; },
+            formatSelection: function(object, container) { return object.code; },
 
             id: function(obj) {
                 return obj.ref; // use ref field for id since our resources don't have ids
