@@ -134,7 +134,6 @@ class Verification(db.Base):
             d['prev_taxon'] = self.prev_taxon.json(depth=depth - 1)
             d['level'] = self.level
             d['notes'] = None
-            d['resource'] = 'accession'
             if self.notes:
                 d['notes'] = self.notes.json(depth=depth - 1)
         return d
@@ -197,7 +196,7 @@ class AccessionNote(db.Base):
     note = Column(UnicodeText, nullable=False)
     accession_id = Column(Integer, ForeignKey('accession.id'), nullable=False)
     accession = relation('Accession', uselist=False,
-                       backref=backref('notes', cascade='all, delete-orphan'))
+                         backref=backref('notes', cascade='all, delete-orphan'))
 
 
     def json(self, depth=1):

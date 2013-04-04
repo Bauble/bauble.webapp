@@ -107,7 +107,6 @@ class Family(db.Base):
             d['family'] = self.family
             d['qualifier'] = self.qualifier
             d['str'] = str(self)
-            d['resource'] = 'family'
 
         if(depth > 1):
             d['synonyms'] = [syn.json(depth=depth - 1) for syn in self.synonyms]

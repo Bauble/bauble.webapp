@@ -1,19 +1,10 @@
 #
 # location.py
 #
-import os
-import traceback
-
 from sqlalchemy import *
 from sqlalchemy.orm import *
-from sqlalchemy.orm.session import object_session
-from sqlalchemy.exc import DBAPIError
 
-import bauble
 import bauble.db as db
-
-#import bauble.utils as utils
-import bauble.paths as paths
 
 
 def loc_markup_func(location):
@@ -62,9 +53,7 @@ class Location(db.Base):
             d['id'] = self.id
             d['code'] = self.code
             d['name'] = self.name
-            d['resource'] = 'location'
             d['str'] = str(self)
-
         if depth > 1:
             d['description'] = self.description
 
