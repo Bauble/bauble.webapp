@@ -555,8 +555,12 @@ class PlantResource(Resource):
     relations = {
         'accession': 'handle_accession',
         'location': 'handle_location',
-        'notes': 'handle_notes'
+        'notes': 'handle_notes',
+        'change': 'handle_change'
     }
+
+    def handle_changel(self, plant, change, session):
+        pass
 
     def handle_accession(self, plant, accession, session):
         plant.accession_id = self.get_ref_id(accession)
