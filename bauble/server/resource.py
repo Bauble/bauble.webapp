@@ -18,7 +18,7 @@ from bauble.model.source import Source, SourceDetail, Collection
 from bauble.model.plant import Plant, PlantNote
 from bauble.model.propagation import Propagation, PlantPropagation
 from bauble.model.location import Location
-from bauble.server import app, API_ROOT, parse_accept_header, JSON_MIMETYPE
+from bauble.server import app, API_ROOT, parse_accept_header, JSON_MIMETYPE, TEXT_MIMETYPE
 import bauble.utils as utils
 
 
@@ -46,12 +46,58 @@ class Resource:
         app.route(API_ROOT + self.resource, ['OPTIONS', 'POST'], self.save_or_update)
         app.route(API_ROOT + self.resource + "/<resource_id>", ['OPTIONS', 'DELETE'], self.delete)
 
+        # count methods
+        app.route(API_ROOT + self.resource + "/count", ['OPTIONS', 'GET'],
+                  self.count)
+        app.route(API_ROOT + self.resource + "/<resource_id>/<relation:path>/count", ['OPTIONS', 'GET'],
+                  self.count_relations)
+
         # URL for relations
         app.route(API_ROOT + self.resource + "/schema", ['OPTIONS', 'GET'], self.get_schema)
         app.route(API_ROOT + self.resource + "/<relation:path>/schema", ['OPTIONS', 'GET'],
                   self.get_schema)
         app.route(API_ROOT + self.resource + "/<resource_id>/<relation:path>", ['OPTIONS', 'GET'],
                   self.get_relation)
+
+
+    def count(self, resource_id):
+        accepted = parse_accept_header()
+        if TEXT_MIMETYPE not in accepted and '*/*' not in accepted:
+            raise bottle.HTTPError('406 Not Accepted', 'Expected application/json')
+
+        if request.method == "OPTIONS":
+            return {}
+
+        session = db.connect()
+        count = session.query(self.mapped_class).count()
+        session.close()
+        return str(count)
+
+
+    def count_relations(self, resource_id, relation):
+        accepted = parse_accept_header()
+        if TEXT_MIMETYPE not in accepted and '*/*' not in accepted:
+            raise bottle.HTTPError('406 Not Accepted', 'Expected application/json')
+
+        if request.method == "OPTIONS":
+            return {}
+
+        session = db.connect()
+
+        # get the mapper for the last item in the list of relations
+        mapper = orm.class_mapper(self.mapped_class)
+        for name in relation.split('/'):
+            mapper = getattr(mapper.relationships, name).mapper
+
+        # query the mapped class and the end point relation using the list of the passed
+        # relations to create the join between the two
+        query = session.query(self.mapped_class, mapper.class_).\
+            filter(getattr(self.mapped_class, 'id') == resource_id).\
+            join(*relation.split('/'))
+
+        count = query.count()
+        session.close()
+        return str(count)
 
 
     def get_relation(self, resource_id, relation):
@@ -71,7 +117,7 @@ class Resource:
             return {}
 
         depth = 1
-        if 'depth' in accepted[JSON_MIMETYPE]:
+        if JSON_MIMETYPE in accepted and 'depth' in accepted[JSON_MIMETYPE]:
             depth = accepted[JSON_MIMETYPE]['depth']
 
         session = db.connect()
@@ -197,7 +243,6 @@ class Resource:
             for kid in relation.split('.'):
                 relation_mapper = getattr(relation_mapper.relationships, kid).mapper
             return relation_mapper.class_
-
 
         json_objs = []
         if relations:

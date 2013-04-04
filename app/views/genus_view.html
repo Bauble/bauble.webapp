@@ -8,9 +8,9 @@
 
   <h3>{{genus.str}}</h3>
 
-  <div># of Taxa</div>
-  <div># of Accessions</div>
-  <div># of Plants</div>
+  <div># of Taxa: {{counts.taxa}}</div>
+  <div># of Accessions: {{counts.accessions}}</div>
+  <div># of Plants: {{counts.plants}}</div>
 
   <h4>Syonyms</h4>
   <div ng-show="!genus.synonyms || genus.synonyms.length < 1" style="color: #aaa">

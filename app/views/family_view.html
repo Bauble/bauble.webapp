@@ -8,10 +8,10 @@
 
   <h3>{{family.str}}</h3>
 
-  <div># of Genera</div>
-  <div># of Taxa</div>
-  <div># of Accessions</div>
-  <div># of Plants</div>
+  <div># of Genera: {{counts.genera}}</div>
+  <div># of Taxa: {{counts.taxa}}</div>
+  <div># of Accessions: {{counts.accessions}}</div>
+  <div># of Plants: {{counts.plants}}</div>
 
   <h4>Syonyms</h4>
   <div ng-show="!family.synonyms || family.synonyms.length < 1" style="color: #aaa">

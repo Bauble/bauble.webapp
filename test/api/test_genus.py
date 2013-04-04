@@ -91,6 +91,10 @@ def test_server():
     print(families[0]['genera'])
     assert first_genus['ref'] in [genus['ref'] for genus in families[0]['genera']]
 
+    # count the number of genera on a family
+    count = test.count_resource(family['ref'] + "/genera")
+    assert count == "2"
+
     # delete the created resources
     test.delete_resource(first_genus['ref'])
     test.delete_resource(second_genus['ref'])

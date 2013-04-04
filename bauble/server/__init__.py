@@ -13,6 +13,8 @@ app = bottle.Bottle()
 
 API_ROOT = "/api/v1"
 JSON_MIMETYPE = "application/json"
+TEXT_MIMETYPE = "text/plain"
+HTML_MIMETYPE = "text/html"
 
 cwd = os.path.abspath(bauble.__path__[0])
 

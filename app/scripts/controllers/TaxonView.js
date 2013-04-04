@@ -1,14 +1,10 @@
 'use strict';
 
 angular.module('BaubleApp')
-    .controller('TaxonViewCtrl', function ($scope, $location, Taxon) {
-        $scope.taxon = {};
-
-        // get the taxon details when the selection is changed
-        $scope.$watch('selected', function() {
-            Taxon.details($scope.selected, function(result) {
-                $scope.taxon = result.data;
-            });
+    .controller('TaxonViewCtrl', function ($scope, $location, globals, Taxon) {
+        $scope.taxon = globals.selected;
+        Taxon.details(globals.selected, function(result) {
+            $scope.taxon = result.data;
         });
 
         $scope.$on('taxon-edit', function(){
@@ -21,5 +17,15 @@ angular.module('BaubleApp')
             $scope.$apply(function() {
                 $location.path('/new/accession').search({'taxon': $scope.taxon.ref});
             });
+        });
+
+        $scope.counts = {};
+
+        Taxon.count($scope.taxon, "/accessions", function(result) {
+            $scope.counts.accessions = result.data
+        });
+
+        Taxon.count($scope.taxon, "/accessions/plants", function(result) {
+            $scope.counts.plants = result.data
         });
     });

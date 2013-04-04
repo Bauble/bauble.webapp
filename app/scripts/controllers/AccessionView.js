@@ -1,15 +1,10 @@
 'use strict';
 
 angular.module('BaubleApp')
-    .controller('AccessionViewCtrl', function ($scope, $location, Accession) {
-        $scope.Accession = Accession;
-        $scope.accession = {};
-
-        // get the taxon details when the selection is changed
-        $scope.$watch('selected', function() {
-            $scope.Accession.details($scope.selected, function(result) {
-                $scope.accession = result.data;
-            });
+    .controller('AccessionViewCtrl', function ($scope, $location, globals, Accession) {
+        $scope.accession = globals.selected;
+        Accession.details(globals.selected, function(result) {
+            $scope.accession = result.data;
         });
 
         $scope.$on('accession-edit', function(){
@@ -23,4 +18,9 @@ angular.module('BaubleApp')
                 $location.path('/new/plant').search({'accession': $scope.accession.ref});
             });
         });
+
+        $scope.count = {}
+        Accession.count($scope.accession, "/accessions/plants", function(result) {
+            $scope.counts.plants = result.data
+        })
     });

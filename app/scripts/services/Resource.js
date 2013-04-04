@@ -5,21 +5,27 @@ angular.module('BaubleApp')
     .factory('Resource', function (globals, $http) {
         return function(resourceRoot) {
             var resourceUrl = globals.apiRoot + resourceRoot;
+
+            function get_url_from_resource(resource) {
+                var url = resourceUrl + '/' + resource; // if an ID
+                if(isNaN(Number(resource))) {
+                    if(angular.isObject(resource)) {
+                        // if an object then use the ref
+                        url = resource.ref.indexOf(globals.apiRoot) === 0 ? resource.ref : globals.apiRoot + resource.ref;
+                    } else {
+                        // assume it a string and a ref
+                        url = globals.apiRoot + resource;
+                    }
+                }
+                return url;
+            }
+
             return {
                 /*
                  * resource can be an ID, a ref or an object with a ref
                  */
                 get: function(resource, callback) {
-                    var url = resourceUrl + '/' + resource; // if an ID
-                    if(isNaN(Number(resource))) {
-                        if(angular.isObject(resource)) {
-                            // if an object then use the ref
-                            url = resource.ref.indexOf(globals.apiRoot) === 0 ? resource.ref : globals.apiRoot + resource.ref;
-                        } else {
-                            // assume it a string and a ref
-                            var url = globals.apiRoot + resource;
-                        }
-                    }
+                    var url = get_url_from_resource(resource);
                     return $http({ method: 'GET', url: url }).then(callback, callback);
                 },
                 query: function(q, relations, callback) {
@@ -44,11 +50,7 @@ angular.module('BaubleApp')
                                 .then(callback, callback);
                 },
                 del: function(resource, callback) {
-                    var url = resourceUrl + '/' + resource; // if an ID
-                    if(isNaN(Number(resource))) {
-                        // if an object then use the ref
-                        url = resource.ref.indexOf(globals.apiRoot) === 0 ? resource.ref : globals.apiRoot + resource.ref;
-                    }
+                    var url = get_url_from_resource(resource);
                     return $http({ method: 'DELETE', url: url }).then(callback, callback);
                 },
 
@@ -56,25 +58,22 @@ angular.module('BaubleApp')
                  * resource can be an ID, a ref or an object with a ref
                  */
                 details: function(resource, callback) {
-                    var url = resourceUrl + '/' + resource; // if an ID
-                    if(isNaN(Number(resource))) {
-                        if(angular.isObject(resource)) {
-                            // if an object then use the ref
-                            url = resource.ref.indexOf(globals.apiRoot) === 0 ? resource.ref : globals.apiRoot + resource.ref;
-                        } else {
-                            // assume it a string and a ref
-                            var url = globals.apiRoot + resource;
-                        }
-                    }
+                    var url = get_url_from_resource(resource);
                     return $http({ method: 'GET', url: url,
                                headers: { 'Accept': 'application/json;depth=2' }})
                             .then(callback, callback);
                 },
+
                 get_schema: function(scalars_only, callback) {
                     var url = resourceUrl + '/schema',
                         params = scalars_only ? { flags: 'scalars_only' } : undefined,
                         callback = typeof scalars_only == 'function' ? scalars_only : callback;
                     return $http({ method: 'GET', url: url, params: params }).then(callback, callback);
+                },
+
+                count: function(resource, relation, callback) {
+                    var url = get_url_from_resource(resource) + relation + "/count"
+                    return $http({ method: 'GET', url: url }).then(callback, callback);
                 }
             };
         };

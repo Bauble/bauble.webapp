@@ -19,4 +19,21 @@ angular.module('BaubleApp')
                 $location.path('/new/genus').search({'family': $scope.family.ref});
             });
         });
+
+        $scope.counts = {};
+        Family.count($scope.family, "/genera", function(result) {
+            $scope.counts.genera = result.data
+        })
+
+        Family.count($scope.family, "/genera/taxa", function(result) {
+            $scope.counts.taxa = result.data
+        })
+
+        Family.count($scope.family, "/genera/taxa/accessions", function(result) {
+            $scope.counts.accessions = result.data
+        })
+
+        Family.count($scope.family, "/genera/taxa/accessions/plants", function(result) {
+            $scope.counts.plants = result.data
+        })
     });
