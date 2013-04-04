@@ -19,6 +19,7 @@ from bauble.model.plant import Plant, PlantNote
 from bauble.model.propagation import Propagation, PlantPropagation
 from bauble.model.location import Location
 from bauble.server import app, API_ROOT, parse_accept_header, JSON_MIMETYPE, TEXT_MIMETYPE
+import bauble.types as types
 import bauble.utils as utils
 
 
