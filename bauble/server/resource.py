@@ -485,8 +485,12 @@ class AccessionResource(Resource):
     resource = "/accession"
     mapped_class = Accession
 
-    relations = {'taxon': 'handle_taxon',
-                 'source': 'handle_source'}
+    relations = {
+        'taxon': 'handle_taxon',
+        'source': 'handle_source',
+        'notes': 'handle_notes'
+    }
+
 
     def handle_source(self, accession, source, session):
         print('source: ', source)
@@ -519,13 +523,19 @@ class AccessionResource(Resource):
     def apply_query(self, query, query_string):
         return query.filter(Accession.code.like(query_string))
 
+    def handle_notes(self, accession, notes, session):
+        self.note_handler(accession, notes, AccessionNote, session)
+
 
 class PlantResource(Resource):
     resource = "/plant"
     mapped_class = Plant
 
-    relations = {'accession': 'handle_accession',
-                 'location': 'handle_location'}
+    relations = {
+        'accession': 'handle_accession',
+        'location': 'handle_location',
+        'notes': 'handle_notes'
+    }
 
     def handle_accession(self, plant, accession, session):
         plant.accession_id = self.get_ref_id(accession)
@@ -537,6 +547,9 @@ class PlantResource(Resource):
         # TODO: we also need to support searching will full accession.plant
         # strings like the PlantSearch mapper strategy from bauble 1
         return query.filter(Plant.code.like(query_string))
+
+    def handle_notes(self, plant, notes, session):
+        self.note_handler(plant, notes, AccessionNote, session)
 
 
 class LocationResource(Resource):
