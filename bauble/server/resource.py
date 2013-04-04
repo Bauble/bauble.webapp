@@ -188,13 +188,33 @@ class Resource:
         if relation:
             for name in relation.split('/'):
                 mapper = getattr(mapper.relationships, name).mapper
-        schema = dict()
-        schema['columns'] = [col for col in mapper.columns.keys() if not col.startswith('_')]
+        schema = dict(columns={}, relations={})
+
+        for name, column in mapper.columns.items():
+            if name.startswith('_'):
+                continue
+            column_dict = dict(required=column.nullable)
+            schema['columns'][name] = column_dict
+            if isinstance(column.type, sa.String):
+                column_dict['type'] = 'string'
+                column_dict['length'] = column.type.length
+            elif isinstance(column.type, sa.Integer):
+                column_dict['type'] = 'int'
+            elif isinstance(column.type, types.Enum):
+                column_dict['type'] = 'list'
+                column_dict['values'] = column.type.values
+            elif isinstance(column.type, types.DateTime):
+                column_dict['type'] = 'datetime'
+            elif isinstance(column.type, types.Date):
+                column_dict['type'] = 'date'
+            else:
+                raise Exception("Unknown type %s for column %s: " % (str(column.type), column.name))
 
         if 'scalars_only' in flags:
             schema['relations'] = [key for key, rel in mapper.relationships.items() if not key.startswith('_') and not rel.uselist]
         else:
             schema['relations'] = [key for key in mapper.relationships.keys() if not key.startswith('_')]
+
         return schema
 
 

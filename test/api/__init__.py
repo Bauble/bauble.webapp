@@ -28,6 +28,12 @@ def count_resource(resource):
     return response.text
 
 
+def get_schema(resource):
+    response = requests.get(api_root + resource + "/schema")
+    assert response.status_code == 200
+    return json.loads(response.text)
+
+
 def create_resource(resource, data):
     """
     Create a server based resource with fields in kwargs with a POST
