@@ -6,8 +6,18 @@
     </span>
   </div>
 
-  {{plant.str}}
+  <h3>{{plant.str}}</h3>
 
-  <div id="plantEditorContainer" ng-include="editorTemplate" onload="onEditorLoaded()"></div>
+  <div>Location: {{plant.location.str}}</div>
+  <div>Type: {{plant.acc_type}}</div>
+  <div>Quantity: {{plant.quantity}}</div>
+  <div>Memorial: {{plant.memorial}}</div>
+
+  <h4>Changes</h4>
+
+  <h4>Propagations</h4>
+
+  <h4>Notes</h4>
+
 
 </div>
