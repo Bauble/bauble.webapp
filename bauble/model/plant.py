@@ -19,13 +19,10 @@ from sqlalchemy.exc import DBAPIError
 import bauble.db as db
 from bauble.error import check, CheckConditionError
 
-import bauble.paths as paths
-#import bauble.model.meta as meta
+import bauble.paths as pathsn
 from bauble.model import meta
 from bauble.model.location import Location
 from bauble.model.propagation import PlantPropagation
-#import bauble.prefs as prefs
-#from bauble.search import SearchStrategy
 import bauble.types as types
 import bauble.utils as utils
 #from bauble.utils.log import debug
@@ -68,7 +65,7 @@ def get_next_code(acc):
     # auto generate/increment the accession code
     session = db.Session()
     codes = session.query(Plant.code).join(Accession).\
-        filter(Accession.id==acc.id).all()
+        filter(Accession.id == acc.id).all()
     next = 1
     if codes:
         try:
@@ -88,7 +85,7 @@ def is_code_unique(plant, code):
     # if the range builder only creates one number then we assume the
     # code is not a range and so we test against the string version of
     # code
-    codes = map(utils.utf8, utils.range_builder(code)) # test if a range
+    codes = map(utils.utf8, utils.range_builder(code))  # test if a range
     if len(codes) == 1:
         codes = [utils.utf8(code)]
 
@@ -97,7 +94,7 @@ def is_code_unique(plant, code):
     # accession_id until the session is flushed
     session = db.Session()
     count = session.query(Plant).join('accession').\
-        filter(and_(Accession.id==plant.accession.id,
+        filter(and_(Accession.id == plant.accession.id,
                     Plant.code.in_(codes))).count()
     session.close()
     return count == 0
@@ -116,7 +113,7 @@ class PlantNote(db.Base):
     note = Column(UnicodeText, nullable=False)
     plant_id = Column(Integer, ForeignKey('plant.id'), nullable=False)
     plant = relation('Plant', uselist=False,
-                      backref=backref('notes', cascade='all, delete-orphan'))
+                     backref=backref('notes', cascade='all, delete-orphan'))
 
     def json(self, depth=1):
         """Return a JSON representation of this AccessionNote
@@ -154,7 +151,7 @@ change_reasons = {
     'GIVE': _('Given away (specify person)'),
     'OTHR': _('Other'),
     None: ''
-    }
+}
 
 
 class PlantChange(db.Base):
@@ -187,15 +184,15 @@ class PlantChange(db.Base):
     # relations
     plant = relation('Plant', uselist=False,
                      primaryjoin='PlantChange.plant_id == Plant.id',
-                     backref=backref('changes',cascade='all, delete-orphan'))
+                     backref=backref('changes', cascade='all, delete-orphan'))
     parent_plant = relation('Plant', uselist=False,
-                      primaryjoin='PlantChange.parent_plant_id == Plant.id',
-                      backref=backref('branches',cascade='all, delete-orphan'))
+                            primaryjoin='PlantChange.parent_plant_id == Plant.id',
+                            backref=backref('branches', cascade='all, delete-orphan'))
 
     from_location = relation('Location',
-                   primaryjoin='PlantChange.from_location_id == Location.id')
+                             primaryjoin='PlantChange.from_location_id == Location.id')
     to_location = relation('Location',
-                   primaryjoin='PlantChange.to_location_id == Location.id')
+                           primaryjoin='PlantChange.to_location_id == Location.id')
 
 
     def json(self, depth=1):
