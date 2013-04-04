@@ -1,21 +1,17 @@
 'use strict';
 
 angular.module('BaubleApp')
-    .controller('LocationViewCtrl', function ($scope, $location, Location) {
-        $scope.Location = Location;
-        $scope.location = {};
-
-        // get the taxon details when the selection is changed
-        $scope.$watch('selected', function() {
-            $scope.Location.details($scope.selected, function(result) {
-                $scope.location = result.data;
-            });
-        });
-
+    .controller('LocationViewCtrl', function ($scope, $location, globals, Location) {
+        $scope.location = globals.selected;
 
         $scope.$on('location-edit', function(){
             $scope.$apply(function() {
                 $location.path('/edit/location')
             });
         });
+
+        $scope.counts = {}
+        Location.count($scope.location, "/plants", function(result) {
+            $scope.counts.plants = result.data
+        })
     });

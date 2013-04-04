@@ -6,8 +6,17 @@
     </span>
   </div>
 
-  {{location.str}}
+  <h3>{{location.str}}</h3>
 
-  <div id="locationEditorContainer" ng-include="editorTemplate" onload="onEditorLoaded()"></div>
+  <div># of Plants: {{counts.plants}}</div>
+
+  <h4>Description</h4>
+  <div ng-show="!location.description" style="color: #aaa">
+    This location has no description.
+  </div>
+  <div>
+    {{location.description}}
+  </div>
+
 
 </div>
