@@ -1,9 +1,10 @@
-<div ng-controller="LocationEditorCtrl" class="bauble-editor location-editor">
+<div ng-form name="locationForm" ng-controller="LocationEditorCtrl" class="bauble-editor location-editor">
+    <alert class="span6 offset3" ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">{{alert.msg}}</alert>
 
   <div class="row">
     <div class="editor-header span12">
       <div class="header-title span8">
-        <h4>--</h4>
+        <h4>{{location.str || 'New location'}}</h4>
       </div>
       <div class="header-buttons span3">
         <button class="btn" ng-click="close()">Close</button>
@@ -13,14 +14,28 @@
   </div>
 
   <div class="editor-body">
-      <form name="locationForm">
 
-        <label>Location</label>
+    <div class="control-group">
+      <label class="control-label">Code</label>
+      <div class="controls">
         <input type="text" ng-model="location.code" required/>
+      </div>
+    </div> <!-- .control-group -->
 
-        <!-- <label>Notes</label>
-        <textarea ng-model="location.notes" rows="5"></textarea> -->
-      </form>
+    <div class="control-group">
+      <label class="control-label">Name</label>
+      <div class="controls">
+        <input type="text" ng-model="location.name"/>
+      </div>
+    </div> <!-- .control-group -->
+
+    <div class="control-group">
+      <label class="control-label">Description</label>
+      <div class="controls">
+        <textarea ng-model="location.description"/></textarea>
+      </div>
+    </div> <!-- .control-group -->
+
   </div> <!-- .editor-body -->
 
 </div> <!-- .location-editor -->
