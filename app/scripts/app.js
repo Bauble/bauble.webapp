@@ -17,6 +17,10 @@ angular.module('BaubleApp', ['ui', 'ui.bootstrap'])
                 controller: 'LoginCtrl'
             })
 
+            .when('/newuser', {
+                templateUrl: 'views/new_user.html',
+            })
+
             .when('/admin', {
                 templateUrl: 'views/admin.html',
                 controller: 'AdminCtrl'

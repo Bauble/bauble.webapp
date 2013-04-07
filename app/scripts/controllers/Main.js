@@ -1,6 +1,6 @@
 'use strict';
 
 angular.module('BaubleApp')
-    .controller('MainCtrl', function ($scope) {
-
+    .controller('MainCtrl', function ($scope, globals) {
+        //$scope.globals.hideMainMenu = true;
     });

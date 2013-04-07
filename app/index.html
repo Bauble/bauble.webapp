@@ -42,7 +42,11 @@
       <script src="components/json3/lib/json3.min.js"></script>
     <![endif]-->
 
-    <div class="navbar navbar-inverse navbar-fixed-top">
+    <div ng-show="globals.hideMainMenu">
+      <a href="#/login">Login</a>
+    </div>
+
+    <div ng-hide="globals.hideMainMenu" class="navbar navbar-inverse navbar-fixed-top">
       <div class="navbar-inner">
         <div class="container">
 
@@ -136,6 +140,9 @@
     <script src="scripts/controllers/Edit.js"></script>
     <script src="scripts/controllers/SourceEdit.js"></script>
     <script src="scripts/controllers/PropagationEditor.js"></script>
+    <script src="scripts/controllers/Welcome.js"></script>
+    <script src="scripts/controllers/NewUser.js"></script>
+    <script src="scripts/controllers/NewOrganization.js"></script>
     <!-- endbuild -->
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->

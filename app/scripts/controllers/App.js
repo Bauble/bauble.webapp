@@ -1,7 +1,11 @@
 'use strict';
 
 angular.module('BaubleApp')
-    .controller('AppCtrl', function ($scope, $route, $location, globals) {
+    .controller('AppCtrl', function ($scope, $route, $location) {
+
+        //$scope.shared = {};
+        //$scope.shared.hideMainMenu = true;
+
         $scope.$on("$routeChangeStart", function(nextRoute, currentRoute) {
 
             // console.log('$routeChangeStart');

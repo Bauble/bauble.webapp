@@ -116,6 +116,68 @@ def get_search():
     return {'results': [r.json(depth=depth) for r in results]}
 
 
+#
+# Handle auth requests
+#
+@app.route(API_ROOT + "/auth", method=['OPTIONS', 'POST'])
+def get_auth():
+    accepted = parse_accept_header()
+
+    if JSON_MIMETYPE not in accepted and '*/*' not in accepted and request.method != 'OPTIONS':
+        raise bottle.HTTPError('406 Not Accepted - Expected application/json')
+
+    if request.method == 'OPTIONS':
+        return
+
+    import bauble.system as system
+    from bauble.system.user import User
+    import uuid
+
+    name = request.forms.name
+    password = request.forms.password
+    session = system.connect()
+    user = session.query(User).filter_by(name=name).first()
+    if not user or user.password != password:
+        raise bottle.HTTPError('401 Not Authorized')
+
+    user.token = uuid.uuid4()
+    session.save()
+    session.close()
+
+    return {'auth_token': token}
+
+
+#
+# POST to /system/user, e.g. create a new system user
+#
+@app.route(API_ROOT + "/system/user", method=['OPTIONS', 'POST'])
+def get_auth():
+    accepted = parse_accept_header()
+
+    if JSON_MIMETYPE not in accepted and '*/*' not in accepted and request.method != 'OPTIONS':
+        raise bottle.HTTPError('406 Not Accepted - Expected application/json')
+
+    if request.method == 'OPTIONS':
+        return
+
+    import bauble.system as system
+    from bauble.system.user import User
+    import uuid
+
+    name = request.forms.name
+    password = request.forms.password
+    session = system.connect()
+    user = session.query(User).filter_by(name=name).first()
+    if not user or user.password != password:
+        raise bottle.HTTPError('401 Not Authorized')
+
+    user.token = uuid.uuid4()
+    session.save()
+    session.close()
+
+    return {'auth_token': token}
+
+
 def start(host='localhost', port=8080, debug=False):
     """
     Start the Bauble server.
