@@ -38,17 +38,19 @@ module.exports = function (grunt) {
           '<%= yeoman.app %>/{,*/}*.html',
           '{.tmp,<%= yeoman.app %>}/styles/{,*/}*.css',
           '{.tmp,<%= yeoman.app %>}/scripts/{,*/}*.js',
-          '<%= yeoman.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp}'
+          '<%= yeoman.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
         ],
         tasks: ['livereload']
       }
     },
     connect: {
+      options: {
+        port: 9000,
+        // Change this to '0.0.0.0' to access the server from outside.
+        hostname: 'localhost'
+      },
       livereload: {
         options: {
-          port: 9000,
-          // Change this to '0.0.0.0' to access the server from outside.
-          hostname: 'localhost',
           middleware: function (connect) {
             return [
               lrSnippet,
@@ -60,7 +62,6 @@ module.exports = function (grunt) {
       },
       test: {
         options: {
-          port: 9000,
           middleware: function (connect) {
             return [
               mountFolder(connect, '.tmp'),
@@ -72,11 +73,20 @@ module.exports = function (grunt) {
     },
     open: {
       server: {
-        url: 'http://localhost:<%= connect.livereload.options.port %>'
+        url: 'http://localhost:<%= connect.options.port %>'
       }
     },
     clean: {
-      dist: ['.tmp', '<%= yeoman.dist %>/*'],
+      dist: {
+        files: [{
+          dot: true,
+          src: [
+            '.tmp',
+            '<%= yeoman.dist %>/*',
+            '!<%= yeoman.dist %>/.git*'
+          ]
+        }]
+      },
       server: '.tmp'
     },
     jshint: {
@@ -98,16 +108,21 @@ module.exports = function (grunt) {
     },
     coffee: {
       dist: {
-        files: {
-          '.tmp/scripts/coffee.js': '<%= yeoman.app %>/scripts/*.coffee'
-        }
+        files: [{
+          expand: true,
+          cwd: '<%= yeoman.app %>/scripts',
+          src: '{,*/}*.coffee',
+          dest: '.tmp/scripts',
+          ext: '.js'
+        }]
       },
       test: {
         files: [{
           expand: true,
-          cwd: '.tmp/spec',
-          src: '*.coffee',
-          dest: 'test/spec'
+          cwd: 'test/spec',
+          src: '{,*/}*.coffee',
+          dest: '.tmp/spec',
+          ext: '.js'
         }]
       }
     },
@@ -269,9 +284,10 @@ module.exports = function (grunt) {
     'concat',
     'copy',
     'cdnify',
-    'usemin',
     'ngmin',
-    'uglify'
+    'uglify',
+    'rev',
+    'usemin'
   ]);
 
   grunt.registerTask('default', ['build']);
