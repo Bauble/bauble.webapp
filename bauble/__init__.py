@@ -27,3 +27,5 @@ mapper_search.add_meta(('contact', 'contacts', 'person', 'org',
                         'source'), SourceDetail, ['name'])
 mapper_search.add_meta(('collection', 'col', 'coll'),
                        Collection, ['locale'])
+
+

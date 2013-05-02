@@ -13,6 +13,7 @@
 
     <script src="components/jquery/jquery.js"></script>
     <script src="components/jquery-ui/ui/jquery-ui.custom.js"></script>
+    <script src="components/jquery.cookie/jquery.cookie.js"></script>
 
     <script src="components/angular/angular.js"></script>
     <script src="components/angular-resource/angular-resource.js"></script>
@@ -93,7 +94,7 @@
                 </a>
                 <ul class="dropdown-menu pull-right">
                   <li><a class="pull-right" href="#admin">Admin</a></li>
-                  <li><a class="pull-right" href="#login">Login/Logout</a></li>
+                  <li><a class="pull-right" ng-click="logOut()">Logout</a></li>
                 </ul>
               </li>
             </ul>

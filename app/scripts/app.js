@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('BaubleApp', ['ui', 'ui.bootstrap'])
+angular.module('BaubleApp', ['ui', 'ui.bootstrap', 'ngCookies'])
     .config(function ($routeProvider) {
         $routeProvider
             .when('/', {
