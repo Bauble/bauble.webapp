@@ -13,6 +13,7 @@
 
     <script src="components/jquery/jquery.js"></script>
     <script src="components/jquery-ui/ui/jquery-ui.custom.js"></script>
+    <script src="components/jquery.cookie/jquery.cookie.js"></script>
 
     <script src="components/angular/angular.js"></script>
     <script src="components/angular-resource/angular-resource.js"></script>
@@ -42,7 +43,11 @@
       <script src="components/json3/lib/json3.min.js"></script>
     <![endif]-->
 
-    <div class="navbar navbar-inverse navbar-fixed-top">
+    <div ng-show="globals.hideMainMenu">
+      <a href="#/login">Login</a>
+    </div>
+
+    <div ng-hide="globals.hideMainMenu" class="navbar navbar-inverse navbar-fixed-top">
       <div class="navbar-inner">
         <div class="container">
 
@@ -89,7 +94,7 @@
                 </a>
                 <ul class="dropdown-menu pull-right">
                   <li><a class="pull-right" href="#admin">Admin</a></li>
-                  <li><a class="pull-right" href="#login">Login/Logout</a></li>
+                  <li><a class="pull-right" ng-click="logOut()">Logout</a></li>
                 </ul>
               </li>
             </ul>
@@ -136,6 +141,9 @@
     <script src="scripts/controllers/Edit.js"></script>
     <script src="scripts/controllers/SourceEdit.js"></script>
     <script src="scripts/controllers/PropagationEditor.js"></script>
+    <script src="scripts/controllers/Welcome.js"></script>
+    <script src="scripts/controllers/NewUser.js"></script>
+    <script src="scripts/controllers/NewOrganization.js"></script>
     <!-- endbuild -->
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
