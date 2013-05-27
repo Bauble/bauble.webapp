@@ -1,10 +1,8 @@
 # Bauble 2
-
 An experimental branch of a web based Bauble 2.
 
 ## Getting started
-
-First you'll need to install Python3 and NodeJS (http://nodejs.org/).
+First you'll need to install NodeJS (http://nodejs.org/)
 
 ### Install the app
 ```shell
@@ -15,25 +13,14 @@ npm install
 bower install
 ```
 
-### Setup the Python environment
-You need to have Python3, virtualenv and pip.
-
-#### In a virtualenv
-```shell
-pip install -r requirements
-```
-For testing you'll probably also want to install PhantomJS (http://phantomjs.org/).
-
-### Start the API server with:
-```shell
-./run.py
-```
-
 ### Start the web app with:
 ```shell
 grunt server
 ```
 
+** You will also need the bauble.api server running to use the app.
+                                                                                 
+
 # License
-This software is licensed under the GNU AGPL License.  See https://www.gnu.org/licenses/agpl.html
-for more information.
+This software is licensed under the GNU AGPL License.  See
+https://www.gnu.org/licenses/agpl.html for more information.
