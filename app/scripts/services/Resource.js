@@ -5,7 +5,7 @@ angular.module('BaubleApp')
     .factory('Resource', function (globals, $http) {
         return function(resourceRoot) {
             var resourceUrl = globals.apiRoot + resourceRoot;
-            
+
             function get_url_from_resource(resource) {
                 var url = resourceUrl + '/' + resource; // if an ID
                 if(isNaN(Number(resource))) {
@@ -24,56 +24,81 @@ angular.module('BaubleApp')
                 /*
                  * resource can be an ID, a ref or an object with a ref
                  */
-                get: function(resource, callback) {
-                    var url = get_url_from_resource(resource);
-                    return $http({ method: 'GET', url: url }).then(callback, callback);
+                get: function(resource) {
+                    var config = {
+                        method: 'GET',
+                        url: get_url_from_resource(resource),
+                        headers: globals.getAuthHeader()
+                    };
+                    return $http(config);
+
                 },
-                query: function(q, relations, callback) {
-                    callback = (typeof relations === "function") ? relations : callback;
-                    relations = (typeof relations !== "object") ? "" : relations;
+
+                query: function(q, relations) {
                     q = (typeof q === "undefined") ? "" : q;
-                    return $http({ method: 'GET', url: resourceUrl,
-                                params: { q: q, relations: relations }})
-                        .then(callback, callback);
+                    relations = (typeof relations !== "object") ? "" : relations;
+                    var config = {
+                        url: resourceUrl,
+                        method: 'GET',
+                        params: { q: q, relations: relations },
+                        headers: globals.getAuthHeader()
+                    };
+                    return $http(config);
                 },
-                save: function (data, callback) {
+
+                save: function (data) {
                     // if the data has a ref then it already exists in the database
                     // and should be updated instead of creating a new one
-                    var url = data.ref ? data.ref : resourceUrl;
-                    var method = data.ref ? 'PUT' : 'POST';
-
-                    // make sure the url has the api root on it
-                    url = url.indexOf(globals.apiRoot) === 0 ? url : globals.apiRoot + url;
-                    return $http({ method: method, url: url, data: data,
-                                   headers: { 'Content-Type': 'application/json',
-                                              'Accept': 'application/json'}})
-                                .then(callback, callback);
+                    var url = data.ref ? data.ref : resourceUrl,
+                        config = {
+                            // make sure the url has the api root on it
+                            url: url.indexOf(globals.apiRoot) === 0 ?
+                                url : globals.apiRoot + url,
+                            method: data.ref ? 'PUT' : 'POST',
+                            data: data,
+                            headers: { 'Content-Type': 'application/json',
+                                       'Accept': 'application/json'}
+                        };
+                    return $http(config);
                 },
-                del: function(resource, callback) {
-                    var url = get_url_from_resource(resource);
-                    return $http({ method: 'DELETE', url: url }).then(callback, callback);
+
+                del: function(resource) {
+                    var config = {
+                        url: get_url_from_resource(resource),
+                        method: 'DELETE'
+                    };
+                    return $http(config);
                 },
 
                 /*
                  * resource can be an ID, a ref or an object with a ref
                  */
                 details: function(resource, callback) {
-                    var url = get_url_from_resource(resource);
-                    return $http({ method: 'GET', url: url,
-                               headers: { 'Accept': 'application/json;depth=2' }})
-                            .then(callback, callback);
+                    var config = {
+                        url: get_url_from_resource(resource),
+                        method: 'GET',
+                        headers: { 'Accept': 'application/json;depth=2' }
+                    };
+                    return $http(config);
                 },
 
-                get_schema: function(scalars_only, callback) {
-                    var url = resourceUrl + '/schema',
-                        params = scalars_only ? { flags: 'scalars_only' } : undefined,
-                        callback = typeof scalars_only == 'function' ? scalars_only : callback;
-                    return $http({ method: 'GET', url: url, params: params }).then(callback, callback);
+                get_schema: function(scalars_only) {
+                    var config = {
+                        method: 'GET',
+                        url: resourceUrl + '/schema',
+                        params: scalars_only ?
+                            { flags: 'scalars_only' } : undefined
+                    };
+                    return $http(config);
                 },
 
                 count: function(resource, relation, callback) {
-                    var url = get_url_from_resource(resource) + relation + "/count"
-                    return $http({ method: 'GET', url: url }).then(callback, callback);
+                    var config = {
+                        method: 'GET',
+                        url: get_url_from_resource(resource) +
+                            relation + "/count"
+                    };
+                    return $http(config);
                 }
             };
         };
@@ -106,5 +131,15 @@ angular.module('BaubleApp')
     // Location service for CRUD location types
     .factory('Location', ['Resource', function($resource) {
         return $resource('/location');
-    }]);
+    }])
 
+    // Organization service for CRUD location types
+    .factory('Organization', ['Resource', function($resource) {
+        return $resource('/organization');
+    }])
+
+    // Location service for CRUD location types
+    .factory('User', ['Resource', function($resource) {
+        return $resource('/user');
+    }]);
+;
