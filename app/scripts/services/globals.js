@@ -1,23 +1,17 @@
 'use strict';
 
 angular.module('BaubleApp')
-    .factory('globals', function ($cookies) {
+    .factory('globals', function () {
+
         return {
-            apiRoot: "http://localhost:8010/api/v1",
+            apiRoot: "http://eurystyles:9090/api/v1",
 
-            logOut: function() {
-                console.log('globals.logOut()');
-                $.cookie("isLoggedIn", false);
-                //$cookies.isLoggedIn = 'false';
-                //$cookies.test = 'false';
-                //$cookieStore.put("isLoggedIn", 'false');
-            },
+            getAuthHeader: function() {
+                console.log( 'getAuthHeader()' );
 
-            isLoggedIn: function() {
-                //return $cookieStore.isLoggedIn;
-                return $.cookie("isLoggedIn");
-                //return $cookies.test;
-                //return $cookieStore.get('isLoggedIn');
+                var credentials = sessionStorage.getItem("credentials");
+                console.log( "creds: ", credentials);
+                return { "Authorization": "Basic " + credentials };
             }
         };
     });

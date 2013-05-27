@@ -1,14 +1,20 @@
 'use strict';
 
 angular.module('BaubleApp')
-    .controller('LoginCtrl', function ($scope, $cookies) {
+    .controller('LoginCtrl', function ($scope, Auth) {
 
         $scope.logIn = function() {
             console.log('logIn()');
-            //console.log('$cookies: ', $cookies);
-            $.cookie('isLoggedIn', true);
-            //$cookieStore.put('isLoggedIn', {'log': true});
-            //console.log('$cookieStore.get("isLoggedIn"): ', $cookieStore.get("isLoggedIn"));
+
+            Auth.logIn($scope.username, $scope.password)
+                .success(function(response) {
+                    console.log( 'success' );
+                })
+                .error(function(response) {
+                    console.log( 'error' );
+                    console.log( 'arguments: ', arguments );
+                    console.log( response );
+                })
         };
 
     });

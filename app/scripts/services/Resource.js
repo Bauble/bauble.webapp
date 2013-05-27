@@ -5,7 +5,7 @@ angular.module('BaubleApp')
     .factory('Resource', function (globals, $http) {
         return function(resourceRoot) {
             var resourceUrl = globals.apiRoot + resourceRoot;
-
+            
             function get_url_from_resource(resource) {
                 var url = resourceUrl + '/' + resource; // if an ID
                 if(isNaN(Number(resource))) {
