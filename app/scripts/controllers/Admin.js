@@ -21,19 +21,4 @@ angular.module('BaubleApp')
                 show: true
             }
         ];
-
-        // $scope.user = Auth.getUser();
-        // $scope.organization = null;
-
-        // console.log('user: ', $scope.user);
-        // if($scope.user.organization.ref) {
-        //     Organization.setDepth(2);
-        //     Organization.get($scope.organization)
-        //     .success(function(data) {
-        //         $scope.organization = data;
-        //     })
-        //     .error(function() {
-
-        //     });
-        // }
     });
