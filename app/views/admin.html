@@ -1,19 +1,7 @@
 <div ng-controller="AdminCtrl">  
   <tabs>
-    <div ng-show="user.is_sysadmin">
-      <pane heading="SysAdmin">
-        <h2>System Administration</h2>
-      </pane>
-    </div>
-
-    <div ng-show="user.is_orgadmin">
-
-    <pane heading="Organization">
-      <h2>{{organization.name}}</h2>
-    </pane>
-
-    <pane heading="My Account">
-      
+    <pane ng-repeat="pane in panes | filter:{show:true}" heading="{{pane.title}}">
+      <div ng-include="pane.content"></div>
     </pane>
   </tabs>
 
