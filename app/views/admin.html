@@ -1,3 +1,20 @@
-<div>
-Admin
+<div ng-controller="AdminCtrl">  
+  <tabs>
+    <div ng-show="user.is_sysadmin">
+      <pane heading="SysAdmin">
+        <h2>System Administration</h2>
+      </pane>
+    </div>
+
+    <div ng-show="user.is_orgadmin">
+
+    <pane heading="Organization">
+      <h2>{{organization.name}}</h2>
+    </pane>
+
+    <pane heading="My Account">
+      
+    </pane>
+  </tabs>
+
 </div>
