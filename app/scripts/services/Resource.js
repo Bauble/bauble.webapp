@@ -4,7 +4,8 @@ angular.module('BaubleApp')
 
     .factory('Resource', function (globals, $http) {
         return function(resourceRoot) {
-            var resourceUrl = globals.apiRoot + resourceRoot;
+            var resourceUrl = globals.apiRoot + resourceRoot,
+                depth = 1;
 
             function get_url_from_resource(resource) {
                 var url = resourceUrl + '/' + resource; // if an ID
@@ -30,6 +31,7 @@ angular.module('BaubleApp')
                         url: get_url_from_resource(resource),
                         headers: globals.getAuthHeader()
                     };
+                    config.headers.Accept = 'application/json;depth=' + depth;
                     return $http(config);
 
                 },
@@ -37,11 +39,14 @@ angular.module('BaubleApp')
                 query: function(q, relations) {
                     q = (typeof q === "undefined") ? "" : q;
                     relations = (typeof relations !== "object") ? "" : relations;
+                    var headers = globals.getAuthHeader();
+                    headers.Accept = 'application/json;depth=' + depth;
+
                     var config = {
                         url: resourceUrl,
                         method: 'GET',
                         params: { q: q, relations: relations },
-                        headers: globals.getAuthHeader()
+                        headers: headers
                     };
                     return $http(config);
                 },
@@ -56,8 +61,10 @@ angular.module('BaubleApp')
                                 url : globals.apiRoot + url,
                             method: data.ref ? 'PUT' : 'POST',
                             data: data,
-                            headers: { 'Content-Type': 'application/json',
-                                       'Accept': 'application/json'}
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Accept': 'application/json;depth=' + depth
+                            }
                         };
                     return $http(config);
                 },
@@ -99,7 +106,12 @@ angular.module('BaubleApp')
                             relation + "/count"
                     };
                     return $http(config);
+                },
+
+                setDepth: function(newDepth) {
+                    depth = newDepth;
                 }
+
             };
         };
     })
