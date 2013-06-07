@@ -55,16 +55,17 @@ angular.module('BaubleApp')
                     // if the data has a ref then it already exists in the database
                     // and should be updated instead of creating a new one
                     var url = data.ref ? data.ref : resourceUrl,
+                        headers = angular.extend(globals.getAuthHeader(), {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json;depth=' + depth
+                        }),
                         config = {
                             // make sure the url has the api root on it
                             url: url.indexOf(globals.apiRoot) === 0 ?
                                 url : globals.apiRoot + url,
                             method: data.ref ? 'PUT' : 'POST',
                             data: data,
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'Accept': 'application/json;depth=' + depth
-                            }
+                            headers: headers
                         };
                     return $http(config);
                 },
