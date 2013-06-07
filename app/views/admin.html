@@ -1,4 +1,4 @@
-<div ng-controller="AdminCtrl">  
+<div ng-controller="AdminCtrl" class="admin-page">  
   <tabs>
     <pane ng-repeat="pane in panes | filter:{show:true}" heading="{{pane.title}}">
       <div ng-include="pane.content"></div>

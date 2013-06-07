@@ -366,3 +366,36 @@ BAE8E5 CCF4FF D9FFF2 BAE8CB CCFFD1
 .report-table td {
 
 }
+
+.admin-page {
+    .tabbable {
+        margin-top: 25px
+    }
+}
+
+.admin-sysadmin-page {
+
+    .group-header {
+        height: 32px;
+
+        h4 {
+            display: inline;
+            margin-right: 25px;
+        }
+
+        .search-query {
+            float: right
+        }
+    }
+
+    .grid {
+        //width: 200px;
+        max-height: 400px;
+    }
+
+    .org-grid {
+        margin-bottom: 50px
+    }
+
+    
+}
