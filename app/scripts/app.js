@@ -18,7 +18,7 @@ angular.module('BaubleApp', ['ui', 'ui.bootstrap', 'ngCookies', 'ngGrid'])
             })
 
             .when('/newuser', {
-                templateUrl: 'views/new_user.html',
+                templateUrl: 'views/new_user.html'
             })
 
             .when('/admin', {

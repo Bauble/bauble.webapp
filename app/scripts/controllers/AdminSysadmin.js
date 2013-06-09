@@ -11,7 +11,7 @@ angular.module('BaubleApp')
             })
             .error(function(data, status, headers, config) {
                 $scope.orgs = [];
-            })
+            });
 
         // setup the organization grid
         $scope.orgGridOptions = {
@@ -35,14 +35,14 @@ angular.module('BaubleApp')
         // callback for adding a new organization
         $scope.newOrg = function() {
             var d = $dialog.dialog({
-                templateUrl: "views/admin_new_org.html",
+                templateUrl: 'views/admin_new_org.html',
                 controller: 'AdminNewOrgCtrl'
             });
             d.open().then(function(result) {
                 console.log( 'result: ', result );
                 // TODO: save the organization
             });
-        }
+        };
 
         $scope.users = [];
         User.query()
@@ -53,7 +53,7 @@ angular.module('BaubleApp')
             })
             .error(function() {
                 $scope.users = [];
-            })
+            });
         
         $scope.userGridOptions = {
             data: 'users',
@@ -80,4 +80,16 @@ angular.module('BaubleApp')
                 }
             ]
         };
+
+        // callback for adding a new user
+        $scope.newUser = function() {
+            var d = $dialog.dialog({
+                templateUrl: 'views/admin_new_user.html',
+                controller: 'AdminNewUserCtrl'
+            });
+            d.open().then(function(result) {
+                console.log( 'result: ', result );
+                // TODO: save the organization
+            });
+        }
     });
