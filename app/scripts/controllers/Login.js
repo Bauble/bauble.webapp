@@ -1,20 +1,19 @@
 'use strict';
 
 angular.module('BaubleApp')
-    .controller('LoginCtrl', function ($scope, Auth) {
+    .controller('LoginCtrl', function ($scope, $routeParams, $location, Auth) {
 
         $scope.logIn = function() {
-            console.log('logIn()');
-
             Auth.logIn($scope.username, $scope.password)
                 .success(function(response) {
-                    console.log( 'success' );
+                    // return to the page we came from
+                    if($routeParams.redirect)
+                        $location.url($routeParams.redirect);
                 })
                 .error(function(response) {
                     console.log( 'error' );
                     console.log( 'arguments: ', arguments );
                     console.log( response );
-                })
+                });
         };
-
     });
