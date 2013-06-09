@@ -6,12 +6,24 @@ angular.module('BaubleApp')
         var credentialsKey = "credentials",
             userKey = "user";
 
+        function checkSessionStorage() {
+            try {
+                var _dummy = window.sessionStorage;
+            } catch(e) {
+                alert('Could not accession sessionStorage.');
+                throw e;
+            }
+        }
+
         return {
             logIn: function(username, password) {
+
+                checkSessionStorage();
+
                 // set the temporarily credentials for the request and
                 // remove them if the request fails
                 sessionStorage.setItem(credentialsKey,
-                                       btoa(username + ":" + password));
+                                       btoa(username + ':' + password));
                 User.setDepth(2);
                 return User.query(username)
                     .success(function(data, status, headers, config) {
@@ -26,10 +38,12 @@ angular.module('BaubleApp')
             },
 
             logOut: function() {
+                checkSessionStorage();
                 sessionStorage.removeItem(credentialsKey);
             },
 
             isLoggedIn: function() {
+                checkSessionStorage();
                 return sessionStorage.getItem(credentialsKey) &&
                     sessionStorage.getItem(userKey);
             },
