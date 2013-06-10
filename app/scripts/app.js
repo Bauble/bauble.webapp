@@ -44,4 +44,4 @@ angular.module('BaubleApp', ['ui', 'ui.bootstrap', 'ngCookies', 'ngGrid'])
             .otherwise({
                 redirectTo: '/'
             });
-  });
+    });
