@@ -24,14 +24,13 @@ angular.module('BaubleApp')
                 // remove them if the request fails
                 sessionStorage.setItem(credentialsKey,
                                        btoa(username + ':' + password));
-                User.setDepth(2);
-                return User.query(username)
+                return User.query({q: username, depth: 2})
                     .success(function(data, status, headers, config) {
                         var user = data.results[0];
                         sessionStorage.setItem(userKey, JSON.stringify(user));
                     })
                     .error(function(response) {
-                        console.log("Could not authorize user: ", username)
+                        console.log("Could not authorize user: ", username);
                         sessionStorage.removeItem(credentialsKey);
                         sessionStorage.removeItem(userKey);
                     });
