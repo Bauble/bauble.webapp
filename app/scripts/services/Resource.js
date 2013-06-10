@@ -4,56 +4,65 @@ angular.module('BaubleApp')
 
     .factory('Resource', function (globals, $http) {
         return function(resourceRoot) {
-            var resourceUrl = globals.apiRoot + resourceRoot,
-                depth = 1;
-
-            function get_url_from_resource(resource) {
-                var url = resourceUrl + '/' + resource; // if an ID
-                if(isNaN(Number(resource))) {
-                    if(angular.isObject(resource)) {
-                        // if an object then use the ref
-                        url = resource.ref.indexOf(globals.apiRoot) === 0 ? resource.ref : globals.apiRoot + resource.ref;
-                    } else {
-                        // assume it a string and a ref
-                        url = globals.apiRoot + resource;
-                    }
-                }
-                return url;
-            }
+            var resourceUrl = globals.apiRoot + resourceRoot;
 
             return {
+
+                get_url_from_resource: function(resource) {
+                    var url = resourceUrl + '/' + resource; // if an ID
+                    if(isNaN(Number(resource))) {
+                        if(angular.isObject(resource)) {
+                            // if an object then use the ref
+                            url = resource.ref.indexOf(globals.apiRoot) === 0 ? resource.ref : globals.apiRoot + resource.ref;
+                        } else {
+                            // assume it a string and a ref
+                            url = globals.apiRoot + resource;
+                        }
+                    }
+                    return url;
+                },
+
+
                 /*
                  * resource can be an ID, a ref or an object with a ref
                  */
-                get: function(resource) {
+                get: function(resource, depth) {
                     var config = {
                         method: 'GET',
-                        url: get_url_from_resource(resource),
+                        url: this.get_url_from_resource(resource),
                         headers: globals.getAuthHeader()
                     };
+                    depth = depth || 1;
                     config.headers.Accept = 'application/json;depth=' + depth;
                     return $http(config);
 
                 },
 
-                query: function(q, relations) {
-                    q = (typeof q === "undefined") ? "" : q;
-                    relations = (typeof relations !== "object") ? "" : relations;
-                    var headers = globals.getAuthHeader();
-                    headers.Accept = 'application/json;depth=' + depth;
-
+                query: function(options) {
+                    options = angular.extend({
+                        q: "",
+                        relations: "",
+                        depth: 1
+                    }, options);
                     var config = {
                         url: resourceUrl,
                         method: 'GET',
-                        params: { q: q, relations: relations },
-                        headers: headers
+                        params: {
+                            q: options.q || "",
+                            relations: options.relations || ""
+                        },
+                        headers: angular.extend(globals.getAuthHeader(), {
+                            'Accept': 'application/json;depth=' + options.depth || 1
+                        })
                     };
                     return $http(config);
                 },
 
-                save: function (data) {
-                    // if the data has a ref then it already exists in the database
-                    // and should be updated instead of creating a new one
+                save: function (data, depth) {
+                    // if the data has a ref then it already exists in the
+                    // database and should be updated instead of creating a new
+                    // one
+                    depth = depth || 2;
                     var url = data.ref ? data.ref : resourceUrl,
                         headers = angular.extend(globals.getAuthHeader(), {
                             'Content-Type': 'application/json',
@@ -72,7 +81,7 @@ angular.module('BaubleApp')
 
                 del: function(resource) {
                     var config = {
-                        url: get_url_from_resource(resource),
+                        url: this.get_url_from_resource(resource),
                         method: 'DELETE'
                     };
                     return $http(config);
@@ -81,9 +90,11 @@ angular.module('BaubleApp')
                 /*
                  * resource can be an ID, a ref or an object with a ref
                  */
-                details: function(resource, callback) {
+                details: function(resource) {
+                    // TODO: this method is obsolete now that we pass depth to
+                    // get()
                     var config = {
-                        url: get_url_from_resource(resource),
+                        url: this.get_url_from_resource(resource),
                         method: 'GET',
                         headers: { 'Accept': 'application/json;depth=2' }
                     };
@@ -100,19 +111,14 @@ angular.module('BaubleApp')
                     return $http(config);
                 },
 
-                count: function(resource, relation, callback) {
+                count: function(resource, relation) {
                     var config = {
                         method: 'GET',
-                        url: get_url_from_resource(resource) +
+                        url: this.get_url_from_resource(resource) +
                             relation + "/count"
                     };
                     return $http(config);
-                },
-
-                setDepth: function(newDepth) {
-                    depth = newDepth;
                 }
-
             };
         };
     })

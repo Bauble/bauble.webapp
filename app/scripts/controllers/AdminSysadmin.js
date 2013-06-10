@@ -45,7 +45,7 @@ angular.module('BaubleApp')
         };
 
         $scope.users = [];
-        User.query()
+        User.query({depth: 1})
             .success(function(data, status, headers, config) {
                 $scope.users = data.results;
                 console.log( $scope.users );
