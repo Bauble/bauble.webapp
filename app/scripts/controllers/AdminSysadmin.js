@@ -67,6 +67,10 @@ angular.module('BaubleApp')
                     displayName: 'Full name'
                 },
                 {
+                    field: 'organization.name',
+                    displayName: 'Organization'
+                },
+                {
                     field: 'is_org_admin',
                     displayName: 'Org admin'
                 },

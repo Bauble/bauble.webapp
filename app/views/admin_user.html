@@ -1,1 +1,7 @@
-<h3>My Account</h3>
+<div ng-controller="AdminUserCtrl">
+  <h3>My Account</h3>
+  <h5>Change your password</h5>
+  <input type="password" ng-model="password1" placeholder="Enter your password">
+  <input type="password" ng-model="password2" placeholder="Confirm your password">
+  <button ng-click="setPassword()" class="btn">Save</button>
+</div>
