@@ -106,6 +106,9 @@
       </div> <!-- .navbar-inner -->
     </div> <!-- .navbar -->
 
+    <alert ng-repeat="alert in alerts" type="alert.type" 
+           close="closeAlert($index)">{{alert.msg}}</alert>
+
     <div class="container app-container" ng-view></div>
     <div class="footer">
       Bauble &copy; 2005-2013
