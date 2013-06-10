@@ -158,7 +158,19 @@ angular.module('BaubleApp')
     }])
 
     // Location service for CRUD location types
-    .factory('User', ['Resource', function($resource) {
-        return $resource('/user');
+    .factory('User', ['$http', 'globals', 'Resource', function($http, globals, $resource) {
+        var resource = $resource('/user');
+        resource.setPassword = function(resource, password) {
+            var config = {
+                url: this.get_url_from_resource(resource) + "/password",
+                headers: angular.extend(globals.getAuthHeader(), {
+                    'Content-Type': 'application/json'
+                }),
+                method: 'POST',
+                data: { password: password }
+            };
+            return $http(config);
+        };
+        return resource;
     }]);
 ;
