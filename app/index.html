@@ -107,7 +107,7 @@
     </div> <!-- .navbar -->
 
     <alert ng-repeat="alert in alerts" type="alert.type" 
-           close="closeAlert($index)">{{alert.msg}}</alert>
+           close="closeAlert($index)" ng-bind="alert.msg"></alert>
 
     <div class="container app-container" ng-view></div>
     <div class="footer">
