@@ -17,6 +17,11 @@ angular.module('BaubleApp', ['ui', 'ui.bootstrap', 'ngCookies', 'ngGrid'])
                 controller: 'LoginCtrl'
             })
 
+            .when('/logout', {
+                templateUrl: 'views/logout.html',
+                controller: 'LogoutCtrl'
+            })
+
             .when('/newuser', {
                 templateUrl: 'views/new_user.html'
             })

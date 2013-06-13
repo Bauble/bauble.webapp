@@ -39,6 +39,7 @@ angular.module('BaubleApp')
             logOut: function() {
                 checkSessionStorage();
                 sessionStorage.removeItem(credentialsKey);
+                sessionStorage.removeItem(userKey);
             },
 
             isLoggedIn: function() {
