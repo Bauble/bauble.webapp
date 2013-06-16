@@ -10,6 +10,8 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+    
+    <link href='http://fonts.googleapis.com/css?family=Raleway:300|Open+Sans' rel='stylesheet' type='text/css'>
 
     <script src="components/jquery/jquery.js"></script>
     <!-- <script src="components/jquery-ui/ui/jquery-ui.custom.js"></script> -->
@@ -20,15 +22,15 @@
     <script src="components/angular-cookies/angular-cookies.js"></script>
     <script src="components/angular-sanitize/angular-sanitize.js"></script>
 
-    <script src="components/bootstrap/docs/assets/js/bootstrap.js"></script>
+    <!-- <script src="components/bootstrap/docs/assets/js/bootstrap.js"></script> -->
+    <script src="lib/bootstrap3/js/bootstrap.js"></script>
     <script src="components/angular-ui/build/angular-ui.js"></script>
     <script src="components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
     <script src="components/select2/select2.js"></script>
     <script src="components/ng-grid/ng-grid-2.0.6.min.js"></script>
 
-    <link rel="stylesheet" href="components/bootstrap/docs/assets/css/bootstrap.css"/>
-    <link rel="stylesheet" href="components/bootstrap/docs/assets/css/bootstrap-responsive.css"/>
-    <!-- <link rel="stylesheet" href="components/jquery-ui/themes/smoothness/jquery-ui.css"> -->
+    <link rel="stylesheet" href="lib/bootstrap3/css/bootstrap.css"/>
+    <link rel="stylesheet" href="components/font-awesome/css/font-awesome.css"/>
     <link rel="stylesheet" href="components/angular-ui/build/angular-ui.css"/>
     <link rel="stylesheet" href="components/select2/select2.css"/>
     <link rel="stylesheet" href="components/ng-grid/ng-grid.css"/>
@@ -108,13 +110,30 @@
       </div> <!-- .navbar-inner -->
     </div> <!-- .navbar -->
 
-    <alert ng-repeat="alert in alerts" type="alert.type" 
+    <alert ng-repeat="alert in alerts" type="alert.type"
            close="closeAlert($index)" ng-bind="alert.msg"></alert>
 
-    <div class="container app-container" ng-view></div>
-    <div class="footer">
-      Bauble &copy; 2005-2013
-    </div>
+    <div ng-view></div>
+    <div class="footer row">
+      <div class="col col-lg-8 col-offset-2">
+        <div class="row">
+          <div class="col col-lg-4">
+            <a href="/who_we_are">Who we are</a>
+            <a href="/who_we_are">Contact us</a>
+          </div> <!-- .col -->
+      
+          <div class="col col-lg-4">
+            Bauble &copy; 2005-2013
+          </div> <!-- .col -->
+      
+          <div class="col col-lg-4">
+            Privacy
+          </div> <!-- .col -->
+        </div>   <!-- .row -->
+
+        <p class="copyright pull-right">Bauble &copy; 2005-2013</p>
+      </div>     <!-- .col -->
+    </div>       <!-- .footer .row -->
 
     <!-- build:js scripts/scripts.js -->
     <script src="scripts/app.js"></script>
