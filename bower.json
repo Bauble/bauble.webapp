@@ -14,7 +14,8 @@
     "jquery-ui": "~1.10.2",
     "select2": "~3.3.1",
     "bootstrap": "~2.3.1",
-    "angular-grid": "~2.0.6"
+    "angular-grid": "~2.0.6",
+    "font-awesome": "~3.2.1"
   },
   "devDependencies": {
     "angular-mocks": "~1.0.5",
