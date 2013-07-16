@@ -54,7 +54,7 @@ angular.module('BaubleApp')
             .error(function() {
                 $scope.users = [];
             });
-        
+
         $scope.userGridOptions = {
             data: 'users',
             columnDefs: [
@@ -95,5 +95,5 @@ angular.module('BaubleApp')
                 console.log( 'result: ', result );
                 // TODO: save the organization
             });
-        }
+        };
     });

@@ -17,7 +17,7 @@ angular.module('BaubleApp')
             Family.get($location.search().family, function(response) {
                 if(response.status < 200 || response.status >= 400) {
                 }
-                $scope.genus.family = response.data
+                $scope.genus.family = response.data;
             });
         }
 
@@ -42,8 +42,9 @@ angular.module('BaubleApp')
                 // options.context is for
                 Family.query(options.term + '%', function(response){
                     $scope.families = response.data.results;
-                    if(response.data.results && response.data.results.length > 0)
+                    if(response.data.results && response.data.results.length > 0) {
                         options.callback({results: response.data.results});
+                    }
                 });
             }
         };
@@ -55,7 +56,7 @@ angular.module('BaubleApp')
 
         $scope.close = function() {
             window.history.back();
-        }
+        };
 
         // called when the save button is clicked on the editor
         $scope.save = function() {
@@ -63,7 +64,7 @@ angular.module('BaubleApp')
             // object an whether we whould be calling save or edit
             // TODO: we should probably also update the selected result to reflect
             // any changes in the search result
-            $scope.genus.notes = $scope.notes
+            $scope.genus.notes = $scope.notes;
             Genus.save($scope.genus, function(response) {
                 console.log('response: ', response);
                 if(response.status < 200 || response.status >= 400) {

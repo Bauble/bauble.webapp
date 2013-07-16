@@ -10,5 +10,5 @@ angular.module('BaubleApp')
         "Seed": "views/prop_seed.html",
         "UnrootedCutting": "views/prop_cutting.html",
         "Other": null
-    }
+    };
   });

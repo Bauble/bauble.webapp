@@ -87,7 +87,7 @@ angular.module('BaubleApp')
 
                 scope.$watch('resource', function() {
                     // build the menu for this resource
-                    if(typeof scope.resource != 'undefined') {
+                    if(typeof scope.resource !== 'undefined') {
                         buildMenu(scope.resource, function(menu) {
                             $(element).children('.dropdown-menu').first().append(menu);
                         });

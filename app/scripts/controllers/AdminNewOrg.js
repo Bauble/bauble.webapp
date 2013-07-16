@@ -11,17 +11,17 @@ angular.module('BaubleApp')
             console.log( $scope.owner );
             console.log( $scope.org );
 
-            $scope.org.owners = [$scope.owner]
+            $scope.org.owners = [$scope.owner];
             Organization.save($scope.org)
                 .success(function(data, status, result, config) {
-                    dialog.close(result);
+                    $dialog.close(result);
                 })
                 .error(function(data, status, result, config) {
                     // TODO: show an error message
-                    console.log("Could not save the organization.")
+                    console.log("Could not save the organization.");
                     console.log(status);
                     console.log(result);
-                })
-            
+                });
+
         };
     });

@@ -2,7 +2,7 @@
 
 angular.module('BaubleApp')
     .controller('SourceEditCtrl', function ($scope) {
-        $scope.source = {}
+        $scope.source = {};
 
         $scope.modalOptions = {
             backdropFade: true,
@@ -12,9 +12,9 @@ angular.module('BaubleApp')
         $scope.close = function() {
             console.log('close()');
             $scope.showSourceEditor = false;
-        }
+        };
 
         $scope.save = function() {
             console.log('save()');
-        }
+        };
     });

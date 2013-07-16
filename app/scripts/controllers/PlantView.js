@@ -9,7 +9,7 @@ angular.module('BaubleApp')
 
         $scope.$on('plant-edit', function(){
             $scope.$apply(function() {
-                $location.path('/edit/plant')
+                $location.path('/edit/plant');
             });
         });
     });

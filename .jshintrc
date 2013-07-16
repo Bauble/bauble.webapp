@@ -1,4 +1,3 @@
-/* -*- mode: javascript -*- */
 {
   "node": true,
   "browser": true,
@@ -9,20 +8,19 @@
   "immed": true,
   "indent": 4,
   "latedef": true,
-  "newcap": true,
   "noarg": true,
-  //"quotmark": "single",
+  "newcap": false,
   "regexp": true,
   "undef": true,
-  "unused": "vars",
   "strict": true,
   "trailing": true,
   "smarttabs": true,
+  "white": false,
+  "onecase": true,
   "globals": {
     "angular": true
   },
 
-  // mine
   "devel": true,
   "predef": [ "$", "angular" ]
 }

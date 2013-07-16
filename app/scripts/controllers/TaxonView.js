@@ -9,7 +9,7 @@ angular.module('BaubleApp')
 
         $scope.$on('taxon-edit', function(){
             $scope.$apply(function() {
-                $location.path('/edit/taxon')
+                $location.path('/edit/taxon');
             });
         });
 
@@ -22,10 +22,10 @@ angular.module('BaubleApp')
         $scope.counts = {};
 
         Taxon.count($scope.taxon, "/accessions", function(result) {
-            $scope.counts.accessions = result.data
+            $scope.counts.accessions = result.data;
         });
 
         Taxon.count($scope.taxon, "/accessions/plants", function(result) {
-            $scope.counts.plants = result.data
+            $scope.counts.plants = result.data;
         });
     });

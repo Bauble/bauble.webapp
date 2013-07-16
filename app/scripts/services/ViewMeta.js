@@ -10,25 +10,18 @@ angular.module('BaubleApp')
                 switch(true) {
                     case /\/family/.test(ref):
                         return FamilyView;
-                        break
                     case /\/genus/.test(ref):
                         return GenusView;
-                        break
                     case /\/taxon/.test(ref):
                         return TaxonView;
-                        break
                     case /\/accession/.test(ref):
                         return AccessionView;
-                        break
                     case /\/plant/.test(ref):
                         return PlantView;
-                        break
                     case /\/location/.test(ref):
                         return LocationView;
-                        break
                     default:
                         return null;
-                        break;
                 }
             },
             'family': FamilyView,

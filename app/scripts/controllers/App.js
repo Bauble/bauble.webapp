@@ -11,16 +11,16 @@ angular.module('BaubleApp')
         };
 
         $scope.hideMainMenu = Auth.isLoggedIn();
-        $scope.$watch(function() { 
-            return Auth.isLoggedIn() 
+        $scope.$watch(function() {
+            return Auth.isLoggedIn();
         }, function() {
             $scope.hideMainMenu = !Auth.isLoggedIn();
         });
 
-        var routesWithoutLogin = ["/login", "/logout", "/"]
+        var routesWithoutLogin = ["/login", "/logout", "/"];
         $scope.$on("$routeChangeStart", function(event, nextRoute, currentRoute) {
-            if(!Auth.isLoggedIn() && 
-               routesWithoutLogin.indexOf($location.path()) == -1) {
+            if(!Auth.isLoggedIn() &&
+               routesWithoutLogin.indexOf($location.path()) === -1) {
                 $location.url('/login?redirect=' + $location.url());
             }
         });
