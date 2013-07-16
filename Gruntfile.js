@@ -243,7 +243,14 @@ module.exports = function (grunt) {
                         '*.{ico,txt}',
                         '.htaccess',
                         'components/**/*',
-                        'images/{,*/}*.{gif,webp}'
+                        'images/{,*/}*.{gif,webp}',
+                        // add this view/*.html files since htmlmin is disabled
+                        '*.html',
+                        'views/*.html',
+
+                        // just copy everything over from lib until we get a better
+                        // way to include it
+                        'lib/**/*'
                     ]
                 }]
             }
@@ -275,16 +282,18 @@ module.exports = function (grunt) {
     grunt.registerTask('build', [
         'clean:dist',
         'jshint',
-        'test',
+        //'test',
         'coffee',
         'compass:dist',
         'useminPrepare',
         'imagemin',
         'cssmin',
-        'htmlmin',
+
+        // temporarily disable htmlmin since it silently failes when there's an error
+        //'htmlmin',
         'concat',
         'copy',
-        'cdnify',
+        //'cdnify',
         'ngmin',
         'uglify',
         //'rev',
