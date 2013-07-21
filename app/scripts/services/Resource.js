@@ -173,4 +173,3 @@ angular.module('BaubleApp')
         };
         return resource;
     }]);
-;

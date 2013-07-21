@@ -51,12 +51,12 @@ var recvd_type_values = {
     };
 
 angular.module('BaubleApp')
-    .controller('AccessionEditorCtrl', function ($scope, $location, globals, Taxon, Accession) {
+    .controller('AccessionEditorCtrl', function ($scope, $location, globals, Taxon, Accession, Source) {
 
         // isNew is inherited from the NewCtrl if this is a /new editor
         $scope.accession = globals.selected && !$scope.isNew ? globals.selected :
             {date_accd: new Date(), date_recvd: new Date()};
-        $scope.notes = $scope.accession.notes || []
+        $scope.notes = $scope.accession.notes || [];
         $scope.propagation = {};
 
         // make sure we have the accession details
@@ -71,7 +71,7 @@ angular.module('BaubleApp')
             Taxon.get($location.search().taxon, function(response) {
                 if(response.status < 200 || response.status >= 400) {
                 }
-                $scope.accession.taxon = response.data
+                $scope.accession.taxon = response.data;
             });
         }
 
@@ -79,7 +79,7 @@ angular.module('BaubleApp')
         $scope.prov_type_values = prov_type_values;
         $scope.wild_prov_status_values = wild_prov_status_values;
         $scope.recvd_type_values = recvd_type_values;
-        $scope.accession.verifications ? $scope.accession.verifications : [{}]
+        $scope.accession.verifications = $scope.accession.verifications || [{}];
 
         $scope.activeTab = "general";
 
@@ -105,8 +105,9 @@ angular.module('BaubleApp')
                 // options.context is for
                 Taxon.query(options.term + '%', function(response){
                     //$scope. = response.data.results;
-                    if(response.data.results && response.data.results.length > 0)
+                    if(response.data.results && response.data.results.length > 0) {
                         options.callback({results: response.data.results});
+                    }
                 });
             }
         };
@@ -129,8 +130,9 @@ angular.module('BaubleApp')
                 // options.context is for
                 Source.query(options.term + '%', function(response){
                     //$scope.families = response.data.results;
-                    if(response.data.results && response.data.results.length > 0)
+                    if(response.data.results && response.data.results.length > 0) {
                         options.callback({results: response.data.results});
+                    }
                 });
             }
         };
@@ -144,11 +146,11 @@ angular.module('BaubleApp')
             $scope.showSourceEditor = true;
             // $scope.apply(function() {
             // })
-        }
+        };
 
         $scope.close = function() {
             window.history.back();
-        }
+        };
 
         // called when the save button is clicked on the editor
         $scope.save = function() {

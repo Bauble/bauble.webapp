@@ -10,7 +10,7 @@ angular.module('BaubleApp')
 
         $scope.$on('family-edit', function(){
             $scope.$apply(function() {
-                $location.path('/edit/family')
+                $location.path('/edit/family');
             });
         });
 
@@ -22,18 +22,18 @@ angular.module('BaubleApp')
 
         $scope.counts = {};
         Family.count($scope.family, "/genera", function(result) {
-            $scope.counts.genera = result.data
-        })
+            $scope.counts.genera = result.data;
+        });
 
         Family.count($scope.family, "/genera/taxa", function(result) {
-            $scope.counts.taxa = result.data
-        })
+            $scope.counts.taxa = result.data;
+        });
 
         Family.count($scope.family, "/genera/taxa/accessions", function(result) {
-            $scope.counts.accessions = result.data
-        })
+            $scope.counts.accessions = result.data;
+        });
 
         Family.count($scope.family, "/genera/taxa/accessions/plants", function(result) {
-            $scope.counts.plants = result.data
-        })
+            $scope.counts.plants = result.data;
+        });
     });

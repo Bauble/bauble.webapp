@@ -9,7 +9,7 @@ angular.module('BaubleApp')
 
         $scope.$on('accession-edit', function(){
             $scope.$apply(function() {
-                $location.path('/edit/accession')
+                $location.path('/edit/accession');
             });
         });
 
@@ -19,8 +19,8 @@ angular.module('BaubleApp')
             });
         });
 
-        $scope.count = {}
+        $scope.count = {};
         Accession.count($scope.accession, "/accessions/plants", function(result) {
-            $scope.counts.plants = result.data
-        })
+            $scope.counts.plants = result.data;
+        });
     });

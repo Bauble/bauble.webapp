@@ -36,8 +36,9 @@ angular.module('BaubleApp')
                 // options.context is for
                 Family.query(options.term + '%', function(response){
                     $scope.families = response.data.results;
-                    if(response.data.results && response.data.results.length > 0)
+                    if(response.data.results && response.data.results.length > 0) {
                         options.callback({results: response.data.results});
+                    }
                 });
             }
         };
@@ -52,7 +53,7 @@ angular.module('BaubleApp')
 
         $scope.close = function() {
             window.history.back();
-        }
+        };
 
         $scope.alerts = [];
         $scope.closeAlert = function(index) {
@@ -62,7 +63,7 @@ angular.module('BaubleApp')
         $scope.save = function() {
             // TODO: we should probably also update the selected result to reflect
             // any changes in the search result
-            $scope.family.notes = $scope.notes
+            $scope.family.notes = $scope.notes;
             Family.save($scope.family, function(response) {
                 console.log('response: ', response);
                 if(response.status < 200 || response.status >= 400) {

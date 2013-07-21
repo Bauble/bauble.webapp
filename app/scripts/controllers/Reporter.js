@@ -43,8 +43,9 @@ angular.module('BaubleApp')
             //     // get here on initialization and the first time the old value is set
             //     alert("Warn the user that the domain is changing!");
             // }
-            if(newValue === null || typeof newValue === 'undefined')
+            if(newValue === null || typeof newValue === 'undefined') {
                 return;
+            }
         });
 
         // object to represent the report table columns
@@ -59,7 +60,9 @@ angular.module('BaubleApp')
 
         $scope.$on('schema-column-selected', function(event, element, selected) {
             // ignore the selected event unless this is part of a filter
-            if(!element.hasClass('filter-schema-menu')) return;
+            if(!element.hasClass('filter-schema-menu')) {
+                return;
+            }
 
             var menus = element.parents('.filters-box').find('.filter-schema-menu'),
                 index = menus.index(element);
@@ -86,8 +89,9 @@ angular.module('BaubleApp')
             // TODO: build up the query based on the filter fields
 
             var q = $scope.resource.substring(1);
-            if($scope.filters.length === 0)
+            if($scope.filters.length === 0) {
               q += '=*';
+            }
             else {
                 q += ' where ';
                 console.log('$scope.filters: ', $scope.filters);

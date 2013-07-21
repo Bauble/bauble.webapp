@@ -9,7 +9,7 @@ angular.module('BaubleApp')
 
         $scope.$on('genus-edit', function(){
             $scope.$apply(function() {
-                $location.path('/edit/genus')
+                $location.path('/edit/genus');
             });
         });
 
@@ -22,15 +22,15 @@ angular.module('BaubleApp')
         $scope.counts = {};
 
         Genus.count($scope.genus, "/taxa", function(result) {
-            $scope.counts.taxa = result.data
+            $scope.counts.taxa = result.data;
         });
 
         Genus.count($scope.genus, "/taxa/accessions", function(result) {
-            $scope.counts.accessions = result.data
+            $scope.counts.accessions = result.data;
         });
 
         Genus.count($scope.genus, "/taxa/accessions/plants", function(result) {
-            $scope.counts.plants = result.data
+            $scope.counts.plants = result.data;
         });
 
     });

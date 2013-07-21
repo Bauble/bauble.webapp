@@ -14,8 +14,8 @@ angular.module('BaubleApp')
         function ($scope, $location, globals, Accession, Plant, Location) {
 
         // isNew is inherited from the NewCtrl if this is a /new editor
-        $scope.plant = globals.selected && !$scope.isNew ? globals.selected : {}
-        $scope.notes = $scope.plant.notes || []
+        $scope.plant = globals.selected && !$scope.isNew ? globals.selected : {};
+        $scope.notes = $scope.plant.notes || [];
         $scope.propagation = {};
 
         // make sure we have the details
@@ -28,7 +28,7 @@ angular.module('BaubleApp')
             Accession.details($location.search().accession, function(response) {
                 if(response.status < 200 || response.status >= 400) {
                 }
-                $scope.plant.accession = response.data
+                $scope.plant.accession = response.data;
             });
         }
 
@@ -55,8 +55,9 @@ angular.module('BaubleApp')
                 // console.log('query: ', options);....i think this is what the
                 // options.context is for
                 Accession.query(options.term + '%', function(response){
-                    if(response.data.results && response.data.results.length > 0)
+                    if(response.data.results && response.data.results.length > 0) {
                         options.callback({results: response.data.results});
+                    }
                 });
             }
         };
@@ -78,8 +79,9 @@ angular.module('BaubleApp')
                 // console.log('query: ', options);....i think this is what the
                 // options.context is for
                 Location.query(options.term + '%', function(response){
-                    if(response.data.results && response.data.results.length > 0)
+                    if(response.data.results && response.data.results.length > 0) {
                         options.callback({results: response.data.results});
+                    }
                 });
             }
         };
@@ -91,11 +93,11 @@ angular.module('BaubleApp')
 
         $scope.close = function() {
             window.history.back();
-        }
+        };
 
         // called when the save button is clicked on the editor
         $scope.save = function() {
-            $scope.plant.notes = $scope.notes
+            $scope.plant.notes = $scope.notes;
             Plant.save($scope.plant, function(response) {
                 console.log('response: ', response);
                 if(response.status < 200 || response.status >= 400) {

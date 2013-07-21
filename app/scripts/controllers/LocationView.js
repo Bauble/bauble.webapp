@@ -6,12 +6,12 @@ angular.module('BaubleApp')
 
         $scope.$on('location-edit', function(){
             $scope.$apply(function() {
-                $location.path('/edit/location')
+                $location.path('/edit/location');
             });
         });
 
-        $scope.counts = {}
+        $scope.counts = {};
         Location.count($scope.location, "/plants", function(result) {
-            $scope.counts.plants = result.data
-        })
+            $scope.counts.plants = result.data;
+        });
     });

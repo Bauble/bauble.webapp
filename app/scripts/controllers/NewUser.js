@@ -6,16 +6,16 @@ angular.module('BaubleApp')
         $scope.step = 1;
         $scope.nextStep = function() {
             $scope.step += 1;
-        }
+        };
 
         $scope.$watch('accountType', function() {
             console.log('$scope.accountType: ', $scope.accountType);
-            if($scope.accountType == 'org') {
+            if($scope.accountType === 'org') {
                 var url = globals.apiRoot + "/organizations";
                 console.log('url: ', url);
                 $http.get(url)
                     .success(function(response) {
-                        $scope.organization = response.data
+                        $scope.organization = response.data;
                     })
                     .error(function(response) {
                         console.log("ERROR: Could not get list of organizations: ", response);
@@ -27,5 +27,5 @@ angular.module('BaubleApp')
 
         $scope.submit = function() {
             // TODO: create the new user
-        }
+        };
     });

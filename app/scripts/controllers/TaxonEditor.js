@@ -4,7 +4,7 @@ angular.module('BaubleApp')
     .controller('TaxonEditorCtrl', function ($scope, $location, globals, Genus, Taxon) {
         // isNew is inherited from the NewCtrl if this is a /new editor
         $scope.taxon = globals.selected && !$scope.isNew ? globals.selected : {};
-        $scope.notes = $scope.taxon.notes || []
+        $scope.notes = $scope.taxon.notes || [];
 
         // make sure we have the family details
         if($scope.taxon && angular.isDefined($scope.taxon.ref)) {
@@ -17,7 +17,7 @@ angular.module('BaubleApp')
             Genus.get($location.search().genus, function(response) {
                 if(response.status < 200 || response.status >= 400) {
                 }
-                $scope.taxon.genus = response.data
+                $scope.taxon.genus = response.data;
             });
         }
 
@@ -34,10 +34,11 @@ angular.module('BaubleApp')
             }
         };
 
-        if(! $scope.taxon.vernacular_names)
+        if(! $scope.taxon.vernacular_names) {
             $scope.taxon.vernacular_names = [{}];
-        $scope.addVernacularName = function() {
-            $scope.taxon.vernacular_names.push({});
+            $scope.addVernacularName = function() {
+                $scope.taxon.vernacular_names.push({});
+            };
         }
 
         $scope.genusSelectOptions = {
@@ -58,8 +59,9 @@ angular.module('BaubleApp')
                 // options.context is for
                 Genus.query(options.term + '%', function(response){
                     $scope.families = response.data.results;
-                    if(response.data.results && response.data.results.length > 0)
+                    if(response.data.results && response.data.results.length > 0) {
                         options.callback({results: response.data.results});
+                    }
                 });
             }
         };
@@ -83,8 +85,9 @@ angular.module('BaubleApp')
                 // options.context is for
                 Taxon.query(options.term + '%', function(response){
                     $scope.families = response.data.results;
-                    if(response.data.results && response.data.results.length > 0)
+                    if(response.data.results && response.data.results.length > 0) {
                         options.callback({results: response.data.results});
+                    }
                 });
             }
         };
@@ -96,11 +99,11 @@ angular.module('BaubleApp')
 
         $scope.close = function() {
             window.history.back();
-        }
+        };
 
         // called when the save button is clicked on the editor
         $scope.save = function() {
-            $scope.taxon.notes = $scope.notes
+            $scope.taxon.notes = $scope.notes;
             Taxon.save($scope.taxon, function(response) {
                 console.log('response: ', response);
                 if(response.status < 200 || response.status >= 400) {

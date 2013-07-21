@@ -39,10 +39,10 @@ angular.module('BaubleApp')
                 })
                 .error(function(data, status, result, config) {
                     // TODO: show an error message
-                    console.log("Could not save the user.")
+                    console.log("Could not save the user.");
                     console.log(status);
                     console.log(result);
-                })
+                });
 
         };
     });

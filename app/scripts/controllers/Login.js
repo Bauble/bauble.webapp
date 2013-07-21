@@ -7,8 +7,9 @@ angular.module('BaubleApp')
             Auth.logIn($scope.username, $scope.password)
                 .success(function(response) {
                     // return to the page we came from
-                    if($routeParams.redirect)
+                    if($routeParams.redirect) {
                         $location.url($routeParams.redirect);
+                    }
                 })
                 .error(function(response) {
                     console.log( 'error' );
