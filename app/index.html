@@ -12,25 +12,15 @@
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     
     <link href='http://fonts.googleapis.com/css?family=Raleway:300|Open+Sans' rel='stylesheet' type='text/css'>
-
-    <script src="components/jquery/jquery.js"></script>
-    <script src="components/angular/angular.js"></script>
-    <script src="components/angular-resource/angular-resource.js"></script>
-    <script src="components/angular-sanitize/angular-sanitize.js"></script>
-
-    <!-- <script src="components/bootstrap/docs/assets/js/bootstrap.js"></script> -->
-    <script src="lib/bootstrap3/js/bootstrap.js"></script>
-    <script src="components/angular-ui/build/angular-ui.js"></script>
-    <script src="components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
-    <script src="components/select2/select2.js"></script>
-    <script src="components/angular-grid/ng-grid-2.0.7.min.js"></script>
-
+    
+    <!-- build:css({.tmp,app}) styles/main.css -->
     <link rel="stylesheet" href="lib/bootstrap3/css/bootstrap.css"/>
     <link rel="stylesheet" href="components/components-font-awesome/css/font-awesome.css"/>
     <link rel="stylesheet" href="components/angular-ui/build/angular-ui.css"/>
     <link rel="stylesheet" href="components/select2/select2.css"/>
     <link rel="stylesheet" href="components/angular-grid/ng-grid.css"/>
     <link rel="stylesheet" href="styles/main.css">
+    <!-- endbuild -->
 
   </head>
   <body ng-app="BaubleApp" ng-controller="AppCtrl" 
@@ -131,7 +121,20 @@
       </div>     <!-- .col -->
     </div>       <!-- .footer .row -->
 
-    <!-- build:js scripts/scripts.js -->
+    <script src="components/jquery/jquery.js"></script>
+    <script src="components/angular/angular.js"></script>
+    <script src="components/angular-sanitize/angular-sanitize.js"></script>
+
+    <!-- <script src="components/bootstrap/docs/assets/js/bootstrap.js"></script> -->
+    <!-- build:js scripts/modules.js -->
+    <script src="lib/bootstrap3/js/bootstrap.js"></script>
+    <script src="components/angular-ui/build/angular-ui.js"></script>
+    <script src="components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+    <script src="components/select2/select2.js"></script>
+    <script src="components/angular-grid/ng-grid-2.0.7.min.js"></script>
+    <!-- endbuild -->
+
+    <!-- build:js({.tmp,app}) scripts/scripts.js -->
     <script src="scripts/app.js"></script>
 
     <script src="scripts/controllers/Main.js"></script>
@@ -183,5 +186,8 @@
     <!--   g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js'; -->
     <!--   s.parentNode.insertBefore(g,s)}(document,'script')); -->
     <!-- </script> -->
+
+    
+
   </body>
 </html>
