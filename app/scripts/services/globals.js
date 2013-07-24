@@ -4,7 +4,7 @@ angular.module('BaubleApp')
     .factory('globals', function () {
 
         return {
-            apiRoot: 'http://eurystyles:9090/api/v1',
+            apiRoot: 'http://api.bauble.io/api/v1',
 
             alerts: [],
 
