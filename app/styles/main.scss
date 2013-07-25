@@ -86,7 +86,7 @@ h1, h2, h3, h4, h5 {
 
 // add padding to acount for the navbar
 .show-menubar {
-    padding-top: 40px;
+    padding-top: 70px;
 }
 
 /* @media (max-width: 979px) { */
@@ -177,6 +177,7 @@ h1, h2, h3, h4, h5 {
 
 .search-box {
   padding: 15px 15px;
+  margin-left: 20px;
   margin-bottom: 25px;
   background-color: #F5F5F5;
   border: solid 1px #CCC;
@@ -217,92 +218,103 @@ h1, h2, h3, h4, h5 {
 }*/
 
 .bauble-editor {
-  label + textarea {
+    label + textarea {
     /*margin-left: 10px;*/
-  }
-
-  .alert {
-    position: absolute;
-    padding: 25px;
-  }
-
-  .editor-header {
-    background-color: #F5F5F5;
-    border: solid 1px #ccc;
-    padding: 5px 5px;
-    margin-bottom: 10px;
-
-    .header-title {
-
     }
 
-    .header-buttons {
-      text-align: right;
+    .alert {
+        z-index: 100;
+        top: 50px;
+        position: absolute;
+        padding: 25px;
     }
-  }
 
-  .editor-body {
-    margin-bottom: 25px;
-    height: 100%;
-  }
+    .editor-header {
+        background-color: #F5F5F5;
+        border: solid 1px #ccc;
+        padding: 5px 5px;
+        margin-bottom: 10px;
 
-  .editor-section {
-    h5 {
-      background-color: #F5F5F5;
-      padding-left: 10px;
-      line-height: 2em;
+        .header-title {
+            padding-left: 2em;
+        }
+
+        .header-buttons {
+            text-align: right;
+        }
     }
-    // & > div {
-    //   margin-left: 25px;
-    // }
-  }
 
-  input[ui-date] {
-    width: 90px;  // same size as .input-small
-  }
+    .editor-body {
+        margin: 25px 25px;
+        //margin-bottom: 25px;
+        height: 100%;
 
-  /* usually when there's multple inputs/labels on a line */
-  /*
+        .tab-content {
+            margin: 35px;
+        }
+    }
+
+    .editor-section {
+        h5 {
+            background-color: #F5F5F5;
+            padding-left: 10px;
+            line-height: 2em;
+        }
+        // & > div {
+        //   margin-left: 25px;
+        // }
+    }
+
+    input[ui-date] {
+        width: 90px;  // same size as .input-small
+    }
+
+/* usually when there's multple inputs/labels on a line */
+/*
   input + label {
-    margin-left: 25px;
+  margin-left: 25px;
   }
 
-  label {
-    margin-right: 10px;
-    min-width: 35px;
-    max-width: 85px;
-    width: 75px;
-    text-align: right;
-    font-weight: bold;
-  }
+label {
+margin-right: 10px;
+min-width: 35px;
+max-width: 85px;
+width: 75px;
+text-align: right;
+font-weight: bold;
+}
 
-  form div {
-    margin: 15px 0;
-  }
+form div {
+margin: 15px 0;
+}
 
-  .accordion-group {
-    margin-bottom: 10px;
-  }
+.accordion-group {
+margin-bottom: 10px;
+}
 
-  .accordion-heading {
-    background-color: #f7f7f7;
-  }
-  */
+.accordion-heading {
+background-color: #f7f7f7;
+}
+*/
 }
 
 .family-editor {
 
-  // .tab-content {
-  //   height: 200px;
-  // }
+    // .tab-content {
+    //   height: 200px;
+    // }
 
-  $label-width: 75px;
-  .control-label {
-    width: $label-width
-  }
-  .controls {
-    margin-left: $label-width + 25px;
-  }
+    $label-width: 75px;
+    .control-label {
+        width: $label-width
+    }
+    .controls {
+        margin-left: $label-width + 25px;
+    }
+
+    .synonyms-box {
+        margin-top: 1em;
+    }
 }
 
 
@@ -357,14 +369,17 @@ h1, h2, h3, h4, h5 {
       }
     }
 
-    .synonyms-container {
-      label {
-        font-weight: bold;
-      }
+    .synonyms-box {
 
-      .contents {
-        margin-left: 25px;
-      }
+        margin-top: 1.2em;
+
+        label {
+            font-weight: bold;
+        }
+
+        .contents {
+            margin-top: 1em;
+        }
     }
 }
 

@@ -1,13 +1,12 @@
-
 <div ng-form name="familyForm" ng-controller="FamilyEditorCtrl" class="bauble-editor family-editor" novalidate>
-  <alert class="span6 offset3" ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">{{alert.msg}}</alert>
+  <alert class="col-lg-6 col-offset-3" ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">{{alert.msg}}</alert>
 
   <div class="row">
-    <div class="editor-header span12">
-      <div class="header-title span8">
+    <div class="editor-header col-lg-12">
+      <div class="header-title col-lg-8">
         <h4>{{family.str || 'New family'}}</h4>
       </div>
-      <div class="header-buttons span3">
+      <div class="header-buttons col-lg-3">
         <button class="btn" ng-click="close()">Close</button>
         <button class="btn btn-primary" ng-click="save()">Save</button>
       </div>
@@ -22,34 +21,31 @@
       </ul>
 
       <div class="tab-content" ng-switch="activeTab">
-
           <div class="tab-pane active" ng-switch-when="general">
-
               <form class="form-horizontal" novalidate>
-                <div class="control-group">
-                  <label class="control-label" for="inputFamily" novalidate>Family</label>
-                  <div class="controls">
-                    <input type="text" ng-model="family.family" id="inputFamily" name="family" required>
+                <div class="row">
+                  <label class="col-lg-2 control-label" for="inputFamily" novalidate>Family</label>
+                  <div class="col-lg-8">
+                    <input type="text" ng-model="family.family" id="inputFamily" 
+                           name="family" required>
                   </div>
-                </div>
-
-                <div class="control-group">
-                  <label class="control-label" for="inputQualifier">Qualifier</label>
-                  <div class="controls">
-                  <span id="inputQualifier" >
+                </div> <!-- .row  -->
+          
+                <div class="row">
+                  <label class="col-lg-2 control-label" for="inputQualifier">Qualifier</label>
+                  <div class="col-lg-8">
                     <select ng-model="family.qualifier" ng-options="q for q in qualifiers">
                       <option value="">-- choose qualifier --</option>
                     </select>
-                  </span>
-                </div>
-                </div>
-
+                  </div>
+                </div> <!-- .row -->
+                
               </form> <!-- ng-form -->
 
-            <div>
+            <div class="synonyms-box">
               <label>Synonyms</label>
               <div>
-                <input ui-select2="selectOptions" ng-model="selectedSyn" class="input-large" /></input>
+                <input ui-select2="selectOptions" ng-model="selectedSyn" class="col-lg-8" /></input>
                 <button class="btn" ng-click="addSynonym(selectedSyn); selectedSyn={};" ng-disabled="!selectedSyn">Add</button>
                 <!-- <button class="btn" ng-click="addSynonym(selectedSyn)" ng-disabled="!selectedSyn">Add</button> -->
               </div>
