@@ -64,19 +64,16 @@ angular.module('BaubleApp')
             // TODO: we should probably also update the selected result to reflect
             // any changes in the search result
             $scope.family.notes = $scope.notes;
-            Family.save($scope.family, function(response) {
-                console.log('response: ', response);
-                if(response.status < 200 || response.status >= 400) {
-                    if(response.data) {
-                        $scope.alerts.push({type: 'error', msg: "Error!\n" + response.data});
-                    } else {
-                        $scope.alerts.push({type: 'error', msg: "Unknown error!"});
-                    }
-                    return;
-                }
-
-                $scope.close();
-            });
+            Family.save($scope.family)
+                .success(function(data, status, headers, config) {
+                    $scope.close();
+                 })
+                .error(function(data, status, headers, config) {
+                    if(data) {
+                         $scope.alerts.push({type: 'error', msg: "Error!\n" + data});
+                     } else {
+                         $scope.alerts.push({type: 'error', msg: "Unknown error!"});
+                     }
+                });
         };
-
     });
