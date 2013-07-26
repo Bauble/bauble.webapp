@@ -1,86 +1,33 @@
-<div ng-controller="NewUserCtrl">
+<div ng-controller="NewUserCtrl" id="new-user-page">
 
-  <h2>Create a new user</h2>
+  <div class="row">
+    <form class="col-lg-6">
+      <fieldset>
+        <legend>Create a new organization</legend>
+        
+        <label for="org-name">What's the name of the organization?</label>
+        <input ng-model="org.name" type="text" id="org-name" required>
+        <p class="help-block">This is the full name of your organization.
+        e.g. Belize Botanic Gardens or Steve's Plant Collection</p>
 
-  <div ng-hide="!!accountType">
-    <p>
-      Will this account be part of an organization or a personal account?
-    </p>
-    <button class="btn" ng-click="accountType='org'">Organization</button>
-    <button class="btn" ng-click="accountType='personal'">Personal</button>
+        <label for="email" novalidate>Email address</label>
+        <input type="text" ng-model="email" id="email" required>
+        <p class="help-block">This will be the email address of the owner of the
+          organization. <b>You will use your email address to login.</b></p>
+        
+        <label for="password" novalidate>Password</label>
+        <input type="password" ng-model="password" id="password" required>
 
-    <p class="help-block">
-      Organizations allows multiple users to manage a plant collection and some
-      other organizational features.
-    </p>
-  </div> <!-- ng-hide="!!accountType" -->
+        <!-- TODO: we need to add a CAPTCHA here -->
 
+        <button type="submit" class="btn btn-default" ng-click="submit()">Create the account</button>
 
-  <div ng-switch="accountType">
-
-    <div ng-switch-when="org">
-      <div>
-        <p>
-          What's the name of the organization?
-        </p>
-        <input class="input-xxlarge" ng-model="details.organization" type="text" required>
-
-        <div ng-hide="true" class="alert">
-          An organization matching this name was not found.  Clicking next will
-          create a new organization with this name.
-        </div>
-
-        <div>
-          <div ng-hide="true" class="alert alert-block">
-          {{details.organization}} already has an account.  You will need an account administrator from
-          this organization to verify your account before you can use Bauble.
-        </div>
-
-        </div>
-        <br/>
-        <button class="btn" ng-click="nextStep()">Next</button>
-      </div>
-    </div>  <!-- ng-switch-when="org" -->
-
-    <div ng-switch-when="personal">
-
-    <form ng-submit="submit()" class="form-horizontal">
-      <div class="control-group">
-        <label class="control-label" novalidate>Email address</label>
-        <div class="controls">
-          <input class="input-xlarge" type="text" ng-model="details.username" name="username" required>
-          <span class="help-block">You will use your email address to login.</span>
-        </div>
-      </div>
-
-      <div class="control-group">
-        <label class="control-label" novalidate>Password</label>
-        <div class="controls">
-          <input type="password" ng-model="details.password" name="password" required>
-        </div>
-      </div>
-
-      <div class="control-group">
-        <label class="control-label" novalidate>Name</label>
-        <div class="controls">
-          <!--<input type="password" class="input-block-level" placeholder="Password">-->
-          <input class="input-xlarge" type="text" ng-model="details.name" name="name" placeholder="first and last name" required>
-        </div>
-      </div>
-
-      <button class="btn btn-primary" type="submit">Create user</button>
-
+      </fieldset>
     </form>
+    
+    
 
-    </div> <!-- ng-switch-when="personal" -->
-  </div> <!-- ng-switch="accountType" -->
+    <!-- <h3>Welcome to Bauble!</h3\> -->
+    
 
-  <div ng-show="accountType=='org'">
-    <p>
-      An email has been sent to the administrator for {{details.organization}}.  An
-      email will be sent to {{details.email}} when your account has been verified.
-    </p>
-    <h3>Welcome to Bauble!</h3\>
-  </div>
-
-</div>
+  </div> <!-- #new-user-page -->

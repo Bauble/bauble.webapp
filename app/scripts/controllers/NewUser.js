@@ -1,12 +1,9 @@
 'use strict';
 
 angular.module('BaubleApp')
-    .controller('NewUserCtrl', function ($scope, $http, globals) {
+    .controller('NewUserCtrl', function ($scope, $http, globals, Organization) {
 
-        $scope.step = 1;
-        $scope.nextStep = function() {
-            $scope.step += 1;
-        };
+        $scope.org = {}
 
         $scope.$watch('accountType', function() {
             console.log('$scope.accountType: ', $scope.accountType);
@@ -27,5 +24,27 @@ angular.module('BaubleApp')
 
         $scope.submit = function() {
             // TODO: create the new user
+            var org = {
+                name: $scope.name,
+                owners: [
+                    {
+                        username: $scope.email,
+                        email: $scope.username,
+                        password: $scope.password
+                    }
+                ]
+            }
+
+            Organization.save(org)
+                .success(function(data, status, result, config) {
+                    console.log("success");
+                    //dialog.close(result);
+                })
+                .error(function(data, status, result, config) {
+                    // TODO: show an error message
+                    console.log("Could not save the user.");
+                    console.log(status);
+                    console.log(result);
+                });
         };
     });
