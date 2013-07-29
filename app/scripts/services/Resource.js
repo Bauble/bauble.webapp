@@ -153,8 +153,19 @@ angular.module('BaubleApp')
     }])
 
     // Organization service for CRUD location types
-    .factory('Organization', ['Resource', function($resource) {
-        return $resource('/organization');
+    .factory('Organization', ['$http', 'globals', 'Resource', function($http, globals, $resource) {
+        var resource = $resource('/organization');
+        resource.get_admin = function(resource) {
+            var config = {
+                url: this.get_url_from_resource(resource) + "/admin",
+                headers: angular.extend(globals.getAuthHeader(), {
+
+                }),
+                method: 'GET'
+            };
+            return $http(config);
+        };
+        return resource;
     }])
 
     // Location service for CRUD location types

@@ -1,26 +1,12 @@
 'use strict';
 
 angular.module('BaubleApp')
-    .controller('NewUserCtrl', function ($scope, $http, globals, Organization) {
+    .controller('NewUserCtrl', function ($scope, globals, Auth, Organization) {
 
         $scope.org = {}
 
-        $scope.$watch('accountType', function() {
-            console.log('$scope.accountType: ', $scope.accountType);
-            if($scope.accountType === 'org') {
-                var url = globals.apiRoot + "/organizations";
-                console.log('url: ', url);
-                $http.get(url)
-                    .success(function(response) {
-                        $scope.organization = response.data;
-                    })
-                    .error(function(response) {
-                        console.log("ERROR: Could not get list of organizations: ", response);
-                        // TODO: add an alert telling the user that we couldn't get
-                        // the list of organizations
-                    });
-            }
-        });
+        // TODO: if the user hasn't typed anything in the org or email
+        // field for one second then start to validate
 
         $scope.submit = function() {
             // TODO: create the new user
@@ -29,15 +15,23 @@ angular.module('BaubleApp')
                 owners: [
                     {
                         username: $scope.email,
-                        email: $scope.username,
+                        email: $scope.email,
                         password: $scope.password
                     }
                 ]
-            }
+            };
 
             Organization.save(org)
                 .success(function(data, status, result, config) {
                     console.log("success");
+                    Auth.logIn($scope.email, $scope.password)
+                        .success(function() {
+                            $location.url('/search');
+                        })
+                        .error(function() {
+                            // TODO: do something
+                        })
+
                     //dialog.close(result);
                 })
                 .error(function(data, status, result, config) {

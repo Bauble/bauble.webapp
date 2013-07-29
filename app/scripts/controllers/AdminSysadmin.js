@@ -4,10 +4,22 @@ angular.module('BaubleApp')
     .controller('AdminSysadminCtrl', function ($scope, $dialog, User, Organization) {
         $scope.orgs = [];
 
+        // TODO: right now there's not a way to query a resource and return the
+        // admin data so we get the list of organizations and do an /admin lookup
+        // on each one.....this is way slower
+
         // get the list of organizations
         Organization.query()
             .success(function(data, status, headers, config) {
-                $scope.orgs = data.results;
+                console.log(data)
+                //$scope.orgs = data.results;
+                angular.forEach(data.results, function(value, key) {
+                    Organization.admin(value.ref)
+                        .success(function(data, status, headers, config) {
+                            console.log(data);
+                            $scope.orgs.push(data)
+                        });
+                });
             })
             .error(function(data, status, headers, config) {
                 $scope.orgs = [];
@@ -28,8 +40,7 @@ angular.module('BaubleApp')
                 {
                     field: 'pg_schema',
                     displayName: 'Schema'
-                }
-            ]
+                }]
         };
 
         // callback for adding a new organization
