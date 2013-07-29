@@ -17,7 +17,7 @@ angular.module('BaubleApp')
             $scope.hideMainMenu = !Auth.isLoggedIn();
         });
 
-        var routesWithoutLogin = ["/login", "/logout", "/"];
+        var routesWithoutLogin = ["/login", "/logout", "/", "/newuser"];
         $scope.$on("$routeChangeStart", function(event, nextRoute, currentRoute) {
             if(!Auth.isLoggedIn() &&
                routesWithoutLogin.indexOf($location.path()) === -1) {

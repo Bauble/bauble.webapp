@@ -10,7 +10,7 @@ angular.module('BaubleApp')
             try {
                 var _dummy = window.sessionStorage;
             } catch(e) {
-                alert('Could not accession sessionStorage.');
+                alert('Could not access sessionStorage.');
                 throw e;
             }
         }

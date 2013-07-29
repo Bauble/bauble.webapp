@@ -1,23 +1,28 @@
- <div class="login-page">
+<div class="login-page">
 
   <div class="row">
     <div class="col col-lg-4 col-offset-4">
       
-    <form class="form-signin">
-      <h2 class="form-signin-heading">Sign in to Bauble</h2>
-      <input type="text" class="input-block-level" placeholder="Email address"
-             ng-model="username">
-      <input type="password" class="input-block-level" placeholder="Password"
-             ng-model="password">
-      <label class="checkbox">
-        <input type="checkbox" value="remember-me"> Remember me
-      </label>
-      <button class="btn btn-large btn-primary" type="submit" ng-click="logIn()">Sign in 2</button>
-      <a href="#/newuser">Or create a new user</a>
-    </form>
+      <form class="form-signin">
+        <h2 class="form-signin-heading">Sign in to Bauble</h2>
+        <input type="text" class="input-block-level" placeholder="Email address"
+               ng-model="username">
+        <input type="password" class="input-block-level" placeholder="Password"
+               ng-model="password">
+        <label class="checkbox">
+          <input type="checkbox" value="remember-me"> Remember me
+        </label>
+        <button class="btn btn-large btn-primary" type="submit" ng-click="logIn()">Sign In</button>
+        <a href="#/newuser">Or create a new user</a>
+      </form>
 
-    </div>
-    </div> <!-- .container -->
+      <div class="alert" ng-show="message">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        {{message}}
+      </div>
+
+    </div> <!-- .col -->
+  </div> <!-- .row -->
 
 </div> <!--.login-page -->
 
