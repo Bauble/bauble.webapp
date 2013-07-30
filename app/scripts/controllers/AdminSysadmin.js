@@ -14,7 +14,7 @@ angular.module('BaubleApp')
                 console.log(data)
                 //$scope.orgs = data.results;
                 angular.forEach(data.results, function(value, key) {
-                    Organization.admin(value.ref)
+                    Organization.get_admin(value.ref)
                         .success(function(data, status, headers, config) {
                             console.log(data);
                             $scope.orgs.push(data)
@@ -40,8 +40,23 @@ angular.module('BaubleApp')
                 {
                     field: 'pg_schema',
                     displayName: 'Schema'
-                }]
+                },
+                {
+                    field: 'date_created',
+                    displayName: 'Date Created'
+                },
+                {
+                    field: 'date_approved',
+                    displayName: 'Approved',
+                    cellTemplate: '<a ng-show="row.entity" ng-click="approveOrg(row.entity)">Approve</a>'
+
+                }
+            ]
         };
+
+        $scope.approveOrg = function(org){
+            console.log('apprpve: ' + org);
+        }
 
         // callback for adding a new organization
         $scope.newOrg = function() {

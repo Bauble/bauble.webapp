@@ -4,6 +4,7 @@ angular.module('BaubleApp')
     .controller('NewUserCtrl', function ($scope, globals, Auth, Organization) {
 
         $scope.org = {}
+        $scope.orgCreated = false;
 
         // TODO: if the user hasn't typed anything in the org or email
         // field for one second then start to validate
@@ -11,7 +12,7 @@ angular.module('BaubleApp')
         $scope.submit = function() {
             // TODO: create the new user
             var org = {
-                name: $scope.name,
+                name: $scope.org.name,
                 owners: [
                     {
                         username: $scope.email,
@@ -24,21 +25,16 @@ angular.module('BaubleApp')
             Organization.save(org)
                 .success(function(data, status, result, config) {
                     console.log("success");
-                    Auth.logIn($scope.email, $scope.password)
-                        .success(function() {
-                            $location.url('/search');
-                        })
-                        .error(function() {
-                            // TODO: do something
-                        })
-
+                    $scope.orgCreated = true;
                     //dialog.close(result);
                 })
                 .error(function(data, status, result, config) {
-                    // TODO: show an error message
-                    console.log("Could not save the user.");
-                    console.log(status);
-                    console.log(result);
+                    console.log("Could not save the organization.");
+                    if(status == 409) {
+                        $scope.message = "The organization name or username is not unique."
+                    } else {
+                        $scope.message = "Could not create the organization."
+                    }
                 });
         };
     });
