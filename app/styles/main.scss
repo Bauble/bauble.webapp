@@ -208,31 +208,6 @@ h1, h2, h3, h4, h5 {
   }
 }
 
-.results-list {
-  ul {
-    margin-left: 0;
-  }
-
-  .search-result-item {
-    list-style-type: none;
-    background-image: none;
-    background-color: #f7f7f7;
-    margin: 5px 0;
-    border: solid #ccc 1px;
-    padding: 10px 5px;
-  }
-
-  .search-result-item-hover {
-    background-color: #eee;
-  }
-
-  .search-result-item .search-result-expand {
-  }
-
-  .search-result-item .search-result-link {
-
-  }
-}
 
 /*.bauble-editor label + input {
   margin-left: 10px;

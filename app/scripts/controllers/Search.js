@@ -7,20 +7,15 @@ angular.module('BaubleApp')
         $scope.results = []; // the results of the search
 
         // query the server for search results
-        $scope.Search = function(q) {
-            console.log('search: ', q);
-            return Search(q, function(response) {
-                console.log('response: ', response);
-                $scope.results = response.data.results;
-            });
-        };
-
-        $scope.mouseEnterItem = function(event) {
-            $(event.target).addClass('search-result-item-hover');
-        };
-
-        $scope.mouseLeaveItem = function(event) {
-            $(event.target).removeClass('search-result-item-hover');
+        $scope.search = function(q) {
+            Search.query(q)
+                .success(function(data, status, headers, config) {
+                    console.log("data: ", data);
+                    $scope.results = data.results;
+                })
+                .error(function(data, status, headers, config) {
+                    console.log("");
+                });
         };
 
         $scope.itemSelected = function(selected) {
