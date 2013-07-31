@@ -101,54 +101,54 @@ h1, h2, h3, h4, h5 {
 
 
 .menu {
-  list-style: none;
-  border-bottom: 0.1em solid black;
-  margin-bottom: 2em;
+    list-style: none;
+    border-bottom: 0.1em solid black;
+    margin-bottom: 2em;
 
-  &:before {
-    content: "[";
-  }
+    &:before {
+        content: "[";
+    }
 
-  &:after {
-    content: "]";
-  }
+    &:after {
+        content: "]";
+    }
 
-  & > li {
-    display: inline;
-  }
+    & > li {
+        display: inline;
+    }
 
-  & > li:before {
-    content: "|";
-    padding-right: 0.3em;
-  }
+    & > li:before {
+        content: "|";
+        padding-right: 0.3em;
+    }
 
-  & > li:nth-child(1):before {
-    content: "";
-    padding: 0;
-  }
+    & > li:nth-child(1):before {
+        content: "";
+        padding: 0;
+    }
 }
 
 .footer {
-  height: $footer-height;
-  margin-top: 5em;
-  background-color: $footer-color;
-  color: $footer-font-color;
-  //border: solid 1px #ccc;
-  padding-top: 5em;
-  
-  & > div {
-      //text-align: center;
-  }
+    height: $footer-height;
+    margin-top: 5em;
+    background-color: $footer-color;
+    color: $footer-font-color;
+    //border: solid 1px #ccc;
+    padding-top: 5em;
+    
+    & > div {
+        //text-align: center;
+    }
 
-  a {
-      display: block;
-  }
+    a {
+        display: block;
+    }
 
-  .copyright {
-      font-size: .9em;
-      margin-top: 3em;
-      //margin-bottom: 1em;
-  }
+    .copyright {
+        font-size: .9em;
+        margin-top: 3em;
+        //margin-bottom: 1em;
+    }
 }
 
 .login-page {
@@ -211,7 +211,7 @@ h1, h2, h3, h4, h5 {
 
 /*.bauble-editor label + input {
   margin-left: 10px;
-}*/
+  }*/
 
 .bauble-editor {
     label + textarea {
@@ -322,47 +322,47 @@ background-color: #f7f7f7;
 
     $label-width: 75px;
     .group1 .control-label {
-      width: $label-width
+        width: $label-width
     }
     .group1 .controls {
-      margin-left: $label-width + 25px;
+        margin-left: $label-width + 25px;
     }
 
     .infraspecific-container {
 
-      table {
-        margin-left: 25px;
-      }
+        table {
+            margin-left: 25px;
+        }
     }
 
     .vernacular-name-container {
-      margin-bottom: 25px;
+        margin-bottom: 25px;
 
-      .contents {
-        margin-left: 25px;
-      }
-
-      label {
-        font-weight: bold;
-      }
-
-      table {
-        thead {
-          background-color: #eee;
-
-          td {
-            border: solid 2px white;
-            padding: 2px 5px;
-          }
+        .contents {
+            margin-left: 25px;
         }
 
-        tr {
-          // center the default checkbox
-          td:last-child {
-            text-align: center;
-          }
+        label {
+            font-weight: bold;
         }
-      }
+
+        table {
+            thead {
+                background-color: #eee;
+
+                td {
+                    border: solid 2px white;
+                    padding: 2px 5px;
+                }
+            }
+
+            tr {
+                // center the default checkbox
+                td:last-child {
+                    text-align: center;
+                }
+            }
+        }
     }
 
     .synonyms-box {
@@ -381,109 +381,109 @@ background-color: #f7f7f7;
 
 
 .accession-editor {
-  $label-width: 100px;
+    $label-width: 100px;
 
-  .taxon-section {
-    .select2-container {
-      width: 50%;
-    }
-    label {
-      width: $label-width;
-    }
-    .controls {
-      margin-left: $label-width + 10px;
-    }
-  }
-
-  .accession-section {
-    label {
-      width: $label-width;
-    }
-    .controls {
-      margin-left: $label-width + 10px;
-    }
-    .group1 {
-      display: inline-block;
+    .taxon-section {
+        .select2-container {
+            width: 50%;
+        }
+        label {
+            width: $label-width;
+        }
+        .controls {
+            margin-left: $label-width + 10px;
+        }
     }
 
-    .group2 {
-      display: inline-block;
-      vertical-align: top;
-      label {
-        width: $label-width+25px;
-      }
-      .controls {
-        margin-left: $label-width + 25px + 10px;
-      }
+    .accession-section {
+        label {
+            width: $label-width;
+        }
+        .controls {
+            margin-left: $label-width + 10px;
+        }
+        .group1 {
+            display: inline-block;
+        }
+
+        .group2 {
+            display: inline-block;
+            vertical-align: top;
+            label {
+                width: $label-width+25px;
+            }
+            .controls {
+                margin-left: $label-width + 25px + 10px;
+            }
+        }
+
     }
-
-  }
-  .id-qual-group {
-    display: inline-block;
-  }
-  .qual-rank-group {
-    margin-left: 25px;
-    display: inline-block;
-  }
-
-  .source-tab {
-    .source-select-box {
-      $label-width: 75px;
-      label {
-        width: $label-width;
-      }
-      .controls {
-        margin-left: $label-width + 10px;
-      }
-      .select2-container {
-        width: 50%;
-      }
-    }
-
-    // .locale-group input {
-    //   width: 50%;
-    // }
-
-    .long-lat-group {
-      .control-group {
+    .id-qual-group {
         display: inline-block;
-      }
-
-      input {
-        display: inline-block;
-      }
-
-      input[type="radio"] {
-        margin: 0 5px 0 10px;
-      }
     }
-  }
+    .qual-rank-group {
+        margin-left: 25px;
+        display: inline-block;
+    }
+
+    .source-tab {
+        .source-select-box {
+            $label-width: 75px;
+            label {
+                width: $label-width;
+            }
+            .controls {
+                margin-left: $label-width + 10px;
+            }
+            .select2-container {
+                width: 50%;
+            }
+        }
+
+        // .locale-group input {
+        //   width: 50%;
+        // }
+
+        .long-lat-group {
+            .control-group {
+                display: inline-block;
+            }
+
+            input {
+                display: inline-block;
+            }
+
+            input[type="radio"] {
+                margin: 0 5px 0 10px;
+            }
+        }
+    }
 }
 
 
 .filters-row {
-  padding: 5px 0 5px 0;
+    padding: 5px 0 5px 0;
 }
 /*
   https://kuler.adobe.com/#themeID/7245;
   #607056 #519E41 #85BF89 #9DDBB2 #BFE8BE
-*/
+  */
 
 /*
-https://kuler.adobe.com/#themeID/137458
-BAE8E5 CCF4FF D9FFF2 BAE8CB CCFFD1
-*/
+  https://kuler.adobe.com/#themeID/137458
+  BAE8E5 CCF4FF D9FFF2 BAE8CB CCFFD1
+  */
 
 .domain-box {
-  background-color: #519E41;
+    background-color: #519E41;
 }
 
 .filters-box {
-  background-color: #85BF89;
+    background-color: #85BF89;
 }
 
 .report-box {
-  background-color: #9DDBB2;
+    background-color: #9DDBB2;
 }
 
 .report-table {
@@ -491,7 +491,7 @@ BAE8E5 CCF4FF D9FFF2 BAE8CB CCFFD1
 }
 
 .report-table th  {
-  padding: 0 1em;
+    padding: 0 1em;
 }
 
 .report-table tr {
