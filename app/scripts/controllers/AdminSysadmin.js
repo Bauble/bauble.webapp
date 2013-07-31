@@ -48,14 +48,32 @@ angular.module('BaubleApp')
                 {
                     field: 'date_approved',
                     displayName: 'Approved',
-                    cellTemplate: '<a ng-show="row.entity" ng-click="approveOrg(row.entity)">Approve</a>'
+                    cellTemplate: '<a ng-hide="row.entity[col.field]" ng-click="approveOrg(row.entity,row.rowIndex)">Approve</a>'
 
                 }
             ]
         };
 
-        $scope.approveOrg = function(org){
-            console.log('apprpve: ' + org);
+        $scope.approveOrg = function(org, index){
+            var msg = "Are you sure you want to approve the organization " +
+                org.name + "?",
+                response = window.confirm(msg);
+
+            if(response == true) {
+                Organization.approve(org)
+                    .success(function(data, status, headers, config) {
+                        console.log("approved: ", data);
+                        $scope.orgs[index] = data;
+                    })
+                    .error(function(data, status, headers, config) {
+                        // TODO: add an alert
+                        console.log("could ");
+                    });
+
+            }
+
+
+
         }
 
         // callback for adding a new organization
