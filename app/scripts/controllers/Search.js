@@ -13,7 +13,6 @@ angular.module('BaubleApp')
                 return;
             } else {
                 $scope.alert = null;
-                $sco
             }
             Search.query(q)
                 .success(function(data, status, headers, config) {
