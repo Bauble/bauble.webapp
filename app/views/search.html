@@ -3,7 +3,7 @@
 
     <form>
       <fieldset>
-        <div class="search-box input-group col-lg-8">
+        <div class="search-box input-group col-lg-12">
           <!-- <form> -->
           <span class="input-group-btn">
             <button class="btn btn-default" type="button"><i class="icon-cog"></i></button>
@@ -17,38 +17,44 @@
     </form>
   </div> <!-- .row -->
 
+  <div ng-show="alert" class="row">
+    <div class="alert col-lg-12">
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+      {{alert}}
+    </div>
+  </div> <!-- .row -->
+
   <!-- <div> -->
   <!--   TODO: List of saved searches or search history -->
   <!-- </div> -->
 
   <div class="row">
-    <div class="row">
-      <div class="list-group col-lg-4">
-        <a ng-repeat="result in results" class="list-group-item" 
-           ng-click="itemSelected(result)">
-          {{result.str}}
-        </a>
-      </div> <!-- .list-group -->
+    
+    <div class="list-group col-lg-4">
+      <a ng-repeat="result in results" class="list-group-item" 
+         ng-click="itemSelected(result)">
+        {{result.str}}
+      </a>
+    </div> <!-- .list-group -->
 
-      <!-- *** The markup below is old but I'm gonna leave it here for now to remember
-           what and why we were doing it that way ** -->
+    <!-- *** The markup below is old but I'm gonna leave it here for now to remember
+         what and why we were doing it that way ** -->
 
-      <!-- <div class="col-lg-4 results-list"> -->
-      <!--   <ul> -->
-      <!--     <div ng-repeat="result in results"> -->
-      <!--       <li class="search-result-item"  ng-click="itemSelected(result)" ng-mouseenter="mouseEnterItem($event)" ng-mouseleave="mouseLeaveItem($event)"> -->
-      <!--         <span> -->
-      <!--           <a class="search-result-expand icon-chevron-right" ng-click="itemExpanded()"></a> -->
-      <!--           <a class="search-result-link">{{result.str}}</a> -->
-      <!--         </span> -->
-      <!--       </li> -->
-      <!--     </div> -->
-      <!--   </ul> -->
-      <!-- </div> <\!-- .col-lg-4 .results-list -\-> -->
+    <!-- <div class="col-lg-4 results-list"> -->
+    <!--   <ul> -->
+    <!--     <div ng-repeat="result in results"> -->
+    <!--       <li class="search-result-item"  ng-click="itemSelected(result)" ng-mouseenter="mouseEnterItem($event)" ng-mouseleave="mouseLeaveItem($event)"> -->
+    <!--         <span> -->
+    <!--           <a class="search-result-expand icon-chevron-right" ng-click="itemExpanded()"></a> -->
+    <!--           <a class="search-result-link">{{result.str}}</a> -->
+    <!--         </span> -->
+    <!--       </li> -->
+    <!--     </div> -->
+    <!--   </ul> -->
+    <!-- </div> <\!-- .col-lg-4 .results-list -\-> -->
 
-      <div class="col-lg-8">
-        <div ng-include src="viewMeta.view" class="resource-view"></div>
-      </div> <!-- .col-lg-8 -->
-    </div> <!-- .row -->
+    <div class="col-lg-8">
+      <div ng-include src="viewMeta.view" class="resource-view"></div>
+    </div> <!-- .col-lg-8 -->
   </div> <!-- .row -->
 </div>   <!-- .container -->

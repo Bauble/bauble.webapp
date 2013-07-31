@@ -8,6 +8,13 @@ angular.module('BaubleApp')
 
         // query the server for search results
         $scope.search = function(q) {
+            if(!q) {
+                $scope.alert = "Please enter a search query";
+                return;
+            } else {
+                $scope.alert = null;
+                $sco
+            }
             Search.query(q)
                 .success(function(data, status, headers, config) {
                     console.log("data: ", data);
