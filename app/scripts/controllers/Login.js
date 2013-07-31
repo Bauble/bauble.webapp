@@ -16,8 +16,22 @@ angular.module('BaubleApp')
                         $location.url('/search');
                     }
                 })
-                .error(function(response) {
-                    $scope.message = "Bad username or password."
+                .error(function(data, status, headers, config) {
+                    switch(status) {
+                        case 480:
+                            console.log("not approved");
+                            $scope.message = "This account has not been approved.";
+                            break;
+                        case 481:
+                            $scope.message = "The organization this user account "+
+                                "belongs to has been suspended";
+                            break;
+                        case 482:
+                            $scope.message = "This user account has been suspended";
+                            break;
+                        default:
+                            $scope.message = "Bad username or password."
+                    }
                 });
         };
     });
