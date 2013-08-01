@@ -69,7 +69,11 @@ for existing in existing_files:
 
 
 # delete all files on the server that don't exist locally
-files_to_delete = set(key_map.keys()).difference(local_files)
-print("to delete: {delete}".format(delete=[d for d in files_to_delete]))
+#files_to_delete = set(key_map.keys()).difference(local_files)
+for key_name in set(key_map.keys()).difference(local_files):
+    response = raw_input("delete {}? ".format(key_name))
+    if response == 'y':
+        print "deleting."
+        key_map[key_name].delete()
 
 print("done.")
