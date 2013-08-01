@@ -24,84 +24,85 @@
   </head>
   <body ng-app="BaubleApp" ng-controller="AppCtrl" 
         ng-class="{'show-menubar': !hideMainMenu}">
-
+    
     <!--[if lt IE 7]>
-      <p class="chromeframe">You are using an outdated browser. <a href="http://browsehappy.com/">Upgrade your browser today</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to better experience this site.</p>
-    <![endif]-->
+        <p class="chromeframe">You are using an outdated browser. <a href="http://browsehappy.com/">Upgrade your browser today</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to better experience this site.</p>
+        <![endif]-->
 
     <!--[if lt IE 9]>
-      <script src="components/es5-shim/es5-shim.js"></script>
-      <script src="components/json3/lib/json3.min.js"></script>
-    <![endif]-->
+        <script src="components/es5-shim/es5-shim.js"></script>
+        <script src="components/json3/lib/json3.min.js"></script>
+        <![endif]-->
 
-    <div ng-show="hideMainMenu" ng-cloak class="pull-right">
-      <a href="#/login">Login</a>
-    </div>
+    <!-- <div ng-show="hideMainMenu" ng-cloak class="pull-right"> -->
+    <!--   <a href="#/login">Login</a> -->
+    <!-- </div> -->
 
     <div ng-hide="hideMainMenu" ng-cloak class="navbar navbar-fixed-top">
       <a class="navbar-brand" href="#">Bauble</a>
-          <ul class="nav navbar-nav">
-            <li><a href="#search">Search</a></li>
-            <li class="dropdown">
-              <a class="dropdown-toggle">New
-                <b class="caret"></b>
-              </a>
-              <ul class="dropdown-menu pull-right">
-                <li>
-                  <a class="pull-right" href="#/new/family">Family</a>
-                </li>
-                <li>
-                  <a class="pull-right" href="#/new/genus">Genus</a>
-                </li>
-                <li>
-                  <a class="pull-right" href="#/new/taxon">Taxon</a>
-                </li>
-                <li>
-                  <a class="pull-right" href="#/new/accession">Accession</a>
-                </li>
-                <li>
-                  <a class="pull-right" href="#/new/plant">Plant</a>
-                </li>
-                <li>
-                  <a class="pull-right" href="#/new/location">Location</a>
-                </li>
-              </ul>
+      <ul class="nav navbar-nav">
+        <li><a href="#search">Search</a></li>
+        <li class="dropdown">
+          <a class="dropdown-toggle">New
+            <b class="caret"></b>
+          </a>
+          <ul class="dropdown-menu pull-right">
+            <li>
+              <a class="pull-right" href="#/new/family">Family</a>
+            </li>
+            <li>
+              <a class="pull-right" href="#/new/genus">Genus</a>
+            </li>
+            <li>
+              <a class="pull-right" href="#/new/taxon">Taxon</a>
+            </li>
+            <li>
+              <a class="pull-right" href="#/new/accession">Accession</a>
+            </li>
+            <li>
+              <a class="pull-right" href="#/new/plant">Plant</a>
+            </li>
+            <li>
+              <a class="pull-right" href="#/new/location">Location</a>
             </li>
           </ul>
+        </li>
+      </ul>
 
-          <ul class="nav navbar-nav">
-            <li><a href="#reporter">Report</a></li>
-          </ul>
+      <ul class="nav navbar-nav">
+        <li><a href="#reporter">Report</a></li>
+      </ul>
 
-          <ul class="nav pull-right">
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Menu
-                <b class="caret"></b>
-              </a>
-              <ul class="dropdown-menu pull-right">
-                <li><a class="pull-right" href="#admin">Admin</a></li>
-                <li><a class="pull-right" href="#logout">Logout</a></li>
-              </ul>
-            </li>
+      <ul class="nav pull-right">
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Menu
+            <b class="caret"></b>
+          </a>
+          <ul class="dropdown-menu pull-right">
+            <li><a class="pull-right" href="#admin">Admin</a></li>
+            <li><a class="pull-right" href="#logout">Logout</a></li>
           </ul>
+        </li>
+      </ul>
     </div> <!-- .navbar -->
 
     <alert ng-repeat="alert in alerts" type="alert.type"
            close="closeAlert($index)" ng-bind="alert.msg"></alert>
-
+    
     <div ng-view></div>
+    
     <div class="footer row">
-      <div class="col col-lg-8 col-offset-2">
+      <div class="col-lg-10 col-offset-2">
         <div class="row">
           <div class="col col-lg-4">
             <a href="/who_we_are">Who we are</a>
             <a href="/who_we_are">Contact us</a>
           </div> <!-- .col -->
-      
+          
           <div class="col col-lg-4">
             Bauble &copy; 2005-2013
           </div> <!-- .col -->
-      
+          
           <div class="col col-lg-4">
             Privacy
           </div> <!-- .col -->
