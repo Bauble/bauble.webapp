@@ -5,18 +5,20 @@
     <div class="col col-lg-4 col-offset-4">
       
       <form class="form-signin">
-        <h2 class="form-signin-heading">Sign in to Bauble</h2>
-        <input type="text" class="input-block-level" placeholder="Email address"
-               ng-model="username" 
-               autocomplete="off" autocorrect="off" autocapitalize="off">
-               <!-- autocapitalize="off" autocomplete="off" autocorrect="off"> -->
-        <input type="password" class="input-block-level" placeholder="Password"
-               ng-model="password">
-        <label class="checkbox">
-          <input type="checkbox" value="remember-me"> Remember me
-        </label>
-        <button class="btn btn-large btn-primary" type="submit" ng-click="logIn()">Sign In</button>
-        <a href="#/newuser" class="pull-right">Or signup</a>
+        <fieldset>
+          <legend>Sign in to Bauble</legend>
+          <input type="text" placeholder="Email address" ng-model="username" 
+                 class="form-control"
+                 autocomplete="off" autocorrect="off" autocapitalize="off">
+          <input type="password" placeholder="Password" ng-model="password"
+                 class="form-control">
+          <!-- <label class="checkbox"> -->
+          <!--   <input type="checkbox" value="remember-me"> Remember me -->
+          <!-- </label> -->
+          <button class="btn btn-large btn-primary" type="submit" 
+                  ng-click="logIn()">Sign In</button>
+          <a style="padding-top: 2em" href="#/newuser" class="pull-right">Or signup</a>
+        </fieldset>
       </form>
 
       <div class="alert" ng-show="message">
