@@ -212,6 +212,11 @@ h1, h2, h3, h4, h5, legend {
     }
 }
 
+
+.search-page {
+    padding-bottom: 3em;
+}
+
 .search-box {
     padding: 15px 15px;
     margin-bottom: 25px;
@@ -229,6 +234,9 @@ h1, h2, h3, h4, h5, legend {
   }*/
 
 .bauble-editor {
+    
+    padding-bottom: 3em;
+
     label + textarea {
     /*margin-left: 10px;*/
     }
