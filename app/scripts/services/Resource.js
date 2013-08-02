@@ -22,7 +22,6 @@ angular.module('BaubleApp')
                     return url;
                 },
 
-
                 /*
                  * resource can be an ID, a ref or an object with a ref
                  */
@@ -30,12 +29,11 @@ angular.module('BaubleApp')
                     var config = {
                         method: 'GET',
                         url: this.get_url_from_resource(resource),
-                        headers: globals.getAuthHeader()
+                        headers: angular.extend(globals.getAuthHeader(), {
+                            'Accept': 'application/json;depth=' + options.depth || 1
+                        })
                     };
-                    depth = depth || 1;
-                    config.headers.Accept = 'application/json;depth=' + depth;
                     return $http(config);
-
                 },
 
                 query: function(options) {
@@ -81,8 +79,9 @@ angular.module('BaubleApp')
 
                 del: function(resource) {
                     var config = {
+                        method: 'DELETE',
                         url: this.get_url_from_resource(resource),
-                        method: 'DELETE'
+                        headers: globals.getAuthHeader()
                     };
                     return $http(config);
                 },
@@ -96,7 +95,9 @@ angular.module('BaubleApp')
                     var config = {
                         url: this.get_url_from_resource(resource),
                         method: 'GET',
-                        headers: { 'Accept': 'application/json;depth=2' }
+                        headers: angular.extend(globals.getAuthHeader(), {
+                            'Accept': 'application/json;depth=2'
+                        })
                     };
                     return $http(config);
                 },
@@ -105,6 +106,9 @@ angular.module('BaubleApp')
                     var config = {
                         method: 'GET',
                         url: resourceUrl + '/schema',
+                        headers: angular.extend(globals.getAuthHeader(), {
+                            'Accept': 'application/json;depth=1'
+                        }),
                         params: scalars_only ?
                             { flags: 'scalars_only' } : undefined
                     };
@@ -115,7 +119,8 @@ angular.module('BaubleApp')
                     var config = {
                         method: 'GET',
                         url: this.get_url_from_resource(resource) +
-                            relation + "/count"
+                            relation + "/count",
+                        headers: globals.getAuthHeader()
                     };
                     return $http(config);
                 }
