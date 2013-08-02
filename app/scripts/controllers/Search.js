@@ -20,6 +20,9 @@ angular.module('BaubleApp')
                 .success(function(data, status, headers, config) {
                     console.log("data: ", data);
                     $scope.results = data.results;
+                    if($scope.results.length==0) {
+                        $scope.alert = "No results for your search query"
+                    }
                 })
                 .error(function(data, status, headers, config) {
                     console.log("");
