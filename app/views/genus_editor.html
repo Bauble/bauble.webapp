@@ -1,12 +1,15 @@
-<div ng-form name="genusForm" ng-controller="GenusEditorCtrl" class="bauble-editor genus-editor container">
-<alert class="span6 offset3" ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">{{alert.msg}}</alert>
+<div ng-form name="genusForm" ng-controller="GenusEditorCtrl" 
+     class="bauble-editor genus-editor container">
+
+  <alert class="span6 offset3" ng-repeat="alert in alerts" type="alert.type" 
+         close="closeAlert($index)">{{alert.msg}}</alert>
 
   <div class="row">
-    <div class="editor-header span12">
-      <div class="header-title span8">
+    <div class="editor-header col-lg-12">
+      <div class="header-title col-lg-8">
         <h4>{{genus.str || 'New genus'}}</h4>
       </div>
-      <div class="header-buttons span3">
+      <div class="header-buttons col-lg-3">
         <button class="btn" ng-click="close()">Close</button>
         <button class="btn btn-primary" ng-click="save()">Save</button>
       </div>
@@ -14,45 +17,43 @@
   </div>
 
   <div class="editor-body">
+    
+    <tabset>
 
-    <ul class="nav nav-tabs" id="genusEditorTabs">
-      <li ng-class="{active: activeTab=='general'}"><a ng-click="activeTab='general'">General</a></li>
-      <li ng-class="{active: activeTab=='notes'}"><a ng-click="activeTab='notes'">Notes</a></li>
-    </ul>
-
-    <div class="tab-content" ng-switch="activeTab">
-
-      <div class="tab-pane active" ng-switch-when="general">
+      <tab heading="General">
         <form class="form-horizontal">
-          <div class="control-group">
-            <label class="control-label">Family</label>
-            <div class="controls">
-              <input ui-select2="familySelectOptions" id="familyField" style="width: 200px" ng-model="genus.family"/>
+          <div class="form-group">
+            <label for="familyField" class="col-lg-2 control-label">Family</label>
+            <div class="col-lg-6">
+              <input ui-select2="familySelectOptions" id="familyField" style="width: 200px" 
+                     ng-model="genus.family" class="form-control"/>
+            </div> <!-- .col-lg-6 -->
+          </div>   <!-- .control-label -->
+
+          <div class="form-group">
+            <label for="genusField" class="control-label col-lg-2">Genus</label>
+            <div class="col-lg-6">
+              <input id="genusField" type="text" ng-model="genus.genus" class="form-control"
+                     required/>
             </div>
           </div>
 
-          <div class="control-group">
-            <label class="control-label">Genus</label>
-            <div class="controls">
-              <input type="text", ng-model="genus.genus" required/>
-            </div>
-          </div>
-
-          <div class="control-group">
-            <label class="control-label">Author</label>
-            <div class="controls">
-              <input type="text" ng-model="genus.author" required/>
-            </div>
+          <div class="form-group">
+            <label id="authorField" class="control-label col-lg-2">Author</label>
+            <div class="col-lg-6">
+              <input type="text" ng-model="genus.author" class="form-control" required/>
+            </div> 
           </div>
 
         </form>
-      </div>
+      </tab>
 
-      <div ng-switch-when="notes" class="tab-pane active">
+      <tab heading="Notes">
         <div ng-include src="'views/notes_editor.html'"></div>
-      </div>
+      </tab>
 
-    </div> <!-- .tab-content -->
+    </tabset>
+
   </div> <!-- .editor-body -->
 
 </div>

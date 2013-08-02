@@ -9,16 +9,22 @@ angular.module('BaubleApp')
 
         // make sure we have the family details
         if($scope.genus && angular.isDefined($scope.genus.ref)) {
-            Genus.details($scope.genus, function(result) {
-                $scope.genus = result.data;
-                $scope.notes = $scope.genus.notes || [];
-            });
+            Genus.details($scope.genus)
+                .success(function(data, status, headers, config) {
+                    $scope.genus = result.data;
+                    $scope.notes = $scope.genus.notes || [];
+                })
+                .error(function(data, status, headers, config) {
+                    // do something
+                });
         } else if($location.search().family) {
-            Family.get($location.search().family, function(response) {
-                if(response.status < 200 || response.status >= 400) {
-                }
-                $scope.genus.family = response.data;
-            });
+            Family.get($location.search().family)
+                .success(function(data, status, headers, config) {
+                    $scope.genus.family = data;
+                })
+                .error(function(data, status, headers, config) {
+                    // do seomthing
+                });
         }
 
         //$scope.families = []; // the list of completions
@@ -40,12 +46,16 @@ angular.module('BaubleApp')
                 // for new results when the query string is something like .length==2
                 // console.log('query: ', options);....i think this is what the
                 // options.context is for
-                Family.query(options.term + '%', function(response){
-                    $scope.families = response.data.results;
-                    if(response.data.results && response.data.results.length > 0) {
-                        options.callback({results: response.data.results});
-                    }
-                });
+                Family.query(options.term + '%')
+                    .success(function(data, status, headers, config) {
+                        $scope.families = data.results;
+                        if(data.results && data.results.length > 0) {
+                            options.callback({results: data.results});
+                        }
+                    })
+                    .error(function(data, status, headers, config) {
+                        // do something
+                    });
             }
         };
 
@@ -65,18 +75,16 @@ angular.module('BaubleApp')
             // TODO: we should probably also update the selected result to reflect
             // any changes in the search result
             $scope.genus.notes = $scope.notes;
-            Genus.save($scope.genus, function(response) {
-                console.log('response: ', response);
-                if(response.status < 200 || response.status >= 400) {
-                    if(response.data) {
-                        $scope.alerts.push({type: 'error', msg: "Error!\n" + response.data});
+            Genus.save($scope.genus)
+                .success(function(data, status, headers, config) {
+                    $scope.close();
+                })
+                .error(function(data, status, headers, config) {
+                    if(data) {
+                        $scope.alerts.push({type: 'error', msg: "Error!\n" + data});
                     } else {
                         $scope.alerts.push({type: 'error', msg: "Unknown error!"});
                     }
-                    return;
-                }
-
-                $scope.close();
-            });
+                });
         };
   });
