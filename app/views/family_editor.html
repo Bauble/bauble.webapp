@@ -23,29 +23,35 @@
       <div class="tab-content" ng-switch="activeTab">
           <div class="tab-pane active" ng-switch-when="general">
               <form class="form-horizontal" novalidate>
-                <div class="row">
-                  <label class="col-lg-2 control-label" for="inputFamily" novalidate>Family</label>
+
+                <div class="form-group">
+                  <label class="col-lg-2 control-label" for="inputFamily" 
+                         novalidate>Family</label>
                   <div class="col-lg-8">
                     <input type="text" ng-model="family.family" id="inputFamily" 
-                           name="family" required>
+                           class="form-control" name="family" required>
                   </div>
-                </div> <!-- .row  -->
+                </div> <!-- .form-group -->
+                
           
-                <div class="row">
-                  <label class="col-lg-2 control-label" for="inputQualifier">Qualifier</label>
+                <div class="form-group">
+                  <label class="col-lg-2 control-label" for="inputQualifier">
+                    Qualifier</label>
                   <div class="col-lg-8">
-                    <select ng-model="family.qualifier" ng-options="q for q in qualifiers">
+                    <select ng-model="family.qualifier" class="form-control"
+                            ng-options="q for q in qualifiers">
                       <option value="">-- choose qualifier --</option>
                     </select>
                   </div>
-                </div> <!-- .row -->
+                </div> <!-- .form-group -->
                 
               </form> <!-- ng-form -->
 
             <div class="synonyms-box">
               <label>Synonyms</label>
               <div>
-                <input ui-select2="selectOptions" ng-model="selectedSyn" class="col-lg-8" /></input>
+                <input ui-select2="selectOptions" ng-model="selectedSyn" 
+                       class="col-lg-8 form-control" /></input>
                 <button class="btn" ng-click="addSynonym(selectedSyn); selectedSyn={};" ng-disabled="!selectedSyn">Add</button>
                 <!-- <button class="btn" ng-click="addSynonym(selectedSyn)" ng-disabled="!selectedSyn">Add</button> -->
               </div>
