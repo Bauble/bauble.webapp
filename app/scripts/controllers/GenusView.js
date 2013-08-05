@@ -3,9 +3,13 @@
 angular.module('BaubleApp')
     .controller('GenusViewCtrl', function ($scope, $location, globals, Genus) {
         $scope.genus = globals.selected;
-        Genus.details(globals.selected, function(result) {
-            $scope.genus = result.data;
-        });
+        Genus.details(globals.selected)
+            .success(function(data, status, headers, config) {
+                $scope.genus = result.data;
+            })
+            .error(function(data, status, headers, config) {
+                // do something
+            });
 
         $scope.$on('genus-edit', function(){
             $scope.$apply(function() {
@@ -21,16 +25,28 @@ angular.module('BaubleApp')
 
         $scope.counts = {};
 
-        Genus.count($scope.genus, "/taxa", function(result) {
-            $scope.counts.taxa = result.data;
-        });
+        Genus.count($scope.genus, "/taxa")
+            .success(function(data, status, headers, config) {
+                $scope.counts.taxa = data;
+            })
+            .error(function(data, status, headers, config) {
+                // do something
+            });
 
-        Genus.count($scope.genus, "/taxa/accessions", function(result) {
-            $scope.counts.accessions = result.data;
-        });
+        Genus.count($scope.genus, "/taxa/accessions")
+            .success(function(data, status, headers, config) {
+                $scope.counts.accessions = data;
+            })
+            .error(function(data, status, headers, config) {
+                // do something
+            });
 
-        Genus.count($scope.genus, "/taxa/accessions/plants", function(result) {
-            $scope.counts.plants = result.data;
-        });
+        Genus.count($scope.genus, "/taxa/accessions/plants")
+            .success(function(data, status, headers, config) {
+                $scope.counts.plants = data;
+            })
+            .error(function(data, status, headers, config) {
+                // do something
+            });
 
     });
