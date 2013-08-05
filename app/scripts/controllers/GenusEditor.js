@@ -11,7 +11,7 @@ angular.module('BaubleApp')
         if($scope.genus && angular.isDefined($scope.genus.ref)) {
             Genus.details($scope.genus)
                 .success(function(data, status, headers, config) {
-                    $scope.genus = result.data;
+                    $scope.genus = data;
                     $scope.notes = $scope.genus.notes || [];
                 })
                 .error(function(data, status, headers, config) {
