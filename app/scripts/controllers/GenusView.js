@@ -5,7 +5,7 @@ angular.module('BaubleApp')
         $scope.genus = globals.selected;
         Genus.details(globals.selected)
             .success(function(data, status, headers, config) {
-                $scope.genus = result.data;
+                $scope.genus = data;
             })
             .error(function(data, status, headers, config) {
                 // do something
