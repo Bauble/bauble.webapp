@@ -16,16 +16,20 @@ angular.module('BaubleApp')
                 $scope.alert = null;
             }
 
+            $scope.message = "Searching....";
+            $scope.selected = $scope.viewMeta = $scope.results = null;
+            console.log("q: ", q);
+            localStorage.setItem('current_search', q);
             Search.query(q)
                 .success(function(data, status, headers, config) {
-                    console.log("data: ", data);
                     $scope.results = data.results;
                     if($scope.results.length==0) {
                         $scope.alert = "No results for your search query"
                     }
+                    $scope.message = "";
                 })
                 .error(function(data, status, headers, config) {
-                    console.log("");
+                    $scope.message = "";
                 });
         };
 
@@ -38,5 +42,11 @@ angular.module('BaubleApp')
 
         $scope.itemExpanded = function() {
             console.log('itemExpanded(');
+        };
+
+        var current_search = localStorage.getItem("current_search");
+        if(current_search) {
+            $scope.q = current_search;
+            $scope.search(current_search);
         };
     });
