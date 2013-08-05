@@ -6,4 +6,8 @@ angular.module('BaubleApp')
         $scope.addNote = function() {
             $scope.notes.push({date: new Date()});
         };
+
+        $scope.dateOptions = {
+
+        };
     });

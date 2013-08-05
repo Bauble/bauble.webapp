@@ -1,7 +1,8 @@
-<div ng-form name="notesForm" ng-controller="NotesEditorCtrl" id="notesEditor" class="bauble-editor">
+<div ng-form name="notesForm" ng-controller="NotesEditorCtrl" id="notesEditor" 
+     class="bauble-editor">
 
   <button class="btn" ng-click="addNote()">Add Note</button>
-
+  
   <div class="accordion" id="notesAccordian"  style="padding-top: 10px">
 
     <div ng-repeat="note in notes" class="accordion-group">
@@ -12,23 +13,56 @@
       </div>
       <div id="collapseOne" class="accordion-body collapse in">
         <div class="accordion-inner">
+          
+          <form class="form-horizontal">
 
-          <div ng-form class="form-inline" novalidate>
-            <label class="control-label" for="inputUser">User</label>
-            <input class="input-large" type="text" ng-model="note.user" id="inputUser" placeholder="Your name">
+            <div class="form-group">
+              <label class="col-lg-2 control-label" for="inputUser">User</label>
+              <div class="col-lg-8">
+                <input class="form-control" type="text" ng-model="note.user" id="inputUser"
+                       name="inputUser" placeholder="Your name">
+              </div>
+            </div> <!-- .form-group -->
 
-            <div>
-              <label class="control-label" for="inputDate">Date</label>
-              <input ui-date class="input-small"  ng-model="note.date" id="inputDate">
+            <div class="form-group">
+              <label class="col-lg-2 control-label" for="inputDate">Date</label>
+              <div class="col-lg-8">
+                <!-- <input ui-date class="form-control" type="text" ng-model="note.date"  -->
+                <!--        id="inputDate" placeholder=""> -->
+                <!-- <datepicker> -->
+                <!-- min="minDate" max="'2015-06-22'" date-disabled="disabled(date, mode)"  -->
+                 <!-- <input type="text" class="form-control" ng-model="note.date"  -->
+                 <!--        datepicker-popup="dd-MMMM-yyyy"  -->
+                 <!--        open="opened"  -->
+                 <!--        datepicker-options="dateOptions"  -->
+                 <!--        ng-required="true" id="inputDate"/> -->
+                 <!-- <button class="btn" ng-click="open()"> -->
+                 <!--   <i class="icon-calendar"> -->
+                 <!-- </i></button> -->
+                 <bs-datepicker ng-model="note.date" options="dateOptions">
+                 </bs-datepicker>
+                <!-- <datepicker> -->
+              </div>
+            </div> <!-- .form-group -->
 
-              <label class="control-label" for="inputCategory">Category</label>
-              <input class="input-large" type="text" ng-model="note.category" id="inputCategory">
-            </div>
+            <div class="form-group">
+              <label class="col-lg-2 control-label" for="inputCategory">Category</label>
+              <div class="col-lg-8">
+                <input class="form-control" type="text" ng-model="note.category" 
+                       id="inputCategory" placeholder="">
+              </div>
+            </div> <!-- .form-group -->
+              
 
-            <label class="control-label" for="inputNote">Note</label>
-            <textarea class="span5" id="inputNote" ng-model="note.note" rows="5"></textarea>
-
-          </div> <!-- ng-form -->
+            <div class="form-group">
+              <label class="col-lg-2 control-label" for="inputNote">Note</label>
+              <div class="col-lg-8">
+                <textarea class="form-control" id="inputNote" ng-model="note.note" rows="5">
+                </textarea>
+              </div>
+            </div> <!-- .form-group -->
+            
+          </form>
         </div> <!-- accordion-inner -->
       </div> <!-- accordion-body -->
     </div> <!-- accordion-group -->
