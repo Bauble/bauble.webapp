@@ -7,9 +7,8 @@
 
     <div ng-repeat="note in notes" class="accordion-group">
       <div class="accordion-heading">
-        <a class="accordion-toggle" data-toggle="collapse" data-parent="#notesAccordian" href="#collapseOne">
-          {{note.user}} - {{note.date}} - {{note.category}}
-        </a>
+        <a class="accordion-toggle" ng-bind="noteTitle(note)" data-toggle="collapse" 
+           data-parent="#notesAccordian" href="#collapseOne">Title</a>
       </div>
       <div id="collapseOne" class="accordion-body collapse in">
         <div class="accordion-inner">
@@ -19,8 +18,8 @@
             <div class="form-group">
               <label class="col-lg-2 control-label" for="inputUser">User</label>
               <div class="col-lg-8">
-                <input class="form-control" type="text" ng-model="note.user" id="inputUser"
-                       name="inputUser" placeholder="Your name">
+                <input class="form-control" type="text" ng-model="note.user" 
+                       id="inputUser" name="inputUser" placeholder="Your name">
               </div>
             </div> <!-- .form-group -->
 
@@ -39,9 +38,14 @@
                  <!-- <button class="btn" ng-click="open()"> -->
                  <!--   <i class="icon-calendar"> -->
                  <!-- </i></button> -->
-                 <bs-datepicker ng-model="note.date" options="dateOptions">
-                 </bs-datepicker>
+                 <!-- <bs-datepicker ng-model="note.date" options="dateOptions"> -->
+                 <!-- </bs-datepicker> -->
                 <!-- <datepicker> -->
+                
+                <!-- data-date-format="mm/dd/yyyy"  -->
+                <input type="text" ng-model="note.date" class="form-control"
+                       data-date="note.date" bs-datepicker>
+  
               </div>
             </div> <!-- .form-group -->
 
