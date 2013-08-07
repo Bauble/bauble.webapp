@@ -69,11 +69,8 @@ angular.module('BaubleApp')
                     $scope.close();
                  })
                 .error(function(data, status, headers, config) {
-                    if(data) {
-                         $scope.alerts.push({type: 'error', msg: "Error!\n" + data});
-                     } else {
-                         $scope.alerts.push({type: 'error', msg: "Unknown error!"});
-                     }
+                    var msg = data ? "Error!\n" + data : "Unknown error!";
+                    $scope.alerts.push({type: 'error', msg: msg});
                 });
         };
     });
