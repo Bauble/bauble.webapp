@@ -8,17 +8,23 @@ angular.module('BaubleApp')
 
         // make sure we have the family details
         if($scope.taxon && angular.isDefined($scope.taxon.ref)) {
-            Taxon.details($scope.taxon, function(result) {
-                console.log('result.data: ', result.data);
-                $scope.taxon = result.data;
-                $scope.notes = $scope.taxon.notes || [];
-            });
+            Taxon.details($scope.taxon)
+                .success(function(data, status, headers, config) {
+                    console.log('result.data: ', result.data);
+                    $scope.taxon = data;
+                    $scope.notes = $scope.taxon.notes || [];
+                })
+                .error(function(data, status, headers, config) {
+                   // do something
+                });
         } else if($location.search().genus) {
-            Genus.get($location.search().genus, function(response) {
-                if(response.status < 200 || response.status >= 400) {
-                }
-                $scope.taxon.genus = response.data;
-            });
+            Genus.get($location.search().genus)
+                .success(function(data, status, headers, config) {
+                    $scope.taxon.genus = data;
+                })
+                .error(function(data, status, headers, config) {
+                    // do something
+                });
         }
 
         $scope.activeTab = "general";
@@ -57,12 +63,16 @@ angular.module('BaubleApp')
                 // for new results when the query string is something like .length==2
                 // console.log('query: ', options);....i think this is what the
                 // options.context is for
-                Genus.query(options.term + '%', function(response){
-                    $scope.families = response.data.results;
-                    if(response.data.results && response.data.results.length > 0) {
-                        options.callback({results: response.data.results});
-                    }
-                });
+                Genus.query(options.term + '%')
+                    .success(function(data, status, headers, config) {
+                        $scope.families = data.results;
+                        if(data.results && data.results.length > 0) {
+                            options.callback({results: data.results});
+                        }
+                    })
+                    .error(function(data, status, headers, config) {
+                        // do something
+                    });
             }
         };
 
@@ -83,12 +93,16 @@ angular.module('BaubleApp')
                 // for new results when the query string is something like .length==2
                 // console.log('query: ', options);....i think this is what the
                 // options.context is for
-                Taxon.query(options.term + '%', function(response){
-                    $scope.families = response.data.results;
-                    if(response.data.results && response.data.results.length > 0) {
-                        options.callback({results: response.data.results});
-                    }
-                });
+                Taxon.query(options.term + '%')
+                    .success(function(data, status, headers, config) {
+                        $scope.families = data.results;
+                        if(data.results && data.results.length > 0) {
+                            options.callback({results: data.results});
+                        }
+                    })
+                    .error(function(data, status, headers, config) {
+                        // do something
+                    });
             }
         };
 
@@ -104,18 +118,14 @@ angular.module('BaubleApp')
         // called when the save button is clicked on the editor
         $scope.save = function() {
             $scope.taxon.notes = $scope.notes;
-            Taxon.save($scope.taxon, function(response) {
-                console.log('response: ', response);
-                if(response.status < 200 || response.status >= 400) {
-                    if(response.data) {
-                        $scope.alerts.push({type: 'error', msg: "Error!\n" + response.data});
-                    } else {
-                        $scope.alerts.push({type: 'error', msg: "Unknown error!"});
-                    }
-                    return;
-                }
-
-                $scope.close();
-            });
+            Taxon.save($scope.taxon)
+                .success(function(data, status, headers, config) {
+                    console.log('response: ', date);
+                    $scope.close();
+                })
+                .error(function(data, status, headers, config) {
+                    var msg = data ? "Error!\n" + data : "Unknown error!";
+                    $scope.alerts.push({type: 'error', msg: msg});
+                });
         };
     });
