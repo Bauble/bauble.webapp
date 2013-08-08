@@ -10,7 +10,6 @@ angular.module('BaubleApp')
         if($scope.taxon && angular.isDefined($scope.taxon.ref)) {
             Taxon.details($scope.taxon)
                 .success(function(data, status, headers, config) {
-                    console.log('result.data: ', result.data);
                     $scope.taxon = data;
                     $scope.notes = $scope.taxon.notes || [];
                 })
@@ -54,7 +53,7 @@ angular.module('BaubleApp')
             formatSelection: function(object, container) { return object.str; },
 
             id: function(obj) {
-                return obj.ref; // use ref field for id since our resources don't have ids
+                return obj.ref; // use ref field for id since our resources don't have is
             },
 
             // get the list of families matching the query
@@ -63,7 +62,7 @@ angular.module('BaubleApp')
                 // for new results when the query string is something like .length==2
                 // console.log('query: ', options);....i think this is what the
                 // options.context is for
-                Genus.query(options.term + '%')
+                Genus.query({q: options.term + '%'})
                     .success(function(data, status, headers, config) {
                         $scope.families = data.results;
                         if(data.results && data.results.length > 0) {
@@ -117,10 +116,14 @@ angular.module('BaubleApp')
 
         // called when the save button is clicked on the editor
         $scope.save = function() {
-            $scope.taxon.notes = $scope.notes;
+            // remove any notes without a note
+            angular.forEach($scope.notes, function(note, key) {
+                if(note.note){
+                    $scope.taxon.notes.push(note);
+                }
+            });
             Taxon.save($scope.taxon)
                 .success(function(data, status, headers, config) {
-                    console.log('response: ', date);
                     $scope.close();
                 })
                 .error(function(data, status, headers, config) {
