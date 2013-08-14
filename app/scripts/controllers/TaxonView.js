@@ -26,11 +26,19 @@ angular.module('BaubleApp')
 
         $scope.counts = {};
 
-        Taxon.count($scope.taxon, "/accessions", function(result) {
-            $scope.counts.accessions = result.data;
-        });
+        Taxon.count($scope.taxon, "/accessions")
+            .success(function(data, status, headers, config) {
+                $scope.counts.accessions = data;
+            })
+            .error(function(data, status, headers, config) {
+                // do something
+            });
 
-        Taxon.count($scope.taxon, "/accessions/plants", function(result) {
-            $scope.counts.plants = result.data;
-        });
+        Taxon.count($scope.taxon, "/accessions/plants")
+            .success(function(data, status, headers, config) {
+                $scope.counts.plants = data;
+            })
+            .error(function(data, status, headers, config) {
+                // do something
+            });
     });
