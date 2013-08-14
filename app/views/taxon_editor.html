@@ -23,7 +23,7 @@
 
           <div class="form-group">
             <label class="control-label col-lg-2" for="genusField">Genus</label>
-            <div class="col-log-4">
+            <div class="col-lg-4">
               <input id="genusField" style="width: 200px"
                      ui-select2="genusSelectOptions" ng-model="taxon.genus"/>
             </div>
@@ -32,8 +32,7 @@
           <div class="form-group">
             <label class="control-label col-lg-2" for="genusField">Hybrid</label>
             <div class="col-lg-1">
-              <input type="checkbox" ng-model="taxon.hybrid" id="hybridField"
-                     class="form-control"/>
+              <input type="checkbox" ng-model="taxon.hybrid" id="hybridField"/>
             </div>
           </div>
 
@@ -164,7 +163,7 @@
 
           <div class="row">
             <div class="col-lg-10 vernacular-name-container">
-              <h5>Vernacular Names</h5>
+              <h4>Vernacular Names</h4>
 
               <div class="row">
                 <div class="col-lg-3">
@@ -189,11 +188,16 @@
                          ng-model="vernacular.language"/>
                 </div>
                 
-                <div class="col-lg-2">
-                  <input type="checkbox" class="form-control input-sm" 
-                         ng-model="vernacular.default"
-                         value="{{vernacular.default}}"/>
-                </div>                
+                
+                  <div class="col-lg-2">
+                    <div class="checkbox">
+                      <input type="checkbox" class="input-lg" 
+                             ng-model="vernacular.default"
+                             value="{{vernacular.default}}"/>
+                    
+                    </div> <!-- .checkbox -->
+                  </div>   <!-- .col -->
+                
               </div> <!-- .row -->
               
               <button class="btn" ng-click="addVernacularName()">Add</button>
