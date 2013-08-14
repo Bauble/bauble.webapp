@@ -26,11 +26,12 @@ angular.module('BaubleApp')
                  * resource can be an ID, a ref or an object with a ref
                  */
                 get: function(resource, depth) {
+                    depth = depth || 1;
                     var config = {
                         method: 'GET',
                         url: this.get_url_from_resource(resource),
                         headers: angular.extend(globals.getAuthHeader(), {
-                            'Accept': 'application/json;depth=' + options.depth || 1
+                            'Accept': 'application/json;depth=' + depth
                         })
                     };
                     return $http(config);
