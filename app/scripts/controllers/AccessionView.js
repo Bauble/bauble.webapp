@@ -3,9 +3,13 @@
 angular.module('BaubleApp')
     .controller('AccessionViewCtrl', function ($scope, $location, globals, Accession) {
         $scope.accession = globals.selected;
-        Accession.details(globals.selected, function(result) {
-            $scope.accession = result.data;
-        });
+        Accession.details(globals.selected)
+            .success(function(data, status, headers, config) {
+                $scope.accession = data;
+            })
+            .error(function(data, status, headers, config) {
+                // do something
+            });
 
         $scope.$on('accession-edit', function(){
             $scope.$apply(function() {
@@ -19,8 +23,12 @@ angular.module('BaubleApp')
             });
         });
 
-        $scope.count = {};
-        Accession.count($scope.accession, "/accessions/plants", function(result) {
-            $scope.counts.plants = result.data;
-        });
+        $scope.counts = {};
+        Accession.count($scope.accession, "/plants")
+            .success(function(data, status, headers, config) {
+                $scope.counts.plants = data;
+            })
+            .error(function(data, status, headers, config) {
+                // do something
+            });
     });

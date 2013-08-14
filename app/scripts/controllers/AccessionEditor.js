@@ -51,7 +51,8 @@ var recvd_type_values = {
     };
 
 angular.module('BaubleApp')
-    .controller('AccessionEditorCtrl', function ($scope, $location, globals, Taxon, Accession, Source) {
+    .controller('AccessionEditorCtrl', function ($scope, $location, globals, Taxon,
+                                                 Accession, Source) {
 
         // isNew is inherited from the NewCtrl if this is a /new editor
         $scope.accession = globals.selected && !$scope.isNew ? globals.selected :
@@ -61,18 +62,24 @@ angular.module('BaubleApp')
 
         // make sure we have the accession details
         if($scope.accession && angular.isDefined($scope.accession.ref)) {
-            Accession.details($scope.accession, function(result) {
-                $scope.accession = result.data;
-                $scope.notes = $scope.accession.notes || [];
-                $scope.header = $scope.accession.ref ? $scope.accession.code + ' ' + $scope.accession.taxon_str
-                    : 'New Accession';
-            });
+            Accession.details($scope.accession)
+                .success(function(data, status, headers, config) {
+                    $scope.accession = data;
+                    $scope.notes = $scope.accession.notes || [];
+                    $scope.header = $scope.accession.ref ? $scope.accession.code + ' ' +
+                        $scope.accession.taxon_str: 'New Accession';
+                })
+                .error(function(data, status, headers, config) {
+                    // do something
+                });
         } else if($location.search().taxon) {
-            Taxon.get($location.search().taxon, function(response) {
-                if(response.status < 200 || response.status >= 400) {
-                }
-                $scope.accession.taxon = response.data;
-            });
+            Taxon.get($location.search().taxon)
+                .success(function(data, status, headers, config) {
+                    $scope.accession.taxon = data;
+                })
+                .error(function(data, status, headers, config) {
+                    // do something
+                });
         }
 
         $scope.id_qualifiers = ["?", "aff.", "cf.", "forsan", "incorrect", "near"];
@@ -103,12 +110,16 @@ angular.module('BaubleApp')
                 // for new results when the query string is something like .length==2
                 // console.log('query: ', options);....i think this is what the
                 // options.context is for
-                Taxon.query(options.term + '%', function(response){
-                    //$scope. = response.data.results;
-                    if(response.data.results && response.data.results.length > 0) {
-                        options.callback({results: response.data.results});
-                    }
-                });
+                Taxon.query(options.term + '%')
+                    .success(function(data, status, headers, config) {
+                        //$scope. = response.data.results;
+                        if(data.results && data.results.length > 0) {
+                            options.callback({results: data.results});
+                        }
+                    })
+                    .error(function(data, status, headers, config) {
+                        // do something
+                    });
             }
         };
 
@@ -128,12 +139,16 @@ angular.module('BaubleApp')
                 // for new results when the query string is something like .length==2
                 // console.log('query: ', options);....i think this is what the
                 // options.context is for
-                Source.query(options.term + '%', function(response){
-                    //$scope.families = response.data.results;
-                    if(response.data.results && response.data.results.length > 0) {
-                        options.callback({results: response.data.results});
-                    }
-                });
+                Source.query(options.term + '%')
+                    .success(function(data, status, headers, config) {
+                        //$scope.families = response.data.results;
+                        if(data.results && data.results.length > 0) {
+                            options.callback({results: data.results});
+                        }
+                    })
+                    .error(function(data, status, headers, config) {
+                        // do something
+                    });
             }
         };
 
@@ -156,7 +171,15 @@ angular.module('BaubleApp')
         $scope.save = function() {
             // TODO: we need a way to determine if this is a save on a new or existing
             // object an whether we whould be calling save or edit
-            Accession.save($scope.accession);
-            $scope.close();
+            if(!$scope.accession.source) {
+                delete $scope.accession.source;
+            }
+            Accession.save($scope.accession)
+                .success(function(data, status, headers, config) {
+                    $scope.close();
+                })
+                .error(function(data, status, headers, config) {
+                    // do something
+                });
         };
     });
