@@ -12,7 +12,9 @@ angular.module('BaubleApp')
             replace: true,
             link: function postLink(scope, element, attrs) {
                 scope.$watch(scope.model, function() {
-                    element.datepicker('setDate', scope.model);
+                    if(scope.model) {
+                        element.datepicker('setDate', scope.model);
+                    }
                 });
 
                 var defaultOptions = {
