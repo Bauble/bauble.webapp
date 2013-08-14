@@ -163,14 +163,14 @@
           </div>
 
           <div class="row">
-            <div class="col-lg-8 vernacular-name-container">
+            <div class="col-lg-10 vernacular-name-container">
               <h5>Vernacular Names</h5>
 
               <div class="row">
-                <div class="col-lg-2">
+                <div class="col-lg-3">
                   <label>Verncular name</label>
                 </div>
-                <div class="col-lg-2">
+                <div class="col-lg-3">
                   <label>Language</label>
                 </div>
                 <div class="col-lg-2">
@@ -179,17 +179,19 @@
               </div> <!-- .row -->
 
               <div class="row" ng-repeat="vernacular in taxon.vernacular_names">
-                <div class="col-lg-2">
-                  <input type="text" value="{{vernacular.name}}" class="form-control"/>
+                <div class="col-lg-3">
+                  <input type="text" value="{{vernacular.name}}" class="form-control"
+                         ng-model="vernacular.name"/>
                 </div>
                 
-                <div class="col-lg-2">
-                  <input type="text" value="{{vernacular.language}}" 
-                         class="form-control"/>
+                <div class="col-lg-3">
+                  <input type="text" value="{{vernacular.language}}" class="form-control"
+                         ng-model="vernacular.language"/>
                 </div>
                 
                 <div class="col-lg-2">
                   <input type="checkbox" class="form-control input-sm" 
+                         ng-model="vernacular.default"
                          value="{{vernacular.default}}"/>
                 </div>                
               </div> <!-- .row -->

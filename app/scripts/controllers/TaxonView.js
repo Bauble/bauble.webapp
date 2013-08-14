@@ -3,9 +3,14 @@
 angular.module('BaubleApp')
     .controller('TaxonViewCtrl', function ($scope, $location, globals, Taxon) {
         $scope.taxon = globals.selected;
-        Taxon.details(globals.selected, function(result) {
-            $scope.taxon = result.data;
-        });
+        Taxon.details(globals.selected)
+            .success(function(data, status, headers, config) {
+                $scope.taxon = data;
+            })
+            .error(function(data, status, headers, config) {
+                // do something
+            });
+
 
         $scope.$on('taxon-edit', function(){
             $scope.$apply(function() {

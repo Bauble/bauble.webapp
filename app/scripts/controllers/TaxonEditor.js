@@ -12,6 +12,7 @@ angular.module('BaubleApp')
                 .success(function(data, status, headers, config) {
                     $scope.taxon = data;
                     $scope.notes = $scope.taxon.notes || [];
+                    $scope.addVernacularName();
                 })
                 .error(function(data, status, headers, config) {
                    // do something
@@ -39,12 +40,14 @@ angular.module('BaubleApp')
             }
         };
 
-        if(! $scope.taxon.vernacular_names) {
-            $scope.taxon.vernacular_names = [{}];
-            $scope.addVernacularName = function() {
-                $scope.taxon.vernacular_names.push({});
-            };
-        }
+        $scope.addVernacularName = function() {
+            if(!$scope.taxon.vernacular_names) {
+                $scope.taxon.vernacular_names = [];
+            }
+            $scope.taxon.vernacular_names.push({});
+        };
+
+        $scope.addVernacularName(); // make sure there always and empty row
 
         $scope.genusSelectOptions = {
             minimumInputLength: 1,
@@ -122,6 +125,19 @@ angular.module('BaubleApp')
                     $scope.taxon.notes.push(note);
                 }
             });
+
+            // TODO: this isn't going to remove any vernacular names on the taxon
+            // only add new ones that don't exist
+
+            // remove any vernacular names with a name
+            var tmpNames = [];
+            angular.forEach($scope.taxon.vernacular_names, function(vern, key) {
+                if(vern.name){
+                    tmpNames.push(vern);
+                }
+                $scope.taxon.vernacular_names = tmpNames;
+            });
+
             Taxon.save($scope.taxon)
                 .success(function(data, status, headers, config) {
                     $scope.close();

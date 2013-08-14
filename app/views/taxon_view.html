@@ -11,12 +11,22 @@
   <div># of Accessions: {{counts.accessions}}</div>
   <div># of Plants: {{counts.plants}}</div>
 
+  <h4>Vernacular Names</h4>
+  <div ng-show="!taxon.vernacular_names || taxon.vernacular_names.length < 1" 
+       style="color: #aaa">
+    This taxon has no vernacular names.
+  </div>
+  <ul>
+      <li ng-repeat="vn in taxon.vernacular_names">{{vn.name}} ({{vn.language}})</li>
+  </ul>
+
+
   <h4>Syonyms</h4>
   <div ng-show="!taxon.synonyms || taxon.synonyms.length < 1" style="color: #aaa">
     This taxon has no synonyms.
   </div>
   <ul>
-      <li ng-repeat="synonym in taxon.synonyms">
+      <li ng-repeat="synonym in taxon.synonyms">{{synonym.str}}</li>
   </ul>
 
 </div>
