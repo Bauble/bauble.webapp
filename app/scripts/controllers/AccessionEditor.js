@@ -174,6 +174,13 @@ angular.module('BaubleApp')
             if(!$scope.accession.source) {
                 delete $scope.accession.source;
             }
+
+            angular.forEach(['date_recvd', 'date_accd'], function(value, key) {
+                console.log(value, ": ", moment($scope.accession[value]).format("YYYY-MM-DD"))
+                $scope.accession[value] = moment($scope.accession[value]).
+                    format("YYYY-MM-DD");
+            });
+
             Accession.save($scope.accession)
                 .success(function(data, status, headers, config) {
                     $scope.close();
