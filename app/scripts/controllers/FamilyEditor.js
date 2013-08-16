@@ -4,7 +4,7 @@ angular.module('BaubleApp')
     .controller('FamilyEditorCtrl', function ($scope, globals, Family) {
 
         // isNew is inherited from the NewCtrl if this is a /new editor
-        $scope.family = globals.selected && !$scope.isNew ? globals.selected : {};
+        $scope.family = globals.getSelected() && !$scope.isNew ? globals.getSelected() : {};
         $scope.notes = $scope.family.notes || [];
 
         // make sure we have the family details

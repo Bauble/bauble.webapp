@@ -37,7 +37,7 @@ angular.module('BaubleApp')
             $scope.viewMeta = ViewMeta.getView(selected.ref);
             console.log('selected: ', selected);
             $scope.selected = selected;
-            globals.selected = selected;
+            globals.setSelected(selected);
         };
 
         $scope.itemExpanded = function() {

@@ -3,7 +3,7 @@
 angular.module('BaubleApp')
     .controller('LocationEditorCtrl', function ($scope, globals, Plant, Location) {
         // isNew is inherited from the NewCtrl if this is a /new editor
-        $scope.location = globals.selected && !$scope.isNew ? globals.selected : {};
+        $scope.location = globals.getSelected() && !$scope.isNew ? globals.getSelected() : {};
 
         // make sure we have the details
         if($scope.location && angular.isDefined($scope.location.ref)) {

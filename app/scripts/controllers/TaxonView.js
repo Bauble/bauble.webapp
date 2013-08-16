@@ -2,8 +2,8 @@
 
 angular.module('BaubleApp')
     .controller('TaxonViewCtrl', function ($scope, $location, globals, Taxon) {
-        $scope.taxon = globals.selected;
-        Taxon.details(globals.selected)
+        $scope.taxon = globals.getSelected();
+        Taxon.details($scope.taxon)
             .success(function(data, status, headers, config) {
                 $scope.taxon = data;
             })

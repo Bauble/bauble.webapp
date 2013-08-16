@@ -3,7 +3,7 @@
 angular.module('BaubleApp')
     .controller('FamilyViewCtrl', function ($scope, $location, globals, Family) {
 
-        $scope.family = globals.selected;
+        $scope.family = globals.getSelected();
         Family.details($scope.family)
             .success(function(data, status, headers, config) {
                 $scope.family = data;

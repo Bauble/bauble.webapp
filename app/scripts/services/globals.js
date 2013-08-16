@@ -14,11 +14,16 @@ angular.module('BaubleApp')
             },
 
             getAuthHeader: function() {
-                console.log( 'getAuthHeader()' );
-
                 var credentials = sessionStorage.getItem("credentials");
-                console.log( "creds: ", credentials);
                 return { "Authorization": "Basic " + credentials };
+            },
+
+            setSelected: function(selected) {
+                sessionStorage.setItem("selected", JSON.stringify(selected));
+            },
+
+            getSelected: function() {
+                return JSON.parse(sessionStorage.getItem('selected'));
             }
         };
     });

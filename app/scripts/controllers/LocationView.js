@@ -2,7 +2,7 @@
 
 angular.module('BaubleApp')
     .controller('LocationViewCtrl', function ($scope, $location, globals, Location) {
-        $scope.location = globals.selected;
+        $scope.location = globals.getSelected();
 
         $scope.$on('location-edit', function(){
             $scope.$apply(function() {

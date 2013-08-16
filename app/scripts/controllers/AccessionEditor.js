@@ -54,7 +54,7 @@ angular.module('BaubleApp')
     .controller('AccessionEditorCtrl', function ($scope, $location, globals, Taxon,
                                                  Accession, Source) {
         // isNew is inherited from the NewCtrl if this is a /new editor
-        $scope.accession = globals.selected && !$scope.isNew ? globals.selected :
+        $scope.accession = globals.getSelected() && !$scope.isNew ? globals.getSelected() :
             {date_accd: new Date(), date_recvd: new Date()};
         $scope.notes = $scope.accession.notes || [];
         $scope.propagation = {};

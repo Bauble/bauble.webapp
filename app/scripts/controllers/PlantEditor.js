@@ -14,7 +14,7 @@ angular.module('BaubleApp')
         function ($scope, $location, globals, Accession, Plant, Location) {
 
         // isNew is inherited from the NewCtrl if this is a /new editor
-        $scope.plant = globals.selected && !$scope.isNew ? globals.selected : {};
+        $scope.plant = globals.getSelected() && !$scope.isNew ? globals.getSelected() : {};
         $scope.notes = $scope.plant.notes || [];
         $scope.propagation = {};
 
