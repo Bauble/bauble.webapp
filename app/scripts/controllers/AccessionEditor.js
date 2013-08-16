@@ -58,6 +58,27 @@ angular.module('BaubleApp')
             {date_accd: new Date(), date_recvd: new Date()};
         $scope.notes = $scope.accession.notes || [];
         $scope.propagation = {};
+        $scope.qualifier_rank = {};
+
+        $scope.$watch(function() { return $scope.accession.taxon }, function() {
+            if($scope.accession.taxon && $scope.accession.taxon.ref) {
+                Taxon.details($scope.accession.taxon)
+                    .success(function(data, status, headers, config) {
+                        $scope.qualifier_rank = {
+                            'genus': data.genus.genus
+                        };
+                        angular.forEach(['sp', 'sp2', 'infrasp1', 'infrasp2', 'infrasp3'],
+                                        function(value) {
+                                            if(data[value]) {
+                                                $scope.qualifier_rank[value] = data[value];
+                                            }
+                                        });
+                    })
+                    .error(function(data, status, headers, config) {
+                        // do something
+                    });
+            };
+        });
 
         // make sure we have the accession details
         if($scope.accession && angular.isDefined($scope.accession.ref)) {

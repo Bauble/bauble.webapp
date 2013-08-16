@@ -33,19 +33,18 @@
               </div>
             </div> <!-- .form-group -->
 
-            <div class="form-group id-qual-group">
+            <div class="form-group">
               <label class="control-label col-lg-2" for="idQualField">ID qual</label>
-              <div class="col-lg-4">
-                <select ng-model="taxon.id_qual" ng-options="q for q in id_qualifiers"
-                        class="input-small"></select>
+              <div class="col-lg-2">
+                <select ng-model="accession.id_qual" ng-options="q for q in id_qualifiers"
+                        class="form-control"></select>
               </div>
-            </div> <!-- .form-group -->
-
-            <div class="form-group qual-rank-group">
-              <label class="control-label col-lg-2">Qualifier rank</label>
-              <div class="col-lg-4">
-                <!-- <select ng-model="taxon.sp_qual" ng-options="q for q in qualifiers" class="input-small"></select> -->
-                <select></select>
+            
+              <label class="control-label col-lg-4">Qualifier rank</label>
+              <div class="col-lg-3">
+                <select ng-model="accession.id_qual_rank" 
+                        ng-options="value as prop for (value, prop) in qualifier_rank"
+                        class="form-control"></select>
               </div>
             </div> <!-- .form-group -->
 
