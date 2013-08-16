@@ -53,7 +53,6 @@ var recvd_type_values = {
 angular.module('BaubleApp')
     .controller('AccessionEditorCtrl', function ($scope, $location, globals, Taxon,
                                                  Accession, Source) {
-
         // isNew is inherited from the NewCtrl if this is a /new editor
         $scope.accession = globals.selected && !$scope.isNew ? globals.selected :
             {date_accd: new Date(), date_recvd: new Date()};
@@ -66,8 +65,9 @@ angular.module('BaubleApp')
                 .success(function(data, status, headers, config) {
                     $scope.accession = data;
                     $scope.notes = $scope.accession.notes || [];
-                    $scope.header = $scope.accession.ref ? $scope.accession.code + ' ' +
-                        $scope.accession.taxon_str: 'New Accession';
+                    $scope.header = $scope.accession.ref ?
+                        $scope.accession.code + ' ' + $scope.accession.taxon_str :
+                        'New Accession';
                 })
                 .error(function(data, status, headers, config) {
                     // do something
@@ -91,8 +91,8 @@ angular.module('BaubleApp')
         $scope.activeTab = "general";
 
         // we need to put a watch on $scope.accession to update this when it changes
-        $scope.header = $scope.accession.ref ? $scope.accession.code + ' ' + $scope.accession.taxon_str
-            : 'New Accession';
+        $scope.header = $scope.accession.ref ? $scope.accession.code + ' ' +
+            $scope.accession.taxon_str : 'New Accession';
 
         $scope.taxonSelectOptions = {
             minimumInputLength: 1,
@@ -175,10 +175,9 @@ angular.module('BaubleApp')
                 delete $scope.accession.source;
             }
 
+            // copy the date variables to the accession
             angular.forEach(['date_recvd', 'date_accd'], function(value, key) {
-                console.log(value, ": ", moment($scope.accession[value]).format("YYYY-MM-DD"))
-                $scope.accession[value] = moment($scope.accession[value]).
-                    format("YYYY-MM-DD");
+                $scope.accession[value] = moment($scope.accession[value]).format("YYYY-MM-DD");
             });
 
             Accession.save($scope.accession)
