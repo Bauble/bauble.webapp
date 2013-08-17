@@ -406,74 +406,46 @@ background-color: #f7f7f7;
 .accession-editor {
     $label-width: 100px;
 
-    .taxon-section {
-        .select2-container {
-            width: 50%;
-        }
-        label {
-            width: $label-width;
-        }
-        .controls {
-            margin-left: $label-width + 10px;
-        }
+    .taxon-select {
+        width: 400px;
     }
 
-    .accession-section {
-        label {
-            width: $label-width;
-        }
-        .controls {
-            margin-left: $label-width + 10px;
-        }
-        .group1 {
-            display: inline-block;
-        }
-
-        .group2 {
-            display: inline-block;
-            vertical-align: top;
-            label {
-                width: $label-width+25px;
-            }
-            .controls {
-                margin-left: $label-width + 25px + 10px;
-            }
-        }
-
+    .source-select {
+        width: 400px;
     }
-    
-    .source-tab {
-        .source-select-box {
-            $label-width: 75px;
-            label {
-                width: $label-width;
-            }
-            .controls {
-                margin-left: $label-width + 10px;
-            }
-            .select2-container {
-                width: 50%;
-            }
-        }
 
-        // .locale-group input {
-        //   width: 50%;
-        // }
+        /* .source-tab { */
+    /*     .source-select-box { */
+    /*         $label-width: 75px; */
+    /*         label { */
+    /*             width: $label-width; */
+    /*         } */
+    /*         .controls { */
+    /*             margin-left: $label-width + 10px; */
+    /*         } */
+    /*         .select2-container { */
+    /*             width: 50%; */
+    /*         } */
+    /*     } */
 
-        .long-lat-group {
-            .control-group {
-                display: inline-block;
-            }
+    /*     // .locale-group input { */
+    /*     //   width: 50%; */
+    /*     // } */
 
-            input {
-                display: inline-block;
-            }
+    /*     .long-lat-group { */
+    /*         .control-group { */
+    /*             display: inline-block; */
+    /*         } */
 
-            input[type="radio"] {
-                margin: 0 5px 0 10px;
-            }
-        }
-    }
+    /*         input { */
+    /*             display: inline-block; */
+    /*         } */
+
+    /*         input[type="radio"] { */
+    /*             margin: 0 5px 0 10px; */
+    /*         } */
+    /*     } */
+    /* } */
 }
 
 

@@ -117,7 +117,7 @@ angular.module('BaubleApp')
 
         $scope.taxonSelectOptions = {
             minimumInputLength: 1,
-
+            containerCssClass: 'taxon-select',
             formatResult: function(object, container, query) { return object.str; },
             formatSelection: function(object, container) { return object.str; },
 
@@ -146,7 +146,7 @@ angular.module('BaubleApp')
 
         $scope.sourceSelectOptions = {
             minimumInputLength: 1,
-
+            containerCssClass: 'source-select',
             formatResult: function(object, container, query) { return object.str; },
             formatSelection: function(object, container) { return object.str; },
 

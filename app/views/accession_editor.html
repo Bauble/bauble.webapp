@@ -40,7 +40,7 @@
                         class="form-control"></select>
               </div>
             
-              <label class="control-label col-lg-4">Qualifier rank</label>
+              <label class="control-label col-lg-2">Qualifier rank</label>
               <div class="col-lg-3">
                 <select ng-model="accession.id_qual_rank" 
                         ng-options="value as prop for (value, prop) in qualifier_rank"
@@ -52,56 +52,44 @@
 
           <div class="editor-section accession-section">
             <h5>Accession</h5>
-            
-            <div class="row">
-              <div class="col-lg-5">
 
-                <div class="form-group">
-                  <label class="control-label col-lg-2" for="accessionField">
-                    Accession</label>
-                  <div class="col-lg-5">
-                    <input type="text" ng-model="accession.code" id="accessionField" 
-                           class="form-control" required/>
-                  </div>
-                </div> <!-- .form-group -->
+            <div class="form-group">
+              <label class="control-label col-lg-2" for="accessionField">
+                Accession</label>
+              <div class="col-lg-2">
+                <input type="text" ng-model="accession.code" id="accessionField" 
+                       class="form-control" required/>
+              </div>
 
-                <div class="form-group">
-                  <label class="control-label col-lg-2">Type of material</label>
-                  <div class="col-lg-6">
-                    <select ng-model="accession.recvd_type" 
-                            ng-options="value as text for (value, text) in recvd_type_values" 
-                            class="form-control"></select>
-                  </div>
-                </div> <!-- .form-group -->
+              <label class="control-label col-lg-2">Date Received</label>
+              <div class="col-lg-2">
+                <input bs-datepicker ng-model="accession.date_recvd" 
+                       data-date="accession.date_recvd" class="form-control" type="text"/>
+              </div>
+            </div> <!-- .form-group -->
 
-                <div class="form-group">
-                  <label class="control-label col-lg-2">Quantity</label>
-                  <div class="col-lg-3">
-                    <input type="text" ng-model="accession.quantity_recvd" 
-                           class="form-control" required/>
-                  </div>
-                </div> <!-- .form-group -->
-              </div> <!-- .col -->
+            <div class="form-group">
+              <label class="control-label col-lg-2">Type of material</label>
+              <div class="col-lg-2">
+                <select ng-model="accession.recvd_type" 
+                        ng-options="value as text for (value, text) in recvd_type_values" 
+                        class="form-control"></select>
+              </div>
 
-              <div class="col-lg-offset-1 col-lg-5">
-                <div class="form-group">
-                  <label class="control-label col-lg-2">Date Received</label>
-                  <div class="col-lg-5">
-                    <input bs-datepicker ng-model="accession.date_recvd" 
-                           data-date="accession.date_recvd" class="form-control" type="text"/>
-                  </div>
-                </div> <!-- .form-group -->
+              <label class="control-label col-lg-2">Date Accessioned</label>
+              <div class="col-lg-2">
+                <input bs-datepicker ng-model="accession.date_accd" 
+                       data-date="accession.date_accd" class="form-control" type="text"/>
+              </div>
+            </div> <!-- .form-group -->
 
-                <div class="form-group">
-                  <label class="control-label col-lg-2">Date Accessioned</label>
-                  <div class="col-lg-5">
-                    <input bs-datepicker ng-model="accession.date_accd" 
-                           data-date="accession.date_accd" class="form-control" type="text"/>
-                  </div>
-                </div> <!-- .form-group -->
-
-              </div> <!-- .col -->
-            </div> <!-- .row -->
+            <div class="form-group">
+              <label class="control-label col-lg-2">Quantity</label>
+              <div class="col-lg-1">
+                <input type="text" ng-model="accession.quantity_recvd" 
+                       class="form-control" required/>
+              </div>
+            </div> <!-- .form-group -->
             
           </div> <!-- .editor-section -->
 
@@ -128,7 +116,7 @@
             <h5>Flags</h5>
             <div class="form-group">
               <label class="control-label col-lg-2">Private</label>
-              <div class="controls">
+              <div class="col-lg-1">
                 <input type="checkbox" ng-model="accession.intended2_location_id"/>
               </div>
             </div>
@@ -160,15 +148,16 @@
       </tab>   <!-- end "General" tab -->
 
       <tab heading="Source">
-        <div ng-form class="form-horizontal">
+        <form class="form-horizontal">
 
-          <div class="form-group source-select-box">
-            <label class="control-label col-lg-2">Source</label>
-            <div class="controls">
-              <input ui-select2="sourceSelectOptions" ng-model="source"/>
-              <button class="btn" ng-click="newSource()">New</button>
+          <div class="form-group">
+            <label class="control-label col-lg-2" for="sourceField">Source</label>
+            <div class="col-lg-5">
+              <input ui-select2="sourceSelectOptions" ng-model="source" 
+                     id="sourceField"/>
             </div>
-          </div>
+            <button class="btn" ng-click="newSource()">New</button>
+          </div> <!-- .form-group -->
 
           <div ng-include="'views/source_editor.html'"></div>
 
@@ -176,7 +165,7 @@
             <accordion-group heading="Collection">
               <div class="form-group">
                 <label class="control-label col-lg-2">Locale</label>
-                <div class="controls">
+                <div class="col-lg-3">
                   <input type="text" ng-model="source.collection.locale" class="col-lg-6"/>
                 </div> <!-- .controls -->
               </div> <!-- .form-group -->
@@ -285,7 +274,7 @@
             </accordion-group>
           </accordion>
 
-        </div> <!-- .form-horizontal -->
+        </form> <!-- .form-horizontal -->
       </tab>   <!-- end "Source" tab -->
 
       <tab heading="Verification">
