@@ -19,7 +19,7 @@ angular.module('BaubleApp')
             $scope.message = "Searching....";
             $scope.selected = $scope.viewMeta = $scope.results = null;
             console.log("q: ", q);
-            localStorage.setItem('current_search', q);
+            sessionStorage.setItem('current_search', q);
             Search.query(q)
                 .success(function(data, status, headers, config) {
                     $scope.results = data.results;
@@ -44,7 +44,7 @@ angular.module('BaubleApp')
             console.log('itemExpanded(');
         };
 
-        var current_search = localStorage.getItem("current_search");
+        var current_search = sessionStorage.getItem("current_search");
         if(current_search) {
             $scope.q = current_search;
             $scope.search(current_search);
