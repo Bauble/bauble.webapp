@@ -1,115 +1,104 @@
 <div ng-form name="plantForm" ng-controller="PlantEditorCtrl" class="bauble-editor plant-editor container">
-  <alert class="span6 offset3" ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">{{alert.msg}}</alert>
+  <alert class="col-lg-6 col-lg-3" ng-repeat="alert in alerts" type="alert.type" 
+         close="closeAlert($index)">{{alert.msg}}</alert>
 
   <div class="row">
-    <div class="editor-header span12">
-      <div class="header-title span8">
+    <div class="editor-header col-lg-12">
+      <div class="header-title col-lg-8">
         <h4>{{plant.str || 'New plant'}}</h4>
       </div>
-      <div class="header-buttons span3">
+      <div class="header-buttons col-lg-3">
         <button class="btn" ng-click="close()">Close</button>
         <button class="btn btn-primary" ng-click="save()">Save</button>
       </div>
     </div> <!-- .editor-header -->
   </div> <!-- .row -->
 
+  
   <div class="editor-body">
 
-    <ul class="nav nav-tabs">
-      <li ng-class="{active: activeTab=='general'}">
-        <a ng-click="activeTab='general'">General</a>
-      </li>
-      <li ng-class="{active: activeTab=='propagation'}">
-        <a ng-click="activeTab='propagation'">Propagation</a>
-      </li>
-      <li ng-class="{active: activeTab=='notes'}">
-        <a ng-click="activeTab='notes'">Notes</a>
-      </li>
-    </ul> <!-- .nav .nav-tabs -->
+    <tabset>
+      <tab heading="General">
+        <form class="form-horizontal">
 
-      <div class="tab-content" ng-switch="activeTab">
-
-        <div class="tab-pane active" ng-switch-when="general">
-
-          <div class="form-horizontal">
-
-            <div class="control-group">
-              <label class="control-label">Accession</label>
-              <div class="controls">
-                <input ui-select2="accSelectOptions" ng-model="plant.accession" class="input-large"/>
+            <div class="form-group">
+              <label class="control-label col-lg-2" for="accessionField">Accession</label>
+              <div class="col-lg-6">
+                <input ui-select2="accSelectOptions" ng-model="plant.accession" 
+                       id="accessionField" class="input-large"/>
               </div>
-            </div> <!-- .control-group -->
+            </div> <!-- .form-group -->
 
-            <div class="control-group">
-              <label class="control-label">Plant code</label>
-              <div class="controls">
-                <input type="text" ng-model="plant.code" class="input-small" required/>
+            <div class="form-group">
+              <label class="control-label col-lg-2">Plant code</label>
+              <div class="col-lg-2">
+                <input type="text" ng-model="plant.code" class="form-control" required/>
               </div>
-            </div> <!-- .control-group -->
+            </div> <!-- .form-group -->
 
-            <div class="control-group">
-              <label class="control-label">Accession type</label>
-              <div class="controls">
-                <select ng-model="plant.acc_type" ng-options="value as text for (value, text) in acc_type_values"></select>
+            <div class="form-group">
+              <label class="control-label col-lg-2">Accession type</label>
+              <div class="col-lg-2">
+                <select ng-model="plant.acc_type" class="form-control"
+                        ng-options="value as text for (value, text) in acc_type_values">
+                </select>
               </div>
-            </div> <!-- .control-group -->
+            </div> <!-- .form-group -->
 
 
-            <div class="control-group">
-              <label class="control-label">Memorial</label>
-              <div class="controls">
-                <input type="text" ng-model="plant.memorial" required/>
+            <div class="form-group">
+              <label class="control-label col-lg-2">Memorial</label>
+              <div class="col-lg-3">
+                <input type="text" ng-model="plant.memorial" class="form-control" required/>
               </div>
-            </div> <!-- .control-group -->
+            </div> <!-- .form-group -->
 
-            <div class="control-group">
-              <label class="control-label">Quantity</label>
-              <div class="controls">
-                <input type="text" ng-model="plant.quantity" class="span1" required/>
+            <div class="form-group">
+              <label class="control-label col-lg-2">Quantity</label>
+              <div class="col-lg-2">
+                <input type="text" ng-model="plant.quantity" 
+                       class="form-control" required/>
               </div>
-            </div> <!-- .control-group -->
+            </div> <!-- .form-group -->
 
-            <div class="control-group">
-              <label class="control-label">Location</label>
-              <div class="controls">
+            <div class="form-group">
+              <label class="control-label col-lg-2">Location</label>
+              <div class="col-lg-4">
                 <input id="locationField" ui-select2="locationSelectOptions"
                        ng-model="plant.location" class="input-large" required/>
               </div>
-            </div> <!-- .control-group -->
+            </div> <!-- .form-group -->
 
             <div class="editor-section">
               <h5>Current change</h5>
-              <div class="control-group">
-                <label class="control-label">Reason</label>
-                <div class="controls">
-                  <input type="text" ng-model="plant.change.reason" required/>
+              <div class="form-group">
+                <label class="control-label col-lg-2">Reason</label>
+                <div class="col-lg-3">
+                  <input type="text" ng-model="plant.change.reason" class="form-control"
+                         required/>
                 </div>
-              </div> <!-- .control-group -->
+              </div> <!-- .form-group -->
 
-              <div class="control-group">
-                <label class="control-label">Date</label>
-                <div class="controls">
-                  <input ui-date type="text" ng-model="plant.change.date" required/>
+              <div class="form-group">
+                <label class="control-label col-lg-2">Date</label>
+                <div class="col-lg-2">
+                  <input bs-datepicker type="text" ng-model="plant.change.date" required/>
                 </div>
-              </div> <!-- .control-group -->
+              </div> <!-- .form-group -->
             </div> <!-- .editor-section -->
 
 
-          </div> <!-- .form-horizontal -->
+          </form> <!-- .form-horizontal -->
+      </tab>
 
-        </div> <!-- .tab-pane -->
+      <tab heading="Propagation">
+        <div ng-include="'views/prop_editor.html'"></div>
+      </tab>
 
-        <div class="tab-pane active" ng-switch-when="propagation">
-          <div ng-include="'views/prop_editor.html'"></div>
-        </div> <!-- .tab-pane -->
+      <tab heading="Notes">
+        <div ng-include="'views/notes_editor.html'"></div>
+      </tab>
 
-
-        <div class="tab-pane active" ng-switch-when="notes">
-          <div ng-include="'views/notes_editor.html'"></div>
-        </div> <!-- .tab-pane -->
-
-
-      </div>  <!-- .tab-content -->
-
+    </tabset>
   </div> <!-- .editor-body -->
 </div> <!-- .plant-editor -->

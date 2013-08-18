@@ -20,16 +20,22 @@ angular.module('BaubleApp')
 
         // make sure we have the details
         if($scope.plant && angular.isDefined($scope.plant.ref)) {
-            Plant.details($scope.plant, function(result) {
-                $scope.plant = result.data;
-                $scope.notes = $scope.plant.notes || [];
-            });
+            Plant.details($scope.plant)
+                .success(function(data, status, headers, config) {
+                    $scope.plant = result.data;
+                    $scope.notes = $scope.plant.notes || [];
+                })
+                .error(function(data, status, headers, config) {
+                    // do something
+                })
         } else if($location.search().accession) {
-            Accession.details($location.search().accession, function(response) {
-                if(response.status < 200 || response.status >= 400) {
-                }
-                $scope.plant.accession = response.data;
-            });
+            Accession.details($location.search().accession)
+                .success(function(data, status, headers, config) {
+                    $scope.plant.accession = data;
+                })
+                .error(function(data, status, headers, config) {
+                    // do something
+                });
         }
 
         $scope.propagation = {};  // inherited by the PropagationEditorCtrl
@@ -40,9 +46,13 @@ angular.module('BaubleApp')
 
         $scope.accSelectOptions = {
             minimumInputLength: 1,
-
-            formatResult: function(object, container, query) { return object.code; },
-            formatSelection: function(object, container) { return object.code; },
+            containerCssClass: 'accession-select',
+            formatResult: function(object, container, query) {
+                return object.code + " - " + object.taxon_str;
+            },
+            formatSelection: function(object, container) {
+                return object.code + " - " + object.taxon_str;
+            },
 
             id: function(obj) {
                 return obj.ref; // use ref field for id since our resources don't have ids
@@ -54,17 +64,19 @@ angular.module('BaubleApp')
                 // for new results when the query string is something like .length==2
                 // console.log('query: ', options);....i think this is what the
                 // options.context is for
-                Accession.query(options.term + '%', function(response){
-                    if(response.data.results && response.data.results.length > 0) {
-                        options.callback({results: response.data.results});
-                    }
-                });
+                Accession.query(options.term + '%')
+                    .success(function(data, status, headers, config) {
+                        options.callback({results: data.results});
+                    })
+                    .error(function(data, status, headers, config) {
+
+                    });
             }
         };
 
         $scope.locationSelectOptions = {
             minimumInputLength: 1,
-
+            containerCssClass: 'location-select',
             formatResult: function(object, container, query) { return object.str; },
             formatSelection: function(object, container) { return object.str; },
 
@@ -78,11 +90,13 @@ angular.module('BaubleApp')
                 // for new results when the query string is something like .length==2
                 // console.log('query: ', options);....i think this is what the
                 // options.context is for
-                Location.query(options.term + '%', function(response){
-                    if(response.data.results && response.data.results.length > 0) {
-                        options.callback({results: response.data.results});
-                    }
-                });
+                Location.query(options.term + '%')
+                    .success(function(data, status, headers, config) {
+                        options.callback({results: data.results});
+                    })
+                    .error(function(data, status, headers, config) {
+                        // do something
+                    });
             }
         };
 
@@ -98,17 +112,18 @@ angular.module('BaubleApp')
         // called when the save button is clicked on the editor
         $scope.save = function() {
             $scope.plant.notes = $scope.notes;
-            Plant.save($scope.plant, function(response) {
-                console.log('response: ', response);
-                if(response.status < 200 || response.status >= 400) {
-                    if(response.data) {
-                        $scope.alerts.push({type: 'error', msg: "Error!\n" + response.data});
+            Plant.save($scope.plant)
+                .success(function(data, status, headers, config) {
+                    console.log('data: ', data);
+                    $scope.close();
+                })
+                .error(function(data, status, headers, config) {
+                    if(data) {
+                        $scope.alerts.push({type: 'error', msg: "Error!\n" + data});
                     } else {
                         $scope.alerts.push({type: 'error', msg: "Unknown error!"});
                     }
-                    return;
-                }
-                $scope.close();
-            });
+                });
+
         };
     });
