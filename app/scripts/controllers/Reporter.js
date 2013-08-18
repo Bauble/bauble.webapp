@@ -104,9 +104,13 @@ angular.module('BaubleApp')
             }
 
             console.log('q: ', q);
-            Search(q, function(response) {
-                $scope.tableData = response.data.results;
-                console.log('$scope.tableData: ', $scope.tableData);
-            });
+            Search.query(q)
+                .success(function(data, status, headers, config) {
+                    $scope.tableData = data.results;
+                    console.log('$scope.tableData: ', $scope.tableData);
+                })
+                .error(function(data, status, headers, config) {
+                    // do something
+                })
         };
     });

@@ -11,17 +11,18 @@ angular.module('BaubleApp')
                 scalarsOnly: '@'
             },
             template: '<div class="btn-group schema-menu">' +
-                        '<a class="btn dropdown-toggle" ng-class="{disabled: !resource}" data-toggle="dropdown">' +
-                          'Field' +
-                          '<span class="caret"></span>' +
-                        '</a>' +
-                        '<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">' +
-                        '</ul>' +
-                       '</div>',
+                '<button type="button" class="btn btn-default dropdown-toggle" ng-class="{disabled: !resource}" data-toggle="dropdown">' +
+                'Select a field' +
+                '<span class="caret"></span>' +
+                '</button>'+
+
+            '<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">' +
+                '</ul>' +
+                '</div>',
             link: function(scope, element, attrs) {
                 var baseMenu = '' +
                         '<!-- columns -->' +
-                        '<li ng-repeat="column in schema.columns" ng-click="onItemClicked(this, $event, column)">' +
+                        '<li ng-repeat="(column, value) in schema.columns" ng-click="onItemClicked(this, $event, column)">' +
                           '<a tabindex="-1">{{column}}</a>' +
                         '</li>' +
 
@@ -49,16 +50,20 @@ angular.module('BaubleApp')
                 // create a menu and append it to parentElement
                 function buildMenu(resource, callback) {
                     // get the schema for a resource
-                    Resource(resource).get_schema(scope.scalarsOnly, function(response) {
-                        // create a new scope for the new menu
-                        var newScope = scope.$new();
-                        newScope.schema = response.data;
-                        newScope.resource = resource;
+                    Resource(resource).get_schema(scope.scalarsOnly)
+                        .success(function(data, status, headers, config) {
+                            // create a new scope for the new menu
+                            var newScope = scope.$new();
+                            newScope.schema = data;
+                            newScope.resource = resource;
 
-                        // compile the menu snippet and set the new scope
-                        var newMenu = $compile(baseMenu)(newScope);
-                        callback(newMenu);
-                    });
+                            // compile the menu snippet and set the new scope
+                            var newMenu = $compile(baseMenu)(newScope);
+                            callback(newMenu);
+                        })
+                        .error(function(data, status, headers, config) {
+                            // do something
+                        });
                 }
 
                 scope.mouseOver = function(event, scope, relation) {
