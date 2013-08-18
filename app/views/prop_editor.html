@@ -1,23 +1,28 @@
-<div ng-controller="PropagationEditorCtrl" class="bauble-editor propagation-editor">
+<div ng-controller="PropagationEditorCtrl" class="propagation-editor">
 
-  <div class="control-group">
-    <label class="control-label">Propgation Type</label>
-    <div class="controls">
-      <select ng-model="propagation.prop_type">
-        <option value="Seed">Seed</option>
-        <option value="UnrootedCutting">Cutting</option>
-        <option value="Other">Other</option>
-      </select>
-    </div>
-  </div> <!-- .control-group -->
+  <form class="form-horizontal">
+    <div class="form-group">
 
-  <div class="control-group">
-    <label class="control-label">Date</label>
-    <div class="controls">
-      <input ui-date ng-model="propagation.date" type="text"/>
-    </div>
-  </div>
+      <label class="control-label col-lg-2">Propagation Type</label>
+      <div class="col-lg-2">
+        <select ng-model="propagation.prop_type" class="form-control">
+          <option value="Seed">Seed</option>
+          <option value="UnrootedCutting">Cutting</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+      
+      
+      <label class="control-label col-lg-2">Date</label>
+      <div class="col-lg-2">
+        <input bs-datepicker ng-model="propagation.date" type="text"/>
+      </div>
 
-  <div ng-include="propagation_views[propagation.prop_type]"></div>
+    </div> <!-- .form-group -->
+    
+
+    <div ng-include="propagation_views[propagation.prop_type]"></div>
+
+  </form>
 
 </div> <!-- .propagation-editor -->
