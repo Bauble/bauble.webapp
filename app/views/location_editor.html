@@ -1,12 +1,14 @@
 <div ng-form name="locationForm" ng-controller="LocationEditorCtrl" class="bauble-editor location-editor container">
-    <alert class="span6 offset3" ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">{{alert.msg}}</alert>
+
+  <alert class="col-lg-6 col-lg-offset 3" ng-repeat="alert in alerts" type="alert.type" 
+         close="closeAlert($index)">{{alert.msg}}</alert>
 
   <div class="row">
-    <div class="editor-header span12">
-      <div class="header-title span8">
+    <div class="editor-header col-lg-12">
+      <div class="header-title col-lg-8">
         <h4>{{location.str || 'New location'}}</h4>
       </div>
-      <div class="header-buttons span3">
+      <div class="header-buttons col-lg-3">
         <button class="btn" ng-click="close()">Close</button>
         <button class="btn btn-primary" ng-click="save()">Save</button>
       </div>
@@ -15,27 +17,29 @@
 
   <div class="editor-body">
 
-    <div class="control-group">
-      <label class="control-label">Code</label>
-      <div class="controls">
-        <input type="text" ng-model="location.code" required/>
-      </div>
-    </div> <!-- .control-group -->
+    <form class="form-horizontal">
 
-    <div class="control-group">
-      <label class="control-label">Name</label>
-      <div class="controls">
-        <input type="text" ng-model="location.name"/>
+    <div class="form-group">
+      <label class="control-label col-lg-2">Code</label>
+      <div class="col-lg-2">
+        <input type="text" ng-model="location.code" class="form-control" required/>
       </div>
-    </div> <!-- .control-group -->
+    </div> <!-- .form-group -->
 
-    <div class="control-group">
-      <label class="control-label">Description</label>
-      <div class="controls">
-        <textarea ng-model="location.description"/></textarea>
+    <div class="form-group">
+      <label class="control-label col-lg-2">Name</label>
+      <div class="col-lg-4">
+        <input type="text" ng-model="location.name" class="form-control"/>
       </div>
-    </div> <!-- .control-group -->
+    </div> <!-- .form-group -->
 
+    <div class="form-group">
+      <label class="control-label col-lg-2">Description</label>
+      <div class="col-lg-5">
+        <textarea ng-model="location.description" class="form-control"></textarea>
+      </div>
+    </div> <!-- .form-group -->
+
+    </form>
   </div> <!-- .editor-body -->
-
 </div> <!-- .location-editor -->

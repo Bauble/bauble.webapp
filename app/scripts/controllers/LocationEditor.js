@@ -7,9 +7,13 @@ angular.module('BaubleApp')
 
         // make sure we have the details
         if($scope.location && angular.isDefined($scope.location.ref)) {
-            Location.details($scope.location, function(result) {
-                $scope.location = result.data;
-            });
+            Location.details($scope.location)
+                .success(function(data, status, headers, config) {
+                    $scope.location = data;
+                })
+                .error(function(data, status, headers, config) {
+                    // do something
+                });
         }
 
         $scope.activeTab = "general";
@@ -27,17 +31,16 @@ angular.module('BaubleApp')
         $scope.save = function() {
             // TODO: we need a way to determine if this is a save on a new or existing
             // object an whether we whould be calling save or edit
-            Location.save($scope.location, function(response) {
-                if(response.status < 200 || response.status >= 400) {
-                    if(response.data) {
-                        $scope.alerts.push({type: 'error', msg: "Error!\n" + response.data});
+            Location.save($scope.location)
+                .success(function(data, status, headers, config) {
+                    $scope.close();
+                })
+                .error(function(data, status, headers, config) {
+                    if(data) {
+                        $scope.alerts.push({type: 'error', msg: "Error!\n" + data});
                     } else {
                         $scope.alerts.push({type: 'error', msg: "Unknown error!"});
                     }
-                    return;
-                }
-
-                $scope.close();
-            });
-        };
+                });
+        }
     });
