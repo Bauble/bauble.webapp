@@ -484,6 +484,17 @@ background-color: #f7f7f7;
         text-align: left;
     }
 }
+
+.remove-button {
+    border: none;
+    box-shadow: none;
+    color: #8C281B;
+    
+    &:hover {
+        text-decoration: none;
+        color: red;
+    }
+}
 /*
   https://kuler.adobe.com/#themeID/7245;
   #607056 #519E41 #85BF89 #9DDBB2 #BFE8BE
