@@ -27,8 +27,15 @@
     <div class="panel-heading">Filters</div>
     <div class="panel-body">
       <div class="filters-row form-horizontal" ng-repeat="filter in filters">
-              
         <div class="form-group">
+
+          <div ng-show="$index>0" class="col-lg-1">
+            <select ng-model="filters[$index].boolOp" class="form-control">
+              <option value="and">and</option>
+              <option value="or">or</option>
+            </select>
+          </div>
+
           <div class="col-lg-3">
             <div schema-menu class="filter-schema-menu" resource="resource"></div>
           </div>
@@ -44,7 +51,8 @@
           </div>
 
           <div class="col-lg-1 ">
-            <a class="remove-button form-control" ng-click="filters.splice($index)"><i class="icon-remove"></i></a>
+            <a class="remove-button form-control" ng-click="filters.splice($index)">
+              <i class="icon-remove"></i></a>
           </div>
         </div> <!-- .form-group -->
       </div> <!-- .filters-row .form-horizontal -->

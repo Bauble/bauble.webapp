@@ -80,7 +80,7 @@ angular.module('BaubleApp')
 
         $scope.addFilterField = function() {
             // add another row to the list of filters
-            $scope.filters.push({});
+            $scope.filters.push({ boolOp: "and" });
         };
 
         $scope.validateQuery = function() {
@@ -106,14 +106,13 @@ angular.module('BaubleApp')
             else {
                 q += ' where ';
                 angular.forEach($scope.filters, function(filter, index) {
-                    q += filter.column + filter.operator + filter.value;
-                    if(index < $scope.filters-1) {
-                        q += ' and ';
+                    if(index > 0) {
+                        q += ' ' + filter.boolOp + ' ';
                     }
+                    q += filter.column + filter.operator + filter.value;
                 });
             }
 
-            console.log('q: ', q);
             Search.query(q)
                 .success(function(data, status, headers, config) {
                     $scope.tableData = data.results;
