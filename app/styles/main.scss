@@ -15,6 +15,15 @@ $footer-font-color: #265573;
 
 $navbar-height: 50px;  // this is the default from bootstrap
 
+$block-header-background: #f5f5f5;
+$block-header-border: solid 1px #ccc;
+$block-header-padding: 5px 5px; 
+
+@mixin block-header {
+    background-color: $block-header-background;
+    border: $block-header-border;
+    padding: $block-header-padding;
+}
 
 html, body {
     //background-color: #FFFDD0;
@@ -233,6 +242,10 @@ h1, h2, h3, h4, h5, legend {
   margin-left: 10px;
   }*/
 
+.block-header { 
+    @include block-header;
+}
+
 .bauble-editor {
     
     padding-bottom: 3em;
@@ -249,9 +262,7 @@ h1, h2, h3, h4, h5, legend {
     }
 
     .editor-header {
-        background-color: #F5F5F5;
-        border: solid 1px #ccc;
-        padding: 5px 5px;
+        @include block-header;
         margin-bottom: 10px;
 
         .header-title {
@@ -459,8 +470,19 @@ background-color: #f7f7f7;
 }
 
 
+#report-designer {
+    margin-bottom: 5em;
+}
+
 .filters-row {
-    padding: 5px 0 5px 0;
+}
+
+.filter-schema-menu {
+    width: 100%;
+    button {
+        width: 100%;
+        text-align: left;
+    }
 }
 /*
   https://kuler.adobe.com/#themeID/7245;
@@ -482,6 +504,16 @@ background-color: #f7f7f7;
 
 .report-box {
     //background-color: #9DDBB2;
+}
+
+#report-create-button { 
+    margin-bottom: 5em;
+}
+
+
+.report-header {
+    @include block-header;
+    margin-bottom: 2em;
 }
 
 .report-table {

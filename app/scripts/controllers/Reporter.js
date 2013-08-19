@@ -31,12 +31,13 @@ angular.module('BaubleApp')
             ];
 
         $scope.filters = [{}];
-        $scope.tableColumns = []; // the list of column objects
+        $scope.tableColumns = [new TableColumn('str')]; // the list of column objects
         $scope.tableData = [];
 
         $scope.$watch('resource', function(newValue, oldValue) {
             if(oldValue !== newValue && oldValue !== undefined) {
                 alert("Warn the user that the domain is changing!");
+                $scope.tableColumns = [new TableColumn('str')];
             }
 
             // if(oldValue !== null || typeof oldValue !== "undefined") {
@@ -82,6 +83,17 @@ angular.module('BaubleApp')
             $scope.filters.push({});
         };
 
+        $scope.validateQuery = function() {
+            //console.log('validateQuery()');
+            var valid = true;
+            $.each($scope.filters, function(index, filter) {
+                if(!filter.column || !filter.operator || !filter.value) {
+                    valid = false;
+                    return false;
+                }
+            });
+            return valid ? "" : "disabled";
+        }
 
         $scope.refreshTable = function() {
             // update the table data based on the domain, filters and report fields
@@ -94,7 +106,6 @@ angular.module('BaubleApp')
             }
             else {
                 q += ' where ';
-                console.log('$scope.filters: ', $scope.filters);
                 angular.forEach($scope.filters, function(filter, index) {
                     q += filter.column + filter.operator + filter.value;
                     if(index < $scope.filters-1) {
@@ -108,9 +119,11 @@ angular.module('BaubleApp')
                 .success(function(data, status, headers, config) {
                     $scope.tableData = data.results;
                     console.log('$scope.tableData: ', $scope.tableData);
+                    $scope.message = !$scope.tableData ? "No results." : "";
                 })
                 .error(function(data, status, headers, config) {
                     // do something
-                })
+                    $scope.message = "Error: Could not get results from database";
+                });
         };
     });

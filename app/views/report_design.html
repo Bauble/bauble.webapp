@@ -27,11 +27,10 @@
     <div class="panel-heading">Filters</div>
     <div class="panel-body">
       <div class="filters-row form-horizontal" ng-repeat="filter in filters">
-        <!-- <input ui-select2="fieldSelectOptions" ng-model="field"/> -->
+              
         <div class="form-group">
-          <div class="col-lg-2">
-            <div schema-menu class="filter-schema-menu" 
-                 style="display: inline" resource="resource"></div>
+          <div class="col-lg-3">
+            <div schema-menu class="filter-schema-menu" resource="resource"></div>
           </div>
           
           <div class="col-lg-1">
@@ -40,40 +39,89 @@
             <!-- <select ng-options="= +">Operator</select> -->
           </div>
           <div class="col-lg-4">
-            <input ng-model="filters[$index].value" type="text" 
-                   class="form-control"></input> <!-- type depending on field type -->
+            <input ng-model="filters[$index].value" type="text"
+                   class="form-control"/> <!-- type depending on field type -->
           </div>
         </div> <!-- .form-group -->
       </div> <!-- .filters-row .form-horizontal -->
       <button type="button" class="btn" ng-click="addFilterField()">Add</button>
     </div><!-- .panel-body -->
-  </div> <!-- panel -->
+  </div> <!-- .panel .filters-box-->
 
-  <div class="report-box">
+  <div class="panel order-box">
+    <div class="panel-heading">Order By</div>
+    <div class="panel-body">
+      <div class="order-row form-horizontal" ng-repeat="order in orders">
+              
+        <div class="form-group">
+          <div class="col-lg-3">
+            <div schema-menu class="filter-schema-menu" resource="resource"></div>
+          </div>
+          
+          <div class="col-lg-1">
+            <select ng-model="filters[$index].operator" class="form-control">
+              <option>Ascending</option>
+              <option>Descending</option>
+            </select>
+          </div>
+        </div> <!-- .form-group -->
+        </div> <!-- .order-row .form-horizontal -->
+      <button type="button" class="btn" ng-click="addOrder()">Add</button>
+    </div> <!-- .panel-body -->
+  </div>   <!-- .panel .order-box -->
 
-    <div>
-      <h4>Fields</h4>
-      <div schema-menu scalars-only='true' class="fields-schema-menu" 
-           resource="resource"></div>
-      <button type="button" class="btn" ng-disabled="!resource" 
-              ng-click="addTableColumn()">Add</button>
-    </div>
+  <button type="button" class="btn btn-primary" ng-click="refreshTable()" 
+          id="report-create-button" ng-disabled="validateQuery()">
+    Create Report
+  </button>
+  <!-- </div> -->
 
-  </div>
+  <!-- <div class="report-box"> -->
 
-  <div>
-    <button type="button" class="btn" ng-click="refreshTable()">Refresh</button>
-  </div>
+  <!--   <div> -->
+  <!--     <h4>Fields</h4> -->
+  <!--     <div schema-menu scalars-only='true' class="fields-schema-menu"  -->
+  <!--          resource="resource"></div> -->
+  <!--     <button type="button" class="btn" ng-disabled="!resource"  -->
+  <!--             ng-click="addTableColumn()">Add</button> -->
+  <!--   </div> -->
 
-  <table class="report-table">
-    <thead></thead>
-    <th class="report-table-header" ng-repeat="column in tableColumns">{{column.header}}</th>
-    <tbody>
-      <tr class="report-table-row" ng-repeat="row in tableData">
-        <td class="report-table-cell" 
-            ng-repeat="column in tableColumns">{{row[column.name]}}</td>
-      </tr>
-    </tbody>
-  </table>
+  <!-- </div> -->
 
-</div>
+  <!-- <div> -->
+  <!--   <button type="button" class="btn" ng-click="refreshTable()">Refresh</button> -->
+  <!-- </div> -->
+
+  
+  <div ng-hide="tableData && !message" ng-bind="message"></div>
+
+  <div ng-show="tableData">
+    <div class="row">
+      <div class="report-header col-lg-12">
+        <div class="report-title col-lg-8">
+          <h4>Report</h4>
+        </div>
+        <div class="header-buttons col-lg-3">
+          <button class="btn" ng-click="refresh()">Refresh</button>
+          <button class="btn" ng-click="close()">Close</button>
+          <button class="btn btn-primary" ng-click="save()">Save</button>
+        </div> <!-- .header-buttons -->
+      </div>   <!-- .report-header -->
+    </div>     <!-- .row -->
+
+    
+    <table class="report-table table">
+      <thead></thead>
+      <th class="report-table-header" ng-repeat="column in tableColumns">{{column.header}}</th>
+      <tbody>
+        <tr class="report-table-row" ng-repeat="row in tableData">
+          <td class="report-table-cell" 
+              ng-repeat="column in tableColumns">{{row[column.name]}}</td>
+        </tr>
+      </tbody>
+    </table>
+
+  </div> <!-- hide/show -->
+
+  
+</div> <!-- .report-designer -->
