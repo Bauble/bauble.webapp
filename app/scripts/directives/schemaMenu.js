@@ -40,8 +40,8 @@ angular.module('BaubleApp')
                     resourceParts.push(itemScope.column);
                     resourceParts = resourceParts.splice(2); // remove the empty string and table
                     var selected = resourceParts.join('.');
-                    $(element).children('.btn').first().text(selected);
-                    $(element).attr("data-selected", selected);
+                    element.children('.btn').first().text(selected);
+                    element.attr("data-selected", selected);
 
                     // emit the event to let any listeners know that selection has been made
                     scope.$emit('schema-column-selected', element, selected);
@@ -94,7 +94,10 @@ angular.module('BaubleApp')
                     // build the menu for this resource
                     if(typeof scope.resource !== 'undefined') {
                         buildMenu(scope.resource, function(menu) {
-                            $(element).children('.dropdown-menu').first().append(menu);
+                            // TODO: can this be dont with one called like replaceWith()
+                            // instead of first emptying and then appending
+                            element.children('.dropdown-menu').first().empty()
+                                .append(menu);
                         });
                     }
                 });
