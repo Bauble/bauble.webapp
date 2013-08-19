@@ -42,6 +42,10 @@
             <input ng-model="filters[$index].value" type="text"
                    class="form-control"/> <!-- type depending on field type -->
           </div>
+
+          <div class="col-lg-1 ">
+            <a class="remove-button form-control" ng-click="filters.splice($index)"><i class="icon-remove"></i></a>
+          </div>
         </div> <!-- .form-group -->
       </div> <!-- .filters-row .form-horizontal -->
       <button type="button" class="btn" ng-click="addFilterField()">Add</button>

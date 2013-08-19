@@ -84,8 +84,7 @@ angular.module('BaubleApp')
         };
 
         $scope.validateQuery = function() {
-            //console.log('validateQuery()');
-            var valid = true;
+            var valid = $scope.filters.length > 0 ? true : false;
             $.each($scope.filters, function(index, filter) {
                 if(!filter.column || !filter.operator || !filter.value) {
                     valid = false;
