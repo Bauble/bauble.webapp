@@ -24,8 +24,7 @@
     <!-- endbuild -->
 
   </head>
-  <body ng-app="BaubleApp" ng-controller="AppCtrl" 
-        ng-class="{'show-menubar': !hideMainMenu}">
+  <body ng-app="BaubleApp" ng-controller="AppCtrl">
     
     <!--[if lt IE 7]>
         <p class="chromeframe">You are using an outdated browser. <a href="http://browsehappy.com/">Upgrade your browser today</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to better experience this site.</p>
@@ -39,61 +38,71 @@
     <!-- <div ng-show="hideMainMenu" ng-cloak class="pull-right"> -->
     <!--   <a href="#/login">Login</a> -->
     <!-- </div> -->
+    <div id="wrap">
+      <div ng-cloak class="navbar navbar-fixed-top">
+        <a class="navbar-brand" href="#">Bauble</a>
+        <ul ng-hide="!isLoggedIn" class="nav navbar-nav">
+          <li><a href="#search">Search</a></li>
+          <li class="dropdown">
+            <a class="dropdown-toggle">New
+              <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu pull-right">
+              <li>
+                <a class="pull-right" href="#/new/family">Family</a>
+              </li>
+              <li>
+                <a class="pull-right" href="#/new/genus">Genus</a>
+              </li>
+              <li>
+                <a class="pull-right" href="#/new/taxon">Taxon</a>
+              </li>
+              <li>
+                <a class="pull-right" href="#/new/accession">Accession</a>
+              </li>
+              <li>
+                <a class="pull-right" href="#/new/plant">Plant</a>
+              </li>
+              <li>
+                <a class="pull-right" href="#/new/location">Location</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
 
-    <div ng-hide="hideMainMenu" ng-cloak class="navbar navbar-fixed-top">
-      <a class="navbar-brand" href="#">Bauble</a>
-      <ul class="nav navbar-nav">
-        <li><a href="#search">Search</a></li>
-        <li class="dropdown">
-          <a class="dropdown-toggle">New
-            <b class="caret"></b>
-          </a>
-          <ul class="dropdown-menu pull-right">
-            <li>
-              <a class="pull-right" href="#/new/family">Family</a>
-            </li>
-            <li>
-              <a class="pull-right" href="#/new/genus">Genus</a>
-            </li>
-            <li>
-              <a class="pull-right" href="#/new/taxon">Taxon</a>
-            </li>
-            <li>
-              <a class="pull-right" href="#/new/accession">Accession</a>
-            </li>
-            <li>
-              <a class="pull-right" href="#/new/plant">Plant</a>
-            </li>
-            <li>
-              <a class="pull-right" href="#/new/location">Location</a>
-            </li>
-          </ul>
-        </li>
-      </ul>
+        <ul ng-hide="!isLoggedIn" class="nav navbar-nav">
+          <li><a href="#reporter">Report</a></li>
+        </ul>
 
-      <ul class="nav navbar-nav">
-        <li><a href="#reporter">Report</a></li>
-      </ul>
+        <ul ng-hide="!isLoggedIn "class="nav pull-right">
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Menu
+              <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu pull-right">
+              <li><a class="pull-right" href="#admin">Admin</a></li>
+              <li><a class="pull-right" href="#logout">Logout</a></li>
+            </ul>
+          </li>
+        </ul>
 
-      <ul class="nav pull-right">
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Menu
-            <b class="caret"></b>
-          </a>
-          <ul class="dropdown-menu pull-right">
-            <li><a class="pull-right" href="#admin">Admin</a></li>
-            <li><a class="pull-right" href="#logout">Logout</a></li>
-          </ul>
-        </li>
-      </ul>
-    </div> <!-- .navbar -->
+        <ul ng-show="!isLoggedIn" class="nav navbar-nav pull-right">
+          <li><a href="#login">Login</a></li>
+        </ul>
 
-    <alert ng-repeat="alert in alerts" type="alert.type"
-           close="closeAlert($index)" ng-bind="alert.msg"></alert>
-    
-    <div ng-view></div>
-    
-    <div class="footer row">
+      </div> <!-- .navbar -->
+
+      <alert ng-repeat="alert in alerts" type="alert.type"
+             close="closeAlert($index)" ng-bind="alert.msg"></alert>
+
+      
+      <div id="main">
+        <div style="height: 100%" ng-view></div>
+      </div>
+      <div style="background-color: red; height: 100%;">
+    </div>
+
+    <div id="footer" class="row">
       <div class="col-lg-10 col-offset-2">
         <div class="row">
           <div class="col col-lg-4">
@@ -102,11 +111,12 @@
           </div> <!-- .col -->
           
           <div class="col col-lg-4">
-            Bauble &copy; 2005-2013
+            <!-- Bauble &copy; 2005-2013 -->
+            Middle column
           </div> <!-- .col -->
           
           <div class="col col-lg-4">
-            Privacy
+            <a href="/privacy">Privacy</a>
           </div> <!-- .col -->
         </div>   <!-- .row -->
 

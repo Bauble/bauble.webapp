@@ -1,35 +1,56 @@
 
 // color theme : https://kuler.adobe.com/Fall-Grass-color-theme-2487072/
+/*
+  https://kuler.adobe.com/#themeID/7245;
+  #607056 #519E41 #85BF89 #9DDBB2 #BFE8BE
+  */
+/*
+  https://kuler.adobe.com/#themeID/137458
+  BAE8E5 CCF4FF D9FFF2 BAE8CB CCFFD1
+  */
 
-$heading-color: #265573; // #386d73;
+$background-color: #efefef; //#FCFFF5; //#D9CB9E; //#F5E5C0;
+
+$heading-color: #2B3A42; //#3F5765; // #1E1E20; // #265573; // #386d73;
 $heading-font-family: 'Raleway', sans-serif;
 $heading-font-weight: 300;
 
 $font-family: 'Open Sans', sans-serif;
-$font-color: #386d73;
+$font-color: #3F5765; //#2A2C2B; //#386d73;
 $link-color: #265573;
 
+$navbar-bg-color: #2B3A42; //#193441; // #374140; // #097380; // #265573;
+$navbar-color: $background-color; //#F5E5C0; //#265573;
+//$navbar-height: 50px;  // this is the default from bootstrap
+$navbar-border: solid 1px #FF530D; //#DC3522; //orange;
+
 $footer-height: 100px;
-$footer-color: #81A68A;
-$footer-font-color: #265573;
+$footer-bg-color: #2B3A42; //#81A68A;
+$footer-font-color: #BDD4DE; //$background-color; //#265573;
+$footer-border: $navbar-border;
 
-$navbar-height: 50px;  // this is the default from bootstrap
-
-$block-header-background: #f5f5f5;
-$block-header-border: solid 1px #ccc;
+$block-header-background: #BDD4DE; //#f5f5f5;
+$block-header-border: solid 1px #FF530D;
 $block-header-padding: 5px 5px; 
+
+
+$icon-color: #FF530D;
 
 @mixin block-header {
     background-color: $block-header-background;
     border: $block-header-border;
     padding: $block-header-padding;
+    border-radius: 5px;    
 }
 
 html, body {
     //background-color: #FFFDD0;
+    background-color: $background-color;
     color: $font-color;
     font-family: $font-family;
     height: 100%;
+
+    padding-top: 3em; // make space for navbar
 }
 
 
@@ -48,22 +69,56 @@ h1, h2, h3, h4, h5, legend {
     margin-left: 0;
 }
 
-/* .app-container { */
-/*     & + div { */
-/*         height: 100%; */
-/*     } */
+/* .container { */
+/*     min-height: 100%; */
 /* } */
-
-.container {
-    min-height: 100%;
-}
 
 .error {
     color: red;
 }
 
-.main-page {
+.navbar {
+    background-color: $navbar-bg-color;
+    color: $navbar-color;
+    border-bottom: $navbar-border;
+    //margin-bottom: 0;
     
+    a, li > a { 
+        color: $navbar-color;
+    }
+
+    a:hover, li > a:hover { 
+        color: #FF530D;
+        //background-color: white;
+    }
+}
+
+.dropdown-menu {
+    border-bottom: $navbar-border;
+
+    a, li > a { 
+        color: $navbar-bg-color;
+    }
+
+    a:hover, li > a:hover {
+        color: red; //#FF530D;
+        background-color: white !important;
+        background-image: none; // undo bootstrap background gradient on hover
+    }
+}
+
+.navbar-nav>.open>a, .navbar-nav>.open>a:hover, .navbar-nav>.open>a:focus {
+    color: #555;
+    background-color: #FF530D;//#d5d5d5;
+}
+
+
+.icon {
+    color: $icon-color;
+}
+
+.main-page {
+
     & > div {
         //padding: 50px 200px;
     }
@@ -73,7 +128,8 @@ h1, h2, h3, h4, h5, legend {
     }
 
     .section1 {
-        background-color: #d4d9b0; //#ffffec // #fcf6d9;
+        //background-color: #d4d9b0; //#ffffec // #fcf6d9;
+        //background-color: #BDD4DE; //#9fbf8f; //#fff9df // #fcf6d9;
         padding-bottom: 8em;
     }
 
@@ -93,14 +149,13 @@ h1, h2, h3, h4, h5, legend {
         }
         
     }
-
-    .section2 {
-        padding-top: 2em;
-        padding-bottom: 10em;
-        background-color: #9fbf8f; //#fff9df // #fcf6d9;
-    }
-
     
+    .section2 {
+        padding: 5em 0;
+        /* padding-top: 3em; */
+        /* padding-bottom: 10em; */
+        background-color: #BDD4DE; //#9fbf8f; //#fff9df // #fcf6d9;
+    }   
 }
 
 // add padding to acount for the navbar
@@ -115,67 +170,71 @@ h1, h2, h3, h4, h5, legend {
 /* } */
 
 
-.menu {
-    list-style: none;
-    border-bottom: 0.1em solid black;
-    margin-bottom: 2em;
-
-    &:before {
-        content: "[";
-    }
-
-    &:after {
-        content: "]";
-    }
-
-    & > li {
-        display: inline;
-    }
-
-    & > li:before {
-        content: "|";
-        padding-right: 0.3em;
-    }
-
-    & > li:nth-child(1):before {
-        content: "";
-        padding: 0;
-    }
+/* cssstickyfooter.com */;
+#wrap {
+    min-height: 100%;
 }
 
-.footer {
-    //height: $footer-height;
-    //margin-top: 5em;
-    background-color: $footer-color;
-    color: $footer-font-color;
-    //border: solid 1px #ccc;
-    padding-top: 5em;
-    
-    & > div {
-        //text-align: center;
-    }
+#main {
+    /** 
+     * the overflow:auto was used because of a resizing bug.  it also causes a gap above 
+     * footer which messes up our design.  disabled for now unless it turns out we need 
+     * it
+     **/
+    //overflow:auto;  
+    padding-bottom: 150px;
+}  /* must be same height as the footer */
 
+#footer {
+    position: relative;
+    margin-top: -150px; /* negative value of footer height */
+    height: 150px;
+    clear: both;
+    // everything above this line is part of the css sticky footer
+    border-top: $footer-border;
+    background-color: $footer-bg-color;
+    color: $footer-font-color;
+    padding-top: 3em;
+    
     a {
+        color: $footer-font-color;
         display: block;
     }
 
     .copyright {
         font-size: .9em;
         margin-top: 3em;
+        margin-right: 1em;
         //margin-bottom: 1em;
     }
+} 
+
+/*Opera Fix*/
+body:before {
+    content:"";
+    height:100%;
+    float:left;
+    width:0;
+    margin-top:-32767px;
 }
 
+input {
+    background-color: $background-color;// !important;
+}
+
+
 .login-page {
-    padding-top: $navbar-height;
-    background-color: #d4d9b0;
+    //padding-top: $navbar-height;
+    //background-color: #d4d9b0;
 }
 
 .form-signin {
     margin: 5em 0;
     padding: 2em;
-    background-color: #fff;
-    border: 1px solid #e5e5e5;
+    //background-color: #fff;
+    background-color: #BDD4DE; //$navbar-bg-color;
+    //border: 1px solid #e5e5e5;
+    border: $navbar-border;
 
     border-radius: 5px;
     box-shadow: 0 1px 2px rgba(0,0,0,.05);
@@ -192,6 +251,7 @@ h1, h2, h3, h4, h5, legend {
     height: auto;
     margin-bottom: 15px;
     padding: 7px 9px;
+    //background-color: $background-color;
 }
 
 
@@ -201,7 +261,7 @@ h1, h2, h3, h4, h5, legend {
 
 
 #new-user-page {
-    margin-top: $navbar-height;
+    //margin-top: $navbar-height;
 
     form {
         margin-top: 5em;
@@ -234,6 +294,13 @@ h1, h2, h3, h4, h5, legend {
 
     form {
         margin: 0;
+    }
+}
+
+.list-group {
+    background-color: $background-color;
+    a { 
+        background-color: white;
     }
 }
 
@@ -298,34 +365,14 @@ h1, h2, h3, h4, h5, legend {
     input[ui-date] {
         width: 90px;  // same size as .input-small
     }
-
-/* usually when there's multple inputs/labels on a line */
-/*
-  input + label {
-  margin-left: 25px;
-  }
-
-label {
-margin-right: 10px;
-min-width: 35px;
-max-width: 85px;
-width: 75px;
-text-align: right;
-font-weight: bold;
-}
-
-form div {
-margin: 15px 0;
 }
 
 .accordion-group {
-margin-bottom: 10px;
+    margin-bottom: 10px;
 }
 
 .accordion-heading {
-background-color: #f7f7f7;
-}
-*/
+    background-color: #f7f7f7;
 }
 
 .family-editor {
@@ -495,15 +542,6 @@ background-color: #f7f7f7;
         color: red;
     }
 }
-/*
-  https://kuler.adobe.com/#themeID/7245;
-  #607056 #519E41 #85BF89 #9DDBB2 #BFE8BE
-  */
-
-/*
-  https://kuler.adobe.com/#themeID/137458
-  BAE8E5 CCF4FF D9FFF2 BAE8CB CCFFD1
-  */
 
 .domain-box {
     //background-color: #519E41;
@@ -578,9 +616,13 @@ background-color: #f7f7f7;
 }
 
 
+/*
+ * Re-add nested dropdown support to BS3
+ */ 
 .dropdown-submenu {
     position: relative;
 }
+
 .dropdown-submenu>.dropdown-menu {
     top:0;
     left:100%;
@@ -590,9 +632,11 @@ background-color: #f7f7f7;
     -moz-border-radius:0 6px 6px 6px;
     border-radius:0 6px 6px 6px;
 }
+
 .dropdown-submenu:hover>.dropdown-menu {
     display:block;
 }
+
 .dropdown-submenu>a:after{
     display:block;
     content:" ";
@@ -606,13 +650,16 @@ background-color: #f7f7f7;
     margin-top:5px;
     margin-right:-10px;
 }
+
 .dropdown-submenu:hover>a:after{
     border-left-color:#ffffff;
 }
+
 .dropdown-submenu.pull-left{
     float:none;
 }
-.dropdown-submenu.pull-left>.dropdown-menu{
+
+.dropdown-submenu.pull-left>.dropdown-menu {
     left:-100%;
     margin-left:10px;
     -webkit-border-radius:6px 0 6px 6px;

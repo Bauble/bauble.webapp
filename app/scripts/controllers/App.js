@@ -10,11 +10,11 @@ angular.module('BaubleApp')
             $scope.alerts.splice(index, 1);
         };
 
-        $scope.hideMainMenu = Auth.isLoggedIn();
+        $scope.isLoggedIn = Auth.isLoggedIn();
         $scope.$watch(function() {
             return Auth.isLoggedIn();
         }, function() {
-            $scope.hideMainMenu = !Auth.isLoggedIn();
+            $scope.isLoggedIn = Auth.isLoggedIn();
         });
 
         var routesWithoutLogin = ["/login", "/logout", "/", "/newuser"];
