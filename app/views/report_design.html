@@ -13,7 +13,7 @@
     <div class="panel-heading">Select a domain</div>
     <div class="panel-body">
       <div class="row">
-        <div class="col-lg-2">
+        <div class="col-md-2">
           <select ng-model="resource" 
                   ng-options="domain.resource as domain.label for domain in domains | orderBy:domain.sort"
                   class="form-control"></select>
@@ -29,28 +29,28 @@
       <div class="filters-row form-horizontal" ng-repeat="filter in filters">
         <div class="form-group">
 
-          <div ng-show="$index>0" class="col-lg-1">
+          <div ng-show="$index>0" class="col-md-1">
             <select ng-model="filters[$index].boolOp" class="form-control">
               <option value="and">and</option>
               <option value="or">or</option>
             </select>
           </div>
 
-          <div class="col-lg-3">
+          <div class="col-md-3">
             <div schema-menu class="filter-schema-menu" resource="resource"></div>
           </div>
           
-          <div class="col-lg-1">
+          <div class="col-md-1">
             <select ng-model="filters[$index].operator" class="form-control"
                     ng-options="key for (key, value) in operators"></select>
             <!-- <select ng-options="= +">Operator</select> -->
           </div>
-          <div class="col-lg-4">
+          <div class="col-md-4">
             <input ng-model="filters[$index].value" type="text"
                    class="form-control"/> <!-- type depending on field type -->
           </div>
 
-          <div class="col-lg-1 ">
+          <div class="col-md-1 ">
             <a class="remove-button form-control" ng-click="filters.splice($index)">
               <i class="icon-remove"></i></a>
           </div>
@@ -66,11 +66,11 @@
       <div class="order-row form-horizontal" ng-repeat="order in orders">
               
         <div class="form-group">
-          <div class="col-lg-3">
+          <div class="col-md-3">
             <div schema-menu class="filter-schema-menu" resource="resource"></div>
           </div>
           
-          <div class="col-lg-1">
+          <div class="col-md-1">
             <select ng-model="filters[$index].operator" class="form-control">
               <option>Ascending</option>
               <option>Descending</option>
@@ -109,11 +109,11 @@
 
   <div ng-show="tableData">
     <div class="row">
-      <div class="report-header col-lg-12">
-        <div class="report-title col-lg-8">
+      <div class="report-header col-md-12">
+        <div class="report-title col-md-8">
           <h4>Report</h4>
         </div>
-        <div class="header-buttons col-lg-3">
+        <div class="header-buttons col-md-3">
           <button class="btn" ng-click="refresh()">Refresh</button>
           <button class="btn" ng-click="close()">Close</button>
           <button class="btn btn-primary" ng-click="save()">Save</button>
