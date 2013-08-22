@@ -44,13 +44,14 @@ $icon-color: #FF530D;
 }
 
 html, body {
+    margin:0;
+    padding:0;
+    height:100%;
     //background-color: #FFFDD0;
     background-color: $background-color;
     color: $font-color;
     font-family: $font-family;
-    height: 100%;
-
-    padding-top: 3em; // make space for navbar
+    //padding-top: 3em; // make space for navbar
 }
 
 
@@ -67,6 +68,43 @@ h1, h2, h3, h4, h5, legend {
     font-weight: $heading-font-weight;
     color: $heading-color;
     margin-left: 0;
+}
+
+#container {
+   min-height:100%;
+   position:relative;
+}
+#header {
+   //background:#ff0;
+   padding:50px;
+}
+#content {
+   padding:10px;
+   padding-bottom:$footer-height;   /* Height of the footer */
+}
+#footer {
+    position:absolute;
+    bottom:0;
+    width:100%;
+    height:$footer-height;   /* Height of the footer */
+    
+    // everything above this line is part of the css sticky footer
+    border-top: $footer-border;
+    background-color: $footer-bg-color;
+    color: $footer-font-color;
+    padding-top: 3em;
+    
+    a {
+        color: $footer-font-color;
+        display: block;
+    }
+
+    .copyright {
+        font-size: .9em;
+        margin-top: 3em;
+        margin-right: 1em;
+        //margin-bottom: 1em;
+    }
 }
 
 /* .container { */
@@ -168,55 +206,6 @@ h1, h2, h3, h4, h5, legend {
 /*     padding-top: 0px; */
 /*   } */
 /* } */
-
-
-/* cssstickyfooter.com */;
-#wrap {
-    min-height: 100%;
-}
-
-#main {
-    /** 
-     * the overflow:auto was used because of a resizing bug.  it also causes a gap above 
-     * footer which messes up our design.  disabled for now unless it turns out we need 
-     * it
-     **/
-    //overflow:auto;  
-    padding-bottom: 150px;
-}  /* must be same height as the footer */
-
-#footer {
-    position: relative;
-    margin-top: -150px; /* negative value of footer height */
-    height: 150px;
-    clear: both;
-    // everything above this line is part of the css sticky footer
-    border-top: $footer-border;
-    background-color: $footer-bg-color;
-    color: $footer-font-color;
-    padding-top: 3em;
-    
-    a {
-        color: $footer-font-color;
-        display: block;
-    }
-
-    .copyright {
-        font-size: .9em;
-        margin-top: 3em;
-        margin-right: 1em;
-        //margin-bottom: 1em;
-    }
-} 
-
-/*Opera Fix*/
-body:before {
-    content:"";
-    height:100%;
-    float:left;
-    width:0;
-    margin-top:-32767px;
-}
 
 input {
     background-color: $background-color;// !important;
