@@ -39,27 +39,24 @@ angular.module('BaubleApp')
                 alert("Warn the user that the domain is changing!");
 
             }
-            $scope.tableColumns = [new TableColumn('str', "Name", true)];
-                Resource($scope.resource).get_schema(true)
-                    .success(function(data, status, headers, config) {
-                        console.log("data: ", data);
-                        angular.forEach(data.columns, function(index, value) {
-                            if(value !== "id" && value.substring(value.length-3) !== "_id")
-                                $scope.tableColumns.push(new TableColumn(value));
-                        });
 
-                    })
-                    .error(function(data, status, headers, config) {
-                        // do something
-                    })
-
-            // if(oldValue !== null || typeof oldValue !== "undefined") {
-            //     // get here on initialization and the first time the old value is set
-            //     alert("Warn the user that the domain is changing!");
-            // }
             if(newValue === null || typeof newValue === 'undefined') {
                 return;
             }
+
+            $scope.tableColumns = [new TableColumn('str', "Name", true)];
+            Resource($scope.resource).get_schema(true)
+                .success(function(data, status, headers, config) {
+                    console.log("data: ", data);
+                    angular.forEach(data.columns, function(index, value) {
+                        if(value !== "id" && value.substring(value.length-3) !== "_id")
+                            $scope.tableColumns.push(new TableColumn(value));
+                    });
+
+                })
+                .error(function(data, status, headers, config) {
+                    // do something
+                })
         });
 
         // object to represent the report table columns
