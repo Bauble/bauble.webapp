@@ -1,14 +1,14 @@
 <div ng-form name="locationForm" ng-controller="LocationEditorCtrl" class="bauble-editor location-editor container">
 
-  <alert class="col-lg-6 col-lg-offset 3" ng-repeat="alert in alerts" type="alert.type" 
+  <alert class="col-md-6 col-md-offset 3" ng-repeat="alert in alerts" type="alert.type" 
          close="closeAlert($index)">{{alert.msg}}</alert>
 
   <div class="row">
-    <div class="editor-header col-lg-12">
-      <div class="header-title col-lg-8">
+    <div class="editor-header col-md-12">
+      <div class="header-title col-md-8">
         <h4>{{location.str || 'New location'}}</h4>
       </div>
-      <div class="header-buttons col-lg-3">
+      <div class="header-buttons col-md-3">
         <button class="btn" ng-click="close()">Close</button>
         <button class="btn btn-primary" ng-click="save()">Save</button>
       </div>
@@ -20,22 +20,22 @@
     <form class="form-horizontal">
 
     <div class="form-group">
-      <label class="control-label col-lg-2">Code</label>
-      <div class="col-lg-2">
+      <label class="control-label col-md-2">Code</label>
+      <div class="col-md-2">
         <input type="text" ng-model="location.code" class="form-control" required/>
       </div>
     </div> <!-- .form-group -->
 
     <div class="form-group">
-      <label class="control-label col-lg-2">Name</label>
-      <div class="col-lg-4">
+      <label class="control-label col-md-2">Name</label>
+      <div class="col-md-4">
         <input type="text" ng-model="location.name" class="form-control"/>
       </div>
     </div> <!-- .form-group -->
 
     <div class="form-group">
-      <label class="control-label col-lg-2">Description</label>
-      <div class="col-lg-5">
+      <label class="control-label col-md-2">Description</label>
+      <div class="col-md-5">
         <textarea ng-model="location.description" class="form-control"></textarea>
       </div>
     </div> <!-- .form-group -->

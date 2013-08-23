@@ -5,11 +5,11 @@
          close="closeAlert($index)">{{alert.msg}}</alert>
 
   <div class="row">
-    <div class="editor-header col-lg-12">
-      <div class="header-title col-lg-8">
+    <div class="editor-header col-md--12">
+      <div class="header-title col-md--8">
         <h4>{{genus.str || 'New genus'}}</h4>
       </div>
-      <div class="header-buttons col-lg-3">
+      <div class="header-buttons col-md--3">
         <button class="btn" ng-click="close()">Close</button>
         <button class="btn btn-primary" ng-click="save()">Save</button>
       </div>
@@ -23,24 +23,24 @@
       <tab heading="General">
         <form class="form-horizontal">
           <div class="form-group">
-            <label for="familyField" class="col-lg-2 control-label">Family</label>
-            <div class="col-lg-6">
-              <input ui-select2="familySelectOptions" id="familyField"
+            <label for="familyField" class="col-md--2 control-label">Family</label>
+            <div class="col-md--6">
+              <input ui-select2="familySelectOptions" id="familyField" style="width: 200px" 
                      ng-model="genus.family" class="form-control"/>
-            </div> <!-- .col-lg-6 -->
+            </div> <!-- .col-md--6 -->
           </div>   <!-- .control-label -->
 
           <div class="form-group">
-            <label for="genusField" class="control-label col-lg-2">Genus</label>
-            <div class="col-lg-6">
+            <label for="genusField" class="control-label col-md--2">Genus</label>
+            <div class="col-md--6">
               <input id="genusField" type="text" ng-model="genus.genus" class="form-control"
                      required/>
             </div>
           </div>
 
           <div class="form-group">
-            <label id="authorField" class="control-label col-lg-2">Author</label>
-            <div class="col-lg-6">
+            <label id="authorField" class="control-label col-md--2">Author</label>
+            <div class="col-md--6">
               <input type="text" ng-model="genus.author" class="form-control" required/>
             </div> 
           </div>
