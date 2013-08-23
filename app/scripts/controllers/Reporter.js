@@ -2,7 +2,7 @@
 
 angular.module('BaubleApp')
 
-    .controller('ReporterCtrl', function ($scope, Search) {
+    .controller('ReporterCtrl', function ($scope, Search, Resource) {
         $scope.reportTypes = [
             { name: "Current search", type: 'current' },
             { name: "New Search", type: 'new' },
@@ -34,11 +34,24 @@ angular.module('BaubleApp')
         $scope.tableColumns = [new TableColumn('str')]; // the list of column objects
         $scope.tableData = [];
 
-        $scope.$watch('resource', function(newValue, oldValue) {
+        $scope.$watch(function() { return $scope.resource }, function(newValue, oldValue) {
             if(oldValue !== newValue && oldValue !== undefined) {
                 alert("Warn the user that the domain is changing!");
-                $scope.tableColumns = [new TableColumn('str')];
+
             }
+            $scope.tableColumns = [new TableColumn('str', "Name", true)];
+                Resource($scope.resource).get_schema(true)
+                    .success(function(data, status, headers, config) {
+                        console.log("data: ", data);
+                        angular.forEach(data.columns, function(index, value) {
+                            if(value !== "id" && value.substring(value.length-3) !== "_id")
+                                $scope.tableColumns.push(new TableColumn(value));
+                        });
+
+                    })
+                    .error(function(data, status, headers, config) {
+                        // do something
+                    })
 
             // if(oldValue !== null || typeof oldValue !== "undefined") {
             //     // get here on initialization and the first time the old value is set
@@ -50,13 +63,14 @@ angular.module('BaubleApp')
         });
 
         // object to represent the report table columns
-        function TableColumn(name, header){
+        function TableColumn(name, header, visible){
             this.name = name,
-            this.header = header,
+            this.header = header || this.name,
             this.width = undefined;
+            this.visible = visible || false;
 
             // if header is undefined set to name
-            this.header = typeof this.header === "undefined" ? this.name : this.header;
+            //this.header = typeof this.header === "undefined" ? this.name : this.header;
         }
 
         $scope.$on('schema-column-selected', function(event, element, selected) {
@@ -70,13 +84,6 @@ angular.module('BaubleApp')
             $scope.filters[index].column = selected;
         });
 
-
-        $scope.addTableColumn = function() {
-            // add a field to the report table
-            var selected = $('.fields-schema-menu').attr('data-selected');
-            $scope.tableColumns.push(new TableColumn(selected));
-            console.log('$scope.tableColumns: ', $scope.tableColumns);
-        };
 
         $scope.addFilterField = function() {
             // add another row to the list of filters

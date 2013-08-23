@@ -4,7 +4,8 @@ angular.module('BaubleApp')
     .factory('globals', function () {
 
         return {
-            apiRoot: 'http://api.bauble.io/api/v1',
+            //apiRoot: 'http://api.bauble.io/api/v1',
+            apiRoot: 'http://bretts-mac-mini:9090/api/v1',
 
             alerts: [],
 

@@ -541,6 +541,9 @@ input {
     }
 
     .action-icons {
+        // TODO: use font-family and bullet style to set the proper icon for the select
+        // when the list item has the .selected class
+
         @include background-image(linear-gradient(left, $light-grey 85%, $baby-blue 100%));
         padding-top: 1em;
         padding-right: 1em;
@@ -548,10 +551,16 @@ input {
         li {
             margin-bottom: .5em;
         }
+        i {
+            margin-right: .5em;
+        }
         i:hover {
             color: tint(#FF530D,40);
         }
+        
     }
+
+    
 }
 
 .filters-row {
