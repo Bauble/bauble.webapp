@@ -8,6 +8,12 @@
   https://kuler.adobe.com/#themeID/137458
   BAE8E5 CCF4FF D9FFF2 BAE8CB CCFFD1
   */
+@import "compass";
+@import "compass/css3/box-shadow";
+
+$orange: #ff530d;
+$baby-blue: #bdd4de;
+$light-grey: #efefef;
 
 $background-color: #efefef; //#FCFFF5; //#D9CB9E; //#F5E5C0;
 
@@ -532,6 +538,19 @@ input {
     .panel-heading {
         //border-bottom: solid 1px $navbar-bg-color;
         background-color: #BDD4DE; //#f5f5f5;
+    }
+
+    .action-icons {
+        @include background-image(linear-gradient(left, $light-grey 85%, $baby-blue 100%));
+        padding-top: 1em;
+        padding-right: 1em;
+        list-style: none;
+        li {
+            margin-bottom: .5em;
+        }
+        i:hover {
+            color: tint(#FF530D,40);
+        }
     }
 }
 
