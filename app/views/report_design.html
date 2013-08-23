@@ -108,23 +108,34 @@
   <div ng-hide="tableData && !message" ng-bind="message"></div>
 
   <div ng-show="tableData">
-    <div class="row">
-      <div class="report-header col-md-12">
-        <div class="report-title col-md-8">
-          <h4>Report</h4>
-        </div>
-        <div class="header-buttons col-md-3">
-          <button class="btn" ng-click="refresh()">Refresh</button>
-          <button class="btn" ng-click="close()">Close</button>
-          <button class="btn btn-primary" ng-click="save()">Save</button>
-        </div> <!-- .header-buttons -->
-      </div>   <!-- .report-header -->
-    </div>     <!-- .row -->
-
+    <div class="report-header row">
+      <div class="col-md-8">
+        <h4>Report</h4>
+      </div>
+      <div class="header-buttons col-md-4">
+        <button class="btn pull-right" ng-click="refresh()">Refresh</button>
+        <!-- <button class="btn" ng-click="close()">Close</button> -->
+        <button class="btn btn-primary pull-right" ng-click="save()">Save</button>
+      </div> <!-- .header-buttons -->
+    </div>   <!-- .report-header -->
     
     <table class="report-table table">
       <thead></thead>
-      <th class="report-table-header" ng-repeat="column in tableColumns">{{column.header}}</th>
+      
+      <th class="report-table-header" ng-repeat="column in tableColumns" 
+          ng-mouseenter="showColButtons($event, $index)">
+          
+        {{column.header}}
+        <span ng-show="colHover==$index" class="icon-container">
+          <i class="icon icon-cog"></i>
+          <i class="icon icon-minus"></i> 
+        </span>
+        
+      </th>
+      <th><i class="icon icon-plus">
+          <div schema-menu scalars-only='true' class="fields-schema-menu"
+               resource="resource" on-select="addTableColumn"></div>
+      </th>
       <tbody>
         <tr class="report-table-row" ng-repeat="row in tableData">
           <td class="report-table-cell" 

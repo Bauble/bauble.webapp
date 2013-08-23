@@ -522,6 +522,17 @@ input {
 
 #report-designer {
     margin-bottom: 5em;
+
+    .panel {
+        border: solid 1px #BDD4DE;//#FF530D;
+        
+        background-color: inherit;
+    }
+
+    .panel-heading {
+        //border-bottom: solid 1px $navbar-bg-color;
+        background-color: #BDD4DE; //#f5f5f5;
+    }
 }
 
 .filters-row {
@@ -565,7 +576,13 @@ input {
 
 .report-header {
     @include block-header;
-    margin-bottom: 2em;
+    //margin-bottom: 2em;
+}
+
+.report-table-header {
+    .icon-container {
+        margin-left: 1em;
+    }
 }
 
 .report-table {

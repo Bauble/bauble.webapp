@@ -8,11 +8,13 @@ angular.module('BaubleApp')
             transclude: true,
             scope: {
                 resource: '=',
-                scalarsOnly: '@'
+                scalarsOnly: '@',
+                onSelect: '='
+                // label2: '=?' // i think this is only available in ng 1.2
             },
             template: '<div class="btn-group schema-menu">' +
                 '<button type="button" class="btn btn-default dropdown-toggle" ng-class="{disabled: !resource}" data-toggle="dropdown">' +
-                'Select a field' +
+                '{{label}}' +
                 '<span class="caret"></span>' +
                 '</button>'+
 
@@ -34,6 +36,12 @@ angular.module('BaubleApp')
                           '</ul>' +
                         '</li>';
 
+                // TODO: when we move to ng-1.2 use the =? scope value for
+                // label so we can make it optional
+                if(!scope.label) {
+                    scope.label = 'Select a field';
+                }
+
                 scope.onItemClicked = function(itemScope, event, column) {
                     // set the text on the btn to the selected item
                     var resourceParts = itemScope.resource.split("/");
@@ -43,8 +51,13 @@ angular.module('BaubleApp')
                     element.children('.btn').first().text(selected);
                     element.attr("data-selected", selected);
 
-                    // emit the event to let any listeners know that selection has been made
+                    // emit the event to let any listeners know that selection has
+                    // been made
                     scope.$emit('schema-column-selected', element, selected);
+
+                    if(scope.onSelect){
+                        scope.onSelect(event, column, selected);
+                    }
                 };
 
                 // create a menu and append it to parentElement

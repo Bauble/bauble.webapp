@@ -124,4 +124,9 @@ angular.module('BaubleApp')
                     $scope.message = "Error: Could not get results from database";
                 });
         };
+
+        $scope.showColButtons = function(event, index)  {
+            console.log("hover: ", index);
+            $scope.colHover = index;
+        };
     });
