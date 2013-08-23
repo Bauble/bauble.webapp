@@ -21,10 +21,11 @@ $link-color: #265573;
 
 $navbar-bg-color: #2B3A42; //#193441; // #374140; // #097380; // #265573;
 $navbar-color: $background-color; //#F5E5C0; //#265573;
-//$navbar-height: 50px;  // this is the default from bootstrap
+$navbar-height: 50px;  // this is the default from bootstrap
 $navbar-border: solid 1px #FF530D; //#DC3522; //orange;
 
-$footer-height: 100px;
+$footer-height: 15em;
+
 $footer-bg-color: #2B3A42; //#81A68A;
 $footer-font-color: #BDD4DE; //$background-color; //#265573;
 $footer-border: $navbar-border;
@@ -76,12 +77,17 @@ h1, h2, h3, h4, h5, legend {
 }
 #header {
    //background:#ff0;
-   padding:50px;
+   //padding:40px;
 }
 #content {
-   padding:10px;
-   padding-bottom:$footer-height;   /* Height of the footer */
+    padding-top: $navbar-height;
+    padding-bottom: $footer-height;   /* Height of the footer */
 }
+
+#main-view {
+    padding-top: 2em;
+}
+
 #footer {
     position:absolute;
     bottom:0;
@@ -92,7 +98,11 @@ h1, h2, h3, h4, h5, legend {
     border-top: $footer-border;
     background-color: $footer-bg-color;
     color: $footer-font-color;
-    padding-top: 3em;
+    //padding-top: 3em;
+
+    .row {
+        margin-top: 4em;
+    }
     
     a {
         color: $footer-font-color;
@@ -100,10 +110,11 @@ h1, h2, h3, h4, h5, legend {
     }
 
     .copyright {
+        top: 0;
         font-size: .9em;
-        margin-top: 3em;
-        margin-right: 1em;
-        //margin-bottom: 1em;
+        //margin-top: 2em;
+        margin-right: 2em;
+        background-color: inherit;
     }
 }
 
