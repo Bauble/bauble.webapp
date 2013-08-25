@@ -189,7 +189,7 @@ angular.module('BaubleApp')
         return resource;
     }])
 
-    // Location service for CRUD location types
+    // User service for CRUD location types
     .factory('User', ['$http', 'globals', 'Resource', function($http, globals, $resource) {
         var resource = $resource('/user');
         resource.setPassword = function(resource, password) {
@@ -204,4 +204,9 @@ angular.module('BaubleApp')
             return $http(config);
         };
         return resource;
+    }])
+
+    // Report service
+    .factory('Report', ['Resource', function($resource) {
+        return $resource('/report');
     }]);

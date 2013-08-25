@@ -2,7 +2,20 @@
 
 angular.module('BaubleApp')
 
-    .controller('ReporterCtrl', function ($scope, Search, Resource) {
+    .controller('ReporterCtrl', function ($scope, $dialog, Search, Resource, Report) {
+
+        // get the list of saved reports
+        Report.query()
+            .success(function(data, status, headers, config) {
+                $scope.reports = data;
+            })
+            .error(function(data, status, headers, config) {
+                // do something
+            });
+
+        $scope.showReportSelector = true;
+        $scope.showQueryBuilder = false;
+
         $scope.reportTypes = [
             { name: "Current search", type: 'current' },
             { name: "New Search", type: 'new' },
@@ -37,9 +50,7 @@ angular.module('BaubleApp')
         $scope.$watch(function() { return $scope.resource }, function(newValue, oldValue) {
             if(oldValue !== newValue && oldValue !== undefined) {
                 alert("Warn the user that the domain is changing!");
-
             }
-
             if(newValue === null || typeof newValue === 'undefined') {
                 return;
             }
@@ -96,7 +107,19 @@ angular.module('BaubleApp')
                 }
             });
             return valid ? "" : "disabled";
-        }
+        };
+
+        $scope.saveReport = function() {
+            // TODO: ** this method is really waiting for angular-bootstrap to
+            // finish their transition to bootstrap3
+            var opts = {
+                template: '<div>Enter a name for this report definition:</div>'
+            };
+            var d = $dialog.dialog(opts)
+            d.open().then(function(result) {
+                console.log('dialog closed');
+            });
+        };
 
         $scope.refreshTable = function() {
             // update the table data based on the domain, filters and report fields
