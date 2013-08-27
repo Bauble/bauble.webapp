@@ -184,7 +184,7 @@ angular.module('BaubleApp')
             // })
         };
 
-        $scope.close = function() {
+        $scope.cancel = function() {
             window.history.back();
         };
 
@@ -203,7 +203,7 @@ angular.module('BaubleApp')
 
             Accession.save($scope.accession)
                 .success(function(data, status, headers, config) {
-                    $scope.close();
+                    $scope.cancel();
                 })
                 .error(function(data, status, headers, config) {
                     // do something

@@ -113,7 +113,7 @@ angular.module('BaubleApp')
             $scope.alerts.splice(index, 1);
         };
 
-        $scope.close = function() {
+        $scope.cancel = function() {
             window.history.back();
         };
 
@@ -140,7 +140,7 @@ angular.module('BaubleApp')
 
             Taxon.save($scope.taxon)
                 .success(function(data, status, headers, config) {
-                    $scope.close();
+                    $scope.cancel();
                 })
                 .error(function(data, status, headers, config) {
                     var msg = data ? "Error!\n" + data : "Unknown error!";

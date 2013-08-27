@@ -51,7 +51,7 @@ angular.module('BaubleApp')
             }
         };
 
-        $scope.close = function() {
+        $scope.cancel = function() {
             window.history.back();
         };
 
@@ -66,7 +66,7 @@ angular.module('BaubleApp')
             $scope.family.notes = $scope.notes;
             Family.save($scope.family)
                 .success(function(data, status, headers, config) {
-                    $scope.close();
+                    $scope.cancel();
                  })
                 .error(function(data, status, headers, config) {
                     var msg = data ? "Error!\n" + data : "Unknown error!";

@@ -3,17 +3,16 @@
   <alert class="col-md-6 col-md-offset 3" ng-repeat="alert in alerts" type="alert.type" 
          close="closeAlert($index)">{{alert.msg}}</alert>
 
-  <div class="row">
-    <div class="editor-header col-md-12">
-      <div class="header-title col-md-8">
-        <h4>{{location.str || 'New location'}}</h4>
-      </div>
-      <div class="header-buttons col-md-3">
-        <button class="btn" ng-click="close()">Close</button>
-        <button class="btn btn-primary" ng-click="save()">Save</button>
-      </div>
-    </div> <!-- .editor-header -->
-  </div>
+  <div class="row editor-header">    
+    <div class="header-title col-md-8">
+      <h4>{{location.str || 'New location'}}</h4>
+    </div>
+    <div class="header-buttons col-md-3 pull-right">
+      <button class="btn" ng-click="cancel()">Cancel</button>
+      <button class="btn btn-primary" ng-click="save()">Save</button>
+    </div>
+  </div> <!-- .editor-header -->
+
 
   <div class="editor-body">
 

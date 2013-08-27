@@ -64,7 +64,7 @@ angular.module('BaubleApp')
             $scope.alerts.splice(index, 1);
         };
 
-        $scope.close = function() {
+        $scope.cancel = function() {
             window.history.back();
         };
 
@@ -77,7 +77,7 @@ angular.module('BaubleApp')
             $scope.genus.notes = $scope.notes;
             Genus.save($scope.genus)
                 .success(function(data, status, headers, config) {
-                    $scope.close();
+                    $scope.cancel();
                 })
                 .error(function(data, status, headers, config) {
                     if(data) {

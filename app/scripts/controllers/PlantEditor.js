@@ -105,7 +105,7 @@ angular.module('BaubleApp')
             $scope.alerts.splice(index, 1);
         };
 
-        $scope.close = function() {
+        $scope.cancel = function() {
             window.history.back();
         };
 
@@ -115,7 +115,7 @@ angular.module('BaubleApp')
             Plant.save($scope.plant)
                 .success(function(data, status, headers, config) {
                     console.log('data: ', data);
-                    $scope.close();
+                    $scope.cancel();
                 })
                 .error(function(data, status, headers, config) {
                     if(data) {

@@ -1,19 +1,18 @@
 <div ng-form name="familyForm" ng-controller="FamilyEditorCtrl" class="bauble-editor family-editor container" novalidate>
-  <alert class="col-md-6 col-md-offset-3" ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">{{alert.msg}}</alert>
+  <alert class="col-md-6 col-md-offset-3" ng-repeat="alert in alerts" 
+         type="alert.type" close="closeAlert($index)">{{alert.msg}}</alert>
 
-  <div class="row">
-    <div class="editor-header col-md-12">
-      <div class="header-title col-md-8">
-        <h4>{{family.str || 'New family'}}</h4>
-      </div>
-      <div class="header-buttons col-md-3">
-        <button class="btn" ng-click="close()">Close</button>
-        <button class="btn btn-primary" ng-click="save()">Save</button>
-      </div>
+  <div class="row editor-header">
+    <div class="header-title col-md-8">
+      <h4>{{family.str || 'New family'}}</h4>
     </div>
+    <div class="header-buttons col-md-3 pull-right">
+      <button class="btn" ng-click="cancel()">Cancel</button>
+      <button class="btn btn-primary" ng-click="save()">Save</button>
+    </div> 
   </div>
 
-    <div class="editor-body">
+  <div class="editor-body">
 
       <ul class="nav nav-tabs">
         <li ng-class="{active: activeTab=='general'}"><a ng-click="activeTab='general'">General</a></li>

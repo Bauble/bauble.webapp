@@ -18,7 +18,7 @@ angular.module('BaubleApp')
 
         $scope.activeTab = "general";
 
-        $scope.close = function() {
+        $scope.cancel = function() {
             window.history.back();
         };
 
@@ -33,7 +33,7 @@ angular.module('BaubleApp')
             // object an whether we whould be calling save or edit
             Location.save($scope.location)
                 .success(function(data, status, headers, config) {
-                    $scope.close();
+                    $scope.cancel();
                 })
                 .error(function(data, status, headers, config) {
                     if(data) {
