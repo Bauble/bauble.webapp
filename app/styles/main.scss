@@ -14,6 +14,7 @@
 $orange: #ff530d;
 $baby-blue: #bdd4de;
 $light-grey: #efefef;
+$dark-blue: #2b3a42;
 
 $background-color: #efefef; //#FCFFF5; //#D9CB9E; //#F5E5C0;
 
@@ -211,6 +212,10 @@ h1, h2, h3, h4, h5, legend {
         /* padding-bottom: 10em; */
         background-color: #BDD4DE; //#9fbf8f; //#fff9df // #fcf6d9;
     }   
+}
+
+#privacy-page {
+    padding-bottom: 3em;
 }
 
 // add padding to acount for the navbar

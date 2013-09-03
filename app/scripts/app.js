@@ -46,6 +46,26 @@ angular.module('BaubleApp', ['ngRoute', 'ui.bootstrap', 'ui.select2', 'ngGrid'])
                 controller: 'ReporterCtrl'
             })
 
+            .when('/docs', {
+                templateUrl: 'views/docs.html'
+            })
+
+            .when('/faq', {
+                templateUrl: 'views/faq.html'
+            })
+
+            .when('/privacy', {
+                templateUrl: 'views/privacy.html'
+            })
+
+            .when('/about', {
+                templateUrl: 'views/about.html'
+            })
+
+            .when('/contact', {
+                templateUrl: 'views/contact.html'
+            })
+
             .otherwise({
                 redirectTo: '/'
             });
