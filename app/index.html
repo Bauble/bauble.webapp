@@ -97,7 +97,10 @@
 
       <div id="content">
         <div class="not-ready-warning">
-          <p>This web app is for testing and is not ready for production.</p>
+          <p>Bauble is currently under development. This site is not ready for general use.</p>
+        </div>
+        <div class="curious">
+          <a href="#/curious">Curious about what's happening here? Click me.</a>
         </div>
         <alert ng-repeat="alert in alerts" type="alert.type"
                close="closeAlert($index)" ng-bind="alert.msg"></alert>

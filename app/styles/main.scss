@@ -245,6 +245,13 @@ h1, h2, h3, h4, h5, legend {
 /*   } */
 /* } */
 
+.curious {
+    text-align: center;
+    a {
+        color: $orange;
+    }
+}
+
 .not-ready-warning {
     background-color: $orange;
     font-size: 90%;
@@ -256,6 +263,17 @@ h1, h2, h3, h4, h5, legend {
 
 input {
     background-color: $background-color;// !important;
+}
+
+#curious-page {
+    padding-bottom: 3em;
+    li {
+        padding-bottom: 1em;
+    }
+
+    .feature-title {
+        font-weight: bold;
+    }
 }
 
 
