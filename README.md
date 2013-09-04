@@ -1,7 +1,8 @@
-# Bauble 2
-An experimental branch of a web based Bauble 2.
+# Bauble
+Bauble is a web application for managing plant collections.  It is intended to be used by botanic gardens, 
+arboreta and herbariums to manage their plant records. For more information visit http://bauble.io
 
-## Getting started
+## Development - Getting Started
 First you'll need to install NodeJS (http://nodejs.org/)
 
 ### Install the app
@@ -18,7 +19,7 @@ bower install
 grunt server
 ```
 
-** You will also need the bauble.api server running to use the app.
+** You will also need the [bauble.api](https://github.com/Bauble/bauble.api) server running to use the app.
                                                                                  
 
 # License
