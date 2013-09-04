@@ -41,7 +41,8 @@
     <div id="container">
       <div id="header">
         <div ng-cloak class="navbar navbar-fixed-top">
-          <a class="navbar-brand" href="#">Bauble</a>
+          <a class="navbar-brand" href="#">Bauble 
+            <span style="font-style: italic; font-size: 80%">{{titleQualifier}}</span></a>
           <ul ng-hide="!isLoggedIn" class="nav navbar-nav">
             <li><a href="#search">Search</a></li>
             <li class="dropdown">
@@ -95,6 +96,9 @@
       </div> <!-- #header -->
 
       <div id="content">
+        <div class="not-ready-warning">
+          <p>This web app is for testing and is not ready for production.</p>
+        </div>
         <alert ng-repeat="alert in alerts" type="alert.type"
                close="closeAlert($index)" ng-bind="alert.msg"></alert>
         <div id="main-view" ng-view></div>

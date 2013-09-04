@@ -245,6 +245,15 @@ h1, h2, h3, h4, h5, legend {
 /*   } */
 /* } */
 
+.not-ready-warning {
+    background-color: $orange;
+    font-size: 90%;
+    text-align: center;
+    p {
+        color: $light-grey;
+    }
+}
+
 input {
     background-color: $background-color;// !important;
 }
