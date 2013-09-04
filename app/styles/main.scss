@@ -262,6 +262,13 @@ input {
 .login-page {
     //padding-top: $navbar-height;
     //background-color: #d4d9b0;
+    padding-bottom: 3em;
+    
+    .not-ready-warning {
+        text-align: center;
+        font-size: 100%;
+        padding: 1em;   
+    }
 }
 
 .form-signin {
