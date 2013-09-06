@@ -1,7 +1,19 @@
 <div ng-controller="AdminUserCtrl">
   <h3>My Account</h3>
   <h5>Change your password</h5>
-  <input type="password" ng-model="password1" placeholder="Enter your password">
-  <input type="password" ng-model="password2" placeholder="Confirm your password">
-  <button ng-click="setPassword()" class="btn">Save</button>
+  <form class="form-inline">
+    <div class="form-group">
+      <label class="sr-only" for="inputPassword1">Password</label>
+      <input type="password" ng-model="password1" placeholder="Enter your password"
+             autocomplete="off" autocorrect="off" autocapitalize="off" class="form-control">
+    </div>
+
+    <div class="form-group">
+      <label class="sr-only" for="inputPassword2">Password</label>
+      <input type="password" ng-model="password2" placeholder="Confirm your password"
+             autocomplete="off" autocorrect="off" autocapitalize="off" class="form-control">
+    </div>
+
+    <button ng-click="setPassword()" class="btn">Save</button>
+  </form>
 </div>
