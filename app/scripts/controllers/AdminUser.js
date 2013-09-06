@@ -2,8 +2,13 @@
 
 angular.module('BaubleApp')
     .controller('AdminUserCtrl', function ($scope, globals, Auth, User) {
-        
+
         $scope.setPassword = function() {
+
+            // TODO: remove this for production
+            alert("Ha Ha!");
+            return;
+
             if($scope.password1 !== $scope.password2) {
                 globals.addAlert('Password do not match', 'error');
                 return;
