@@ -58,7 +58,6 @@ angular.module('BaubleApp')
             $scope.tableColumns = [new TableColumn('str', "Name", true)];
             Resource($scope.resource).get_schema(true)
                 .success(function(data, status, headers, config) {
-                    console.log("data: ", data);
                     angular.forEach(data.columns, function(index, value) {
                         if(value !== "id" && value.substring(value.length-3) !== "_id")
                             $scope.tableColumns.push(new TableColumn(value));
@@ -144,7 +143,8 @@ angular.module('BaubleApp')
                 .success(function(data, status, headers, config) {
                     $scope.tableData = data.results;
                     console.log('$scope.tableData: ', $scope.tableData);
-                    $scope.message = !$scope.tableData ? "No results." : "";
+                    $scope.message = (!$scope.tableData || $scope.tableData.length === 0)
+                        ? "No results." : "";
                 })
                 .error(function(data, status, headers, config) {
                     // do something
