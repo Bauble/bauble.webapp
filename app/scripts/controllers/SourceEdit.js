@@ -1,20 +1,18 @@
 'use strict';
 
 angular.module('BaubleApp')
-    .controller('SourceEditCtrl', function ($scope) {
+    .controller('SourceEditCtrl', function ($scope, $modalInstance) {
         $scope.source = {};
-
-        $scope.modalOptions = {
-            backdropFade: true,
-            dialogFade:true
-        };
 
         $scope.close = function() {
             console.log('close()');
             $scope.showSourceEditor = false;
+            $modalInstance.close()
         };
 
         $scope.save = function() {
+            // TODO: validate and save
+            $modalInstance.close()
             console.log('save()');
         };
     });

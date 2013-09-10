@@ -161,14 +161,13 @@
             <button class="btn" ng-click="newSource()">New</button>
           </div> <!-- .form-group -->
 
-          <div ng-include="'views/source_editor.html'"></div>
-
           <accordion>
             <accordion-group heading="Collection">
               <div class="form-group">
                 <label class="control-label col-md-2">Locale</label>
                 <div class="col-md-3">
-                  <input type="text" ng-model="source.collection.locale" class="col-md-6"/>
+                  <input type="text" ng-model="source.collection.locale" 
+                         class="col-md-6"/>
                 </div> <!-- .controls -->
               </div> <!-- .form-group -->
 

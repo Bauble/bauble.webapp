@@ -51,8 +51,8 @@ var recvd_type_values = {
     };
 
 angular.module('BaubleApp')
-    .controller('AccessionEditorCtrl', function ($scope, $location, globals, Taxon,
-                                                 Accession, Source) {
+    .controller('AccessionEditorCtrl', function ($scope, $location, $modal, globals,
+                                                 Taxon, Accession, Source) {
         // isNew is inherited from the NewCtrl if this is a /new editor
         $scope.accession = globals.getSelected() && !$scope.isNew ? globals.getSelected() :
             {date_accd: new Date(), date_recvd: new Date()};
@@ -179,9 +179,10 @@ angular.module('BaubleApp')
         };
 
         $scope.newSource = function() {
-            $scope.showSourceEditor = true;
-            // $scope.apply(function() {
-            // })
+            $modal.open({
+                templateUrl: 'views/source_editor.html',
+                controller: "SourceEditCtrl"
+            })
         };
 
         $scope.cancel = function() {
