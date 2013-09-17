@@ -135,7 +135,7 @@ angular.module('BaubleApp')
                     if(index > 0) {
                         q += ' ' + filter.boolOp + ' ';
                     }
-                    q += filter.column + filter.operator + filter.value;
+                    q += [filter.column, filter.operator, filter.value].join(' ');
                 });
             }
 
