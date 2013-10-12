@@ -179,9 +179,17 @@ angular.module('BaubleApp')
         };
 
         $scope.newSource = function() {
-            $scope.showSourceEditor = true;
-            // $scope.apply(function() {
-            // })
+            var modalInstance = $modal.open({
+                templateUrl: 'views/source_detail_editor.html',
+                controller: "SourceDetailEditCtrl"
+            });
+
+            modalInstance.result.then(function(source_detail) {
+                console.log("source_detail: ", source_detail);
+                console.log("$scope.source_detail: ", $scope.source_detail);
+            }, function() {
+                console.log('dismissed');
+            });
         };
 
         $scope.cancel = function() {

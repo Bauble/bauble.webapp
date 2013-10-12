@@ -1,0 +1,41 @@
+<div> 
+  <div class="modal-header">
+    <h4>Source</h4>
+  </div>
+  <div class="modal-body">
+    <form class="form-horizontal" role="form">
+      <div class="form-group">
+        <label class="control-label col-lg-2" for="nameField">Name</label>
+        <div class="col-lg-10">
+          <input type="text" ng-model="source_detail.name" class="form-control" 
+                 id="namefield" required>
+        </div> <!-- .col-lg-10 -->
+      </div>
+      <div class="form-group">
+        <label class="control-label col-lg-2" for="sourceTypeField">Type</label>
+        <div class="col-lg-10">
+          <select ui-select2="sourceTypeOptions" ng-model="source_detail.source_type"
+                  id="sourceTypefield">
+            <option ng-repeat="type in source_types" value="{{type}}">
+              {{type}}
+            </option>
+          </select>
+          <!-- <input type="text" ng-model="source.type" class="form-control"> -->
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-lg-2" for="descriptionField">Description</label>
+        <div class="col-lg-10">
+          <textarea ng-model="source_detail.description" rows="3" class="form-control" 
+                    id="descriptionField">
+          </textarea>
+        </div> <!-- .col-lg-10 -->
+      </div>   <!-- .form-group -->
+    </form>
+  </div> <!-- .modal-body -->
+  <div class="modal-footer">
+    <button class="btn cancel" ng-click="cancel()">Cancel</button>
+    <button class="btn btn-primary" ng-click="save()">Save</button>
+  </div> <!-- .modal-footer -->
+  
+</div>

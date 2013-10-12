@@ -150,7 +150,7 @@ angular.module('BaubleApp')
 
     // Source service for CRUD source types
     .factory('Source', ['Resource', function($resource) {
-        return $resource('/source');
+        return $resource('/sourcedetail');
     }])
 
     // Plant service for CRUD plant types
