@@ -6,7 +6,8 @@ var prov_type_values = {
     'NotWild': "Not of wild source",
     'InsufficientData': "Insufficient Data",
     'Unknown': "Unknown",
-    None: ''};
+    None: ''
+};
 
 
 var wild_prov_status_values = {
@@ -15,7 +16,8 @@ var wild_prov_status_values = {
     'CultivatedNative': "Cultivated native",
     'InsufficientData': "Insufficient Data",
     'Unknown': "Unknown",
-    None: ''};
+    None: ''
+};
 
 
 var recvd_type_values = {
@@ -48,7 +50,7 @@ var recvd_type_values = {
     'VEGS': 'Vegetative spreading',
     'SCKR': 'Root sucker',
     None: ''
-    };
+};
 
 angular.module('BaubleApp')
     .controller('AccessionEditorCtrl', function ($scope, $location, $modal, globals,
@@ -60,7 +62,7 @@ angular.module('BaubleApp')
         $scope.propagation = {};
         $scope.qualifier_rank = {};
 
-        $scope.$watch(function() { return $scope.accession.taxon }, function() {
+        $scope.$watch(function() { return $scope.accession.taxon; }, function() {
             if($scope.accession.taxon && $scope.accession.taxon.ref) {
                 Taxon.details($scope.accession.taxon)
                     .success(function(data, status, headers, config) {

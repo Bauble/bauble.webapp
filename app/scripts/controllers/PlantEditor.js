@@ -22,12 +22,12 @@ angular.module('BaubleApp')
         if($scope.plant && angular.isDefined($scope.plant.ref)) {
             Plant.details($scope.plant)
                 .success(function(data, status, headers, config) {
-                    $scope.plant = result.data;
+                    $scope.plant = data;
                     $scope.notes = $scope.plant.notes || [];
                 })
                 .error(function(data, status, headers, config) {
                     // do something
-                })
+                });
         } else if($location.search().accession) {
             Accession.details($location.search().accession)
                 .success(function(data, status, headers, config) {

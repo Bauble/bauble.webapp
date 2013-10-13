@@ -23,8 +23,8 @@ angular.module('BaubleApp')
             Search.query(q)
                 .success(function(data, status, headers, config) {
                     $scope.results = data.results;
-                    if($scope.results.length==0) {
-                        $scope.alert = "No results for your search query"
+                    if($scope.results.length===0) {
+                        $scope.alert = "No results for your search query";
                     }
                     $scope.message = "";
                 })
@@ -48,5 +48,5 @@ angular.module('BaubleApp')
         if(current_search) {
             $scope.q = current_search;
             $scope.search(current_search);
-        };
+        }
     });

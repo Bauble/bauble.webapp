@@ -11,7 +11,6 @@ angular.module('BaubleApp')
                 // do something
             });
 
-
         $scope.$on('taxon-edit', function(){
             $scope.$apply(function() {
                 $location.path('/edit/taxon');

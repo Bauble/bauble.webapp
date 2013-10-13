@@ -11,7 +11,7 @@ angular.module('BaubleApp')
             },
             replace: true,
             link: function postLink(scope, element, attrs) {
-                scope.$watch(function() { return scope.model }, function() {
+                scope.$watch(function() { return scope.model; }, function() {
                     if(scope.model) {
                         if(typeof scope.model === "string") {
                             scope.model = moment(scope.model).toDate();

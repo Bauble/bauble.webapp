@@ -16,7 +16,7 @@ angular.module('BaubleApp')
             })
             .error(function(data, status, headers, config) {
                 // do something
-            })
+            });
 
         $scope.save = function() {
             Source.save($scope.source_detail)
@@ -25,10 +25,10 @@ angular.module('BaubleApp')
                 })
                 .error(function(data, status, headers, config) {
                     // do something
-                })
-        }
+                });
+        };
 
         $scope.cancel = function() {
             $modalInstance.dismiss('cancel');
-        }
+        };
     });

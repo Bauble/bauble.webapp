@@ -47,7 +47,7 @@ angular.module('BaubleApp')
         $scope.tableColumns = [new TableColumn('str')]; // the list of column objects
         $scope.tableData = [];
 
-        $scope.$watch(function() { return $scope.resource }, function(newValue, oldValue) {
+        $scope.$watch(function() { return $scope.resource; }, function(newValue, oldValue) {
             if(oldValue !== newValue && oldValue !== undefined) {
                 alert("Warn the user that the domain is changing!");
             }
@@ -114,7 +114,7 @@ angular.module('BaubleApp')
             var opts = {
                 template: '<div>Enter a name for this report definition:</div>'
             };
-            var d = $dialog.dialog(opts)
+            var d = $dialog.dialog(opts);
             d.open().then(function(result) {
                 console.log('dialog closed');
             });
@@ -127,7 +127,7 @@ angular.module('BaubleApp')
 
             var q = $scope.resource.substring(1);
             if($scope.filters.length === 0) {
-              q += '=*';
+                q += '=*';
             }
             else {
                 q += ' where ';
@@ -143,8 +143,7 @@ angular.module('BaubleApp')
                 .success(function(data, status, headers, config) {
                     $scope.tableData = data.results;
                     console.log('$scope.tableData: ', $scope.tableData);
-                    $scope.message = (!$scope.tableData || $scope.tableData.length === 0)
-                        ? "No results." : "";
+                    $scope.message = (!$scope.tableData || $scope.tableData.length === 0) ? "No results." : "";
                 })
                 .error(function(data, status, headers, config) {
                     // do something

@@ -16,7 +16,7 @@ angular.module('BaubleApp')
 
         $scope.noteTitle = function(note){
             return [note.user, note.date, note.category].join(' - ');
-        }
+        };
 
         $scope.dateOptions = {
 

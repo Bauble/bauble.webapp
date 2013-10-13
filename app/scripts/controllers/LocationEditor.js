@@ -42,5 +42,5 @@ angular.module('BaubleApp')
                         $scope.alerts.push({type: 'error', msg: "Unknown error!"});
                     }
                 });
-        }
+        };
     });

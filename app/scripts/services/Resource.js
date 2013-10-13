@@ -185,7 +185,8 @@ angular.module('BaubleApp')
                     method: 'POST'
                 };
                 return $http(config);
-            }});
+            }
+        });
         return resource;
     }])
 

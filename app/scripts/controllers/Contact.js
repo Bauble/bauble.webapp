@@ -2,7 +2,7 @@
 
 angular.module('BaubleApp')
     .controller('ContactCtrl', function ($scope, $http, globals) {
-        $scope.data = {}
+        $scope.data = {};
         $scope.success = false;
         $scope.error = false;
         $scope.submit = function() {

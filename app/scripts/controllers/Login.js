@@ -30,7 +30,7 @@ angular.module('BaubleApp')
                             $scope.message = "This user account has been suspended";
                             break;
                         default:
-                            $scope.message = "Bad username or password."
+                            $scope.message = "Bad username or password.";
                     }
                 });
         };

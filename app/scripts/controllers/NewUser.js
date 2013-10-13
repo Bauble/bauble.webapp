@@ -3,7 +3,7 @@
 angular.module('BaubleApp')
     .controller('NewUserCtrl', function ($scope, globals, Auth, Organization) {
 
-        $scope.org = {}
+        $scope.org = {};
         $scope.orgCreated = false;
 
         // TODO: if the user hasn't typed anything in the org or email
@@ -30,7 +30,7 @@ angular.module('BaubleApp')
                 })
                 .error(function(data, status, result, config) {
                     console.log("Could not save the organization.");
-                    if(status == 409) {
+                    if(status === 409) {
                         $scope.message = "The organization name or username is not unique."
                     } else {
                         $scope.message = "Could not create the organization."
