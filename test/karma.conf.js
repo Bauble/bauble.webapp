@@ -1,26 +1,26 @@
 // Karma configuration
 
 // base path, that will be used to resolve files and exclude
-basePath = '';
+basePath = '..';
 
 // list of files / patterns to load in the browser
 files = [
     JASMINE,
     JASMINE_ADAPTER,
 
-    '../app/components/jquery/jquery.js',
-    '../app/components/angular/angular.js',
-    '../app/components/angular-mocks/angular-mocks.js',
-    '../app/lib/angular-bootstrap/ui-bootstrap-tpls-0.7.0-SNAPSHOT.min.js',
-    '../app/components/select2/select2.js',
-    '../app/components/angular-ui-select2/src/select2.js',
-    '../app/components/bootstrap-datepicker/js/bootstrap-datepicker.js',
-    '../app/components/angular-grid/ng-grid-2.0.7.min.js',
-    '../app/components/momentjs/min/moment.min.js',
-    '../app/scripts/*.js',
-    '../app/scripts/**/*.js',
+    'app/components/jquery/jquery.js',
+    'app/components/angular/angular.js',
+    'app/components/angular-mocks/angular-mocks.js',
+    'app/lib/angular-bootstrap/ui-bootstrap-tpls-0.7.0-SNAPSHOT.min.js',
+    'app/components/select2/select2.js',
+    'app/components/angular-ui-select2/src/select2.js',
+    'app/components/bootstrap-datepicker/js/bootstrap-datepicker.js',
+    'app/components/angular-grid/ng-grid-2.0.7.min.js',
+    'app/components/momentjs/min/moment.min.js',
+    'app/scripts/*.js',
+    'app/scripts/**/*.js',
     //'test/mock/**/*.js',
-    'spec/**/*.js'
+    'test/spec/**/*.js'
 ];
 
 // list of files to exclude
