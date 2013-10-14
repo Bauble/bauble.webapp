@@ -2,21 +2,21 @@
 
 describe('Controller: AdminSysadminCtrl', function () {
 
-  // load the controller's module
-  beforeEach(module('BaubleApp'));
+    // load the controller's module
+    beforeEach(module('BaubleApp'));
 
-  var AdminSysadminCtrl,
-    scope;
+    var AdminSysadminCtrl,
+        scope;
 
-  // Initialize the controller and a mock scope
-  beforeEach(inject(function ($controller) {
-    scope = {};
-    AdminSysadminCtrl = $controller('AdminSysadminCtrl', {
-      $scope: scope
-    });
-  }));
+    // Initialize the controller and a mock scope
+    beforeEach(inject(function ($controller) {
+        scope = {};
+        AdminSysadminCtrl = $controller('AdminSysadminCtrl', {
+            $scope: scope
+        });
+    }));
 
-  it('should attach a list of awesomeThings to the scope', function () {
-    expect(scope.awesomeThings.length).toBe(3);
-  });
+    // it('should attach a list of awesomeThings to the scope', function () {
+    //     expect(scope.awesomeThings.length).toBe(3);
+    // });
 });
