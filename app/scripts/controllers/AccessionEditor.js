@@ -60,6 +60,7 @@ angular.module('BaubleApp')
             {date_accd: new Date(), date_recvd: new Date()};
         $scope.notes = $scope.accession.notes || [];
         $scope.propagation = {};
+        $scope.source = $scope.source || {}
         $scope.qualifier_rank = {};
 
         $scope.$watch(function() { return $scope.accession.taxon; }, function() {
@@ -164,7 +165,6 @@ angular.module('BaubleApp')
                 // options.context is for
                 Source.query(options.term + '%')
                     .success(function(data, status, headers, config) {
-                        //$scope.families = response.data.results;
                         if(data.results && data.results.length > 0) {
                             options.callback({results: data.results});
                         }
@@ -187,8 +187,10 @@ angular.module('BaubleApp')
             });
 
             modalInstance.result.then(function(source_detail) {
-                console.log("source_detail: ", source_detail);
-                console.log("$scope.source_detail: ", $scope.source_detail);
+                if(!self.accession.source) {
+                    self.accession.source = {};
+                }
+                $scope.source.source_detail = source_detail;
             }, function() {
                 console.log('dismissed');
             });
