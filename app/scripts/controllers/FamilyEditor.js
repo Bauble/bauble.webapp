@@ -9,10 +9,14 @@ angular.module('BaubleApp')
 
         // make sure we have the family details
         if($scope.family && angular.isDefined($scope.family.ref)) {
-            Family.details($scope.family, function(result) {
-                $scope.family = result.data;
-                $scope.notes = $scope.family.notes || [];
-            });
+            Family.details($scope.family)
+                .success(function(data, status, headers, config) {
+                    $scope.family = result.data;
+                    $scope.notes = $scope.family.notes || [];
+                })
+                .error(function(data, status, headers, config) {
+                    // do something
+                });
         }
 
         $scope.activeTab = "general";
