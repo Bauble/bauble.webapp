@@ -3,7 +3,6 @@
 var LIVERELOAD_PORT = 35729;
 var lrSnippet = require('connect-livereload')({ port: LIVERELOAD_PORT });
 var mountFolder = function (connect, dir) {
-    /*jslint es5: true */  // allow use of reserved word statuc
     return connect.static(require('path').resolve(dir));
 };
 
@@ -249,10 +248,10 @@ module.exports = function (grunt) {
                 configFile: 'test/karma.conf.js',
                 singleRun: true
             },
-            e2e: {
-                configFile: 'test/karma-e2e.conf.js',
-                singleRun: true
-            }
+            // e2e: {
+            //     configFile: 'test/karma-e2e.conf.js',
+            //     singleRun: true
+            // }
         },
         cdnify: {
             dist: {
