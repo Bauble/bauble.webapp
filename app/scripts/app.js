@@ -70,6 +70,10 @@ angular.module('BaubleApp', ['ui.bootstrap', 'ui.select2', 'ngGrid'])
                 templateUrl: 'views/curious.html'
             })
 
+            .when('/classic', {
+                templateUrl: 'views/classic.html'
+            })
+
             .otherwise({
                 redirectTo: '/'
             });
