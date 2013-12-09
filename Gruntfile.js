@@ -95,11 +95,20 @@ module.exports = function (grunt) {
                     src: [
                         '.tmp',
                         '<%= yeoman.dist %>/*',
-                        '!<%= yeoman.dist %>/.git*'
+                        '!<%= yeoman.dist %>/.git*',
+                        '**/*~'
                     ]
                 }]
             },
-            server: '.tmp'
+            server: {
+                files: [{
+                    dot: true,
+                    src: [
+                        '.tmp',
+                        '**/*~'
+                    ]
+                }]
+            }
         },
         jshint: {
             options: {
