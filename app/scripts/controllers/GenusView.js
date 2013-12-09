@@ -9,6 +9,7 @@ angular.module('BaubleApp')
             })
             .error(function(data, status, headers, config) {
                 // do something
+                /* jshint -W015 */
             });
 
         $scope.$on('genus-edit', function(){
@@ -31,6 +32,7 @@ angular.module('BaubleApp')
             })
             .error(function(data, status, headers, config) {
                 // do something
+                /* jshint -W015 */
             });
 
         Genus.count($scope.genus, "/taxa/accessions")
@@ -39,6 +41,7 @@ angular.module('BaubleApp')
             })
             .error(function(data, status, headers, config) {
                 // do something
+                /* jshint -W015 */
             });
 
         Genus.count($scope.genus, "/taxa/accessions/plants")
@@ -47,6 +50,7 @@ angular.module('BaubleApp')
             })
             .error(function(data, status, headers, config) {
                 // do something
+                /* jshint -W015 */
             });
 
     });

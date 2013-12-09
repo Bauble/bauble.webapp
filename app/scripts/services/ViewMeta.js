@@ -1,40 +1,35 @@
 'use strict';
 
-angular.module('BaubleApp')
-    .factory('ViewMeta',
-             ['FamilyView', 'GenusView', 'TaxonView', 'AccessionView', 'PlantView',
-              'LocationView',
-              function(FamilyView, GenusView, TaxonView, AccessionView, PlantView,
-                       LocationView) {
-                  return {
-                      getView: function(ref)  {
-                          // allow get the view based on the ref
-                          switch(true) {
-                          case /\/family/.test(ref):
-                              return FamilyView;
-                          case /\/genus/.test(ref):
-                              return GenusView;
-                          case /\/taxon/.test(ref):
-                              return TaxonView;
-                          case /\/accession/.test(ref):
-                              return AccessionView;
-                          case /\/plant/.test(ref):
-                              return PlantView;
-                          case /\/location/.test(ref):
-                              return LocationView;
-                          default:
-                              return null;
-                          }
-                      },
-                      'family': FamilyView,
-                      'genus': GenusView,
-                      'taxon': TaxonView,
-                      'accession': AccessionView,
-                      'plant': PlantView,
-                      'location': LocationView
-                  };
-              }])
-
+angular.module('BaubleApp').factory('ViewMeta', ['FamilyView', 'GenusView', 'TaxonView', 'AccessionView', 'PlantView','LocationView',
+    function(FamilyView, GenusView, TaxonView, AccessionView, PlantView, LocationView) {
+        return {
+            getView: function(ref)  {
+                // allow get the view based on the ref
+                switch(true) {
+                case /\/family/.test(ref):
+                    return FamilyView;
+                case /\/genus/.test(ref):
+                    return GenusView;
+                case /\/taxon/.test(ref):
+                    return TaxonView;
+                case /\/accession/.test(ref):
+                    return AccessionView;
+                case /\/plant/.test(ref):
+                    return PlantView;
+                case /\/location/.test(ref):
+                    return LocationView;
+                default:
+                    return null;
+                }
+            },
+            'family': FamilyView,
+            'genus': GenusView,
+            'taxon': TaxonView,
+            'accession': AccessionView,
+            'plant': PlantView,
+            'location': LocationView
+        };
+    }])
     .factory('FamilyView', [function() {
         return {
             editor: "views/family_editor.html",

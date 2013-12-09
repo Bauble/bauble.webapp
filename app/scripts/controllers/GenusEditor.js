@@ -16,6 +16,7 @@ angular.module('BaubleApp')
                 })
                 .error(function(data, status, headers, config) {
                     // do something
+                    /* jshint -W015 */
                 });
         } else if($location.search().family) {
             Family.get($location.search().family)
@@ -23,7 +24,8 @@ angular.module('BaubleApp')
                     $scope.genus.family = data;
                 })
                 .error(function(data, status, headers, config) {
-                    // do seomthing
+                    // do something
+                    /* jshint -W015 */
                 });
         }
 
@@ -55,6 +57,7 @@ angular.module('BaubleApp')
                     })
                     .error(function(data, status, headers, config) {
                         // do something
+                        /* jshint -W015 */
                     });
             }
         };
@@ -87,4 +90,4 @@ angular.module('BaubleApp')
                     }
                 });
         };
-  });
+    });

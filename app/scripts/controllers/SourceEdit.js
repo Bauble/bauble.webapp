@@ -16,6 +16,7 @@ angular.module('BaubleApp')
             })
             .error(function(data, status, headers, config) {
                 // do something
+                /* jshint -W015 */
             });
 
         $scope.save = function() {
@@ -25,6 +26,7 @@ angular.module('BaubleApp')
                 })
                 .error(function(data, status, headers, config) {
                     // do something
+                    /* jshint -W015 */
                 });
         };
 

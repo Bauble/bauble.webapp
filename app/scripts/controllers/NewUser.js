@@ -31,9 +31,9 @@ angular.module('BaubleApp')
                 .error(function(data, status, result, config) {
                     console.log("Could not save the organization.");
                     if(status === 409) {
-                        $scope.message = "The organization name or username is not unique."
+                        $scope.message = "The organization name or username is not unique.";
                     } else {
-                        $scope.message = "Could not create the organization."
+                        $scope.message = "Could not create the organization.";
                     }
                 });
         };

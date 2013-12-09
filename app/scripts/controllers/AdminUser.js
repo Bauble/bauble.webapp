@@ -5,6 +5,7 @@ angular.module('BaubleApp')
 
         $scope.setPassword = function() {
 
+            /* jshint -W027 */
             // TODO: remove this for production
             alert("Ha Ha!");
             return;

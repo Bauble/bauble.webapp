@@ -60,7 +60,7 @@ angular.module('BaubleApp')
             {date_accd: new Date(), date_recvd: new Date()};
         $scope.notes = $scope.accession.notes || [];
         $scope.propagation = {};
-        $scope.source = $scope.source || {}
+        $scope.source = $scope.source || {};
         $scope.qualifier_rank = {};
 
         $scope.$watch(function() { return $scope.accession.taxon; }, function() {
@@ -79,8 +79,9 @@ angular.module('BaubleApp')
                     })
                     .error(function(data, status, headers, config) {
                         // do something
+                        /* jshint -W015 */
                     });
-            };
+            }
         });
 
         // make sure we have the accession details
@@ -95,6 +96,7 @@ angular.module('BaubleApp')
                 })
                 .error(function(data, status, headers, config) {
                     // do something
+                    /* jshint -W015 */
                 });
         } else if($location.search().taxon) {
             Taxon.get($location.search().taxon)
@@ -103,6 +105,7 @@ angular.module('BaubleApp')
                 })
                 .error(function(data, status, headers, config) {
                     // do something
+                    /* jshint -W015 */
                 });
         }
 
@@ -143,6 +146,7 @@ angular.module('BaubleApp')
                     })
                     .error(function(data, status, headers, config) {
                         // do something
+                        /* jshint -W015 */
                     });
             }
         };
@@ -171,6 +175,7 @@ angular.module('BaubleApp')
                     })
                     .error(function(data, status, headers, config) {
                         // do something
+                        /* jshint -W015 */
                     });
             }
         };
@@ -187,8 +192,8 @@ angular.module('BaubleApp')
             });
 
             modalInstance.result.then(function(source_detail) {
-                if(!self.accession.source) {
-                    self.accession.source = {};
+                if(!$scope.accession.source) {
+                    $scope.accession.source = {};
                 }
                 $scope.source.source_detail = source_detail;
             }, function() {
@@ -219,6 +224,7 @@ angular.module('BaubleApp')
                 })
                 .error(function(data, status, headers, config) {
                     // do something
+                    /* jshint -W015 */
                 });
         };
     });

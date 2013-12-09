@@ -11,13 +11,13 @@ angular.module('BaubleApp')
         // get the list of organizations
         Organization.query()
             .success(function(data, status, headers, config) {
-                console.log(data)
+                console.log(data);
                 //$scope.orgs = data.results;
                 angular.forEach(data.results, function(value, key) {
                     Organization.get_admin(value.ref)
                         .success(function(data, status, headers, config) {
                             console.log(data);
-                            $scope.orgs.push(data)
+                            $scope.orgs.push(data);
                         });
                 });
             })
@@ -59,7 +59,7 @@ angular.module('BaubleApp')
                 org.name + "?",
                 response = window.confirm(msg);
 
-            if(response == true) {
+            if(response === true) {
                 Organization.approve(org)
                     .success(function(data, status, headers, config) {
                         console.log("approved: ", data);
@@ -71,10 +71,7 @@ angular.module('BaubleApp')
                     });
 
             }
-
-
-
-        }
+        };
 
         // callback for adding a new organization
         $scope.newOrg = function() {

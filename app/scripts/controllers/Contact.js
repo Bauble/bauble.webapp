@@ -17,4 +17,4 @@ angular.module('BaubleApp')
                     $scope.error = true;
                 });
         };
-  });
+    });

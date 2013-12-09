@@ -9,6 +9,7 @@ angular.module('BaubleApp')
             })
             .error(function(data, status, headers, config) {
                 // do something
+                /* jshint -W015 */
             });
 
         $scope.$on('accession-edit', function(){
@@ -30,5 +31,6 @@ angular.module('BaubleApp')
             })
             .error(function(data, status, headers, config) {
                 // do something
+                /* jshint -W015 */
             });
     });

@@ -22,5 +22,5 @@
   },
 
   "devel": true,
-  "predef": [ "$", "angular" ]
+  "predef": [ "$", "angular", "moment" ]
 }

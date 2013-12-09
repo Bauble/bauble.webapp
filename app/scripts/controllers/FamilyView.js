@@ -10,6 +10,7 @@ angular.module('BaubleApp')
             })
             .error(function(data, status, headers, config) {
                 // do something
+                /* jshint -W015 */
             });
 
         $scope.$on('family-edit', function(){
@@ -31,6 +32,7 @@ angular.module('BaubleApp')
             })
             .error(function(data, status, headers, config) {
                 // do something
+                /* jshint -W015 */
             });
 
         Family.count($scope.family, "/genera/taxa")
@@ -39,6 +41,7 @@ angular.module('BaubleApp')
             })
             .error(function(data, status, headers, config) {
                 // do something
+                /* jshint -W015 */
             });
 
         Family.count($scope.family, "/genera/taxa/accessions")
@@ -47,6 +50,7 @@ angular.module('BaubleApp')
             })
             .error(function(data, status, headers, config) {
                 // do something
+                /* jshint -W015 */
             });
 
         Family.count($scope.family, "/genera/taxa/accessions/plants")
@@ -55,5 +59,6 @@ angular.module('BaubleApp')
             })
             .error(function(data, status, headers, config) {
                 // do something
-            })
-        });
+                /* jshint -W015 */
+            });
+    });

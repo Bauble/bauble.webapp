@@ -16,6 +16,7 @@ angular.module('BaubleApp')
                 })
                 .error(function(data, status, headers, config) {
                    // do something
+                    /* jshint -W015 */
                 });
         } else if($location.search().genus) {
             Genus.get($location.search().genus)
@@ -24,6 +25,7 @@ angular.module('BaubleApp')
                 })
                 .error(function(data, status, headers, config) {
                     // do something
+                    /* jshint -W015 */
                 });
         }
 
@@ -74,6 +76,7 @@ angular.module('BaubleApp')
                     })
                     .error(function(data, status, headers, config) {
                         // do something
+                        /* jshint -W015 */
                     });
             }
         };
@@ -104,6 +107,7 @@ angular.module('BaubleApp')
                     })
                     .error(function(data, status, headers, config) {
                         // do something
+                        /* jshint -W015 */
                     });
             }
         };

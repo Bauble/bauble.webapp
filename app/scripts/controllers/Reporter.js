@@ -11,6 +11,7 @@ angular.module('BaubleApp')
             })
             .error(function(data, status, headers, config) {
                 // do something
+              /* jshint -W015 */
             });
 
         $scope.showReportSelector = true;
@@ -43,6 +44,17 @@ angular.module('BaubleApp')
                 { label: 'Location', resource: '/location', sort: 5 }
             ];
 
+      // object to represent the report table columns
+        function TableColumn(name, header, visible){
+            this.name = name;
+            this.header = header || this.name;
+            this.width = null;
+            this.visible = visible || false;
+
+            // if header is undefined set to name
+            //this.header = typeof this.header === "undefined" ? this.name : this.header;
+        }
+
         $scope.filters = [{}];
         $scope.tableColumns = [new TableColumn('str')]; // the list of column objects
         $scope.tableData = [];
@@ -59,26 +71,17 @@ angular.module('BaubleApp')
             Resource($scope.resource).get_schema(true)
                 .success(function(data, status, headers, config) {
                     angular.forEach(data.columns, function(index, value) {
-                        if(value !== "id" && value.substring(value.length-3) !== "_id")
+                        if(value !== "id" && value.substring(value.length-3) !== "_id") {
                             $scope.tableColumns.push(new TableColumn(value));
+                        }
                     });
 
                 })
                 .error(function(data, status, headers, config) {
                     // do something
-                })
+                  /* jshint -W015 */
+                });
         });
-
-        // object to represent the report table columns
-        function TableColumn(name, header, visible){
-            this.name = name,
-            this.header = header || this.name,
-            this.width = undefined;
-            this.visible = visible || false;
-
-            // if header is undefined set to name
-            //this.header = typeof this.header === "undefined" ? this.name : this.header;
-        }
 
         $scope.$on('schema-column-selected', function(event, element, selected) {
             // ignore the selected event unless this is part of a filter
@@ -147,6 +150,7 @@ angular.module('BaubleApp')
                 })
                 .error(function(data, status, headers, config) {
                     // do something
+                    /* jshint -W015 */
                     $scope.message = "Error: Could not get results from database";
                 });
         };

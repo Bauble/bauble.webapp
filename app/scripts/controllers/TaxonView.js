@@ -9,6 +9,7 @@ angular.module('BaubleApp')
             })
             .error(function(data, status, headers, config) {
                 // do something
+                /* jshint -W015 */
             });
 
         $scope.$on('taxon-edit', function(){
@@ -31,6 +32,7 @@ angular.module('BaubleApp')
             })
             .error(function(data, status, headers, config) {
                 // do something
+                /* jshint -W015 */
             });
 
         Taxon.count($scope.taxon, "/accessions/plants")
@@ -39,5 +41,6 @@ angular.module('BaubleApp')
             })
             .error(function(data, status, headers, config) {
                 // do something
+                /* jshint -W015 */
             });
     });

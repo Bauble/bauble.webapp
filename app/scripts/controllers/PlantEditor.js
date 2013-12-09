@@ -27,6 +27,7 @@ angular.module('BaubleApp')
                 })
                 .error(function(data, status, headers, config) {
                     // do something
+                    /* jshint -W015 */
                 });
         } else if($location.search().accession) {
             Accession.details($location.search().accession)
@@ -35,6 +36,7 @@ angular.module('BaubleApp')
                 })
                 .error(function(data, status, headers, config) {
                     // do something
+                    /* jshint -W015 */
                 });
         }
 
@@ -69,7 +71,8 @@ angular.module('BaubleApp')
                         options.callback({results: data.results});
                     })
                     .error(function(data, status, headers, config) {
-
+                        // do something
+                        /* jshint -W015 */
                     });
             }
         };
@@ -96,6 +99,7 @@ angular.module('BaubleApp')
                     })
                     .error(function(data, status, headers, config) {
                         // do something
+                        /* jshint -W015 */
                     });
             }
         };

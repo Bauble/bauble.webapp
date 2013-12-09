@@ -11,11 +11,12 @@ angular.module('BaubleApp')
         if($scope.family && angular.isDefined($scope.family.ref)) {
             Family.details($scope.family)
                 .success(function(data, status, headers, config) {
-                    $scope.family = result.data;
+                    $scope.family = data;
                     $scope.notes = $scope.family.notes || [];
                 })
                 .error(function(data, status, headers, config) {
                     // do something
+                    /* jshint -W015 */
                 });
         }
 
@@ -71,7 +72,7 @@ angular.module('BaubleApp')
             Family.save($scope.family)
                 .success(function(data, status, headers, config) {
                     $scope.cancel();
-                 })
+                })
                 .error(function(data, status, headers, config) {
                     var msg = data ? "Error!\n" + data : "Unknown error!";
                     $scope.alerts.push({type: 'error', msg: msg});
