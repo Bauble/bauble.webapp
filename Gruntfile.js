@@ -28,6 +28,7 @@ module.exports = function (grunt) {
 
     grunt.initConfig({
         yeoman: yeomanConfig,
+        aws: grunt.file.readJSON(process.env.HOME + '/.aws.json'),
         watch: {
             compass: {
                 files: ['<%= yeoman.app %>/styles/{,*/}*.{scss,sass}'],
@@ -285,6 +286,61 @@ module.exports = function (grunt) {
                     ]
                 }
             }
+        },
+        /* jshint camelcase: false */
+        aws_s3: {
+            options: {
+                accessKeyId: '<%= aws.bauble.accessKeyId %>',
+                secretAccessKey: '<%= aws.bauble.secretAccessKey %>',
+                uploadConcurrency: 5, // 5 simultaneous uploads
+                downloadConcurrency: 5 // 5 simultaneous downloads
+            },
+            dev: {
+                options: {
+                    bucket: 'beta.bauble.io',
+                    region: 'us-west-2', //'us-east-1',
+                    differential: true,
+                    //debug: true,
+                    sslEnabled: true
+                },
+                files: [
+                    {
+                        action: 'upload',
+                        cwd: '<%= yeoman.dist %>',
+                        src: '**',
+                        expand: true,
+                        dot: true
+                    },
+                    {
+                        action: 'delete',
+                        cwd: '<%= yeoman.dist %>',
+                        dest: '*'
+                    }
+                ]
+            },
+            production: {
+                options: {
+                    bucket: 'bauble.io',
+                    region: 'us-west-2', //'us-east-1',
+                    differential: true,
+                    //debug: true,
+                    sslEnabled: true
+                },
+                files: [
+                    {
+                        action: 'upload',
+                        cwd: '<%= yeoman.dist %>',
+                        src: '**',
+                        expand: true,
+                        dot: true
+                    },
+                    {
+                        action: 'delete',
+                        cwd: '<%= yeoman.dist %>',
+                        dest: '*'
+                    }
+                ]
+            }
         }
     });
 
@@ -307,6 +363,20 @@ module.exports = function (grunt) {
         'concurrent:test',
         'connect:test',
         'karma'
+    ]);
+
+    grunt.registerTask('deploy:dev', [
+        'jshint',
+        'test',
+        'build',
+        'aws_s3:dev'
+    ]);
+
+    grunt.registerTask('deploy:production', [
+        'jshint',
+        'test',
+        'build',
+        'aws_s3:production'
     ]);
 
     grunt.registerTask('build', [
