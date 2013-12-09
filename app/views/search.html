@@ -6,14 +6,14 @@
         <div class="search-box input-group col-md-12">
           <!-- <form> -->
           <span class="input-group-btn">
-            <button class="btn btn-default" type="button"><i class="icon-cog"></i></button>
+            <button class="btn btn-default" type="button"><i class="fa fa-cog"></i></button>
           </span>
-          <input id="search-field" ng-model="q" type="text" autocomplete="off" 
+          <input id="search-field" ng-model="q" type="text" autocomplete="off"
                  autocorrect="off" autocapitalize="off" spellcheck="false"
                  placeholder="Enter a search query" class="form-control"/>
           <span class="input-group-btn">
             <button class="btn btn-default" type="submit" ng-click="search(q)">Search</button>
-          </span>    
+          </span>
         </div> <!-- .search-box -->
       </fieldset>
     </form>
@@ -35,9 +35,9 @@
   <!-- </div> -->
 
   <div class="row">
-    
+
     <div class="list-group col-md-4">
-      <a ng-repeat="result in results" class="list-group-item" 
+      <a ng-repeat="result in results" class="list-group-item"
          ng-click="itemSelected(result)">
         {{result.str}}
       </a>

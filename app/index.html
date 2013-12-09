@@ -13,13 +13,14 @@
     <!-- <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"> -->
 
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
-    
-    <link href='http://fonts.googleapis.com/css?family=Raleway:300|Open+Sans' rel='stylesheet' type='text/css'>
-    
+
+    <link href="http://fonts.googleapis.com/css?family=Raleway:300|Open+Sans" rel="stylesheet"
+          type="text/css">
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css"
+          rel="stylesheet">
+
     <!-- build:css({.tmp,app}) styles/main.css -->
     <link rel="stylesheet" href="components/bootstrap/dist/css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="components/components-font-awesome/css/font-awesome.min.css"/>
-    
     <link rel="stylesheet" href="components/select2/select2.css"/>
     <link rel="stylesheet" href="components/angular-grid/ng-grid.css"/>
     <link rel="stylesheet" href="components/bootstrap-datepicker/css/datepicker.css"/>
@@ -28,7 +29,7 @@
 
   </head>
   <body ng-app="BaubleApp" ng-controller="AppCtrl">
-    
+
     <!--[if lt IE 7]>
         <p class="chromeframe">You are using an outdated browser. <a href="http://browsehappy.com/">Upgrade your browser today</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to better experience this site.</p>
         <![endif]-->
@@ -44,7 +45,7 @@
     <div id="container">
       <div id="header">
         <div ng-cloak class="navbar navbar-fixed-top">
-          <a class="navbar-brand" href="#">Bauble 
+          <a class="navbar-brand" href="#">Bauble
             <span style="font-style: italic; font-size: 80%">{{titleQualifier}}</span></a>
           <ul ng-hide="!isLoggedIn" class="nav navbar-nav">
             <li><a href="#search">Search</a></li>
@@ -119,14 +120,14 @@
               <a href="#/contact">Contact us</a>
               <a href="#/classic">Bauble Classic</a>
             </div> <!-- .col -->
-            
+
             <div class="col col-md-4">
               <!-- Bauble &copy; 2005-2013 -->
               <a href="#/docs">Documentation</a>
               <a href="#/faq">FAQ</a>
               <a href="http://github.com/Bauble">Code</a>
             </div> <!-- .col -->
-            
+
             <div class="col col-md-4">
               <a href="#/privacy">Privacy</a>
             </div> <!-- .col -->
@@ -135,15 +136,15 @@
 
         <div class="row">
           <p class="copyright pull-right">Bauble &copy; 2005-2013</p>
-        </div> 
-        
+        </div>
+
       </div>       <!-- #footer -->
     </div>         <!-- #container -->
 
     <!-- these scripts will be cdnified -->
     <script src="components/jquery/jquery.js"></script>
     <script src="components/angular/angular.js"></script>
-    
+
     <!-- build:js scripts/modules.js -->
     <script src="components/angular-sanitize/angular-sanitize.js"></script>
     <!-- <script src="components/bootstrap/dist/js/bootstrap.min.js"></script> -->
@@ -211,6 +212,6 @@
       ga('create', 'UA-43755352-1', 'bauble.io');
       ga('send', 'pageview');
     </script>
-       
+
   </body>
 </html>
