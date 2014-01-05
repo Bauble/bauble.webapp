@@ -13,6 +13,7 @@ module.exports = function(config) {
         files: [
             'app/components/jquery/jquery.js',
             'app/components/angular/angular.js',
+            'app/components/angular-route/angular-route.js',
             'app/components/angular-mocks/angular-mocks.js',
             'app/lib/angular-bootstrap/ui-bootstrap-tpls-0.7.0-SNAPSHOT.min.js',
             'app/components/select2/select2.js',
