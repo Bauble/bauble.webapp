@@ -18,9 +18,15 @@
   "white": false,
   "onecase": true,
   "globals": {
-    "angular": true
+    "angular": true,
+    "inject": true,
+    "describe": true,
+    "before": true,
+    "beforeEach": true,
+    "after": true,
+    "afterEach": true,
+    "expect": true,
+    "it": true
   },
-
-  "devel": true,
-  "predef": [ "$", "angular", "moment" ]
+  "devel": true
 }

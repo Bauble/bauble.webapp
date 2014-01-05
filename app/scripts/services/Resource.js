@@ -2,9 +2,9 @@
 
 angular.module('BaubleApp')
 
-    .factory('Resource', function (globals, $http) {
+    .factory('Resource', function (globals, apiRoot, $http) {
         return function(resourceRoot) {
-            var resourceUrl = globals.apiRoot + resourceRoot;
+            var resourceUrl = apiRoot + resourceRoot;
 
             return {
 
@@ -13,10 +13,10 @@ angular.module('BaubleApp')
                     if(isNaN(Number(resource))) {
                         if(angular.isObject(resource)) {
                             // if an object then use the ref
-                            url = resource.ref.indexOf(globals.apiRoot) === 0 ? resource.ref : globals.apiRoot + resource.ref;
+                            url = resource.ref.indexOf(apiRoot) === 0 ? resource.ref : apiRoot + resource.ref;
                         } else {
                             // assume it a string and a ref
-                            url = globals.apiRoot + resource;
+                            url = apiRoot + resource;
                         }
                     }
                     return url;
@@ -69,8 +69,8 @@ angular.module('BaubleApp')
                         }),
                         config = {
                             // make sure the url has the api root on it
-                            url: url.indexOf(globals.apiRoot) === 0 ?
-                                url : globals.apiRoot + url,
+                            url: url.indexOf(apiRoot) === 0 ?
+                                url : apiRoot + url,
                             method: data.ref ? 'PUT' : 'POST',
                             data: data,
                             headers: headers

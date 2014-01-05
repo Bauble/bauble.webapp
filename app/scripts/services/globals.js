@@ -4,8 +4,6 @@ angular.module('BaubleApp')
     .factory('globals', function () {
 
         return {
-            apiRoot: 'http://api.bauble.io/api/v1',
-
             alerts: [],
 
             addAlert: function(message, type){

@@ -1,12 +1,12 @@
 'use strict';
 
 angular.module('BaubleApp')
-    .factory('Search', function ($http, globals) {
+    .factory('Search', function ($http, apiRoot, globals) {
 
         return {
             query: function(q) {
                 var config = {
-                    url: globals.apiRoot + "/search",
+                    url: apiRoot + "/search",
                     method: 'GET',
                     params: {
                         q: q

@@ -1,12 +1,12 @@
 'use strict';
 
 angular.module('BaubleApp')
-    .controller('ContactCtrl', function ($scope, $http, globals) {
+    .controller('ContactCtrl', function ($scope, $http, globals, apiRoot) {
         $scope.data = {};
         $scope.success = false;
         $scope.error = false;
         $scope.submit = function() {
-            $http.post(globals.apiRoot + "/contact", $scope.data)
+            $http.post(apiRoot + "/contact", $scope.data)
                 .success(function(data, status, headers, config) {
                     $scope.success = true;
                     $scope.error = false;

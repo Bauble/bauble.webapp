@@ -19,9 +19,9 @@ describe('Family controller', function() {
         var scope, ctrl, $httpBackend,
             testFamily = {family: 'TestFamily', id: 1};
 
-        beforeEach(inject(function(_$httpBackend_, $rootScope, $controller, globals) {
+        beforeEach(inject(function(_$httpBackend_, $rootScope, $controller, apiRoot) {
             $httpBackend = _$httpBackend_;
-            $httpBackend.expectGET(globals.apiRoot + '/family/1')
+            $httpBackend.expectGET(apiRoot + '/family/1')
                 .respond(testFamily);
 
             scope = $rootScope.$new();
@@ -46,9 +46,9 @@ describe('Family controller', function() {
             testFamily = {family: 'TestFamily', id: 1};
 
 
-        beforeEach(inject(function(_$httpBackend_, $rootScope, $controller, globals) {
+        beforeEach(inject(function(_$httpBackend_, $rootScope, $controller, apiRoot) {
             $httpBackend = _$httpBackend_;
-            $httpBackend.expectPOST(globals.apiRoot + '/family')
+            $httpBackend.expectPOST(apiRoot + '/family')
                 .respond('');
 
             scope = $rootScope.$new();
@@ -68,9 +68,9 @@ describe('Family controller', function() {
             testFamily = {family: 'TestFamily', id: 1};
 
 
-        beforeEach(inject(function(_$httpBackend_, $rootScope, $controller, globals) {
+        beforeEach(inject(function(_$httpBackend_, $rootScope, $controller, apiRoo) {
             $httpBackend = _$httpBackend_;
-            $httpBackend.expectDELETE(globals.apiRoot + '/family/1')
+            $httpBackend.expectDELETE(apiRoot + '/family/1')
                 .respond('');
 
             scope = $rootScope.$new();
@@ -90,9 +90,9 @@ describe('Family controller', function() {
             testFamily = {family: 'TestFamily', id: 1};
 
 
-        beforeEach(inject(function(_$httpBackend_, $rootScope, $controller, globals) {
+        beforeEach(inject(function(_$httpBackend_, $rootScope, $controller, apiRoot) {
             $httpBackend = _$httpBackend_;
-            $httpBackend.expectDELETE(globals.apiRoot + '/family/1')
+            $httpBackend.expectDELETE(apiRoot + '/family/1')
                 .respond('');
 
             scope = $rootScope.$new();

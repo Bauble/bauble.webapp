@@ -8,14 +8,15 @@ describe('Controller: FamilyEditorCtrl', function () {
     var FamilyEditorCtrl,
         scope,
         globals,
+        apiRoot,
         $httpBackend;
 
     // Initialize the controller and a mock scope
-    beforeEach(inject(function (_globals_, $controller, $httpBackend) {
+    beforeEach(inject(function (_globals_, _apiRoot_, $controller, $httpBackend) {
         scope = {};
         globals = _globals_;
-        globals.apiRoot = "/test"
-        $httpBackend.when('GET', '/test/family/1').respond(
+        apiRoot = _apiRoot_;
+        $httpBackend.when('GET', apiRoot + '/family/1').respond(
             {ref: "/family1", family: "TestFamily"});
         FamilyEditorCtrl = $controller('FamilyEditorCtrl', {
             $scope: scope
