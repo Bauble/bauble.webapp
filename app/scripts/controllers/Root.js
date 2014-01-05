@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('BaubleApp')
-    .controller('AppCtrl', function ($scope, $location, globals, Auth) {
+    .controller('RootCtrl', function ($scope, $location, globals, Auth) {
 
         //$scope.shared = {};
         //$scope.shared.hideMainMenu = true;
