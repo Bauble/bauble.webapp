@@ -1,7 +1,10 @@
 'use strict';
 
 angular.module('BaubleApp')
-    .controller('MainCtrl', function ($scope, globals) {
-        //$scope.globals.hideMainMenu = true;
-        /* jshint -W015 */
-    });
+    .controller('MainCtrl', ['$scope', 'Auth', '$location', function ($scope, Auth, $location) {
+        if(!Auth.isLoggedIn()) {
+            $location.path("/login");
+        } else {
+            $location.path("/search");
+        }
+    }]);

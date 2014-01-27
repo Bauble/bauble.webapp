@@ -35,7 +35,7 @@
   <div class="row">
 
     <div class="list-group col-md-4">
-      <a ng-repeat="result in results" class="list-group-item"
+      <a ng-repeat="result in results track by result.ref" class="list-group-item"
          ng-click="itemSelected(result)">
         {{result.str}}
       </a>

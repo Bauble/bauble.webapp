@@ -50,30 +50,6 @@ angular.module('BaubleApp', ['ngRoute', 'ui.bootstrap', 'ui.select2', 'ngGrid'])
                 templateUrl: 'views/docs.html'
             })
 
-            .when('/faq', {
-                templateUrl: 'views/faq.html'
-            })
-
-            .when('/privacy', {
-                templateUrl: 'views/privacy.html'
-            })
-
-            .when('/about', {
-                templateUrl: 'views/about.html'
-            })
-
-            .when('/contact', {
-                templateUrl: 'views/contact.html'
-            })
-
-            .when('/curious', {
-                templateUrl: 'views/curious.html'
-            })
-
-            .when('/classic', {
-                templateUrl: 'views/classic.html'
-            })
-
             .otherwise({
                 redirectTo: '/'
             });
