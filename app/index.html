@@ -80,19 +80,19 @@
             <li><a href="#reporter">Report</a></li>
           </ul>
 
-          <ul ng-hide="!isLoggedIn "class="nav navbar-nav pull-right">
+          <ul ng-hide="!user "class="nav navbar-nav pull-right">
             <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Menu
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{user.email}}
                 <b class="caret"></b>
               </a>
               <ul class="dropdown-menu pull-right">
-                <li><a class="pull-right" href="#admin">Admin</a></li>
+                <!-- <li><a class="pull-right" href="#admin">Admin</a></li> -->
                 <li><a class="pull-right" href="#logout">Logout</a></li>
               </ul>
             </li>
           </ul>
 
-          <ul ng-show="!isLoggedIn" class="nav navbar-nav pull-right">
+          <ul ng-show="!user" class="nav navbar-nav pull-right">
             <li><a href="#login">Login</a></li>
           </ul>
 
@@ -103,30 +103,30 @@
         <div class="not-ready-warning">
           <p>Bauble is currently under development. This site is not ready for general use.</p>
         </div>
-        <div class="curious">
-          <a href="#/curious">Curious about what's happening here? Click me.</a>
-        </div>
+        <!-- <div class="curious">
+        <a href="#/curious">Curious about what's happening here? Click me.</a>
+        </div> -->
         <alert ng-repeat="alert in alerts" type="alert.type"
                close="closeAlert($index)" ng-bind="alert.msg"></alert>
-        <div id="main-view" ng-view></div>
+        <div ui-view></div>
       </div> <!-- #content -->
 
       <div id="footer">
         <div class="row">
           <div class="col-md-10 col-md-offset-2">
-            <!-- <div class="col col-md-4"> -->
-            <!--   <a href="#/news">News</a> -->
-            <!--   <a href="#/about">Who we are</a> -->
-            <!--   <a href="#/contact">Contact us</a> -->
-            <!--   <a href="#/classic">Bauble Classic</a> -->
-            <!-- </div> <\!-- .col -\-> -->
+            <div class="col col-md-4">
+              <a href="#/news">News</a>
+              <a href="#/about">Who we are</a>
+              <a href="#/contact">Contact us</a>
+              <a href="#/classic">Bauble Classic</a>
+            </div> <!-- .col -->
 
-            <!-- <div class="col col-md-4"> -->
-            <!--   <\!-- Bauble &copy; 2005-2013 -\-> -->
-            <!--   <a href="#/docs">Documentation</a> -->
-            <!--   <a href="#/faq">FAQ</a> -->
-            <!--   <a href="http://github.com/Bauble">Code</a> -->
-            <!-- </div> <\!-- .col -\-> -->
+            <div class="col col-md-4">
+              <!-- Bauble &copy; 2005-2013 -->
+              <a href="#/docs">Documentation</a>
+              <a href="#/faq">FAQ</a>
+              <a href="http://github.com/Bauble">Code</a>
+            </div> <!-- .col -->
 
             <div class="col col-md-4">
               <a href="#/privacy">Privacy</a>
@@ -142,16 +142,20 @@
     </div>         <!-- #container -->
 
     <!-- these scripts will be cdnified -->
-    <script src="components/jquery/jquery.js"></script>
+    <!-- NOTE: These components won't be cdn-ified if the versions haven't been
+         update in the google-cdn package -->
+    <script src="components/jquery/jquery.min.js"></script>
     <script src="components/angular/angular.js"></script>
 
 
     <!-- build:js scripts/modules.js -->
     <script src="components/angular-sanitize/angular-sanitize.js"></script>
     <script src="components/angular-route/angular-route.js"></script>
+    <script src="components/angular-ui-router/release/angular-ui-router.min.js"></script>
     <!-- <script src="components/bootstrap/dist/js/bootstrap.min.js"></script> -->
     <!-- <script src="components/angular-bootstrap/ui-bootstrap-tpls.js"></script> -->
     <script src="components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+    <script src="components/lodash/dist/lodash.min.js"></script>
     <script src="components/select2/select2.js"></script>
     <script src="components/angular-ui-select2/src/select2.js"></script>
     <script src="components/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
@@ -203,8 +207,11 @@
     <script src="scripts/controllers/AdminNewUser.js"></script>
     <script src="scripts/controllers/Logout.js"></script>
     <script src="scripts/directives/bs-datepicker.js"></script>
-    <script src="scripts/controllers/Contact.js"></script>
     <script src="scripts/services/apiRoot.js"></script>
+    <script src="scripts/controllers/dashboard.js"></script>
+    <script src="scripts/controllers/signup.js"></script>
+    <script src="scripts/controllers/org-edit.js"></script>
+    <script src="scripts/services/user.js"></script>
     <!-- endbuild -->
 
     <script>

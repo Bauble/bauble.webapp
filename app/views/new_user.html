@@ -1,15 +1,15 @@
 <!-- <div ng-include="'views/navbar-noauth.html'"></div> -->
 
 <div ng-controller="NewUserCtrl" id="new-user-page" class="container">
-  
+
   <div class="row">
     <form class="col-md-6 col-md-offset-2" ng-hide="orgCreated">
       <fieldset>
         <legend>Create a new organization</legend>
-        
+
         <div class="form-group">
           <label for="org-name">What's the name of the organization?</label>
-          <input ng-model="org.name" type="text" id="org-name" class="form-control" 
+          <input ng-model="org.name" type="text" id="org-name" class="form-control"
                  required>
           <p class="help-block">This is the full name of your organization.
             e.g. Belize Botanic Gardens or Steve's Plant Collection</p>
@@ -29,28 +29,26 @@
           <input type="password" ng-model="password" id="password" class="form-control"
                  required>
         </div>
-        
-        
+
 
         <!-- TODO: we need to add a CAPTCHA here -->
 
-        
         <button type="submit" class="btn btn-default" ng-click="submit()">
           Create the account
         </button>
-        
+
         <div class="error" ng-show="message">
           {{message}}
         </div>
       </fieldset>
     </form>
-    
-    
+
+
     <div class=" col-md-offset-1 welcome" ng-show="orgCreated">
       <h3>Welcome to Bauble!</h3>
       <p>
         Thank you for creating an account on Bauble.  You will receive an email
-        when your account is approved.  
+        when your account is approved.
       </p>
     </div>
 

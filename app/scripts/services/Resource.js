@@ -2,7 +2,7 @@
 
 angular.module('BaubleApp')
 
-    .factory('Resource', function (globals, apiRoot, $http) {
+    .factory('Resource', function (globals, apiRoot, $http, User) {
         return function(resourceRoot) {
             var resourceUrl = apiRoot + resourceRoot;
 
@@ -57,11 +57,20 @@ angular.module('BaubleApp')
                     return $http(config);
                 },
 
-                save: function (data, depth) {
+                save: function (data) {
                     // if the data has a ref then it already exists in the
                     // database and should be updated instead of creating a new
                     // one
-                    depth = depth || 2;
+                    console.log('data: ', data);
+                    var user = User.local();
+                    return $http({
+                        url: data.id ? [resourceUrl, data.id].join('/') : resourceUrl,
+                        method: data.id ? 'PATCH' : 'POST',
+                        data: data,
+                        headers: user ? user.getAuthHeader() : null
+                    });
+
+
                     var url = data.ref ? data.ref : resourceUrl,
                         headers = angular.extend(globals.getAuthHeader(), {
                             'Content-Type': 'application/json',
@@ -191,21 +200,66 @@ angular.module('BaubleApp')
     }])
 
     // User service for CRUD location types
-    .factory('User', ['$http', 'globals', 'Resource', function($http, globals, $resource) {
-        var resource = $resource('/user');
-        resource.setPassword = function(resource, password) {
-            var config = {
-                url: this.get_url_from_resource(resource) + "/password",
-                headers: angular.extend(globals.getAuthHeader(), {
-                    'Content-Type': 'application/json'
-                }),
-                method: 'POST',
-                data: { password: password }
+    .factory('User2', ['$http', 'globals', 'apiRoot', 'Resource',
+        function($http, globals, apiRoot, $resource) {
+            var resource = $resource('/user');
+
+            function AuthorizedUser(user) {
+
+                var _user = {
+                    getAuthHeader: function() {
+                        return {'Authorization': 'Basic ' +
+                                btoa(this.email + ':' + this.access_token)};
+                    }
+                };
+
+                return _.extend(user, _user);
+            }
+
+            resource.extend = function(user) {
+                return new AuthorizedUser(user);
             };
-            return $http(config);
-        };
-        return resource;
-    }])
+
+            resource.login = function(email, password) {
+                return $http({
+                    url: [apiRoot, 'login'].join('/'),
+                    method: 'GET',
+                    headers: {'Authorization': 'Basic ' + btoa(email + ':' + password)}
+                });
+            };
+
+            resource.setPassword = function(resource, password) {
+                var config = {
+                    url: this.get_url_from_resource(resource) + "/password",
+                    headers: angular.extend(globals.getAuthHeader(), {
+                        'Content-Type': 'application/json'
+                    }),
+                    method: 'POST',
+                    data: { password: password }
+                };
+                return $http(config);
+            };
+
+            resource.local = function(user) {
+                var key = 'user';
+
+                if(user === null) {
+                    // deleter
+                    localStorage.removeItem(key);
+                } else {
+                    if(user) {
+                        // setter
+                        localStorage.setItem(key, JSON.stringify(user));
+                    } else {
+                        // getter
+                        var data = localStorage.getItem(key);
+                        return data === null ? data : this.extend(JSON.parse(data));
+                    }
+                }
+            };
+
+            return resource;
+        }])
 
     // Report service
     .factory('Report', ['Resource', function($resource) {

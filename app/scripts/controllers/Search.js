@@ -1,15 +1,16 @@
 'use strict';
 
 angular.module('BaubleApp')
-    .controller('SearchCtrl', function ($scope, globals, Search, ViewMeta) {
+    .controller('SearchCtrl', function ($scope, $location, globals, Search, ViewMeta) {
         $scope.viewMeta = null;
         $scope.selected = null;
         $scope.results = null; // the results of the search
+        $scope.query = $location.search().q || '';
 
         // query the server for search results
-        $scope.search = function(q) {
+        $scope.search = function() {
             $scope.results = [];
-            if(!q) {
+            if(!$scope.query) {
                 $scope.alert = "Please enter a search query";
                 return;
             } else {
@@ -18,9 +19,8 @@ angular.module('BaubleApp')
 
             $scope.message = "Searching....";
             $scope.selected = $scope.viewMeta = $scope.results = null;
-            console.log("q: ", q);
-            sessionStorage.setItem('current_search', q);
-            Search.query(q)
+            sessionStorage.setItem('current_search', $scope.query);
+            Search.query($scope.query)
                 .success(function(data, status, headers, config) {
                     $scope.results = data.results;
                     if($scope.results.length===0) {
@@ -32,6 +32,12 @@ angular.module('BaubleApp')
                     $scope.message = "";
                 });
         };
+
+
+        // if we were passed a query as a routeParam then initiate a search
+        if($scope.query) {
+            $scope.search();
+        }
 
         $scope.itemSelected = function(selected) {
             $scope.viewMeta = ViewMeta.getView(selected.ref);
