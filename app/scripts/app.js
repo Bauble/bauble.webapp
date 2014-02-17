@@ -24,7 +24,7 @@ angular.module('BaubleApp', [
             .state('main.search', {
                 url: '/search',
                 templateUrl: 'views/search.html',
-                controller: 'SearchCtrl'
+                controller: 'SearchCtrl',
             })
 
             .state('login', {
@@ -39,9 +39,31 @@ angular.module('BaubleApp', [
                 controller: 'LogoutCtrl'
             })
 
-            // .when('/newuser', {
-            //     templateUrl: 'views/new_user.html'
-            // })
+            .state('main.resource-edit', {
+                url: '/:resource/:id/edit',
+                templateUrl: function($stateParams) {
+                    return 'views/' + $stateParams.resource.toLowerCase() + "-edit.html";
+                },
+                controllerProvider: function($stateParams) {
+                    var resource = $stateParams.resource;
+                    resource = resource.slice(0,1).toUpperCase() + resource.slice(1, resource.length);
+                    return resource + "EditCtrl";
+                }
+
+            })
+
+            .state('main.resource-add', {
+                url: '/:resource/add',
+                templateUrl: function($stateParams) {
+                    console.log('$stateParams: ', $stateParams);
+                    return 'views/' + $stateParams.resource.toLowerCase()+ "-edit.html";
+                },
+                controllerProvider: function($stateParams) {
+                    var resource = $stateParams.resource;
+                    resource = resource.slice(0,1).toUpperCase() + resource.slice(1, resource.length);
+                    return resource + "EditCtrl";
+                }
+            })
 
             .state('signup', {
                 url: '/signup',
@@ -59,16 +81,6 @@ angular.module('BaubleApp', [
             //     controller: 'AdminCtrl'
             // })
 
-            // .when('/new/:resource', {
-            //     templateUrl: 'views/new.html',
-            //     controller: 'NewCtrl'
-            // })
-
-            // .when('/edit/:resource', {
-            //     templateUrl: 'views/edit.html',
-            //     controller: 'EditCtrl'
-            // })
-
             // .when('/reporter', {
             //     templateUrl: 'views/report_design.html',
             //     controller: 'ReporterCtrl'
@@ -78,9 +90,7 @@ angular.module('BaubleApp', [
             //     templateUrl: 'views/docs.html'
             // })
 
-            // .otherwise({
-            //     redirectTo: '/'
-            // });
+
 
         $urlRouterProvider.otherwise('/dashboard');
     });

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('BaubleApp')
-    .controller('TaxonEditorCtrl', function ($scope, $location, globals, Genus, Taxon) {
+    .controller('TaxonEditCtrl', function ($scope, $location, globals, Genus, Taxon) {
         // isNew is inherited from the NewCtrl if this is a /new editor
         $scope.taxon = globals.getSelected() && !$scope.isNew ? globals.getSelected() : {};
         $scope.notes = $scope.taxon.notes || [];

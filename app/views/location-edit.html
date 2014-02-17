@@ -1,9 +1,9 @@
-<div ng-form name="locationForm" ng-controller="LocationEditorCtrl" class="bauble-editor location-editor container">
+<div ng-form name="locationForm"  class="bauble-editor location-editor container">
 
-  <alert class="col-md-6 col-md-offset 3" ng-repeat="alert in alerts" type="alert.type" 
+  <alert class="col-md-6 col-md-offset 3" ng-repeat="alert in alerts" type="alert.type"
          close="closeAlert($index)">{{alert.msg}}</alert>
 
-  <div class="row editor-header">    
+  <div class="row editor-header">
     <div class="header-title col-md-8">
       <h4>{{location.str || 'New location'}}</h4>
     </div>

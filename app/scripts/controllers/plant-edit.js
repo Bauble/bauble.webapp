@@ -10,7 +10,7 @@ var acc_type_values ={
 };
 
 angular.module('BaubleApp')
-    .controller('PlantEditorCtrl',
+    .controller('PlantEditCtrl',
         function ($scope, $location, globals, Accession, Plant, Location) {
 
         // isNew is inherited from the NewCtrl if this is a /new editor

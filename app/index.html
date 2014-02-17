@@ -47,7 +47,7 @@
         <div ng-cloak class="navbar navbar-fixed-top">
           <a class="navbar-brand" href="#">Bauble
             <span style="font-style: italic; font-size: 80%">{{titleQualifier}}</span></a>
-          <ul ng-hide="!isLoggedIn" class="nav navbar-nav">
+          <ul ng-show="user" class="nav navbar-nav">
             <li><a href="#search">Search</a></li>
             <li class="dropdown">
               <a class="dropdown-toggle">New
@@ -55,28 +55,28 @@
               </a>
               <ul class="dropdown-menu pull-right">
                 <li>
-                  <a class="pull-right" href="#/new/family">Family</a>
+                  <a class="pull-right" href="#/family/add">Family</a>
                 </li>
                 <li>
-                  <a class="pull-right" href="#/new/genus">Genus</a>
+                  <a class="pull-right" href="#/genus/add">Genus</a>
                 </li>
                 <li>
-                  <a class="pull-right" href="#/new/taxon">Taxon</a>
+                  <a class="pull-right" href="#/taxon/add">Taxon</a>
                 </li>
                 <li>
-                  <a class="pull-right" href="#/new/accession">Accession</a>
+                  <a class="pull-right" href="#/accession/add">Accession</a>
                 </li>
                 <li>
-                  <a class="pull-right" href="#/new/plant">Plant</a>
+                  <a class="pull-right" href="#/plant/add">Plant</a>
                 </li>
                 <li>
-                  <a class="pull-right" href="#/new/location">Location</a>
+                  <a class="pull-right" href="#/location/add">Location</a>
                 </li>
               </ul>
             </li>
           </ul>
 
-          <ul ng-hide="!isLoggedIn" class="nav navbar-nav">
+          <ul ng-show="user" class="nav navbar-nav">
             <li><a href="#reporter">Report</a></li>
           </ul>
 
@@ -169,12 +169,12 @@
     <script src="scripts/controllers/Main.js"></script>
     <script src="scripts/controllers/Search.js"></script>
     <script src="scripts/controllers/Root.js"></script>
-    <script src="scripts/controllers/FamilyEditor.js"></script>
-    <script src="scripts/controllers/GenusEditor.js"></script>
-    <script src="scripts/controllers/TaxonEditor.js"></script>
-    <script src="scripts/controllers/AccessionEditor.js"></script>
-    <script src="scripts/controllers/PlantEditor.js"></script>
-    <script src="scripts/controllers/LocationEditor.js"></script>
+    <script src="scripts/controllers/family-edit.js"></script>
+    <script src="scripts/controllers/genus-edit.js"></script>
+    <script src="scripts/controllers/taxon-edit.js"></script>
+    <script src="scripts/controllers/accession-edit.js"></script>
+    <script src="scripts/controllers/plant-edit.js"></script>
+    <script src="scripts/controllers/location-edit.js"></script>
     <script src="scripts/controllers/NotesEditor.js"></script>
 
     <script src="scripts/services/Search.js"></script>
@@ -193,8 +193,8 @@
     <script src="scripts/directives/emit.js"></script>
     <script src="scripts/controllers/New.js"></script>
     <script src="scripts/controllers/Edit.js"></script>
-    <script src="scripts/controllers/SourceEdit.js"></script>
-    <script src="scripts/controllers/PropagationEditor.js"></script>
+    <script src="scripts/controllers/source-edit.js"></script>
+    <script src="scripts/controllers/propagation-edit.js"></script>
     <!-- <script src="scripts/controllers/Welcome.js"></script> -->
     <script src="scripts/controllers/NewUser.js"></script>
     <script src="scripts/controllers/NewOrganization.js"></script>

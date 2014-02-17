@@ -53,7 +53,7 @@ var recvd_type_values = {
 };
 
 angular.module('BaubleApp')
-    .controller('AccessionEditorCtrl', function ($scope, $location, $modal, globals,
+    .controller('AccessionEditCtrl', function ($scope, $location, $modal, globals,
                                                  Taxon, Accession, Source) {
         // isNew is inherited from the NewCtrl if this is a /new editor
         $scope.accession = globals.getSelected() && !$scope.isNew ? globals.getSelected() :

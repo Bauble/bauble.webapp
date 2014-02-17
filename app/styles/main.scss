@@ -45,6 +45,7 @@ $block-header-padding: .3em .3em;
 $icon-color: #FF530D;
 
 @mixin block-header {
+    display: block;
     background-color: $block-header-background;
     border: $block-header-border;
     padding: $block-header-padding;
@@ -173,47 +174,6 @@ h1, h2, h3, h4, h5, legend {
     color: $icon-color;
 }
 
-.main-page {
-
-    & > div {
-        //padding: 50px 200px;
-    }
-    
-    h4 {
-        margin: 20px 0 0 0;
-    }
-
-    .section1 {
-        //background-color: #d4d9b0; //#ffffec // #fcf6d9;
-        //background-color: #BDD4DE; //#9fbf8f; //#fff9df // #fcf6d9;
-        padding-bottom: 8em;
-    }
-
-    .features {
-        margin-top: 2em;
-        
-        .row {
-            margin-top: 2em;
-        }        
-
-        h4 { 
-            margin: 0;
-        }
-
-        i {
-            margin: 0;
-        }
-        
-    }
-    
-    .section2 {
-        padding: 5em 0;
-        /* padding-top: 3em; */
-        /* padding-bottom: 10em; */
-        background-color: #BDD4DE; //#9fbf8f; //#fff9df // #fcf6d9;
-    }   
-}
-
 #privacy-page {
     padding-bottom: 3em;
 }
@@ -222,17 +182,7 @@ h1, h2, h3, h4, h5, legend {
     padding-bottom: 3em;
 }
 
-#faq-page {
-    padding-bottom: 3em;
 
-    h4 {
-        font-weight: bold;
-    }
-    
-    .question-block {
-        padding-top: .5em;
-    }
-}
 
 // add padding to acount for the navbar
 .show-menubar {
@@ -367,12 +317,47 @@ input {
 
 }
 
-.list-group {
-    background-color: $background-color;
-    a { 
-        background-color: white;
+.result-group {
+    ul {
+        padding: 0;
+        margin: 0;
+    }
+
+    .panel-body {
+        padding: 0;
     }
 }
+
+.result-item {
+    list-style: none;
+    //margin: .5em 0;
+    padding: 1em .5em;
+    border-bottom: solid 1px $light-grey;
+
+    &:hover {
+        background-color: $light-grey;
+    }
+
+    &:last-child {
+        border-bottom: none;
+    }
+
+    a {
+        color: white;
+    }
+    a:hover {
+        text-decoration: none;
+    }
+}
+
+
+
+/* .list-group { */
+/*     background-color: $background-color; */
+/*     a {  */
+/*         background-color: white; */
+/*     } */
+/* } */
 
 
 /*.bauble-editor label + input {
@@ -381,6 +366,21 @@ input {
 
 .block-header { 
     @include block-header;
+}
+
+.editor-header {
+
+    @include block-header;
+    //margin-bottom: 2em;
+
+    h4 {
+        margin-left: .3em;
+        display: inline-block;
+    }
+    
+    .btn {
+        margin-right: .3em;
+    }
 }
 
 .bauble-editor {
@@ -398,18 +398,18 @@ input {
         padding: 25px;
     }
 
-    .editor-header {
-        @include block-header;
-        margin-bottom: 2em;
+    /* .editor-header { */
+    /*     @include block-header; */
+    /*     margin-bottom: 2em; */
 
-        /* .header-title { */
-        /*     //padding-left: 1em; */
-        /* } */
+    /*     /\* .header-title { *\/ */
+    /*     /\*     //padding-left: 1em; *\/ */
+    /*     /\* } *\/ */
 
-        .header-buttons {
-            text-align: right;
-        }
-    }
+    /*     .header-buttons { */
+    /*         text-align: right; */
+    /*     } */
+    /* } */
 
     .editor-body {
         margin: 25px 25px;

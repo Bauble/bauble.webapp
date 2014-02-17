@@ -1,5 +1,4 @@
-<div ng-form name="taxonForm" ng-controller="TaxonEditorCtrl" 
-     class="bauble-editor taxon-editor container">
+<div ng-form name="taxonForm" class="bauble-editor taxon-editor container">
   <alert class="span6 offset3" ng-repeat="alert in alerts" type="alert.type"
          close="closeAlert($index)">{{alert.msg}}</alert>
 
@@ -12,7 +11,7 @@
       <button class="btn btn-primary" ng-click="save()">Save</button>
     </div>
   </div> <!-- .editor-header -->
-  
+
 
   <div class="editor-body">
 
@@ -38,15 +37,15 @@
           <div class="form-group">
             <label class="control-label col-md-2" for="speciesField">Species</label>
             <div class="col-md-6">
-              <input type="text" ng-model="taxon.sp" id="speciesField" 
+              <input type="text" ng-model="taxon.sp" id="speciesField"
                      class="form-control"/>
             </div>
           </div>
-  
+
           <div class="form-group">
             <label class="control-label col-md-2" for="authorField">Author</label>
             <div class="col-md-4">
-              <input type="text" ng-model="taxon.sp_author" id="authorField" 
+              <input type="text" ng-model="taxon.sp_author" id="authorField"
                      class="form-control"/>
             </div>
           </div>
@@ -61,11 +60,11 @@
           <div class="form-group">
             <label class="control-label col-md-2">Species qualifier</label>
             <div class="col-md-4">
-              <select ng-model="taxon.sp_qual" ng-options="q for q in qualifiers" 
+              <select ng-model="taxon.sp_qual" ng-options="q for q in qualifiers"
                       class="form-control"></select>
             </div>
           </div>
-            
+
 
           <div class="infraspecific-container">
             <h4>Infraspecific parts</h4>
@@ -83,7 +82,7 @@
 
             <div class="row">
               <div class="col-md-2">
-                <select ng-model="taxon.infrasp1_rank" ng-options="q for q in ranks" 
+                <select ng-model="taxon.infrasp1_rank" ng-options="q for q in ranks"
                         class="form-control"></select>
               </div>
               <div class="col-md-2">
@@ -96,7 +95,7 @@
 
             <div class="row">
               <div class="col-md-2">
-                <select ng-model="taxon.infrasp2_rank" ng-options="q for q in ranks" 
+                <select ng-model="taxon.infrasp2_rank" ng-options="q for q in ranks"
                         class="form-control"></select>
               </div>
               <div class="col-md-2">
@@ -109,7 +108,7 @@
 
             <div class="row">
               <div class="col-md-2">
-                <select ng-model="taxon.infrasp3_rank" ng-options="q for q in ranks" 
+                <select ng-model="taxon.infrasp3_rank" ng-options="q for q in ranks"
                         class="form-control"></select>
               </div>
               <div class="col-md-2">
@@ -119,11 +118,11 @@
                 <input class="form-control"type="text" ng-model="taxon.infrasp3_author"/>
               </div>
             </div> <!-- .row -->
-          
+
           </div> <!-- .infraspecific-container -->
         </form>
       </tab>
-      
+
       <tab heading="Additional info">
         <form class="form-horizontal">
 
@@ -147,7 +146,7 @@
           <div class="form-group">
             <label class="control-label col-md-2" for="habitatField">Habit</label>
             <div class="col-md-4">
-              <input type="text" class="form-control" ng-model="habitat" 
+              <input type="text" class="form-control" ng-model="habitat"
                      id="habitatField"/>
             </div>
           </div> <!-- .form-group -->
@@ -155,7 +154,7 @@
           <div class="form-group">
             <label class="control-label col-md-2">Awards</label>
             <div class="col-md-4">
-              <input type="text" class="form-control" ng-model="awards" 
+              <input type="text" class="form-control" ng-model="awards"
                      id="awardsField"/>
             </div>
           </div>
@@ -181,24 +180,24 @@
                   <input type="text" value="{{vernacular.name}}" class="form-control"
                          ng-model="vernacular.name"/>
                 </div>
-                
+
                 <div class="col-md-3">
                   <input type="text" value="{{vernacular.language}}" class="form-control"
                          ng-model="vernacular.language"/>
                 </div>
-                
-                
+
+
                   <div class="col-md-2">
                     <div class="checkbox">
-                      <input type="checkbox" class="input-lg" 
+                      <input type="checkbox" class="input-lg"
                              ng-model="vernacular.default"
                              value="{{vernacular.default}}"/>
-                    
+
                     </div> <!-- .checkbox -->
                   </div>   <!-- .col -->
-                
+
               </div> <!-- .row -->
-              
+
               <button class="btn" ng-click="addVernacularName()">Add</button>
 
             </div> <!-- .vernacular-name-container -->
@@ -226,15 +225,15 @@
                 <label>Synonyms</label>
                 <input id="taxonSynonymField" style="width: 200px" ui-select2="synSelectOptions" ng-model="selectedSyn"/>
                 <button class="btn" ng-click="addSynonym(selectedSyn); selectedSyn=null;" ng-disabled="!selectedSyn">Add</button>
-                
+
                 <ul>
                   <li ng-repeat="synonym in taxon.synonyms">{{synonym.str}}</li>
                 </ul>
-                
+
               </div> <!-- .synonyms-box -->
             </div> <!-- .row -->
         </form>
-          
+
       </tab>
 
       <tab heading="Notes">
@@ -242,7 +241,7 @@
       </tab>
 
     </tabset>
-    
+
   </div> <!-- .editor-body -->
 
 </div> <!-- .taxon-editor -->

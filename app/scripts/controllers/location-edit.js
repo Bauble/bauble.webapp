@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('BaubleApp')
-    .controller('LocationEditorCtrl', function ($scope, globals, Plant, Location) {
+    .controller('LocationEditCtrl', function ($scope, globals, Plant, Location) {
         // isNew is inherited from the NewCtrl if this is a /new editor
         $scope.location = globals.getSelected() && !$scope.isNew ? globals.getSelected() : {};
 

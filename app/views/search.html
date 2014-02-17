@@ -34,33 +34,26 @@
 
   <div class="row">
 
-    <div class="list-group col-md-4">
-      <a ng-repeat="result in results track by result.ref" class="list-group-item"
-         ng-click="itemSelected(result)">
-        {{result.str}}
-      </a>
-    </div> <!-- .list-group -->
+    <div class="col-md-4">
+      <accordion>
+        <accordion-group ng-if="values.length" ng-repeat="(group, values) in results"
+                         heading="{{capitalize(group)}}" is-open="true"
+                         class="result-group">
+          <ul>
+            <li class="result-item" ng-repeat="result in values"
+                ng-click="itemSelected(group, result)">
+              {{result.str}}
+            </li>
+          </ul>
+        </accordion-group>
+      </accordion>
+    </div> <!-- .col-md-4 -->
 
-    <!-- *** The markup below is old but I'm gonna leave it here for now to remember
-         what and why we were doing it that way ** -->
-
-    <!-- <div class="col-md-4 results-list"> -->
-    <!--   <ul> -->
-    <!--     <div ng-repeat="result in results"> -->
-    <!--       <li class="search-result-item"  ng-click="itemSelected(result)" ng-mouseenter="mouseEnterItem($event)" ng-mouseleave="mouseLeaveItem($event)"> -->
-    <!--         <span> -->
-    <!--           <a class="search-result-expand icon-chevron-right" ng-click="itemExpanded()"></a> -->
-    <!--           <a class="search-result-link">{{result.str}}</a> -->
-    <!--         </span> -->
-    <!--       </li> -->
-    <!--     </div> -->
-    <!--   </ul> -->
-    <!-- </div> <\!-- .col-md-4 .results-list -\-> -->
 
     <div class="col-md-8">
-      <div ng-show="viewMeta" ng-include src="viewMeta.view" class="resource-view"></div>
+      <div ng-show="viewMeta" ng-include="viewMeta.view" class="resource-view"></div>
       <div ng-show="!viewMeta && results">Select something from the list for
-      more information.</div>
+        more information.</div>
     </div> <!-- .col-md-8 -->
   </div> <!-- .row -->
 </div>   <!-- .container -->

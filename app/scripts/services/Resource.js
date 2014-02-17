@@ -21,20 +21,30 @@ angular.module('BaubleApp')
                     }
                     return url;
                 },
+                _getAuthHeader: function() {
+                    var user = User.local();
+                    return user ? user.getAuthHeader() : {};
+                },
 
                 /*
                  * resource can be an ID, a ref or an object with a ref
                  */
-                get: function(resource, depth) {
-                    depth = depth || 1;
-                    var config = {
+                get: function(resource, config) {
+                    var params = null;
+                    return $http({
+                        url: [resourceUrl, resource.id || resource].join('/'),
                         method: 'GET',
-                        url: this.get_url_from_resource(resource),
-                        headers: angular.extend(globals.getAuthHeader(), {
-                            'Accept': 'application/json;depth=' + depth
-                        })
-                    };
-                    return $http(config);
+                        headers: this._getAuthHeader(),
+                        params: params
+                    });
+                    // var config = {
+                    //     method: 'GET',
+                    //     url: [resourceUrl, ]
+                    //     headers: angular.extend(globals.getAuthHeader(), {
+                    //         'Accept': 'application/json;depth=' + depth
+                    //     })
+                    // };
+                    // return $http(config);
                 },
 
                 query: function(options) {
@@ -126,13 +136,18 @@ angular.module('BaubleApp')
                 },
 
                 count: function(resource, relation) {
-                    var config = {
+                    return $http({
+                        url: [resourceUrl, 'count'].join('/'),
                         method: 'GET',
-                        url: this.get_url_from_resource(resource) +
-                            relation + "/count",
-                        headers: globals.getAuthHeader()
-                    };
-                    return $http(config);
+                        headers: this._getAuthHeader()
+                    });
+                    // var config = {
+                    //     method: 'GET',
+                    //     url: this.get_url_from_resource(resource) +
+                    //         relation + "/count",
+                    //     headers: globals.getAuthHeader()
+                    // };
+                    // return $http(config);
                 }
             };
         };

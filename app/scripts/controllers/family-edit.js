@@ -1,27 +1,33 @@
 'use strict';
 
 angular.module('BaubleApp')
-    .controller('FamilyEditorCtrl', function ($scope, globals, Family) {
+    .controller('FamilyEditCtrl', function ($scope, $stateParams, Family) {
 
+        $scope.overlay = $stateParams.family_id ? "loading..." : null;
         // isNew is inherited from the NewCtrl if this is a /new editor
-        $scope.family = globals.getSelected() && !$scope.isNew ? globals.getSelected() : {};
-        $scope.notes = $scope.family.notes || [];
+        //$scope.family = globals.getSelected() && !$scope.isNew ? globals.getSelected() : {};
+        $scope.family = {};
+        $scope.notes = [];
+        $scope.qualifiers = ["s. lat.", "s. str."];
 
-        // make sure we have the family details
-        if($scope.family && angular.isDefined($scope.family.ref)) {
-            Family.details($scope.family)
+        if($stateParams.family_id) {
+            Family.get($stateParams.family_id, {embed: ['notes', 'synonyms']})
                 .success(function(data, status, headers, config) {
                     $scope.family = data;
+
+                    // pull out the notes and synonyms so we don't resubmit them
+                    // back on save
                     $scope.notes = $scope.family.notes || [];
+                    $scope.synonyms = $scope.family.synonyms || [];
+                    delete $scope.family.synonyms;
+                    delete $scope.family.notes;
+                    $scope.overlay = null;
                 })
                 .error(function(data, status, headers, config) {
-                    // do something
-                    /* jshint -W015 */
+                    $scope.overlay = null;
                 });
         }
 
-        $scope.activeTab = "general";
-        $scope.qualifiers = ["s. lat.", "s. str."];
 
         $scope.selectOptions = {
             minimumInputLength: 1,
@@ -68,7 +74,8 @@ angular.module('BaubleApp')
         $scope.save = function() {
             // TODO: we should probably also update the selected result to reflect
             // any changes in the search result
-            $scope.family.notes = $scope.notes;
+            //$scope.family.notes = $scope.notes;
+            console.log('$scope.family: ', $scope.family);
             Family.save($scope.family)
                 .success(function(data, status, headers, config) {
                     $scope.cancel();
@@ -77,5 +84,8 @@ angular.module('BaubleApp')
                     var msg = data ? "Error!\n" + data : "Unknown error!";
                     $scope.alerts.push({type: 'error', msg: msg});
                 });
+
+            // TODO: we need to save the synonyms and the notes...they should
+            // be completely replaced...probably with a separate PUT
         };
     });
