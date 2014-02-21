@@ -1,13 +1,12 @@
 'use strict';
 
 angular.module('BaubleApp', [
-    'ngRoute',
     'ui.bootstrap',
     'ui.select2',
     'ngGrid',
     'ui.router'
 ])
-    .config(function ($routeProvider, $stateProvider, $urlRouterProvider) {
+    .config(function ($stateProvider, $urlRouterProvider) {
 
         $stateProvider
 

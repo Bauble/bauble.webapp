@@ -3,7 +3,10 @@
 angular.module('BaubleApp')
     .controller('NotesEditorCtrl', function ($scope, Auth) {
         //$scope.notes = [];
+        return;
+
         $scope.addNote = function() {
+            return;
             $scope.notes.push({
                 user: Auth.getUser().username,
                 date: new Date()

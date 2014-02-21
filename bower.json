@@ -2,14 +2,13 @@
   "name": "Bauble",
   "version": "0.0.1",
   "dependencies": {
-    "angular": "~1.2.7",
-    "angular-sanitize": "~1.2.7",
-    "angular-route": "~1.2.7",
+    "angular": "1.2.12",
+    "angular-sanitize": "11.2.12",
     "json3": "~3.2.4",
     "es5-shim": "~2.0.8",
-    "angular-ui-select2": "*",
+    "angular-ui-select2": "~0.0.5",
     "jquery": "~2.0.3",
-    "select2": "~3.4",
+    "select2": "~3.4.5",
     "angular-grid": "~2.0.6",
     "components-font-awesome": "~3.2.0",
     "angular-bootstrap": "~0.10.0",
@@ -19,8 +18,8 @@
     "angular-ui-router": "angular-ui-router#0.2.8-bowratic-tedium"
   },
   "devDependencies": {
-    "angular-mocks": "~1.0.7",
-    "angular-scenario": "~1.0.7",
+    "angular-mocks": "1.2.12",
+    "angular-scenario": "1.2.12",
     "lodash": "~2.4.1"
   }
 }

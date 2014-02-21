@@ -8,9 +8,16 @@ angular.module('BaubleApp')
             $scope.alerts.splice(index, 1);
         };
 
-
         $scope.$on('$stateChangeSuccess', function() {
             // controls the user menu
+            $scope.user = User.local();
+        });
+
+        $scope.$on('login', function() {
+            $scope.user = User.local();
+        });
+
+        $scope.$on('logout', function() {
             $scope.user = User.local();
         });
     });

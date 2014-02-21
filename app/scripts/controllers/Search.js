@@ -17,9 +17,10 @@ angular.module('BaubleApp')
             if(!$scope.query) {
                 $scope.alert = "Please enter a search query";
                 return;
-            } else {
-                $scope.alert = null;
             }
+
+            $scope.alert = null;
+            //$location.search('q', $scope.query);
 
             $scope.message = "Searching....";
             $scope.selected = $scope.viewMeta = $scope.results = null;

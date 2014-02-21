@@ -8,7 +8,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
     <title>Bauble</title>
     <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <!-- <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"> -->
 
@@ -76,9 +77,9 @@
             </li>
           </ul>
 
-          <ul ng-show="user" class="nav navbar-nav">
-            <li><a href="#reporter">Report</a></li>
-          </ul>
+          <!-- <ul ng-show="user" class="nav navbar-nav">
+          <li><a href="#reporter">Report</a></li>
+          </ul> -->
 
           <ul ng-hide="!user "class="nav navbar-nav pull-right">
             <li class="dropdown">
@@ -87,7 +88,8 @@
               </a>
               <ul class="dropdown-menu pull-right">
                 <!-- <li><a class="pull-right" href="#admin">Admin</a></li> -->
-                <li><a class="pull-right" href="#logout">Logout</a></li>
+                <li><a class="pull-right" href="#/settings">Settings</a></li>
+                <li><a class="pull-right" href="#/logout">Logout</a></li>
               </ul>
             </li>
           </ul>
@@ -100,9 +102,9 @@
       </div> <!-- #header -->
 
       <div id="content">
-        <div class="not-ready-warning">
-          <p>Bauble is currently under development. This site is not ready for general use.</p>
-        </div>
+        <!-- <div class="not-ready-warning">
+        <p>Bauble is currently under development. This site is not ready for general use.</p>
+        </div> -->
         <!-- <div class="curious">
         <a href="#/curious">Curious about what's happening here? Click me.</a>
         </div> -->
@@ -150,7 +152,6 @@
 
     <!-- build:js scripts/modules.js -->
     <script src="components/angular-sanitize/angular-sanitize.js"></script>
-    <script src="components/angular-route/angular-route.js"></script>
     <script src="components/angular-ui-router/release/angular-ui-router.min.js"></script>
     <!-- <script src="components/bootstrap/dist/js/bootstrap.min.js"></script> -->
     <!-- <script src="components/angular-bootstrap/ui-bootstrap-tpls.js"></script> -->
@@ -191,8 +192,6 @@
     <script src="scripts/controllers/PlantView.js"></script>
     <script src="scripts/controllers/LocationView.js"></script>
     <script src="scripts/directives/emit.js"></script>
-    <script src="scripts/controllers/New.js"></script>
-    <script src="scripts/controllers/Edit.js"></script>
     <script src="scripts/controllers/source-edit.js"></script>
     <script src="scripts/controllers/propagation-edit.js"></script>
     <!-- <script src="scripts/controllers/Welcome.js"></script> -->

@@ -48,6 +48,7 @@ angular.module('BaubleApp')
                 // for new results when the query string is something like .length==2
                 // console.log('query: ', options);....i think this is what the
                 // options.context is for
+                Family.list({filter: family})
                 Family.query({q: options.term + '%'})
                     .success(function(data, status, headers, config) {
                         $scope.families = data.results;

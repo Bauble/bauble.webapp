@@ -1,28 +1,26 @@
-<div ng-form name="familyForm" class="bauble-editor family-editor container" novalidate>
+<div ng-form name="familyForm" class="bauble-editor" novalidate>
 
   <alert class="col-md-6 col-md-offset-3" ng-repeat="alert in alerts"
          type="alert.type" close="closeAlert($index)">{{alert.msg}}</alert>
 
-  <div class="editor-header">
-    <h4>{{family.str || 'New family'}}</h4>
-    <button class="btn btn-primary pull-right" ng-click="save()">Save</button>
-    <button class="btn pull-right" ng-click="cancel()">Cancel</button>
-  </div>
+  <!-- <div class="editor-header"> -->
+  <h2>{{family.str || 'New family'}}</h2>
 
-  <div class="editor-body">
+  <tabset>
+    <tab heading="General">
 
-      <tabset>
-        <tab heading="General">
+      <div class="row">
+        <div class="col-md-5 col-sm-6">
 
-          <form class="form-horizontal" role="form" novalidate>
+          <form name="general" role="form" novalidate>
 
             <div class="form-group">
               <label class="col-md-2 control-label" for="family-family-input"
                      novalidate>Family</label>
-              <div class="col-md-8">
-                <input type="text" ng-model="family.family" id="family-family-input"
-                       class="form-control" name="family" required>
-              </div>
+              <!-- <div class="col-md-8"> -->
+              <input type="text" ng-model="family.family" id="family-family-input"
+                     class="form-control" name="family" required>
+              <!-- </div> -->
             </div> <!-- .form-group -->
 
 
@@ -39,26 +37,54 @@
             </div> <!-- .form-group -->
 
           </form>
+        </div> <!-- .col -->
 
-          <div class="synonyms-box">
-            <label>Synonyms</label>
-            <div>
-              <input ui-select2="selectOptions" ng-model="selectedSyn"
-                     class="col-md-8 form-control" /></input>
-              <button class="btn" ng-click="addSynonym(selectedSyn); selectedSyn={};" ng-disabled="!selectedSyn">Add</button>
-              <!-- <button class="btn" ng-click="addSynonym(selectedSyn)" ng-disabled="!selectedSyn">Add</button> -->
-            </div>
-            <ul>
-              <li ng-repeat="synonym in family.synonyms">{{synonym.str}}</li>
+        <!-- Synonyms Form -->
+        <div class="col-md-5 col-md-offset-1">
+
+          <form role="form" name="synonyms">
+
+            <div class="form-group">
+              <label for="family-synonym-input">Synonyms</label>
+              <div class="input-group">
+                <input type="text" ng-model="newSynonym"
+                       placeholder="Family" typeahead-editable="false"
+                       typeahead="family as family.str for family in getSynonyms($viewValue)"
+                       typeahead-loading="loadingLocations" class="form-control">
+                <span class="input-group-btn">
+                  <button class="btn btn-default" ng-disabled="!newSynonym"
+                          ng-click="addSynonym(newSynonym); newSynonym=null;">Add</button>
+                </span>
+              </div>
+            </div>  <!-- .form-group -->
+
+            <ul class="synonyms-list list-group">
+              <p ng-hide="data.synonyms && data.synonyms.length > 0">
+                This family doesn't have any synonyms.
+              </p>
+              <li ng-repeat="synonym in data.synonyms" class="list-group-item">
+                {{synonym.str}}
+                <button class="pull-right trash-btn btn" ng-click="removeSynonym(synonym)">
+                  <i class="fa fa-trash-o pull-right"></i></button>
+              </li>
             </ul>
-          </div> <!-- .synonyms-box -->
 
-        </tab>  <!-- General tab -->
 
-        <tab heading=Notes>
-          <div ng-include src="'views/notes_editor.html'"></div>
-        </tab>
-      </tabset>
+          </form>
+        </div> <!-- .col -->
+      </div> <!-- .row -->
 
-    </div>  <!-- .editor-body -->
+    </tab>  <!-- General tab -->
+
+    <tab heading=Notes>
+      <div ng-include src="'views/notes_editor.html'"></div>
+    </tab>
+  </tabset>
+
+  <div class="action-buttons">
+    <button class="btn btn-primary" ng-click="save()">Save</button>
+    <button class="btn" ng-click="cancel()">Cancel</button>
+  </div>
+
+
 </div> <!-- .family-editor .modal -->

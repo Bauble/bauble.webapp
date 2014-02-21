@@ -79,6 +79,10 @@ h1, h2, h3, h4, h5, legend {
     margin-left: 0;
 }
 
+.main-container {
+    padding-bottom: 2em;
+}
+
 #container {
    min-height:100%;
    position:relative;
@@ -92,9 +96,9 @@ h1, h2, h3, h4, h5, legend {
     padding-bottom: $footer-height;   /* Height of the footer */
 }
 
-#main-view {
-    padding: 2em 0;
-}
+/* #main-view { */
+/*     padding: 2em 0; */
+/* } */
 
 #footer {
     position:absolute;
@@ -148,21 +152,24 @@ h1, h2, h3, h4, h5, legend {
         color: #FF530D;
         //background-color: white;
     }
-}
 
-.dropdown-menu {
-    border-bottom: $navbar-border;
+    .dropdown-menu {
+        border-bottom: $navbar-border;
 
-    a, li > a { 
-        color: $navbar-bg-color;
+        a, li > a { 
+            color: $navbar-bg-color;
+        }
+
+        a:hover, li > a:hover {
+            color: red; //#FF530D;
+            background-color: white !important;
+            background-image: none; // undo bootstrap background gradient on hover
+        }
     }
 
-    a:hover, li > a:hover {
-        color: red; //#FF530D;
-        background-color: white !important;
-        background-image: none; // undo bootstrap background gradient on hover
-    }
 }
+
+
 
 .navbar-nav>.open>a, .navbar-nav>.open>a:hover, .navbar-nav>.open>a:focus {
     color: #555;
@@ -297,9 +304,9 @@ input {
 }
 
 
-.search-page {
-    padding-bottom: 3em;
-}
+/* .search-page { */
+/*     padding-bottom: 3em; */
+/* } */
 
 .search-box {
     padding: 15px 15px;
@@ -368,24 +375,14 @@ input {
     @include block-header;
 }
 
-.editor-header {
-
-    @include block-header;
-    //margin-bottom: 2em;
-
-    h4 {
-        margin-left: .3em;
-        display: inline-block;
-    }
-    
-    .btn {
-        margin-right: .3em;
-    }
+.action-buttons {
+    margin-top: 4em;
 }
 
 .bauble-editor {
+    padding: 2em 4em;
     
-    padding-bottom: 3em;
+    //padding-bottom: 3em;
 
     label + textarea {
     /*margin-left: 10px;*/
@@ -396,44 +393,6 @@ input {
         top: 50px;
         position: absolute;
         padding: 25px;
-    }
-
-    /* .editor-header { */
-    /*     @include block-header; */
-    /*     margin-bottom: 2em; */
-
-    /*     /\* .header-title { *\/ */
-    /*     /\*     //padding-left: 1em; *\/ */
-    /*     /\* } *\/ */
-
-    /*     .header-buttons { */
-    /*         text-align: right; */
-    /*     } */
-    /* } */
-
-    .editor-body {
-        margin: 25px 25px;
-        //margin-bottom: 25px;
-        height: 100%;
-
-        .tab-content {
-            margin: 35px;
-        }
-    }
-
-    .editor-section {
-        h5 {
-            background-color: #F5F5F5;
-            padding-left: 10px;
-            line-height: 2em;
-        }
-        // & > div {
-        //   margin-left: 25px;
-        // }
-    }
-
-    input[ui-date] {
-        width: 90px;  // same size as .input-small
     }
 }
 
@@ -446,21 +405,33 @@ input {
 }
 
 .family-editor {
+    
+}
 
-    // .tab-content {
-    //   height: 200px;
-    // }
-
-    $label-width: 75px;
-    .control-label {
-        width: $label-width
+.synonyms-list {
+    
+    li {
+        padding: 1em;
+        
+        &:hover {
+            background-color: $light-grey;
+            
+            .trash-btn {
+                visibility: visible;
+        
+            }
+        }
     }
-    .controls {
-        margin-left: $label-width + 25px;
+
+    .trash-btn {
+        background: red;
+        padding: .4em;
+        visibility: hidden;
     }
 
-    .synonyms-box {
-        margin-top: 1em;
+    i.fa-trash-o {
+        color: white;
+        margin: auto;
     }
 }
 
@@ -515,19 +486,6 @@ input {
             }
         }
     }
-
-    .synonyms-box {
-
-        margin-top: 1.2em;
-
-        label {
-            font-weight: bold;
-        }
-
-        .contents {
-            margin-top: 1em;
-        }
-    }
 }
 
 
@@ -541,39 +499,6 @@ input {
     .source-select {
         width: 400px;
     }
-
-        /* .source-tab { */
-    /*     .source-select-box { */
-    /*         $label-width: 75px; */
-    /*         label { */
-    /*             width: $label-width; */
-    /*         } */
-    /*         .controls { */
-    /*             margin-left: $label-width + 10px; */
-    /*         } */
-    /*         .select2-container { */
-    /*             width: 50%; */
-    /*         } */
-    /*     } */
-
-    /*     // .locale-group input { */
-    /*     //   width: 50%; */
-    /*     // } */
-
-    /*     .long-lat-group { */
-    /*         .control-group { */
-    /*             display: inline-block; */
-    /*         } */
-
-    /*         input { */
-    /*             display: inline-block; */
-    /*         } */
-
-    /*         input[type="radio"] { */
-    /*             margin: 0 5px 0 10px; */
-    /*         } */
-    /*     } */
-    /* } */
 }
 
 .plant-editor {
@@ -737,53 +662,53 @@ input {
 /*
  * Re-add nested dropdown support to BS3
  */ 
-.dropdown-submenu {
-    position: relative;
-}
+/* .dropdown-submenu { */
+/*     position: relative; */
+/* } */
 
-.dropdown-submenu>.dropdown-menu {
-    top:0;
-    left:100%;
-    margin-top:-6px;
-    margin-left:-1px;
-    -webkit-border-radius:0 6px 6px 6px;
-    -moz-border-radius:0 6px 6px 6px;
-    border-radius:0 6px 6px 6px;
-}
+/* .dropdown-submenu>.dropdown-menu { */
+/*     top:0; */
+/*     left:100%; */
+/*     margin-top:-6px; */
+/*     margin-left:-1px; */
+/*     -webkit-border-radius:0 6px 6px 6px; */
+/*     -moz-border-radius:0 6px 6px 6px; */
+/*     border-radius:0 6px 6px 6px; */
+/* } */
 
-.dropdown-submenu:hover>.dropdown-menu {
-    display:block;
-}
+/* .dropdown-submenu:hover>.dropdown-menu { */
+/*     display:block; */
+/* } */
 
-.dropdown-submenu>a:after{
-    display:block;
-    content:" ";
-    float:right;
-    width:0;
-    height:0;
-    border-color:transparent;
-    border-style:solid;
-    border-width:5px 0 5px 5px;
-    border-left-color:#cccccc;
-    margin-top:5px;
-    margin-right:-10px;
-}
+/* .dropdown-submenu>a:after{ */
+/*     display:block; */
+/*     content:" "; */
+/*     float:right; */
+/*     width:0; */
+/*     height:0; */
+/*     border-color:transparent; */
+/*     border-style:solid; */
+/*     border-width:5px 0 5px 5px; */
+/*     border-left-color:#cccccc; */
+/*     margin-top:5px; */
+/*     margin-right:-10px; */
+/* } */
 
-.dropdown-submenu:hover>a:after{
-    border-left-color:#ffffff;
-}
+/* .dropdown-submenu:hover>a:after{ */
+/*     border-left-color:#ffffff; */
+/* } */
 
-.dropdown-submenu.pull-left{
-    float:none;
-}
+/* .dropdown-submenu.pull-left{ */
+/*     float:none; */
+/* } */
 
-.dropdown-submenu.pull-left>.dropdown-menu {
-    left:-100%;
-    margin-left:10px;
-    -webkit-border-radius:6px 0 6px 6px;
-    -moz-border-radius:6px 0 6px 6px;
-    border-radius:6px 0 6px 6px;
-}
+/* .dropdown-submenu.pull-left>.dropdown-menu { */
+/*     left:-100%; */
+/*     margin-left:10px; */
+/*     -webkit-border-radius:6px 0 6px 6px; */
+/*     -moz-border-radius:6px 0 6px 6px; */
+/*     border-radius:6px 0 6px 6px; */
+/* } */
 
 
 // fixes for select2

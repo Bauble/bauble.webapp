@@ -1,9 +1,9 @@
 <div ng-controller="FamilyViewCtrl">
 
-  <div id="actionButtons" class="pull-right">
-    <span ng-repeat="button in viewMeta.buttons">
-      <button class="btn" data-emit="{{button.event}}">{{button.name}}</button>
-    </span>
+  <div id="summary-buttons" class="pull-right">
+    <a class="btn btn-default" ng-href="#/family/{{family.id}}/edit">Edit</a>
+    <a class="btn btn-default" ng-href="#/genus/add?family_id={{family._id}}">Add Genus</a>
+    <a class="btn btn-default" ng-href="#/family/{{family.id}}/delete">Delete</a>
   </div>
 
   <h3>{{family.str}}</h3>
@@ -22,5 +22,3 @@
   </ul>
 
 </div>
-
-
