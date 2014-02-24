@@ -3,7 +3,7 @@
 angular.module('BaubleApp')
     .controller('AccessionViewCtrl', function ($scope, $location, globals, Accession) {
         $scope.accession = globals.getSelected();
-        Accession.details($scope.accession)
+        Accession.get($scope.accession)
             .success(function(data, status, headers, config) {
                 $scope.accession = data;
             })

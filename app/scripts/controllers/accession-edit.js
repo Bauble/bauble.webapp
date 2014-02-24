@@ -121,35 +121,47 @@ angular.module('BaubleApp')
         $scope.header = $scope.accession.ref ? $scope.accession.code + ' ' +
             $scope.accession.taxon_str : 'New Accession';
 
-        $scope.taxonSelectOptions = {
-            minimumInputLength: 1,
-            containerCssClass: 'taxon-select',
-            formatResult: function(object, container, query) { return object.str; },
-            formatSelection: function(object, container) { return object.str; },
+        $scope.getTaxa = function($viewValue) {
 
-            id: function(obj) {
-                return obj.ref; // use ref field for id since our resources don't have ids
-            },
-
-            // get the list of families matching the query
-            query: function(options){
-                // TODO: somehow we need to cache the returned results and early search
-                // for new results when the query string is something like .length==2
-                // console.log('query: ', options);....i think this is what the
-                // options.context is for
-                Taxon.query(options.term + '%')
-                    .success(function(data, status, headers, config) {
-                        //$scope. = response.data.results;
-                        if(data.results && data.results.length > 0) {
-                            options.callback({results: data.results});
-                        }
-                    })
-                    .error(function(data, status, headers, config) {
-                        // do something
-                        /* jshint -W015 */
-                    });
-            }
+            // TODO: we also need to join again the generic name here...maybe now it's
+            // a good case for storing the str on save and querying the save string
+            // instead of just the columns
+            return Taxon.list({filter: {taxa: $viewValue + '%'}})
+                .then(function(result) {
+                    return result.data;
+                });
         };
+
+
+        // $scope.taxonSelectOptions = {
+        //     minimumInputLength: 1,
+        //     containerCssClass: 'taxon-select',
+        //     formatResult: function(object, container, query) { return object.str; },
+        //     formatSelection: function(object, container) { return object.str; },
+
+        //     id: function(obj) {
+        //         return obj.ref; // use ref field for id since our resources don't have ids
+        //     },
+
+        //     // get the list of families matching the query
+        //     query: function(options){
+        //         // TODO: somehow we need to cache the returned results and early search
+        //         // for new results when the query string is something like .length==2
+        //         // console.log('query: ', options);....i think this is what the
+        //         // options.context is for
+        //         Taxon.query(options.term + '%')
+        //             .success(function(data, status, headers, config) {
+        //                 //$scope. = response.data.results;
+        //                 if(data.results && data.results.length > 0) {
+        //                     options.callback({results: data.results});
+        //                 }
+        //             })
+        //             .error(function(data, status, headers, config) {
+        //                 // do something
+        //                 /* jshint -W015 */
+        //             });
+        //     }
+        // };
 
         $scope.sourceSelectOptions = {
             minimumInputLength: 1,

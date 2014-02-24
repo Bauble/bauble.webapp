@@ -50,7 +50,7 @@
                 <input type="text" ng-model="newSynonym"
                        placeholder="Family" typeahead-editable="false"
                        typeahead="family as family.str for family in getSynonyms($viewValue)"
-                       typeahead-loading="loadingLocations" class="form-control">
+                       typeahead-loading="loadingSynonyms" class="form-control">
                 <span class="input-group-btn">
                   <button class="btn btn-default" ng-disabled="!newSynonym"
                           ng-click="addSynonym(newSynonym); newSynonym=null;">Add</button>

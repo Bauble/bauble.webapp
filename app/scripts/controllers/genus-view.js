@@ -3,7 +3,8 @@
 angular.module('BaubleApp')
     .controller('GenusViewCtrl', function ($scope, $location, globals, Genus) {
         $scope.genus = globals.getSelected();
-        Genus.details($scope.genus)
+
+        Genus.get($scope.genus)
             .success(function(data, status, headers, config) {
                 $scope.genus = data;
             })

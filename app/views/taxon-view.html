@@ -1,10 +1,16 @@
 <div ng-controller="TaxonViewCtrl">
 
-  <div id="actionButtons" class="pull-right">
-    <span ng-repeat="button in viewMeta.buttons">
-      <button class="btn" data-emit="{{button.event}}">{{button.name}}</button>
-    </span>
+  <div id="summary-buttons" class="pull-right">
+    <a class="btn btn-default" ng-href="#/taxon/{{taxon.id}}/edit">Edit</a>
+    <a class="btn btn-default" ng-href="#/accession/add?taxon={{taxon.id}}">Add Accession</a>
+    <a class="btn btn-default" ng-href="#/taxon/{{taxon.id}}/delete">Delete</a>
   </div>
+
+  <!-- <div id="actionButtons" class="pull-right">
+  <span ng-repeat="button in viewMeta.buttons">
+  <button class="btn" data-emit="{{button.event}}">{{button.name}}</button>
+  </span>
+  </div> -->
 
   <h3>{{taxon.str}}</h3>
 
@@ -12,7 +18,7 @@
   <div># of Plants: {{counts.plants}}</div>
 
   <h4>Vernacular Names</h4>
-  <div ng-show="!taxon.vernacular_names || taxon.vernacular_names.length < 1" 
+  <div ng-show="!taxon.vernacular_names || taxon.vernacular_names.length < 1"
        style="color: #aaa">
     This taxon has no vernacular names.
   </div>

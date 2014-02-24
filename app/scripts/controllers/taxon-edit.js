@@ -1,16 +1,20 @@
 'use strict';
 
 angular.module('BaubleApp')
-    .controller('TaxonEditCtrl', function ($scope, $location, globals, Genus, Taxon) {
+    .controller('TaxonEditCtrl', function ($scope, $location, $stateParams, Genus, Taxon) {
         // isNew is inherited from the NewCtrl if this is a /new editor
-        $scope.taxon = globals.getSelected() && !$scope.isNew ? globals.getSelected() : {};
-        $scope.notes = $scope.taxon.notes || [];
+        $scope.taxon = {
+            genus_id: $location.search().genus,
+        };
+
+        $scope.notes = [];
 
         // make sure we have the family details
-        if($scope.taxon && angular.isDefined($scope.taxon.ref)) {
-            Taxon.details($scope.taxon)
+        if($stateParams.id) {
+            Taxon.get($stateParams.id, {embed: ['genus', 'vernacular_names', 'synonyms']})
                 .success(function(data, status, headers, config) {
                     $scope.taxon = data;
+                    $scope.genus = data.genus;
                     $scope.notes = $scope.taxon.notes || [];
                     $scope.addVernacularName();
                 })
@@ -18,10 +22,10 @@ angular.module('BaubleApp')
                    // do something
                     /* jshint -W015 */
                 });
-        } else if($location.search().genus) {
-            Genus.get($location.search().genus)
+        } else if($scope.taxon.genus_id) {
+            Genus.get($scope.taxon.genus_id)
                 .success(function(data, status, headers, config) {
-                    $scope.taxon.genus = data;
+                    $scope.genus = data;
                 })
                 .error(function(data, status, headers, config) {
                     // do something
@@ -33,6 +37,10 @@ angular.module('BaubleApp')
 
         $scope.qualifiers = ["agg.", "s. lat.", "s. str."];
         $scope.ranks = ["cv.", "f.", "subf.", "subsp.", "subvar.", "var."];
+
+        $scope.formatGenusInput = function() {
+            return $scope.genus ? $scope.genus.str : '';
+        };
 
         $scope.addSynonym = function(synonym) {
             if(!$scope.taxon.synonyms) {
@@ -51,65 +59,19 @@ angular.module('BaubleApp')
 
         $scope.addVernacularName(); // make sure there always and empty row
 
-        $scope.genusSelectOptions = {
-            minimumInputLength: 1,
-
-            formatResult: function(object, container, query) { return object.str; },
-            formatSelection: function(object, container) { return object.str; },
-
-            id: function(obj) {
-                return obj.ref; // use ref field for id since our resources don't have is
-            },
-
-            // get the list of families matching the query
-            query: function(options){
-                // TODO: somehow we need to cache the returned results and early search
-                // for new results when the query string is something like .length==2
-                // console.log('query: ', options);....i think this is what the
-                // options.context is for
-                Genus.query({q: options.term + '%'})
-                    .success(function(data, status, headers, config) {
-                        $scope.families = data.results;
-                        if(data.results && data.results.length > 0) {
-                            options.callback({results: data.results});
-                        }
-                    })
-                    .error(function(data, status, headers, config) {
-                        // do something
-                        /* jshint -W015 */
-                    });
-            }
+        $scope.getGenera = function($viewValue) {
+            return Genus.list({filter: {genus: $viewValue + '%'}})
+                .then(function(result) {
+                    return result.data;
+                });
         };
 
-
-        $scope.synSelectOptions = {
-            minimumInputLength: 1,
-
-            formatResult: function(object, container, query) { return object.str; },
-            formatSelection: function(object, container) { return object.str; },
-
-            id: function(obj) {
-                return obj.ref; // use ref field for id since our resources don't have ids
-            },
-
-            // get the list of families matching the query
-            query: function(options){
-                // TODO: somehow we need to cache the returned results and early search
-                // for new results when the query string is something like .length==2
-                // console.log('query: ', options);....i think this is what the
-                // options.context is for
-                Taxon.query(options.term + '%')
-                    .success(function(data, status, headers, config) {
-                        $scope.families = data.results;
-                        if(data.results && data.results.length > 0) {
-                            options.callback({results: data.results});
-                        }
-                    })
-                    .error(function(data, status, headers, config) {
-                        // do something
-                        /* jshint -W015 */
-                    });
-            }
+        $scope.getSynonyms = function($viewValue) {
+            return Taxon.list({filter: {family: $viewValue + '%'}})
+                .then(function(result) {
+                    console.log('result.data: ', result.data);
+                    return result.data;
+                });
         };
 
         $scope.alerts = [];
@@ -123,6 +85,9 @@ angular.module('BaubleApp')
 
         // called when the save button is clicked on the editor
         $scope.save = function() {
+
+            $scope.taxon.genus_id = $scope.genus.id;
+
             // remove any notes without a note
             angular.forEach($scope.notes, function(note, key) {
                 if(note.note){

@@ -53,7 +53,7 @@ angular.module('BaubleApp').factory('ViewMeta', ['FamilyView', 'GenusView', 'Tax
     .factory('FamilyView', [function() {
         return {
             editor: "views/family-edit.html",
-            view: "views/family_view.html",
+            view: "views/family-view.html",
 
             buttons: [
                 { name: "Edit", event: "family-edit" },
@@ -66,7 +66,7 @@ angular.module('BaubleApp').factory('ViewMeta', ['FamilyView', 'GenusView', 'Tax
     .factory('GenusView', [function() {
         return {
             editor: "views/genus-edit.html",
-            view: "views/genus_view.html",
+            view: "views/genus-view.html",
 
             buttons: [
                 { name: "Edit", event: "genus-edit" },
@@ -79,7 +79,7 @@ angular.module('BaubleApp').factory('ViewMeta', ['FamilyView', 'GenusView', 'Tax
     .factory('TaxonView', [function() {
         return {
             editor: "views/taxon-edit.html",
-            view: "views/taxon_view.html",
+            view: "views/taxon-view.html",
 
             buttons: [
                 { name: "Edit", event: "taxon-edit" },
@@ -92,7 +92,7 @@ angular.module('BaubleApp').factory('ViewMeta', ['FamilyView', 'GenusView', 'Tax
     .factory('AccessionView', [function() {
         return {
             editor: "views/accession-edit.html",
-            view: "views/accession_view.html",
+            view: "views/accession-view.html",
 
             buttons: [
                 { name: "Edit", event: "accession-edit" },
@@ -105,7 +105,7 @@ angular.module('BaubleApp').factory('ViewMeta', ['FamilyView', 'GenusView', 'Tax
     .factory('PlantView', [function() {
         return {
             editor: "views/plant-edit.html",
-            view: "views/plant_view.html",
+            view: "views/plant-view.html",
             buttons: [
                 { name: "Edit", event: 'plant-edit' },
                 { name: "Delete", event: 'plant-delete' } // delete the selected Plant
@@ -116,7 +116,7 @@ angular.module('BaubleApp').factory('ViewMeta', ['FamilyView', 'GenusView', 'Tax
     .factory('LocationView', [function() {
         return {
             editor: "views/location-edit.html",
-            view: "views/location_view.html",
+            view: "views/location-view.html",
             buttons: [
                 { name: "Edit", event: 'location-edit' },
                 { name: "Delete", event: 'location-delete' } // delete the selected Location

@@ -1,66 +1,55 @@
 'use strict';
 
 angular.module('BaubleApp')
-    .controller('GenusEditCtrl', function ($scope, $location, globals, Family, Genus) {
+    .controller('GenusEditCtrl', function ($scope, $location, $stateParams, Family, Genus) {
 
         // isNew is inherited from the NewCtrl if this is a /new editor
-        $scope.genus = globals.getSelected() && !$scope.isNew ? globals.getSelected() : {};
-        $scope.notes = $scope.genus.notes || [];
+        $scope.genus = {
+            family_id: $location.search().family,
+        };
+
+        $scope.notes = [];
+
+        console.log('$scope.genus: ', $scope.genus);
 
         // make sure we have the family details
-        if($scope.genus && angular.isDefined($scope.genus.ref)) {
-            Genus.details($scope.genus)
+        if($stateParams.id) {
+            Genus.get($stateParams.id, {embed: ['family', 'notes', 'synonyms']})
                 .success(function(data, status, headers, config) {
+                    console.log('data: ', data);
                     $scope.genus = data;
-                    $scope.notes = $scope.genus.notes || [];
+                    $scope.family = data.family;
                 })
                 .error(function(data, status, headers, config) {
                     // do something
                     /* jshint -W015 */
                 });
-        } else if($location.search().family) {
-            Family.get($location.search().family)
-                .success(function(data, status, headers, config) {
-                    $scope.genus.family = data;
-                })
-                .error(function(data, status, headers, config) {
-                    // do something
-                    /* jshint -W015 */
-                });
+        } else if($scope.genus.family_id) {
+            Family.get($scope.genus.family_id, {
+                pick: ['id', 'str']
+            }).success(function(data, status, headers, config) {
+                $scope.family = data;
+            }).error(function(data, status, headers, config) {
+                // do something
+                /* jshint -W015 */
+            });
         }
 
         //$scope.families = []; // the list of completions
         $scope.activeTab = "general";
 
-        $scope.familySelectOptions = {
-            minimumInputLength: 1,
+        $scope.formatInput = function() {
+            console.log('$scope.family: ', $scope.family);
+            var s = $scope.family ? $scope.family.str : '';
+            console.log('s: ', s);
+            return s;
+        };
 
-            formatResult: function(object, container, query) { return object.str; },
-            formatSelection: function(object, container) { return object.str; },
-
-            id: function(obj) {
-                return obj.ref; // use ref field for id since our resources don't have ids
-            },
-
-            // get the list of families matching the query
-            query: function(options){
-                // TODO: somehow we need to cache the returned results and early search
-                // for new results when the query string is something like .length==2
-                // console.log('query: ', options);....i think this is what the
-                // options.context is for
-                Family.list({filter: family})
-                Family.query({q: options.term + '%'})
-                    .success(function(data, status, headers, config) {
-                        $scope.families = data.results;
-                        if(data.results && data.results.length > 0) {
-                            options.callback({results: data.results});
-                        }
-                    })
-                    .error(function(data, status, headers, config) {
-                        // do something
-                        /* jshint -W015 */
-                    });
-            }
+        $scope.getFamilies = function($viewValue) {
+            return Family.list({filter: {family: $viewValue + '%'}})
+                .then(function(result) {
+                    return result.data;
+                });
         };
 
         $scope.alerts = [];
@@ -78,7 +67,8 @@ angular.module('BaubleApp')
             // object an whether we whould be calling save or edit
             // TODO: we should probably also update the selected result to reflect
             // any changes in the search result
-            $scope.genus.notes = $scope.notes;
+            //$scope.genus.notes = $scope.notes;
+            $scope.genus.family_id = $scope.family.id;
             Genus.save($scope.genus)
                 .success(function(data, status, headers, config) {
                     $scope.cancel();
@@ -90,5 +80,11 @@ angular.module('BaubleApp')
                         $scope.alerts.push({type: 'error', msg: "Unknown error!"});
                     }
                 });
+
+            _.each($scope.newNote, function(note) {
+            });
+
+            _.each($scope.removedNote, function(note) {
+            });
         };
     });

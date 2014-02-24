@@ -6,7 +6,6 @@ angular.module('BaubleApp')
         console.log('FamilyViewCtrl');
         $scope.family = $scope.selected;
 
-
         $scope.$watch('selected', function(selected) {
             console.log('selected: ', selected);
             $scope.family = $scope.selected;

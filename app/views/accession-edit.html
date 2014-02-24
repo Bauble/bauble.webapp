@@ -1,5 +1,4 @@
-<div ng-form name="accessionForm" ng-controller="AccessionEditorCtrl"
-     class="bauble-editor accession-editor container">
+<div ng-form name="accessionForm" class="bauble-editor accession-editor">
 
   <alert class="col-md-6 offset3" ng-repeat="alert in alerts" type="alert.type"
          close="closeAlert($index)">{{alert.msg}}</alert>
@@ -8,10 +7,10 @@
     <div class="header-title col-md-8">
       <h4>{{header}}</h4>
     </div>
-    <div class="header-buttons col-md-3 pull-right">
-      <button class="btn" ng-click="cancel()">Cancel</button>
-      <button class="btn btn-primary" ng-click="save()">Save</button>
-    </div>
+    <!-- <div class="header-buttons col-md-3 pull-right">
+    <button class="btn" ng-click="cancel()">Cancel</button>
+    <button class="btn btn-primary" ng-click="save()">Save</button>
+    </div> -->
   </div> <!-- .row .editor-header -->
 
 
@@ -27,8 +26,13 @@
             <div class="form-group">
               <label class="control-label col-md-2" for="taxonField">Taxon</label>
               <div class="col-md-10">
-                <input id="taxonField" ui-select2="taxonSelectOptions"
-                       ng-model="accession.taxon" required/>
+                <input type="text" ng-model="taxon"
+                     placeholder="Taxon" typeahead-editable="false"
+                     typeahead="taxon as taxon.str for taxon in getTaxa($viewValue)"
+                     typeahead-input-formatter="formatTaxonInput()"
+                     typeahead-loading="loadingTaxa" class="form-control">
+                <!-- <input id="taxonField" ui-select2="taxonSelectOptions"
+                ng-model="accession.taxon" required/> -->
               </div>
             </div> <!-- .form-group -->
 
@@ -372,6 +376,11 @@
 
   </tabset>
 
-</div> <!-- .editor-body -->
+  </div> <!-- .editor-body -->
+
+  <div class="action-buttons">
+    <button class="btn btn-default" ng-click="cancel()">Cancel</button>
+    <button class="btn btn-primary" ng-click="save()">Save</button>
+  </div>
 
 </div>

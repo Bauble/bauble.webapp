@@ -19,7 +19,7 @@ angular.module('BaubleApp')
                  * resource can be an ID, a ref or an object with a ref
                  */
                 get: function(resource, config) {
-                    var params = config ? _.pick(config, ['embed']) : null;
+                    var params = config ? _.pick(config, ['pick', 'embed']) : null;
                     return $http({
                         url: [resourceUrl, resource.id || resource].join('/'),
                         method: 'GET',
@@ -30,8 +30,8 @@ angular.module('BaubleApp')
 
                 list: function(config) {
                     var params = config ? _.pick(config, ['embed']) : null;
-
                     var url = resourceUrl;
+                    console.log('params: ', params);
                     if(config && angular.isDefined(config.filter)) {
                         url += '?filter=' + encodeURIComponent(JSON.stringify(config.filter));
                     }
@@ -40,7 +40,7 @@ angular.module('BaubleApp')
                         url: url,
                         method: 'GET',
                         headers: this._getAuthHeader(),
-                        params: params
+                        params: params || null
                     });
                 },
 

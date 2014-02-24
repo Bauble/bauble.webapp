@@ -6,10 +6,10 @@
     <div class="header-title col-md-8">
       <h4>{{taxon.str || 'New taxon'}}</h4>
     </div>
-    <div class="header-buttons col-log-3 pull-right">
-      <button class="btn" ng-click="cancel()">Cancel</button>
-      <button class="btn btn-primary" ng-click="save()">Save</button>
-    </div>
+    <!-- <div class="header-buttons col-log-3 pull-right">
+    <button class="btn" ng-click="cancel()">Cancel</button>
+    <button class="btn btn-primary" ng-click="save()">Save</button>
+    </div> -->
   </div> <!-- .editor-header -->
 
 
@@ -22,8 +22,11 @@
           <div class="form-group">
             <label class="control-label col-md-2" for="genusField">Genus</label>
             <div class="col-md-4">
-              <input id="genusField" style="width: 200px"
-                     ui-select2="genusSelectOptions" ng-model="taxon.genus"/>
+              <input type="text" ng-model="genus"
+                     placeholder="Genus" typeahead-editable="false"
+                     typeahead="genus as genus.str for genus in getGenera($viewValue)"
+                     typeahead-input-formatter="formatGenusInput()"
+                     typeahead-loading="loadingGenera" class="form-control">
             </div>
           </div>
 
@@ -244,4 +247,9 @@
 
   </div> <!-- .editor-body -->
 
-</div> <!-- .taxon-editor -->
+  <div class="action-buttons">
+    <button class="btn btn-default" ng-click="cancel()">Cancel</button>
+    <button class="btn btn-primary" ng-click="save()">Save</button>
+  </div>
+
+</div> <!-- .taxon-editor
