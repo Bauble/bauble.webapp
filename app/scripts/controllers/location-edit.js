@@ -1,15 +1,16 @@
 'use strict';
 
 angular.module('BaubleApp')
-    .controller('LocationEditCtrl', function ($scope, globals, Plant, Location) {
+    .controller('LocationEditCtrl', function ($scope, $stateParams, globals, Plant, Location) {
         // isNew is inherited from the NewCtrl if this is a /new editor
-        $scope.location = globals.getSelected() && !$scope.isNew ? globals.getSelected() : {};
+        $scope.locaton = {};
 
         // make sure we have the details
-        if($scope.location && angular.isDefined($scope.location.ref)) {
-            Location.details($scope.location)
+        if($stateParams.id) {
+            Location.get($stateParams.id)
                 .success(function(data, status, headers, config) {
                     $scope.location = data;
+                    console.log('$scope.location: ', $scope.location);
                 })
                 .error(function(data, status, headers, config) {
                     // do something

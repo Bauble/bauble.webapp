@@ -1,10 +1,16 @@
 <div ng-controller="AccessionViewCtrl">
 
-  <div id="actionButtons" class="pull-right">
-    <span ng-repeat="button in viewMeta.buttons">
-      <button class="btn" data-emit="{{button.event}}">{{button.name}}</button>
-    </span>
+  <div id="summary-buttons" class="pull-right">
+    <a class="btn btn-default" ng-href="#/accession/{{accession.id}}/edit">Edit</a>
+    <a class="btn btn-default" ng-href="#/plant/add?accession={{accession.id}}">Add Plant</a>
+    <a class="btn btn-default" ng-href="#/accession/{{accession.id}}/delete">Delete</a>
   </div>
+
+  <!-- <div id="actionButtons" class="pull-right">
+  <span ng-repeat="button in viewMeta.buttons">
+  <button class="btn" data-emit="{{button.event}}">{{button.name}}</button>
+  </span>
+  </div> -->
 
   <h3>{{accession.str}}</h3>
   <h4>{{accession.taxon_str}}</h4>

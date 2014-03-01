@@ -15,6 +15,7 @@ angular.module('BaubleApp').factory('ViewMeta', ['FamilyView', 'GenusView', 'Tax
                 case /accessions/.test(resource):
                     return AccessionView;
                 case /plants/.test(resource):
+                    console.log(resource);
                     return PlantView;
                 case /locations/.test(resource):
                     return LocationView;

@@ -1,9 +1,8 @@
 <div ng-controller="PlantViewCtrl">
 
-  <div id="actionButtons" class="pull-right">
-    <span ng-repeat="button in viewMeta.buttons">
-      <button class="btn" emit="{{button.event}}">{{button.name}}</button>
-    </span>
+  <div id="summary-buttons" class="pull-right">
+    <a class="btn btn-default" ng-href="#/plant/{{plant.id}}/edit">Edit</a>
+    <a class="btn btn-default" ng-href="#/plant/{{plant.id}}/delete">Delete</a>
   </div>
 
   <h3>{{plant.str}}</h3>

@@ -2,8 +2,10 @@
 
 angular.module('BaubleApp')
     .controller('PlantViewCtrl', function ($scope, $location, globals, Plant) {
+
         $scope.plant = globals.getSelected();
-        Plant.details($scope.plant, function(result) {
+
+        Plant.get($scope.plant, function(result) {
             $scope.plant = result.data;
         });
 

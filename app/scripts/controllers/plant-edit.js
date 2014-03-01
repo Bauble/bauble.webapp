@@ -9,99 +9,75 @@ var acc_type_values ={
     None: ''
 };
 
-angular.module('BaubleApp')
-    .controller('PlantEditCtrl',
-        function ($scope, $location, globals, Accession, Plant, Location) {
+angular.module('BaubleApp').controller('PlantEditCtrl',
+    function ($scope, $location, $stateParams, globals, Accession, Plant, Location) {
+
+        $scope.plant = {
+            accession_id: $location.search().accession,
+            location_id: $location.search().location
+        };
 
         // isNew is inherited from the NewCtrl if this is a /new editor
-        $scope.plant = globals.getSelected() && !$scope.isNew ? globals.getSelected() : {};
         $scope.notes = $scope.plant.notes || [];
         $scope.propagation = {};
-
-        // make sure we have the details
-        if($scope.plant && angular.isDefined($scope.plant.ref)) {
-            Plant.details($scope.plant)
-                .success(function(data, status, headers, config) {
-                    $scope.plant = data;
-                    $scope.notes = $scope.plant.notes || [];
-                })
-                .error(function(data, status, headers, config) {
-                    // do something
-                    /* jshint -W015 */
-                });
-        } else if($location.search().accession) {
-            Accession.details($location.search().accession)
-                .success(function(data, status, headers, config) {
-                    $scope.plant.accession = data;
-                })
-                .error(function(data, status, headers, config) {
-                    // do something
-                    /* jshint -W015 */
-                });
-        }
-
-        $scope.propagation = {};  // inherited by the PropagationEditorCtrl
+        $scope.location = {};
 
         $scope.activeTab = "general";
 
         $scope.acc_type_values = acc_type_values;
 
-        $scope.accSelectOptions = {
-            minimumInputLength: 1,
-            containerCssClass: 'accession-select',
-            formatResult: function(object, container, query) {
-                return object.code + " - " + object.taxon_str;
-            },
-            formatSelection: function(object, container) {
-                return object.code + " - " + object.taxon_str;
-            },
-
-            id: function(obj) {
-                return obj.ref; // use ref field for id since our resources don't have ids
-            },
-
-            // get the list of families matching the query
-            query: function(options){
-                // TODO: somehow we need to cache the returned results and early search
-                // for new results when the query string is something like .length==2
-                // console.log('query: ', options);....i think this is what the
-                // options.context is for
-                Accession.query(options.term + '%')
-                    .success(function(data, status, headers, config) {
-                        options.callback({results: data.results});
-                    })
-                    .error(function(data, status, headers, config) {
-                        // do something
-                        /* jshint -W015 */
-                    });
+        // make sure we have the details
+        if($stateParams.id) {
+            Plant.get($stateParams.id, {embed: ['notes', 'accession', 'location']})
+                .success(function(data, status, headers, config) {
+                    $scope.plant = data;
+                    $scope.notes = $scope.plant.notes || [];
+                    $scope.location = data.location;
+                    $scope.accession = data.location;
+                })
+                .error(function(data, status, headers, config) {
+                    // do something
+                    /* jshint -W015 */
+                });
+        } else {
+            if($scope.plant.accession_id) {
+                Accession.get($scope.plant.accession_id, {embed: ["taxon"]})
+                .success(function(data, status, headers, config) {
+                    $scope.accession = data;
+                    $scope.taxon = data.taxon;
+                })
+                .error(function(data, status, headers, config) {
+                    // do something
+                    /* jshint -W015 */
+                });
             }
+            if($scope.plant.location_id) {
+                Location.get($scope.plant.accession_id)
+                .success(function(data, status, headers, config) {
+                    $scope.location = data;
+                })
+                .error(function(data, status, headers, config) {
+                    // do something
+                    /* jshint -W015 */
+                });
+            }
+        }
+
+
+        // get accessions for typeahead completions
+        $scope.getAccessions = function($viewValue){
+            return Accession.list({filter: {code: $viewValue + '%'}})
+                .then(function(result) {
+                    return result.data;
+                });
         };
 
-        $scope.locationSelectOptions = {
-            minimumInputLength: 1,
-            containerCssClass: 'location-select',
-            formatResult: function(object, container, query) { return object.str; },
-            formatSelection: function(object, container) { return object.str; },
-
-            id: function(obj) {
-                return obj.ref; // use ref field for id since our resources don't have ids
-            },
-
-            // get the list of families matching the query
-            query: function(options){
-                // TODO: somehow we need to cache the returned results and early search
-                // for new results when the query string is something like .length==2
-                // console.log('query: ', options);....i think this is what the
-                // options.context is for
-                Location.query(options.term + '%')
-                    .success(function(data, status, headers, config) {
-                        options.callback({results: data.results});
-                    })
-                    .error(function(data, status, headers, config) {
-                        // do something
-                        /* jshint -W015 */
-                    });
-            }
+        // get accessions for location
+        $scope.getLocations = function($viewValue){
+            return Location.list({filter: {code: $viewValue + '%'}})
+                .then(function(result) {
+                    return result.data;
+                });
         };
 
         $scope.alerts = [];
@@ -115,7 +91,10 @@ angular.module('BaubleApp')
 
         // called when the save button is clicked on the editor
         $scope.save = function() {
-            $scope.plant.notes = $scope.notes;
+            console.log('$sope.location: ', $scope.location);
+            //$scope.plant.notes = $scope.notes;
+            $scope.plant.accession_id = $scope.accession.id;
+            $scope.plant.location_id = $scope.location.id;
             Plant.save($scope.plant)
                 .success(function(data, status, headers, config) {
                     console.log('data: ', data);

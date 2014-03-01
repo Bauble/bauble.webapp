@@ -52,44 +52,67 @@ var recvd_type_values = {
     None: ''
 };
 
-angular.module('BaubleApp')
-    .controller('AccessionEditCtrl', function ($scope, $location, $modal, globals,
-                                                 Taxon, Accession, Source) {
+angular.module('BaubleApp').controller('AccessionEditCtrl',
+    function ($scope, $location, $modal, $stateParams, Taxon, Accession, Source) {
         // isNew is inherited from the NewCtrl if this is a /new editor
-        $scope.accession = globals.getSelected() && !$scope.isNew ? globals.getSelected() :
-            {date_accd: new Date(), date_recvd: new Date()};
+        //$scope.accession = globals.getSelected() && !$scope.isNew ? globals.getSelected() : {date_accd: new Date(), date_recvd: new Date()};
+        $scope.accession = {
+            taxon_id: $location.search().taxon,
+            date_accd: new Date(),
+            date_recvd: new Date()
+        };
+
         $scope.notes = $scope.accession.notes || [];
         $scope.propagation = {};
         $scope.source = $scope.source || {};
         $scope.qualifier_rank = {};
 
-        $scope.$watch(function() { return $scope.accession.taxon; }, function() {
-            if($scope.accession.taxon && $scope.accession.taxon.ref) {
-                Taxon.details($scope.accession.taxon)
-                    .success(function(data, status, headers, config) {
-                        $scope.qualifier_rank = {
-                            'genus': data.genus.genus
-                        };
-                        angular.forEach(['sp', 'sp2', 'infrasp1', 'infrasp2', 'infrasp3'],
-                                        function(value) {
-                                            if(data[value]) {
-                                                $scope.qualifier_rank[value] = data[value];
-                                            }
-                                        });
-                    })
-                    .error(function(data, status, headers, config) {
-                        // do something
-                        /* jshint -W015 */
-                    });
-            }
-        });
+        $scope.refreshQualRankCombo = function() {
+            $scope.qualifier_rank = {
+                'genus': $scope.genus.genus,
+            };
+
+            // TODO: there's probably a more clever way to do this with lodash
+            var taxonParts = ['sp', 'sp2', 'infrasp1', 'infrasp2', 'infrasp3'];
+            angular.forEach(taxonParts, function(value) {
+                if($scope.taxon[value]) {
+                    $scope.qualifier_rank[value] = $scope.taxon[value];
+                }
+            });
+        };
+
+
+        // ** TODO: this builds the qualifier rank combo based on the taxon name
+
+        // $scope.$watch(function() { return $scope.accession.taxon; }, function() {
+        //     if($scope.accession.taxon && $scope.accession.taxon.ref) {
+        //         Taxon.details($scope.accession.taxon)
+        //             .success(function(data, status, headers, config) {
+        //                 $scope.qualifier_rank = {
+        //                     'genus': data.genus.genus
+        //                 };
+        //                 angular.forEach(['sp', 'sp2', 'infrasp1', 'infrasp2', 'infrasp3'],
+        //                                 function(value) {
+        //                                     if(data[value]) {
+        //                                         $scope.qualifier_rank[value] = data[value];
+        //                                     }
+        //                                 });
+        //             })
+        //             .error(function(data, status, headers, config) {
+        //                 // do something
+        //                 /* jshint -W015 */
+        //             });
+        //     }
+        // });
 
         // make sure we have the accession details
-        if($scope.accession && angular.isDefined($scope.accession.ref)) {
-            Accession.details($scope.accession)
+        if($stateParams.id) {
+            Accession.get($stateParams.id, {embed: ['taxon', 'taxon.genus']})
                 .success(function(data, status, headers, config) {
                     $scope.accession = data;
-                    $scope.notes = $scope.accession.notes || [];
+                    $scope.taxon = data.taxon;
+                    $scope.genus = data['taxon.genus'];
+                    $scope.notes = data.notes;
                     $scope.header = $scope.accession.ref ?
                         $scope.accession.code + ' ' + $scope.accession.taxon_str :
                         'New Accession';
@@ -98,10 +121,11 @@ angular.module('BaubleApp')
                     // do something
                     /* jshint -W015 */
                 });
-        } else if($location.search().taxon) {
-            Taxon.get($location.search().taxon)
+        } else if($scope.accession.taxon_id) {
+            Taxon.get($scope.accession.taxon_id)
                 .success(function(data, status, headers, config) {
-                    $scope.accession.taxon = data;
+                    console.log('data: ', data);
+                    $scope.taxon = data;
                 })
                 .error(function(data, status, headers, config) {
                     // do something
@@ -132,36 +156,10 @@ angular.module('BaubleApp')
                 });
         };
 
+        $scope.formatTaxonInput = function() {
+            return $scope.taxon ? $scope.taxon.str : '';
+        };
 
-        // $scope.taxonSelectOptions = {
-        //     minimumInputLength: 1,
-        //     containerCssClass: 'taxon-select',
-        //     formatResult: function(object, container, query) { return object.str; },
-        //     formatSelection: function(object, container) { return object.str; },
-
-        //     id: function(obj) {
-        //         return obj.ref; // use ref field for id since our resources don't have ids
-        //     },
-
-        //     // get the list of families matching the query
-        //     query: function(options){
-        //         // TODO: somehow we need to cache the returned results and early search
-        //         // for new results when the query string is something like .length==2
-        //         // console.log('query: ', options);....i think this is what the
-        //         // options.context is for
-        //         Taxon.query(options.term + '%')
-        //             .success(function(data, status, headers, config) {
-        //                 //$scope. = response.data.results;
-        //                 if(data.results && data.results.length > 0) {
-        //                     options.callback({results: data.results});
-        //                 }
-        //             })
-        //             .error(function(data, status, headers, config) {
-        //                 // do something
-        //                 /* jshint -W015 */
-        //             });
-        //     }
-        // };
 
         $scope.sourceSelectOptions = {
             minimumInputLength: 1,
