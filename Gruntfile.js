@@ -297,9 +297,9 @@ module.exports = function (grunt) {
                 uploadConcurrency: 5, // 5 simultaneous uploads
                 downloadConcurrency: 5 // 5 simultaneous downloads
             },
-            dev: {
+            staging: {
                 options: {
-                    bucket: 'app.bauble.io',
+                    bucket: 'app-staging.bauble.io',
                     region: 'us-east-1',
                     differential: true,
                     //debug: true,
@@ -367,11 +367,11 @@ module.exports = function (grunt) {
         'karma'
     ]);
 
-    grunt.registerTask('deploy:dev', [
+    grunt.registerTask('deploy:staging', [
         'jshint',
         'test',
         'build',
-        'aws_s3:dev'
+        'aws_s3:staging'
     ]);
 
     grunt.registerTask('deploy:production', [
