@@ -13,10 +13,10 @@ module.exports = function(config) {
         files: [
             'app/components/jquery/jquery.js',
             'app/components/angular/angular.js',
-            'app/components/angular-route/angular-route.js',
+            'app/components/angular-ui-router/release/angular-ui-router.js',
             'app/components/angular-mocks/angular-mocks.js',
             'app/components/angular-bootstrap/ui-bootstrap-tpls.js',
-            'app/components/select2/select2.js',
+            'app/components/lodash/dist/lodash.min.js',
             'app/components/angular-ui-select2/src/select2.js',
             'app/components/bootstrap-datepicker/js/bootstrap-datepicker.js',
             'app/components/angular-grid/ng-grid-2.0.7.min.js',
