@@ -37,7 +37,7 @@
     <div class="col-md-4">
       <accordion>
         <accordion-group ng-if="values.length" ng-repeat="(group, values) in results"
-                         heading="{{capitalize(group)}}" is-open="true"
+                         heading="{{capitalize(group)}} - {{values.length}}" is-open="true"
                          class="result-group">
           <ul>
             <li class="result-item" ng-repeat="result in values"
