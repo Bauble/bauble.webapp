@@ -1,7 +1,8 @@
 'use strict';
 
 angular.module('BaubleApp')
-    .controller('LocationEditCtrl', function ($scope, $stateParams, globals, Plant, Location) {
+  .controller('LocationEditCtrl', ['$scope', '$stateParams', 'Plant', 'Location',
+    function ($scope, $stateParams, Plant, Location) {
         // isNew is inherited from the NewCtrl if this is a /new editor
         $scope.locaton = {};
 
@@ -45,4 +46,4 @@ angular.module('BaubleApp')
                     }
                 });
         };
-    });
+    }]);

@@ -1,7 +1,8 @@
 'use strict';
 
 angular.module('BaubleApp')
-    .controller('GenusEditCtrl', function ($scope, $location, $stateParams, Family, Genus) {
+  .controller('GenusEditCtrl', ['$scope', '$location', '$stateParams', 'Family', 'Genus',
+    function($scope, $location, $stateParams, Family, Genus) {
 
         // isNew is inherited from the NewCtrl if this is a /new editor
         $scope.genus = {
@@ -87,4 +88,4 @@ angular.module('BaubleApp')
             _.each($scope.removedNote, function(note) {
             });
         };
-    });
+    }]);

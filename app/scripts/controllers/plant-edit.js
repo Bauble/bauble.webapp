@@ -9,8 +9,9 @@ var acc_type_values ={
     None: ''
 };
 
-angular.module('BaubleApp').controller('PlantEditCtrl',
-    function ($scope, $location, $stateParams, globals, Accession, Plant, Location) {
+angular.module('BaubleApp')
+  .controller('PlantEditCtrl', ['$scope', '$location', '$stateParams', 'Accession', 'Plant', 'Location',
+    function ($scope, $location, $stateParams, Accession, Plant, Location) {
 
         $scope.plant = {
             accession_id: $location.search().accession,
@@ -42,24 +43,24 @@ angular.module('BaubleApp').controller('PlantEditCtrl',
         } else {
             if($scope.plant.accession_id) {
                 Accession.get($scope.plant.accession_id, {embed: ["taxon"]})
-                .success(function(data, status, headers, config) {
-                    $scope.accession = data;
-                    $scope.taxon = data.taxon;
-                })
-                .error(function(data, status, headers, config) {
-                    // do something
-                    /* jshint -W015 */
-                });
+                    .success(function(data, status, headers, config) {
+                        $scope.accession = data;
+                        $scope.taxon = data.taxon;
+                    })
+                    .error(function(data, status, headers, config) {
+                        // do something
+                        /* jshint -W015 */
+                    });
             }
             if($scope.plant.location_id) {
                 Location.get($scope.plant.accession_id)
-                .success(function(data, status, headers, config) {
-                    $scope.location = data;
-                })
-                .error(function(data, status, headers, config) {
-                    // do something
-                    /* jshint -W015 */
-                });
+                    .success(function(data, status, headers, config) {
+                        $scope.location = data;
+                    })
+                    .error(function(data, status, headers, config) {
+                        // do something
+                        /* jshint -W015 */
+                    });
             }
         }
 
@@ -109,4 +110,4 @@ angular.module('BaubleApp').controller('PlantEditCtrl',
                 });
 
         };
-    });
+    }]);

@@ -1,13 +1,12 @@
 'use strict';
 
 angular.module('BaubleApp')
-    .controller('FamilyViewCtrl', function ($scope, $stateParams, $state, $location, globals, Family) {
+  .controller('FamilyViewCtrl', ['$scope', '$stateParams', '$state', '$location', 'Family',
+    function ($scope, $stateParams, $state, $location, Family) {
 
-        console.log('FamilyViewCtrl');
         $scope.family = $scope.selected;
 
         $scope.$watch('selected', function(selected) {
-            console.log('selected: ', selected);
             $scope.family = $scope.selected;
             Family.get($scope.family)
                 .success(function(data, status, headers, config) {
@@ -70,4 +69,4 @@ angular.module('BaubleApp')
                 // do something
                 /* jshint -W015 */
             });
-    });
+    }]);

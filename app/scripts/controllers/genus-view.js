@@ -1,8 +1,10 @@
 'use strict';
 
 angular.module('BaubleApp')
-    .controller('GenusViewCtrl', function ($scope, $location, globals, Genus) {
-        $scope.genus = globals.getSelected();
+  .controller('GenusViewCtrl', ['$scope', '$location', 'Genus',
+    function ($scope, $location, Genus) {
+
+        $scope.genus = $scope.selected;
 
         Genus.get($scope.genus)
             .success(function(data, status, headers, config) {
@@ -54,4 +56,4 @@ angular.module('BaubleApp')
                 /* jshint -W015 */
             });
 
-    });
+    }]);

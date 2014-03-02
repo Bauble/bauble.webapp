@@ -1,8 +1,9 @@
 'use strict';
 
 angular.module('BaubleApp')
-    .controller('LocationViewCtrl', function ($scope, $location, globals, Location) {
-        $scope.location = globals.getSelected();
+  .controller('LocationViewCtrl', ['$scope', '$location', 'Location',
+    function ($scope, $location, Location) {
+        $scope.location = $scope.selected;
 
         $scope.$on('location-edit', function(){
             $scope.$apply(function() {
@@ -14,4 +15,4 @@ angular.module('BaubleApp')
         Location.count($scope.location, "/plants", function(result) {
             $scope.counts.plants = result.data;
         });
-    });
+    }]);

@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('BaubleApp')
-
-    .factory('Resource', function (globals, apiRoot, $http, User) {
+  .factory('Resource', ['$http', 'apiRoot', 'User',
+    function ($http, apiRoot, User) {
         return function(resourceRoot) {
             var resourceUrl = apiRoot + resourceRoot;
 
@@ -12,6 +12,7 @@ angular.module('BaubleApp')
 
                 _getAuthHeader: function() {
                     var user = User.local();
+                    console.log('user: ', user);
                     return user ? user.getAuthHeader() : {};
                 },
 
@@ -56,7 +57,7 @@ angular.module('BaubleApp')
                             q: options.q || "",
                             relations: options.relations || ""
                         },
-                        headers: globals.getAuthHeader()
+                        headers: this._getAuthHeader()
                     };
                     return $http(config);
                 },
@@ -66,35 +67,19 @@ angular.module('BaubleApp')
                     // database and should be updated instead of creating a new
                     // one
                     console.log('data: ', data);
-                    var user = User.local();
                     return $http({
                         url: data.id ? [resourceUrl, data.id].join('/') : resourceUrl,
                         method: data.id ? 'PATCH' : 'POST',
                         data: data,
-                        headers: user ? user.getAuthHeader() : null
+                        headers: this._getAuthHeader()
                     });
-
-
-                    var url = data.ref ? data.ref : resourceUrl,
-                        headers = angular.extend(globals.getAuthHeader(), {
-                            'Content-Type': 'application/json'
-                        }),
-                        config = {
-                            // make sure the url has the api root on it
-                            url: url.indexOf(apiRoot) === 0 ?
-                                url : apiRoot + url,
-                            method: data.ref ? 'PUT' : 'POST',
-                            data: data,
-                            headers: headers
-                        };
-                    return $http(config);
                 },
 
                 remove: function(resource) {
                     var config = {
                         method: 'DELETE',
-                        url: resourcUrl + (resource.id || resource),
-                        headers: globals.getAuthHeader()
+                        url: resourceUrl + (resource.id || resource),
+                        headers: this._getAuthHeader()
                     };
                     return $http(config);
                 },
@@ -103,7 +88,7 @@ angular.module('BaubleApp')
                     var config = {
                         method: 'GET',
                         url: resourceUrl + '/schema',
-                        headers: globals.getAuthHeader(),
+                        headers: this._getAuthHeader(),
                         params: scalars_only ?
                             { flags: 'scalars_only' } : undefined
                     };
@@ -126,7 +111,7 @@ angular.module('BaubleApp')
                 }
             };
         };
-    })
+    }])
 
     .factory('Family', ['Resource', '$http', function($resource, $http) {
         var resource = $resource('/family');
@@ -167,38 +152,38 @@ angular.module('BaubleApp')
         return resource;
     }])
 
-    // Genus service for CRUD genus types
+// Genus service for CRUD genus types
     .factory('Genus', ['Resource', function($resource) {
         return $resource('/genus');
     }])
 
-    // Taxon service for CRUD taxon types
+// Taxon service for CRUD taxon types
     .factory('Taxon', ['Resource', function($resource) {
         return $resource('/taxon');
     }])
 
-    // Accession service for CRUD accession types
+// Accession service for CRUD accession types
     .factory('Accession', ['Resource', function($resource) {
         return $resource('/accession');
     }])
 
-    // Source service for CRUD source types
+// Source service for CRUD source types
     .factory('Source', ['Resource', function($resource) {
         return $resource('/sourcedetail');
     }])
 
-    // Plant service for CRUD plant types
+// Plant service for CRUD plant types
     .factory('Plant', ['Resource', function($resource) {
         return $resource('/plant');
     }])
 
-    // Location service for CRUD location types
+// Location service for CRUD location types
     .factory('Location', ['Resource', function($resource) {
         return $resource('/location');
     }])
 
-    // Organization service for CRUD location types
-    .factory('Organization', ['$http', 'globals', 'Resource', function($http, globals, $resource) {
+// Organization service for CRUD location types
+    .factory('Organization', ['$http', 'Resource', function($http, $resource) {
         var resource = $resource('/organization');
         angular.extend(resource, {
             // get_admin: function(resource) {
@@ -224,58 +209,58 @@ angular.module('BaubleApp')
         return resource;
     }])
 
-    // User service for CRUD location types
-    .factory('User2', ['$http', 'globals', 'apiRoot', 'Resource',
-        function($http, globals, apiRoot, $resource) {
-            var resource = $resource('/user');
+// User service for CRUD location types
+  .factory('User2', ['$http', 'apiRoot', 'Resource',
+    function($http, apiRoot, $resource) {
+        var resource = $resource('/user');
 
-            function AuthorizedUser(user) {
+        function AuthorizedUser(user) {
 
-                var _user = {
-                    getAuthHeader: function() {
-                        return {'Authorization': 'Basic ' +
-                                btoa(this.email + ':' + this.access_token)};
-                    }
-                };
-
-                return _.extend(user, _user);
-            }
-
-            resource.extend = function(user) {
-                return new AuthorizedUser(user);
-            };
-
-            resource.login = function(email, password) {
-                return $http({
-                    url: [apiRoot, 'login'].join('/'),
-                    method: 'GET',
-                    headers: {'Authorization': 'Basic ' + btoa(email + ':' + password)}
-                });
-            };
-
-
-            resource.local = function(user) {
-                var key = 'user';
-
-                if(user === null) {
-                    // deleter
-                    localStorage.removeItem(key);
-                } else {
-                    if(user) {
-                        // setter
-                        localStorage.setItem(key, JSON.stringify(user));
-                    } else {
-                        // getter
-                        var data = localStorage.getItem(key);
-                        return data === null ? data : this.extend(JSON.parse(data));
-                    }
+            var _user = {
+                getAuthHeader: function() {
+                    return {'Authorization': 'Basic ' +
+                            btoa(this.email + ':' + this.access_token)};
                 }
             };
 
-            return resource;
-        }])
+            return _.extend(user, _user);
+        }
 
-    // Report service
+        resource.extend = function(user) {
+            return new AuthorizedUser(user);
+        };
+
+        resource.login = function(email, password) {
+            return $http({
+                url: [apiRoot, 'login'].join('/'),
+                method: 'GET',
+                headers: {'Authorization': 'Basic ' + btoa(email + ':' + password)}
+            });
+        };
+
+
+        resource.local = function(user) {
+            var key = 'user';
+
+            if(user === null) {
+                // deleter
+                localStorage.removeItem(key);
+            } else {
+                if(user) {
+                    // setter
+                    localStorage.setItem(key, JSON.stringify(user));
+                } else {
+                    // getter
+                    var data = localStorage.getItem(key);
+                    return data === null ? data : this.extend(JSON.parse(data));
+                }
+            }
+        };
+
+        return resource;
+    }])
+
+// Report service
     .factory('Report', ['Resource', function($resource) {
         return $resource('/report');
     }]);

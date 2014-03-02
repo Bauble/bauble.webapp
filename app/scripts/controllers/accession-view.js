@@ -1,8 +1,9 @@
 'use strict';
 
 angular.module('BaubleApp')
-    .controller('AccessionViewCtrl', function ($scope, $location, globals, Accession) {
-        $scope.accession = globals.getSelected();
+  .controller('AccessionViewCtrl', ['$scope', '$location', 'Accession',
+    function ($scope, $location, Accession) {
+        $scope.accession = $scope.selected;
         Accession.get($scope.accession)
             .success(function(data, status, headers, config) {
                 $scope.accession = data;
@@ -33,4 +34,4 @@ angular.module('BaubleApp')
                 // do something
                 /* jshint -W015 */
             });
-    });
+    }]);

@@ -52,7 +52,8 @@ var recvd_type_values = {
     None: ''
 };
 
-angular.module('BaubleApp').controller('AccessionEditCtrl',
+angular.module('BaubleApp')
+  .controller('AccessionEditCtrl', ['$scope', '$location', '$modal', '$stateParams', 'Taxon', 'Accession', 'Source',
     function ($scope, $location, $modal, $stateParams, Taxon, Accession, Source) {
         // isNew is inherited from the NewCtrl if this is a /new editor
         //$scope.accession = globals.getSelected() && !$scope.isNew ? globals.getSelected() : {date_accd: new Date(), date_recvd: new Date()};
@@ -237,4 +238,4 @@ angular.module('BaubleApp').controller('AccessionEditCtrl',
                     /* jshint -W015 */
                 });
         };
-    });
+    }]);

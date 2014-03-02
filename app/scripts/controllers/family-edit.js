@@ -1,7 +1,8 @@
 'use strict';
 
 angular.module('BaubleApp')
-    .controller('FamilyEditCtrl', function ($scope, $stateParams, Family) {
+  .controller('FamilyEditCtrl', ['$scope', '$stateParams', 'Family',
+    function ($scope, $stateParams, Family) {
 
         $scope.overlay = $stateParams.family_id ? "loading..." : null;
         // isNew is inherited from the NewCtrl if this is a /new editor
@@ -15,7 +16,6 @@ angular.module('BaubleApp')
         $scope.qualifiers = ["s. lat.", "s. str."];
         $scope.removedSynonyms = [];
 
-        console.log('$stateParams: ', $stateParams);
         if($stateParams.id) {
             Family.get($stateParams.id, {embed: ['notes', 'synonyms']})
                 .success(function(data, status, headers, config) {
@@ -98,4 +98,4 @@ angular.module('BaubleApp')
             // TODO: we need to save the synonyms and the notes...they should
             // be completely replaced...probably with a separate PUT
         };
-    });
+    }]);

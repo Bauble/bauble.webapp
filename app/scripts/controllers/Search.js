@@ -1,7 +1,8 @@
 'use strict';
 
 angular.module('BaubleApp')
-    .controller('SearchCtrl', function ($scope, $location, $state, globals, Search, ViewMeta) {
+  .controller('SearchCtrl', ['$scope', '$location', '$state', 'Search', 'ViewMeta',
+    function ($scope, $location, $state, Search, ViewMeta) {
         $scope.viewMeta = null;
         $scope.selected = null;
         $scope.results = null; // the results of the search
@@ -62,7 +63,7 @@ angular.module('BaubleApp')
             console.log('$scope.viewMeta: ', $scope.viewMeta);
             console.log('selected: ', selected);
             $scope.selected = selected;
-            globals.setSelected(selected);
+            //globals.setSelected(selected);
         };
 
         $scope.itemExpanded = function() {
@@ -74,4 +75,4 @@ angular.module('BaubleApp')
             $scope.q = current_search;
             $scope.search(current_search);
         }
-    });
+    }]);

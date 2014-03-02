@@ -1,7 +1,8 @@
 'use strict';
 
 angular.module('BaubleApp')
-    .controller('OrgEditCtrl', function ($scope, $location, User, Organization) {
+  .controller('OrgEditCtrl', ['$scope', '$location', 'User', 'Organization',
+    function ($scope, $location, User, Organization) {
 
 
         $scope.$watch('org', function(org) {
@@ -19,7 +20,7 @@ angular.module('BaubleApp')
                     $location.path('/');
                 })
                 .error(function(data, status, headers, config) {
-
+                    console.log('data: ', data);
                 });
         };
-    });
+    }]);

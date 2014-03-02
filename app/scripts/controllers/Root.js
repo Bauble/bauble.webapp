@@ -1,9 +1,10 @@
 'use strict';
 
 angular.module('BaubleApp')
-    .controller('RootCtrl', function ($scope, $location, $state, globals, User) {
+  .controller('RootCtrl', ['$scope', '$location', '$state', 'User',
+    function ($scope, $location, $state, User) {
         console.log('RootCtrl');
-        $scope.alerts = globals.alerts;
+        //$scope.alerts = globals.alerts;
         $scope.closeAlert = function(index) {
             $scope.alerts.splice(index, 1);
         };
@@ -20,4 +21,4 @@ angular.module('BaubleApp')
         $scope.$on('logout', function() {
             $scope.user = User.local();
         });
-    });
+    }]);
