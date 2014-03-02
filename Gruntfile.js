@@ -86,7 +86,7 @@ module.exports = function (grunt) {
         },
         open: {
             server: {
-                url: 'http://localhost:<%= connect.options.port %>'
+                url: 'http://127.0.0.1:<%= connect.options.port %>'
             }
         },
         clean: {
@@ -227,6 +227,8 @@ module.exports = function (grunt) {
                         '*.{ico,png,txt}',
                         '.htaccess',
                         //'components/**/*',
+                        'components/angular/*',
+                        'components/jquery/*',
                         'images/{,*/}*.{gif,webp,svg}',
                         'styles/fonts/*'
                     ]
@@ -297,8 +299,8 @@ module.exports = function (grunt) {
             },
             dev: {
                 options: {
-                    bucket: 'beta.bauble.io',
-                    region: 'us-west-2', //'us-east-1',
+                    bucket: 'app.bauble.io',
+                    region: 'us-east-1',
                     differential: true,
                     //debug: true,
                     sslEnabled: true
@@ -320,8 +322,8 @@ module.exports = function (grunt) {
             },
             production: {
                 options: {
-                    bucket: 'bauble.io',
-                    region: 'us-west-2', //'us-east-1',
+                    bucket: 'app.bauble.io',
+                    region: 'us-east-1',
                     differential: true,
                     //debug: true,
                     sslEnabled: true

@@ -1,80 +1,95 @@
 'use strict';
 
-angular.module('BaubleApp', ['ngRoute', 'ui.bootstrap', 'ui.select2', 'ngGrid'])
-    .config(function ($routeProvider) {
-        $routeProvider
-            .when('/', {
+angular.module('BaubleApp', [
+    'ui.bootstrap',
+    'ui.select2',
+    'ngGrid',
+    'ui.router'
+])
+    .config(function ($stateProvider, $urlRouterProvider) {
+
+        $stateProvider
+
+            .state('main', {
+                abstract: true,
                 templateUrl: 'views/main.html',
                 controller: 'MainCtrl'
             })
-            .when('/search', {
+            .state('main.dashboard', {
+                url: '/dashboard',
+                templateUrl: 'views/dashboard.html',
+                controller: 'DashboardCtrl'
+            })
+            .state('main.search', {
+                url: '/search',
                 templateUrl: 'views/search.html',
-                controller: 'SearchCtrl'
+                controller: 'SearchCtrl',
             })
 
-            .when('/login', {
+            .state('login', {
+                url: '/login',
                 templateUrl: 'views/login.html',
                 controller: 'LoginCtrl'
             })
 
-            .when('/logout', {
+            .state('logout', {
+                url: '/logout',
                 templateUrl: 'views/logout.html',
                 controller: 'LogoutCtrl'
             })
 
-            .when('/newuser', {
-                templateUrl: 'views/new_user.html'
+            .state('main.resource-edit', {
+                url: '/:resource/:id/edit',
+                templateUrl: function($stateParams) {
+                    return 'views/' + $stateParams.resource.toLowerCase() + "-edit.html";
+                },
+                controllerProvider: function($stateParams) {
+                    var resource = $stateParams.resource;
+                    resource = resource.slice(0,1).toUpperCase() + resource.slice(1, resource.length);
+                    return resource + "EditCtrl";
+                }
+
             })
 
-            .when('/admin', {
-                templateUrl: 'views/admin.html',
-                controller: 'AdminCtrl'
+            .state('main.resource-add', {
+                url: '/:resource/add',
+                templateUrl: function($stateParams) {
+                    console.log('$stateParams: ', $stateParams);
+                    return 'views/' + $stateParams.resource.toLowerCase()+ "-edit.html";
+                },
+                controllerProvider: function($stateParams) {
+                    var resource = $stateParams.resource;
+                    resource = resource.slice(0,1).toUpperCase() + resource.slice(1, resource.length);
+                    return resource + "EditCtrl";
+                }
             })
 
-            .when('/new/:resource', {
-                templateUrl: 'views/new.html',
-                controller: 'NewCtrl'
+            .state('signup', {
+                url: '/signup',
+                templateUrl: 'views/signup.html'
             })
 
-            .when('/edit/:resource', {
-                templateUrl: 'views/edit.html',
-                controller: 'EditCtrl'
-            })
-
-            .when('/reporter', {
-                templateUrl: 'views/report_design.html',
-                controller: 'ReporterCtrl'
-            })
-
-            .when('/docs', {
-                templateUrl: 'views/docs.html'
-            })
-
-            .when('/faq', {
-                templateUrl: 'views/faq.html'
-            })
-
-            .when('/privacy', {
-                templateUrl: 'views/privacy.html'
-            })
-
-            .when('/about', {
-                templateUrl: 'views/about.html'
-            })
-
-            .when('/contact', {
-                templateUrl: 'views/contact.html'
-            })
-
-            .when('/curious', {
-                templateUrl: 'views/curious.html'
-            })
-
-            .when('/classic', {
-                templateUrl: 'views/classic.html'
-            })
-
-            .otherwise({
-                redirectTo: '/'
+            .state('main.organization-new', {
+                url: '/organization/new',
+                templateUrl: 'views/org-edit.html',
+                controller: 'OrgEditCtrl'
             });
+
+            // .when('/admin', {
+            //     templateUrl: 'views/admin.html',
+            //     controller: 'AdminCtrl'
+            // })
+
+            // .when('/reporter', {
+            //     templateUrl: 'views/report_design.html',
+            //     controller: 'ReporterCtrl'
+            // })
+
+            // .when('/docs', {
+            //     templateUrl: 'views/docs.html'
+            // })
+
+
+
+        $urlRouterProvider.otherwise('/dashboard');
     });

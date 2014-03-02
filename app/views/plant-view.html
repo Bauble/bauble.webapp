@@ -1,0 +1,22 @@
+<div ng-controller="PlantViewCtrl">
+
+  <div id="summary-buttons" class="pull-right">
+    <a class="btn btn-default" ng-href="#/plant/{{plant.id}}/edit">Edit</a>
+    <a class="btn btn-default" ng-href="#/plant/{{plant.id}}/delete">Delete</a>
+  </div>
+
+  <h3>{{plant.str}}</h3>
+
+  <div>Location: {{plant.location.str}}</div>
+  <div>Type: {{plant.acc_type}}</div>
+  <div>Quantity: {{plant.quantity}}</div>
+  <div>Memorial: {{plant.memorial}}</div>
+
+  <h4>Changes</h4>
+
+  <h4>Propagations</h4>
+
+  <h4>Notes</h4>
+
+
+</div>

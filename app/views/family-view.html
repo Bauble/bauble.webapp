@@ -1,0 +1,24 @@
+<div ng-controller="FamilyViewCtrl">
+
+  <div id="summary-buttons" class="pull-right">
+    <a class="btn btn-default" ng-href="#/family/{{family.id}}/edit">Edit</a>
+    <a class="btn btn-default" ng-href="#/genus/add?family={{family.id}}">Add Genus</a>
+    <a class="btn btn-default" ng-href="#/family/{{family.id}}/delete">Delete</a>
+  </div>
+
+  <h3>{{family.str}}</h3>
+
+  <div># of Genera: {{counts.genera}}</div>
+  <div># of Taxa: {{counts.taxa}}</div>
+  <div># of Accessions: {{counts.accessions}}</div>
+  <div># of Plants: {{counts.plants}}</div>
+
+  <h4>Syonyms</h4>
+  <div ng-show="!family.synonyms || family.synonyms.length < 1" style="color: #aaa">
+    This family has no synonyms.
+  </div>
+  <ul>
+      <li ng-repeat="synonym in family.synonyms">{{synonym.str}}</li>
+  </ul>
+
+</div>

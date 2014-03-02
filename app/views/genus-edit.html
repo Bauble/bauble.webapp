@@ -1,0 +1,69 @@
+<div ng-form name="genusForm" class="bauble-editor genus-editor">
+
+  <alert class="span6 offset3" ng-repeat="alert in alerts" type="alert.type"
+         close="closeAlert($index)">{{alert.msg}}</alert>
+
+  <div class="row editor-header">
+    <div class="header-title col-md-8">
+      <h4>{{genus.str || 'New genus'}}</h4>
+    </div>
+    <!-- <div class="header-buttons col-md-3 pull-right">
+    <button class="btn" ng-click="cancel()">Cancel</button>
+    <button class="btn btn-primary" ng-click="save()">Save</button>
+    </div> -->
+  </div> <!-- .editor-header -->
+
+
+  <div class="editor-body">
+
+    <tabset>
+
+      <tab heading="General">
+        <form class="form-horizontal">
+          <div class="form-group">
+            <label for="familyField" class="col-md-2 control-label">Family</label>
+            <div class="col-md-6">
+
+              <!-- <input ui-select2="familySelectOptions" id="familyField" style="width: 200px"
+              ng-model="genus.family"/> -->
+              <!-- typeahead-input-formatter="family.str" -->
+              <input type="text" ng-model="family"
+                     placeholder="Family" typeahead-editable="false"
+                     typeahead="family as family.str for family in getFamilies($viewValue)"
+                     typeahead-input-formatter="formatInput()"
+                     typeahead-loading="loadingFamilies" class="form-control">
+            </div> <!-- .col-md-6 -->
+          </div>   <!-- .control-label -->
+
+          <div class="form-group">
+            <label for="genusField" class="control-label col-md-2">Genus</label>
+            <div class="col-md-6">
+              <input id="genusField" type="text" ng-model="genus.genus" class="form-control"
+                     required/>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label id="authorField" class="control-label col-md-2">Author</label>
+            <div class="col-md-6">
+              <input type="text" ng-model="genus.author" class="form-control" required/>
+            </div>
+          </div>
+
+        </form>
+      </tab>
+
+      <tab heading="Notes">
+        <div ng-include src="'views/notes_editor.html'"></div>
+      </tab>
+
+    </tabset>
+
+  </div> <!-- .editor-body -->
+
+  <div class="action-buttons">
+    <button class="btn btn-primary" ng-click="save()">Save</button>
+    <button class="btn" ng-click="cancel()">Cancel</button>
+  </div>
+
+</div>

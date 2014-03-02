@@ -26,7 +26,10 @@
     "after": true,
     "afterEach": true,
     "expect": true,
-    "it": true
+    "it": true,
+    "moment": true,
+    "$": true,
+    "_": true
   },
   "devel": true
 }

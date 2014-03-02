@@ -1,22 +1,22 @@
 'use strict';
 
-describe('Controller: MainCtrl', function () {
+describe('Controller: DashboardCtrl', function () {
 
   // load the controller's module
   beforeEach(module('BaubleApp'));
 
-  var MainCtrl,
+  var DashboardCtrl,
     scope;
 
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($controller, $rootScope) {
     scope = $rootScope.$new();
-    MainCtrl = $controller('MainCtrl', {
+    DashboardCtrl = $controller('DashboardCtrl', {
       $scope: scope
     });
   }));
 
-  it('should do something', function () {
+  it('do someting', function () {
     //expect(scope.awesomeThings.length).toBe(3);
   });
 });

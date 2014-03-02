@@ -3,25 +3,46 @@
 angular.module('BaubleApp').factory('ViewMeta', ['FamilyView', 'GenusView', 'TaxonView', 'AccessionView', 'PlantView','LocationView',
     function(FamilyView, GenusView, TaxonView, AccessionView, PlantView, LocationView) {
         return {
-            getView: function(ref)  {
+            getView: function(resource)  {
                 // allow get the view based on the ref
                 switch(true) {
-                case /\/family/.test(ref):
+                case /families/.test(resource):
                     return FamilyView;
-                case /\/genus/.test(ref):
+                case /genera/.test(resource):
                     return GenusView;
-                case /\/taxon/.test(ref):
+                case /taxa/.test(resource):
                     return TaxonView;
-                case /\/accession/.test(ref):
+                case /accessions/.test(resource):
                     return AccessionView;
-                case /\/plant/.test(ref):
+                case /plants/.test(resource):
+                    console.log(resource);
                     return PlantView;
-                case /\/location/.test(ref):
+                case /locations/.test(resource):
                     return LocationView;
+
+                // case /\/family/.test(ref):
+                //     return FamilyView;
+                // case /\/genus/.test(ref):
+                //     return GenusView;
+                // case /\/taxon/.test(ref):
+                //     return TaxonView;
+                // case /\/accession/.test(ref):
+                //     return AccessionView;
+                // case /\/plant/.test(ref):
+                //     return PlantView;
+                // case /\/location/.test(ref):
+                //     return LocationView;
                 default:
                     return null;
                 }
             },
+
+            families: FamilyView,
+            genera: GenusView,
+            taxa: TaxonView,
+            accessions: AccessionView,
+            plants: PlantView,
+            locations: LocationView,
             'family': FamilyView,
             'genus': GenusView,
             'taxon': TaxonView,
@@ -32,8 +53,8 @@ angular.module('BaubleApp').factory('ViewMeta', ['FamilyView', 'GenusView', 'Tax
     }])
     .factory('FamilyView', [function() {
         return {
-            editor: "views/family_editor.html",
-            view: "views/family_view.html",
+            editor: "views/family-edit.html",
+            view: "views/family-view.html",
 
             buttons: [
                 { name: "Edit", event: "family-edit" },
@@ -45,8 +66,8 @@ angular.module('BaubleApp').factory('ViewMeta', ['FamilyView', 'GenusView', 'Tax
 
     .factory('GenusView', [function() {
         return {
-            editor: "views/genus_editor.html",
-            view: "views/genus_view.html",
+            editor: "views/genus-edit.html",
+            view: "views/genus-view.html",
 
             buttons: [
                 { name: "Edit", event: "genus-edit" },
@@ -58,8 +79,8 @@ angular.module('BaubleApp').factory('ViewMeta', ['FamilyView', 'GenusView', 'Tax
 
     .factory('TaxonView', [function() {
         return {
-            editor: "views/taxon_editor.html",
-            view: "views/taxon_view.html",
+            editor: "views/taxon-edit.html",
+            view: "views/taxon-view.html",
 
             buttons: [
                 { name: "Edit", event: "taxon-edit" },
@@ -71,8 +92,8 @@ angular.module('BaubleApp').factory('ViewMeta', ['FamilyView', 'GenusView', 'Tax
 
     .factory('AccessionView', [function() {
         return {
-            editor: "views/accession_editor.html",
-            view: "views/accession_view.html",
+            editor: "views/accession-edit.html",
+            view: "views/accession-view.html",
 
             buttons: [
                 { name: "Edit", event: "accession-edit" },
@@ -84,8 +105,8 @@ angular.module('BaubleApp').factory('ViewMeta', ['FamilyView', 'GenusView', 'Tax
 
     .factory('PlantView', [function() {
         return {
-            editor: "views/plant_editor.html",
-            view: "views/plant_view.html",
+            editor: "views/plant-edit.html",
+            view: "views/plant-view.html",
             buttons: [
                 { name: "Edit", event: 'plant-edit' },
                 { name: "Delete", event: 'plant-delete' } // delete the selected Plant
@@ -95,8 +116,8 @@ angular.module('BaubleApp').factory('ViewMeta', ['FamilyView', 'GenusView', 'Tax
 
     .factory('LocationView', [function() {
         return {
-            editor: "views/location_editor.html",
-            view: "views/location_view.html",
+            editor: "views/location-edit.html",
+            view: "views/location-view.html",
             buttons: [
                 { name: "Edit", event: 'location-edit' },
                 { name: "Delete", event: 'location-delete' } // delete the selected Location
