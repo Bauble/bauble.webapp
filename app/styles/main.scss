@@ -32,7 +32,9 @@ $navbar-default-color: $light-grey;
 $navbar-default-border: solid 1px $orange; 
 $navbar-default-link-color:  $light-grey;
 $navbar-default-link-hover-color: $orange;
-$nav-link-hover-bg: $orange;
+$navbar-default-link-active-bg: white;
+$navbar-default-link-active-color: $orange;
+$navbar-default-brand-hover-color: $orange;
 
 $footer-height: 120px;
 $footer-top-padding: 120px;
@@ -98,14 +100,7 @@ h1, h2, h3, h4, h5, legend {
     padding-bottom: 2em;
 }
 
-#root-container {
-   /* min-height:100%; */
-   /* position:relative; */
-}
-#header {
-   //background:#ff0;
-   //padding:40px;
-}
+
 #content {
     //padding-top: $navbar-height;
     //margin-top: $navbar-height;
@@ -160,6 +155,8 @@ h1, h2, h3, h4, h5, legend {
 
     // surely there's variables for the navbar dropdown/popover
     .dropdown-menu {
+        border-top: 0;
+        border-right: white;
         border-bottom: $navbar-default-border;
 
         a, li > a {
@@ -173,13 +170,6 @@ h1, h2, h3, h4, h5, legend {
         }
     }
 
-}
-
-
-
-.navbar-nav>.open>a, .navbar-nav>.open>a:hover, .navbar-nav>.open>a:focus {
-    color: #555;
-    background-color: #FF530D;//#d5d5d5;
 }
 
 
