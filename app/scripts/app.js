@@ -2,8 +2,7 @@
 
 angular.module('BaubleApp', [
     'ui.bootstrap',
-    'ui.select2',
-    'ngGrid',
+    //'ngGrid',
     'ui.router'
 ])
     .config(function ($stateProvider, $urlRouterProvider) {
