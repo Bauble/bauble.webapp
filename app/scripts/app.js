@@ -5,10 +5,11 @@ angular.module('BaubleApp', [
     //'ngGrid',
     'ui.router'
 ])
-    .config(function ($stateProvider, $urlRouterProvider) {
+
+  .config(['$stateProvider', '$urlRouterProvider',
+    function ($stateProvider, $urlRouterProvider) {
 
         $stateProvider
-
             .state('main', {
                 abstract: true,
                 templateUrl: 'views/main.html',
@@ -42,25 +43,24 @@ angular.module('BaubleApp', [
                 templateUrl: function($stateParams) {
                     return 'views/' + $stateParams.resource.toLowerCase() + "-edit.html";
                 },
-                controllerProvider: function($stateParams) {
+                controllerProvider: ['$stateParams', function($stateParams) {
                     var resource = $stateParams.resource;
                     resource = resource.slice(0,1).toUpperCase() + resource.slice(1, resource.length);
                     return resource + "EditCtrl";
-                }
+                }]
 
             })
 
             .state('main.resource-add', {
                 url: '/:resource/add',
                 templateUrl: function($stateParams) {
-                    console.log('$stateParams: ', $stateParams);
                     return 'views/' + $stateParams.resource.toLowerCase()+ "-edit.html";
                 },
-                controllerProvider: function($stateParams) {
+                controllerProvider: ['$stateParams', function($stateParams) {
                     var resource = $stateParams.resource;
                     resource = resource.slice(0,1).toUpperCase() + resource.slice(1, resource.length);
                     return resource + "EditCtrl";
-                }
+                }]
             })
 
             .state('signup', {
@@ -74,21 +74,21 @@ angular.module('BaubleApp', [
                 controller: 'OrgEditCtrl'
             });
 
-            // .when('/admin', {
-            //     templateUrl: 'views/admin.html',
-            //     controller: 'AdminCtrl'
-            // })
+        // .when('/admin', {
+        //     templateUrl: 'views/admin.html',
+        //     controller: 'AdminCtrl'
+        // })
 
-            // .when('/reporter', {
-            //     templateUrl: 'views/report_design.html',
-            //     controller: 'ReporterCtrl'
-            // })
+        // .when('/reporter', {
+        //     templateUrl: 'views/report_design.html',
+        //     controller: 'ReporterCtrl'
+        // })
 
-            // .when('/docs', {
-            //     templateUrl: 'views/docs.html'
-            // })
+        // .when('/docs', {
+        //     templateUrl: 'views/docs.html'
+        // })
 
 
 
         $urlRouterProvider.otherwise('/dashboard');
-    });
+    }]);
