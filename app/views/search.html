@@ -1,28 +1,26 @@
 <div class="search-page">
-  <form>
-    <div class="row">
-      <div class="search-box col-md-12">
-        <div class="input-group">
-          <span class="input-group-btn">
-            <button class="btn btn-default" type="button"><i class="fa fa-cog"></i></button>
-          </span>
-          <input id="search-field" ng-model="query" type="text" autocomplete="off"
-                  autocorrect="off" autocapitalize="off" spellcheck="false"
-                  placeholder="Enter a search query" class="form-control"/>
-          <span class="input-group-btn">
-            <button class="btn btn-default" type="submit" ng-click="search()">Search</button>
-          </span>
-          </div> <!-- .input-group -->
-      </div> <!-- .search-box -->
-    </div> <!-- .row -->
-  </form>
 
-  <div ng-show="alert" class="row">
-    <div class="alert col-md-12">
-      <button type="button" class="close" data-dismiss="alert">&times;</button>
-      {{alert}}
-    </div>
-  </div> <!-- .row -->
+   <div class="search-box">
+    <div class="input-group">
+      <span class="input-group-btn">
+        <button class="btn btn-default" type="button"><i class="fa fa-cog"></i></button>
+      </span> <!-- input-group-btn -->
+      <input id="search-field" ng-model="query" type="text" autocomplete="off"
+             autocorrect="off" autocapitalize="off" spellcheck="false"
+             placeholder="Enter a search query" class="form-control">
+      <span class="input-group-btn">
+        <button class="btn btn-default" type="submit" ng-click="search()">Search</button>
+      </span> <!-- .input-grou-btn -->
+    </div> <!-- .input-group -->
+  </div> <!-- .search-box -->
+
+
+  <!-- <div ng-show="alert.length" class="row">
+  <div class="alert col-md-12">
+  <button type="button" class="close" data-dismiss="alert">&times;</button>
+  {{alert}}
+  </div>
+  </div> -->
 
   <div ng-show="message" class="col-md-12" style="text-align: center">
     {{message}}
