@@ -3,7 +3,7 @@
   <alert class="col-md-6 col-md-3" ng-repeat="alert in alerts" type="alert.type"
          close="closeAlert($index)">{{alert.msg}}</alert>
 
-  <h2>{{plant.str || 'New plant'}}</h2>
+  <h3>{{plant.str || 'New plant'}}</h3>
 
   <!-- <div class="row editor-header">
   <div class="header-title col-md-8">
@@ -89,9 +89,9 @@
       <div ng-include="'views/prop_editor.html'"></div>
     </tab>
 
-    <tab heading="Notes">
-      <div ng-include="'views/notes_editor.html'"></div>
-    </tab>
+    <!-- <tab heading="Notes">
+    <div ng-include="'views/notes_editor.html'"></div>
+    </tab> -->
 
   </tabset>
 

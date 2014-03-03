@@ -3,16 +3,7 @@
   <alert class="col-md-6" ng-repeat="alert in alerts" type="alert.type"
          close="closeAlert($index)">{{alert.msg}}</alert>
 
-  <div class="row editor-header">
-    <div class="header-title col-md-8">
-      <h4>{{header}}</h4>
-    </div>
-    <!-- <div class="header-buttons col-md-3 pull-right">
-    <button class="btn" ng-click="cancel()">Cancel</button>
-    <button class="btn btn-primary" ng-click="save()">Save</button>
-    </div> -->
-  </div> <!-- .row .editor-header -->
-
+  <h3>{{header}}</h3>
 
   <div class="editor-body">
 
@@ -370,9 +361,9 @@
         </div>
       </tab> <!-- end "Voucher" tab -->
 
-      <tab heading="Notes">
-        <div ng-include="'views/notes_editor.html'"></div>
-      </tab> <!-- end "Notes" tab -->
+      <!-- <tab heading="Notes">
+      <div ng-include="'views/notes_editor.html'"></div>
+      </tab> -->
 
   </tabset>
 

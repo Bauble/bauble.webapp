@@ -3,8 +3,7 @@
   <alert class="col-md-6 col-md-offset-3" ng-repeat="alert in alerts"
          type="alert.type" close="closeAlert($index)">{{alert.msg}}</alert>
 
-  <!-- <div class="editor-header"> -->
-  <h2>{{family.str || 'New family'}}</h2>
+  <h3>{{family.str || 'New family'}}</h3>
 
   <tabset>
     <tab heading="General">
@@ -15,25 +14,19 @@
           <form name="general" role="form" novalidate>
 
             <div class="form-group">
-              <label class="col-md-2 control-label" for="family-family-input"
-                     novalidate>Family</label>
-              <!-- <div class="col-md-8"> -->
-              <input type="text" ng-model="family.family" id="family-family-input"
+              <label for="family-input">Family</label>
+              <input type="text" ng-model="family.family" id="family-input"
                      class="form-control" name="family" required>
-              <!-- </div> -->
             </div> <!-- .form-group -->
 
 
             <div class="form-group">
-              <label class="col-md-2 control-label" for="family-qualifier-input">
-                Qualifier</label>
-              <div class="col-md-8">
-                <select ng-model="family.qualifier" class="form-control"
-                        id="family-qualifier-input"
-                        ng-options="q for q in qualifiers">
-                  <option value="">-- choose qualifier --</option>
-                </select>
-              </div>
+              <label for="qualifier-input">Qualifier</label>
+              <select ng-model="family.qualifier" class="form-control"
+                      id="qualifier-input"
+                      ng-options="q for q in qualifiers">
+                <option value="">-- choose qualifier --</option>
+              </select>
             </div> <!-- .form-group -->
 
           </form>
@@ -45,12 +38,13 @@
           <form role="form" name="synonyms">
 
             <div class="form-group">
-              <label for="family-synonym-input">Synonyms</label>
+              <label for="synonym-input">Synonyms</label>
               <div class="input-group">
                 <input type="text" ng-model="newSynonym"
                        placeholder="Family" typeahead-editable="false"
                        typeahead="family as family.str for family in getSynonyms($viewValue)"
-                       typeahead-loading="loadingSynonyms" class="form-control">
+                       typeahead-loading="loadingSynonyms" class="form-control"
+                       id="synonym-input">
                 <span class="input-group-btn">
                   <button class="btn btn-default" ng-disabled="!newSynonym"
                           ng-click="addSynonym(newSynonym); newSynonym=null;">Add</button>
@@ -76,14 +70,14 @@
 
     </tab>  <!-- General tab -->
 
-    <tab heading=Notes>
-      <div ng-include src="'views/notes_editor.html'"></div>
-    </tab>
+    <!-- <tab heading=Notes>
+    <div ng-include src="'views/notes_editor.html'"></div>
+    </tab> -->
   </tabset>
 
   <div class="action-buttons">
+    <button class="btn btn-default" ng-click="cancel()">Cancel</button>
     <button class="btn btn-primary" ng-click="save()">Save</button>
-    <button class="btn" ng-click="cancel()">Cancel</button>
   </div>
 
 

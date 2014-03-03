@@ -2,70 +2,50 @@
   <alert class="span6 offset3" ng-repeat="alert in alerts" type="alert.type"
          close="closeAlert($index)">{{alert.msg}}</alert>
 
-  <div class="row editor-header">
-    <div class="header-title col-md-8">
-      <h4>{{taxon.str || 'New taxon'}}</h4>
-    </div>
-    <!-- <div class="header-buttons col-log-3 pull-right">
-    <button class="btn" ng-click="cancel()">Cancel</button>
-    <button class="btn btn-primary" ng-click="save()">Save</button>
-    </div> -->
-  </div> <!-- .editor-header -->
-
+  <h3>{{taxon.str || 'New taxon'}}</h3>
 
   <div class="editor-body">
 
     <tabset>
       <tab heading="General">
-        <form class="form-horizontal">
+        <form role="form">
 
           <div class="form-group">
-            <label class="control-label col-md-2" for="genusField">Genus</label>
-            <div class="col-md-4">
-              <input type="text" ng-model="genus"
+            <label for="genus-input">Genus</label>
+            <input type="text" ng-model="genus" id="genus-input"
                      placeholder="Genus" typeahead-editable="false"
                      typeahead="genus as genus.str for genus in getGenera($viewValue)"
                      typeahead-input-formatter="formatGenusInput()"
                      typeahead-loading="loadingGenera" class="form-control">
-            </div>
-          </div>
+          </div> <!-- .form-grouo -->
 
           <div class="form-group">
-            <label class="control-label col-md-2" for="genusField">Hybrid</label>
-            <div class="col-md-1">
-              <input type="checkbox" ng-model="taxon.hybrid" id="hybridField"/>
-            </div>
-          </div>
+            <label for="hybrid-input">Hybrid</label>
+            <input type="checkbox" ng-model="taxon.hybrid" id="hybrid-input">
+          </div> <!-- .form-group -->
 
           <div class="form-group">
-            <label class="control-label col-md-2" for="speciesField">Species</label>
-            <div class="col-md-6">
-              <input type="text" ng-model="taxon.sp" id="speciesField"
+            <label for="species-input">Species</label>
+            <input type="text" ng-model="taxon.sp" id="species-input"
                      class="form-control"/>
-            </div>
-          </div>
+          </div> <!-- .form-group -->
 
           <div class="form-group">
-            <label class="control-label col-md-2" for="authorField">Author</label>
-            <div class="col-md-4">
-              <input type="text" ng-model="taxon.sp_author" id="authorField"
+            <label for="author-input">Author</label>
+            <input type="text" ng-model="taxon.sp_author" id="author-input"
                      class="form-control"/>
-            </div>
-          </div>
+          </div> <!-- .form-group -->
 
           <div class="form-group">
-            <label class="control-label col-md-2">Cultivar Group</label>
-            <div class="col-md-4">
-              <input type="text" ng-model="taxon.cv_group" class="form-control"/>
-            </div>
-          </div>
+            <label>Cultivar Group</label>
+            <input type="text" ng-model="taxon.cv_group" class="form-control"
+                   id="cultivar-group-input">
+          </div> <!-- .form-group -->
 
           <div class="form-group">
-            <label class="control-label col-md-2">Species qualifier</label>
-            <div class="col-md-4">
-              <select ng-model="taxon.sp_qual" ng-options="q for q in qualifiers"
-                      class="form-control"></select>
-            </div>
+            <label for="species-qual-input">Species qualifier</label>
+            <select ng-model="taxon.sp_qual" ng-options="q for q in qualifiers"
+                      class="form-control" id="species-qual-input"></select>
           </div>
 
 
@@ -239,9 +219,9 @@
 
       </tab>
 
-      <tab heading="Notes">
-        <div ng-include="'views/notes_editor.html'"></div>
-      </tab>
+      <!-- <tab heading="Notes">
+      <div ng-include="'views/notes_editor.html'"></div>
+      </tab> -->
 
     </tabset>
 
