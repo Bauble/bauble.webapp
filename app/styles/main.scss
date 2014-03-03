@@ -11,38 +11,42 @@
 @import "compass";
 @import "compass/css3/box-shadow";
 
+
 $orange: #ff530d;
 $baby-blue: #bdd4de;
 $light-grey: #efefef;
 $dark-blue: #2b3a42;
 
-$background-color: #efefef; //#FCFFF5; //#D9CB9E; //#F5E5C0;
+$background-color: #efefef; 
 
-$heading-color: #2B3A42; //#3F5765; // #1E1E20; // #265573; // #386d73;
+$heading-color: $dark-blue;
 $heading-font-family: 'Raleway', sans-serif;
 $heading-font-weight: 300;
 
 $font-family: 'Open Sans', sans-serif;
-$font-color: #3F5765; //#2A2C2B; //#386d73;
+$font-color: #3F5765; 
 $link-color: #265573;
 
-$navbar-bg-color: #2B3A42; //#193441; // #374140; // #097380; // #265573;
-$navbar-color: $background-color; //#F5E5C0; //#265573;
-$navbar-height: 50px;  // this is the default from bootstrap
-$navbar-border: solid 1px #FF530D; //#DC3522; //orange;
+$navbar-default-bg: $dark-blue;
+$navbar-default-color: $light-grey; 
+$navbar-default-border: solid 1px $orange; 
+$navbar-default-link-color:  $light-grey;
+$navbar-default-link-hover-color: $orange;
+$nav-link-hover-bg: $orange;
 
-$footer-height: 15em;
+$footer-height: 120px;
+$footer-top-padding: 120px;
+$footer-bg-color: $dark-blue;
+$footer-font-color: $baby-blue;
+$footer-border: $navbar-default-border;
 
-$footer-bg-color: #2B3A42; //#81A68A;
-$footer-font-color: #BDD4DE; //$background-color; //#265573;
-$footer-border: $navbar-border;
-
-$block-header-background: #BDD4DE; //#f5f5f5;
-$block-header-border: solid 1px #FF530D;
+$block-header-background: $baby-blue;
+$block-header-border: solid 1px $orange;
 $block-header-padding: .3em .3em;
 
+$icon-color: $orange;
 
-$icon-color: #FF530D;
+@import "bootstrap-sass/vendor/assets/stylesheets/bootstrap";
 
 @mixin block-header {
     display: block;
@@ -52,10 +56,16 @@ $icon-color: #FF530D;
     border-radius: 5px;    
 }
 
+html {
+    position: relative;
+    min-height: 100%;
+    /* everything above here is for the sticky footer */
+}
+
 html, body {
-    margin:0;
-    padding:0;
-    height:100%;
+    /* margin:0; */
+    /* padding:0; */
+    //height:100%;
     //background-color: #FFFDD0;
     background-color: $background-color;
     color: $font-color;
@@ -63,6 +73,11 @@ html, body {
     //padding-top: 3em; // make space for navbar
 }
 
+body {
+    margin-bottom: $footer-height + $footer-top-padding;
+    /* everything above here is for the sticky footer */
+    padding-top: $navbar-height;
+}
 
 p  {
     color: $font-color;    
@@ -83,17 +98,18 @@ h1, h2, h3, h4, h5, legend {
     padding-bottom: 2em;
 }
 
-#container {
-   min-height:100%;
-   position:relative;
+#root-container {
+   /* min-height:100%; */
+   /* position:relative; */
 }
 #header {
    //background:#ff0;
    //padding:40px;
 }
 #content {
-    padding-top: $navbar-height;
-    padding-bottom: $footer-height;   /* Height of the footer */
+    //padding-top: $navbar-height;
+    //margin-top: $navbar-height;
+    //padding-bottom: $footer-height;   /* Height of the footer */
 }
 
 /* #main-view { */
@@ -104,21 +120,23 @@ h1, h2, h3, h4, h5, legend {
     position:absolute;
     bottom:0;
     width:100%;
-    height:$footer-height;   /* Height of the footer */
+    height: $footer-height;   /* Height of the footer */
+    /* everything above here is for the sticky footer */
     
-    // everything above this line is part of the css sticky footer
     border-top: $footer-border;
     background-color: $footer-bg-color;
     color: $footer-font-color;
-    //padding-top: 3em;
-
-    .row {
-        margin-top: 4em;
-    }
     
+    .footer-col a:first-child {
+        // if this is any larger it shows a line below the footer but I'm not
+        // really sure why
+        margin-top: 15px;
+    }
+
     a {
         color: $footer-font-color;
         display: block;
+        font-size: 90%;
     }
 
     .copyright {
@@ -139,29 +157,17 @@ h1, h2, h3, h4, h5, legend {
 }
 
 .navbar {
-    background-color: $navbar-bg-color;
-    color: $navbar-color;
-    border-bottom: $navbar-border;
-    //margin-bottom: 0;
-    
-    a, li > a { 
-        color: $navbar-color;
-    }
 
-    a:hover, li > a:hover { 
-        color: #FF530D;
-        //background-color: white;
-    }
-
+    // surely there's variables for the navbar dropdown/popover
     .dropdown-menu {
-        border-bottom: $navbar-border;
+        border-bottom: $navbar-default-border;
 
-        a, li > a { 
-            color: $navbar-bg-color;
+        a, li > a {
+            color: $navbar-default-bg
         }
 
         a:hover, li > a:hover {
-            color: red; //#FF530D;
+            color: $orange;
             background-color: white !important;
             background-image: none; // undo bootstrap background gradient on hover
         }
@@ -218,9 +224,9 @@ h1, h2, h3, h4, h5, legend {
     }
 }
 
-input {
-    background-color: $background-color;// !important;
-}
+/* input { */
+/*     background-color: $background-color;// !important; */
+/* } */
 
 #curious-page {
     padding-bottom: 3em;
@@ -252,7 +258,7 @@ input {
     //background-color: #fff;
     background-color: #BDD4DE; //$navbar-bg-color;
     //border: 1px solid #e5e5e5;
-    border: $navbar-border;
+    border: $navbar-default-border;
 
     border-radius: 5px;
     box-shadow: 0 1px 2px rgba(0,0,0,.05);
@@ -309,15 +315,18 @@ input {
 /* } */
 
 .search-box {
-    //padding: 15px 15px;
     margin-bottom: 2em;
     padding-top: 2em;
+
+
+    //padding: 15px 15px;
+    
     //background-color: #F5F5F5;
     //border: solid 1px #CCC;
 
-    form {
-        margin: 0;
-    }
+    /* form { */
+    /*     margin: 0; */
+    /* } */
 
     .fa {
         color: $font-color;
@@ -381,9 +390,17 @@ input {
 }
 
 .bauble-editor {
-    padding: 2em 4em;
+    //padding: 2em 4em;
     
-    //padding-bottom: 3em;
+    margin-bottom: 3em;
+
+    .tabbable {
+        margin-top: 2em;
+    }
+
+    .tab-content {
+        padding-top: 2em;
+    }
 
     label + textarea {
     /*margin-left: 10px;*/
@@ -405,9 +422,6 @@ input {
     background-color: #f7f7f7;
 }
 
-.family-editor {
-    
-}
 
 .synonyms-list {
     
@@ -437,20 +451,9 @@ input {
 }
 
 
-.genus-editor {
-
-}
-
 .taxon-editor {
 
-    $label-width: 75px;
-    .group1 .control-label {
-        width: $label-width
-    }
-    .group1 .controls {
-        margin-left: $label-width + 25px;
-    }
-
+    
     .infraspecific-container {
 
         table {
@@ -486,29 +489,6 @@ input {
                 }
             }
         }
-    }
-}
-
-
-.accession-editor {
-    $label-width: 100px;
-
-    .taxon-select {
-        width: 400px;
-    }
-
-    .source-select {
-        width: 400px;
-    }
-}
-
-.plant-editor {
-    .accession-select {
-        width: 400px;
-    }
-
-    .location-select {
-        width: 400px;
     }
 }
 
