@@ -28,7 +28,6 @@ angular.module('BaubleApp')
             sessionStorage.setItem('current_search', $scope.query);
             Search.query($scope.query)
                 .success(function(data, status, headers, config) {
-                    console.log('data: ', data);
                     $scope.results = data;
                     // if($scope.results.length===0) {
                     //     $scope.alert = "No results for your search query";
@@ -60,15 +59,13 @@ angular.module('BaubleApp')
 
         $scope.itemSelected = function(resource, selected) {
             $scope.viewMeta = ViewMeta.getView(resource, selected);
-            console.log('$scope.viewMeta: ', $scope.viewMeta);
-            console.log('selected: ', selected);
             $scope.selected = selected;
             //globals.setSelected(selected);
         };
 
-        $scope.itemExpanded = function() {
-            console.log('itemExpanded(');
-        };
+        // $scope.itemExpanded = function() {
+        //     console.log('itemExpanded(');
+        // };
 
         var current_search = sessionStorage.getItem("current_search");
         if(current_search) {

@@ -12,7 +12,6 @@ angular.module('BaubleApp')
 
                 _getAuthHeader: function() {
                     var user = User.local();
-                    console.log('user: ', user);
                     return user ? user.getAuthHeader() : {};
                 },
 
@@ -32,7 +31,6 @@ angular.module('BaubleApp')
                 list: function(config) {
                     var params = config ? _.pick(config, ['embed']) : null;
                     var url = resourceUrl;
-                    console.log('params: ', params);
                     if(config && angular.isDefined(config.filter)) {
                         url += '?filter=' + encodeURIComponent(JSON.stringify(config.filter));
                     }
@@ -66,7 +64,6 @@ angular.module('BaubleApp')
                     // if the data has a ref then it already exists in the
                     // database and should be updated instead of creating a new
                     // one
-                    console.log('data: ', data);
                     return $http({
                         url: data.id ? [resourceUrl, data.id].join('/') : resourceUrl,
                         method: data.id ? 'PATCH' : 'POST',

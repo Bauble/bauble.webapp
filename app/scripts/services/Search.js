@@ -6,7 +6,6 @@ angular.module('BaubleApp')
         return {
             query: function(q) {
                 var user = User.local();
-                console.log('user: ', user);
                 var config = {
                     url: apiRoot + "/search",
                     method: 'GET',
@@ -18,7 +17,6 @@ angular.module('BaubleApp')
                     //     'Accept': 'application/json;depth=1'
                     // })
                 };
-                console.log(config);
                 return $http(config);
             }
         };
