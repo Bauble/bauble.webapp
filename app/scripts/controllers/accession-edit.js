@@ -57,27 +57,34 @@ angular.module('BaubleApp')
     function ($scope, $location, $modal, $stateParams, Taxon, Accession, Source) {
         // isNew is inherited from the NewCtrl if this is a /new editor
         //$scope.accession = globals.getSelected() && !$scope.isNew ? globals.getSelected() : {date_accd: new Date(), date_recvd: new Date()};
-        $scope.accession = {
-            taxon_id: $location.search().taxon,
-            date_accd: new Date(),
-            date_recvd: new Date()
+        $scope.model = {
+            accession: {
+                taxon_id: $location.search().taxon,
+                date_accd: new Date(),
+                date_recvd: new Date(),
+                source: {}
+            },
+            taxon: {},
+            genus: {},
+            qualifierRank: {},
+            notes: [{}],
+            propagations: [{}],
+            verifications: [{}]
         };
 
-        $scope.notes = $scope.accession.notes || [];
-        $scope.propagation = {};
-        $scope.source = $scope.source || {};
-        $scope.qualifier_rank = {};
+        $scope.header = "New Accesion";
+
 
         $scope.refreshQualRankCombo = function() {
-            $scope.qualifier_rank = {
-                'genus': $scope.genus.genus,
+            $scope.model.qualifier_rank = {
+                'genus': $scope.model.genus.genus,
             };
 
             // TODO: there's probably a more clever way to do this with lodash
             var taxonParts = ['sp', 'sp2', 'infrasp1', 'infrasp2', 'infrasp3'];
             angular.forEach(taxonParts, function(value) {
-                if($scope.taxon[value]) {
-                    $scope.qualifier_rank[value] = $scope.taxon[value];
+                if($scope.model.taxon[value]) {
+                    $scope.model.qualifier_rank[value] = $scope.model.taxon[value];
                 }
             });
         };
@@ -110,23 +117,29 @@ angular.module('BaubleApp')
         if($stateParams.id) {
             Accession.get($stateParams.id, {embed: ['taxon', 'taxon.genus']})
                 .success(function(data, status, headers, config) {
-                    $scope.accession = data;
-                    $scope.taxon = data.taxon;
-                    $scope.genus = data['taxon.genus'];
-                    $scope.notes = data.notes;
-                    $scope.header = $scope.accession.ref ?
-                        $scope.accession.code + ' ' + $scope.accession.taxon_str :
-                        'New Accession';
+                    $scope.model.accession = data;
+                    $scope.model.taxon = data.taxon;
+                    $scope.model.genus = data['taxon.genus'];
+                    $scope.model.notes = data.notes;
+
+                    $scope.model.sourceDetail = _.pick($scope.model.accession.source,
+                                                       ['id','name', 'str']);
+                    console.log('$scope.model.sourceDetail: ', $scope.model.sourceDetail);
+
+                    console.log('$scope.model.accession: ', $scope.model.accession);
+
+                    // TODO: we should be showing accession.taxon_str here instead of taxon.str
+                    $scope.header = $scope.model.accession.code + ' ' + $scope.model.taxon.str;
                 })
                 .error(function(data, status, headers, config) {
                     // do something
                     /* jshint -W015 */
                 });
-        } else if($scope.accession.taxon_id) {
-            Taxon.get($scope.accession.taxon_id)
+        } else if($scope.model.accession.taxon_id) {
+            Taxon.get($scope.model.accession.taxon_id)
                 .success(function(data, status, headers, config) {
                     console.log('data: ', data);
-                    $scope.taxon = data;
+                    $scope.model.taxon = data;
                 })
                 .error(function(data, status, headers, config) {
                     // do something
@@ -138,13 +151,8 @@ angular.module('BaubleApp')
         $scope.prov_type_values = prov_type_values;
         $scope.wild_prov_status_values = wild_prov_status_values;
         $scope.recvd_type_values = recvd_type_values;
-        $scope.accession.verifications = $scope.accession.verifications || [{}];
 
         $scope.activeTab = "general";
-
-        // we need to put a watch on $scope.accession to update this when it changes
-        $scope.header = $scope.accession.ref ? $scope.accession.code + ' ' +
-            $scope.accession.taxon_str : 'New Accession';
 
         $scope.getTaxa = function($viewValue) {
 
@@ -157,56 +165,51 @@ angular.module('BaubleApp')
                 });
         };
 
-        $scope.formatTaxonInput = function() {
-            return $scope.taxon ? $scope.taxon.str : '';
+        $scope.onSelectTaxon = function() {
+            $scope.model.accession.taxon_id = angular.isDefined($scope.model.taxon) ?
+                $scope.model.taxon.id : null;
         };
 
 
-        $scope.sourceSelectOptions = {
-            minimumInputLength: 1,
-            containerCssClass: 'source-select',
-            formatResult: function(object, container, query) { return object.str; },
-            formatSelection: function(object, container) { return object.str; },
-
-            id: function(obj) {
-                return obj.ref; // use ref field for id since our resources don't have ids
-            },
-
-            // get the list of families matching the query
-            query: function(options){
-                // TODO: somehow we need to cache the returned results and early search
-                // for new results when the query string is something like .length==2
-                // console.log('query: ', options);....i think this is what the
-                // options.context is for
-                Source.query(options.term + '%')
-                    .success(function(data, status, headers, config) {
-                        if(data.results && data.results.length > 0) {
-                            options.callback({results: data.results});
-                        }
-                    })
-                    .error(function(data, status, headers, config) {
-                        // do something
-                        /* jshint -W015 */
-                    });
-            }
+        $scope.getSources = function($viewValue) {
+            // TODO: we also need to join again the generic name here...maybe now it's
+            // a good case for storing the str on save and querying the save string
+            // instead of just the columns
+            return Source.list({filter: {name: $viewValue + '%'}})
+                .then(function(result) {
+                    return result.data;
+                });
         };
 
-        $scope.alerts = [];
-        $scope.closeAlert = function(index) {
-            $scope.alerts.splice(index, 1);
+
+
+        $scope.formatSourceDetailInput = function() {
+            console.log('$scope.source: ', $scope.source);
+            console.log('$scope.sourceDetail: ', $scope.sourceDetail);
+            return $scope.sourceDetail ? $scope.sourceDetail.str : '';
         };
+
+
+        $scope.onSelectSourceDetail = function() {
+            // console.log('sourceDetail: ', sourceDetail);
+            // console.log('$scope.sourceDetail: ', $scope.sourceDetail);
+            console.log('$scope.model: ', $scope.model);
+            $scope.model.accession.source.id = angular.isDefined($scope.model.sourceDetail) ?
+                $scope.model.sourceDetail.id : null;
+        };
+
+
 
         $scope.newSource = function() {
             var modalInstance = $modal.open({
-                templateUrl: 'views/source_detail_editor.html',
+                templateUrl: 'views/source-detail-edit.html',
                 controller: "SourceDetailEditCtrl"
             });
 
-            modalInstance.result.then(function(source_detail) {
-                if(!$scope.accession.source) {
-                    $scope.accession.source = {};
-                }
-                $scope.source.source_detail = source_detail;
+            modalInstance.result.then(function(sourceDetail) {
+                console.log('source_detail: ', sourceDetail);
+                $scope.model.sourceDetail = sourceDetail;
+                $scope.model.accession.source.id = sourceDetail.id;
             }, function() {
                 console.log('dismissed');
             });
@@ -220,16 +223,17 @@ angular.module('BaubleApp')
         $scope.save = function() {
             // TODO: we need a way to determine if this is a save on a new or existing
             // object an whether we whould be calling save or edit
-            if(!$scope.accession.source) {
-                delete $scope.accession.source;
-            }
+            // if(!$scope.model.accession.source) {
+            //     delete $scope.model.accession.source;
+            // }
+            console.log('$scope.model: ', $scope.model);
 
             // copy the date variables to the accession
             angular.forEach(['date_recvd', 'date_accd'], function(value, key) {
-                $scope.accession[value] = moment($scope.accession[value]).format("YYYY-MM-DD");
+                $scope.model.accession[value] = moment($scope.model.accession[value]).format("YYYY-MM-DD");
             });
 
-            Accession.save($scope.accession)
+            Accession.save($scope.model.accession)
                 .success(function(data, status, headers, config) {
                     $scope.cancel();
                 })

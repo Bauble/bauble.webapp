@@ -22,7 +22,7 @@ angular.module('BaubleApp')
         $scope.save = function() {
             Source.save($scope.source_detail)
                 .success(function(data, status, headers, config) {
-                    $modalInstance.close($scope.data);
+                    $modalInstance.close(data);
                 })
                 .error(function(data, status, headers, config) {
                     // do something

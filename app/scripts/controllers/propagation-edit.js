@@ -7,8 +7,8 @@ angular.module('BaubleApp')
         // this is a "sub-editor"
 
         $scope.propagation_views = {
-            "Seed": "views/prop_seed.html",
-            "UnrootedCutting": "views/prop_cutting.html",
+            "Seed": "views/propagation-edit-seed.html",
+            "UnrootedCutting": "views/propagation-edit-cutting.html",
             "Other": null
         };
     });
