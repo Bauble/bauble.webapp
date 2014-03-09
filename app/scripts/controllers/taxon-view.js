@@ -1,8 +1,10 @@
 'use strict';
 
 angular.module('BaubleApp')
-    .controller('TaxonViewCtrl', function ($scope, $location, globals, Taxon) {
-        $scope.taxon = globals.getSelected();
+    .controller('TaxonViewCtrl', function ($scope, $location, Taxon) {
+
+        $scope.taxon = $scope.selected;
+
         Taxon.get($scope.taxon)
             .success(function(data, status, headers, config) {
                 $scope.taxon = data;

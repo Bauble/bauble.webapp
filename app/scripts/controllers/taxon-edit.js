@@ -6,6 +6,7 @@ angular.module('BaubleApp')
         $scope.taxon = {
             genus_id: $location.search().genus,
         };
+        $scope.genus = {};
 
         $scope.notes = [];
 
@@ -37,10 +38,6 @@ angular.module('BaubleApp')
 
         $scope.qualifiers = ["agg.", "s. lat.", "s. str."];
         $scope.ranks = ["cv.", "f.", "subf.", "subsp.", "subvar.", "var."];
-
-        $scope.formatGenusInput = function() {
-            return $scope.genus ? $scope.genus.str : '';
-        };
 
         $scope.addSynonym = function(synonym) {
             if(!$scope.taxon.synonyms) {
