@@ -1,10 +1,11 @@
 'use strict';
 
 angular.module('BaubleApp')
-  .controller('MainCtrl', ['$scope', 'User', '$location',
-    function ($scope, User, $location) {
+  .controller('MainCtrl', ['$scope', '$location', 'User', 'Alert',
+    function ($scope, $location, User, Alert) {
 
         $scope.user = User.local();
+        $scope.Alert = Alert;
 
         // if(!$scope.user) {
         //     $location.path('/login');

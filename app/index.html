@@ -124,7 +124,7 @@
       </div> -->
       <!-- <alert ng-repeat="alert in alerts" type="alert.type"
       close="closeAlert($index)" ng-bind="alert.msg"></alert> -->
-      <div ui-view></div>
+      <div ui-view autoscroll="false"></div>
     </div> <!-- #content -->
 
     <div id="footer">
@@ -226,6 +226,7 @@
     <script src="scripts/services/ViewMeta.js"></script>
     <script src="scripts/services/Resource.js"></script>
     <script src="scripts/services/globals.js"></script>
+    <script src="scripts/services/alert.js"></script>
 
     <!--  directives -->
     <script src="scripts/directives/emit.js"></script>
