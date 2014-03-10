@@ -1,6 +1,7 @@
 <div class="search-page">
 
-   <div class="search-box">
+  <div class="search-box">
+    <form>
     <div class="input-group">
       <span class="input-group-btn">
         <button class="btn btn-default" type="button"><i class="fa fa-cog"></i></button>
@@ -12,6 +13,7 @@
         <button class="btn btn-default" type="submit" ng-click="search()">Search</button>
       </span> <!-- .input-grou-btn -->
     </div> <!-- .input-group -->
+    </form>
   </div> <!-- .search-box -->
 
 
@@ -35,8 +37,11 @@
     <div class="col-md-4">
       <accordion>
         <accordion-group ng-if="values.length" ng-repeat="(group, values) in results"
-                         heading="{{capitalize(group)}} - {{values.length}}" is-open="true"
-                         class="result-group">
+                         class="result-group" is-open="false" close-others="false">
+          <accordion-heading>
+            {{capitalize(group)}}
+            <span class="pull-right">{{values.length}}</span>
+          </accordion-heading>
           <ul>
             <li class="result-item" ng-repeat="result in values"
                 ng-click="itemSelected(group, result)">
@@ -50,7 +55,7 @@
 
     <div class="col-md-8">
       <div ng-show="viewMeta" ng-include="viewMeta.view" class="resource-view"></div>
-      <div ng-show="!viewMeta && results">Select something from the list for
+      <div ng-show="!viewMeta && results && !message">Select something from the list for
         more information.</div>
     </div> <!-- .col-md-8 -->
   </div> <!-- .row -->

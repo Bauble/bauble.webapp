@@ -33,6 +33,10 @@ angular.module('BaubleApp')
                     //     $scope.alert = "No results for your search query";
                     // }
                     $scope.message = "";
+                    if(_.size($scope.results) === 0) {
+                        $scope.message = "Nothing found.";
+                    }
+
                 })
                 .error(function(data, status, headers, config) {
                     $scope.message = "";
