@@ -26,6 +26,12 @@ angular.module('BaubleApp', [
                 controller: 'SearchCtrl',
             })
 
+            .state('main.settings', {
+                url: '/settings',
+                templateUrl: 'views/settings.html',
+                controller: 'SettingsCtrl',
+            })
+
             .state('login', {
                 url: '/login',
                 templateUrl: 'views/login.html',
