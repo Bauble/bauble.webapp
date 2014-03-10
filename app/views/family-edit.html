@@ -1,32 +1,32 @@
 <div ng-form name="familyForm" class="bauble-editor" novalidate>
 
-  <alert class="col-md-6 col-md-offset-3" ng-repeat="alert in alerts"
-         type="alert.type" close="closeAlert($index)">{{alert.msg}}</alert>
-
   <h3>{{family.str || 'New family'}}</h3>
 
-  <tabset>
+p  <tabset>
     <tab heading="General">
 
       <div class="row">
         <div class="col-md-5 col-sm-6">
-
-          <form name="general" role="form" novalidate>
+          <form name="general" role="form" class="form-horizontal" novalidate>
 
             <div class="form-group">
-              <label for="family-input">Family</label>
-              <input type="text" ng-model="family.family" id="family-input"
-                     class="form-control" name="family" required>
+              <label for="family-input" class="col-sm-2 control-label">Family</label>
+              <div class="col-sm-10">
+                <input type="text" ng-model="family.family" id="family-input"
+                       class="form-control" name="family" required>
+              </div>
             </div> <!-- .form-group -->
 
 
             <div class="form-group">
-              <label for="qualifier-input">Qualifier</label>
-              <select ng-model="family.qualifier" class="form-control"
-                      id="qualifier-input"
-                      ng-options="q for q in qualifiers">
-                <option value="">-- choose qualifier --</option>
-              </select>
+              <label for="qualifier-input" class="col-sm-2 control-label">Qualifier</label>
+              <div class="col-sm-10">
+                <select ng-model="family.qualifier" class="form-control"
+                        id="qualifier-input"
+                        ng-options="q for q in qualifiers">
+                  <option value="">-- choose qualifier --</option>
+                </select>
+              </div>
             </div> <!-- .form-group -->
 
           </form>
@@ -59,7 +59,7 @@
               <li ng-repeat="synonym in data.synonyms" class="list-group-item">
                 {{synonym.str}}
                 <button class="pull-right trash-btn btn" ng-click="removeSynonym(synonym)">
-                  <i class="fa fa-trash-o pull-right"></i></button>
+                  <i class="fa fa-trash pull-right"></i></button>
               </li>
             </ul>
 

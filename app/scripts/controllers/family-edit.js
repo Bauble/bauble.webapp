@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('BaubleApp')
-  .controller('FamilyEditCtrl', ['$scope', '$stateParams', 'Family',
-    function ($scope, $stateParams, Family) {
+  .controller('FamilyEditCtrl', ['$scope', '$q', '$stateParams', 'Alert', 'Family',
+    function ($scope, $q, $stateParams, Alert, Family) {
 
         $scope.overlay = $stateParams.family_id ? "loading..." : null;
         // isNew is inherited from the NewCtrl if this is a /new editor
@@ -61,10 +61,6 @@ angular.module('BaubleApp')
             window.history.back();
         };
 
-        $scope.alerts = [];
-        $scope.closeAlert = function(index) {
-            $scope.alerts.splice(index, 1);
-        };
 
         $scope.save = function() {
             // TODO: we should probably also update the selected result to reflect
@@ -74,26 +70,39 @@ angular.module('BaubleApp')
             if($scope.familyForm.general.$dirty) {
                 Family.save($scope.family)
                     .success(function(data, status, headers, config) {
+
+                        $q.all(_.flatten(
+                            _.map($scope.addedSynonyms, function(synonym) {
+                                return Family.addSynonym($scope.family, synonym);
+                            }),
+                            _.map($scope.removedSynonyms, function(synonym) {
+                                return Family.removeSynonym($scope.family, synonym);
+                            }))).then(function(result) {
+                                $scope.cancel();
+                            }).catch(function(result) {
+                                var defaultMessage = "Some synonyms could not be saved.";
+                                Alert.onErrorResponse(result.data, defaultMessage);
+                            });
+
+
                         $scope.cancel();
                     })
                     .error(function(data, status, headers, config) {
-                        var msg = data ? "Error!\n" + data : "Unknown error!";
-                        $scope.alerts.push({type: 'error', msg: msg});
+                        var defaultMessage = data ? "Error!\n" + data : "Unknown error!";
+                        Alert.onErrorResponse(data, defaultMessage);
                     });
             }
 
 
             console.log('$scope.addedsynonyms: ', $scope.addedSynonyms);
-            _.each($scope.addedSynonyms, function(synonym) {
-                console.log('add synonym: ', synonym);
-                Family.addSynonym($scope.family, synonym);
-            });
+
+
+
 
             _.each($scope.removedSynonyms, function(synonym) {
                 console.log('remove synonym: ', synonym);
                 Family.removeSynonym($scope.family, synonym);
             });
-
 
             // TODO: we need to save the synonyms and the notes...they should
             // be completely replaced...probably with a separate PUT
