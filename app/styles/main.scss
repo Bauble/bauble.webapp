@@ -17,19 +17,19 @@ $baby-blue: #bdd4de;
 $light-grey: #efefef;
 $dark-blue: #2b3a42;
 
-$background-color: #efefef; 
+$background-color: #efefef;
 
 $heading-color: $dark-blue;
 $heading-font-family: 'Raleway', sans-serif;
 $heading-font-weight: 300;
 
 $font-family: 'Open Sans', sans-serif;
-$font-color: #3F5765; 
+$font-color: #3F5765;
 $link-color: #265573;
 
 $navbar-default-bg: $dark-blue;
-$navbar-default-color: $light-grey; 
-$navbar-default-border: solid 1px $orange; 
+$navbar-default-color: $light-grey;
+$navbar-default-border: solid 1px $orange;
 $navbar-default-link-color:  $light-grey;
 $navbar-default-link-hover-color: $orange;
 $navbar-default-link-active-bg: white;
@@ -55,7 +55,7 @@ $icon-color: $orange;
     background-color: $block-header-background;
     border: $block-header-border;
     padding: $block-header-padding;
-    border-radius: 5px;    
+    border-radius: 5px;
 }
 
 html {
@@ -76,13 +76,55 @@ html, body {
 }
 
 body {
-    margin-bottom: $footer-height + $footer-top-padding;
+    //margin-bottom: $footer-height + $footer-top-padding;
     /* everything above here is for the sticky footer */
+    //padding-top: $navbar-height;
+    margin-bottom: $footer-height;
+}
+
+body > .container {
     padding-top: $navbar-height;
+    //padding: $navbar-height 15px 0;
+}
+
+#footer {
+    position:absolute;
+    bottom:0;
+    width:100%;
+    height: $footer-height;   /* Height of the footer */
+    /* everything above here is for the sticky footer */
+
+    border-top: $footer-border;
+    background-color: $footer-bg-color;
+    color: $footer-font-color;
+
+    .container {
+        padding-top: 10px;
+    }
+
+    /* .footer-col a:first-child { */
+    /*     // if this is any larger it shows a line below the footer but I'm not */
+    /*     // really sure why */
+    /*     margin-top: 15px; */
+    /* } */
+
+    a {
+        color: $footer-font-color;
+        display: block;
+        font-size: 90%;
+    }
+
+    .copyright {
+        top: 0;
+        font-size: .9em;
+        //margin-top: 2em;
+        margin-right: 2em;
+        background-color: inherit;
+    }
 }
 
 p  {
-    color: $font-color;    
+    color: $font-color;
 }
 
 a {
@@ -111,37 +153,7 @@ h1, h2, h3, h4, h5, legend {
 /*     padding: 2em 0; */
 /* } */
 
-#footer {
-    position:absolute;
-    bottom:0;
-    width:100%;
-    height: $footer-height;   /* Height of the footer */
-    /* everything above here is for the sticky footer */
-    
-    border-top: $footer-border;
-    background-color: $footer-bg-color;
-    color: $footer-font-color;
-    
-    .footer-col a:first-child {
-        // if this is any larger it shows a line below the footer but I'm not
-        // really sure why
-        margin-top: 15px;
-    }
 
-    a {
-        color: $footer-font-color;
-        display: block;
-        font-size: 90%;
-    }
-
-    .copyright {
-        top: 0;
-        font-size: .9em;
-        //margin-top: 2em;
-        margin-right: 2em;
-        background-color: inherit;
-    }
-}
 
 /* .container { */
 /*     min-height: 100%; */
@@ -234,11 +246,11 @@ h1, h2, h3, h4, h5, legend {
     //padding-top: $navbar-height;
     //background-color: #d4d9b0;
     padding-bottom: 3em;
-    
+
     .not-ready-warning {
         text-align: center;
         font-size: 100%;
-        padding: 1em;   
+        padding: 1em;
     }
 }
 
@@ -284,16 +296,16 @@ h1, h2, h3, h4, h5, legend {
     /* form { */
     /*     margin-top: 5em; */
     /* } */
-    
+
     .btn-default {
-        margin: 3em auto;        
+        margin: 3em auto;
     }
 
     .help-block {
         margin-bottom: 3em;
     }
 
-    .welcome { 
+    .welcome {
         margin-top: 7em;
         margin-bottom: 7em;
     }
@@ -310,7 +322,7 @@ h1, h2, h3, h4, h5, legend {
 
 
     //padding: 15px 15px;
-    
+
     //background-color: #F5F5F5;
     //border: solid 1px #CCC;
 
@@ -371,7 +383,7 @@ h1, h2, h3, h4, h5, legend {
   margin-left: 10px;
   }*/
 
-.block-header { 
+.block-header {
     @include block-header;
 }
 
@@ -381,28 +393,32 @@ h1, h2, h3, h4, h5, legend {
 
 .bauble-editor {
     //padding: 2em 4em;
-    
+
     margin-bottom: 3em;
 
     .tabbable {
         margin-top: 2em;
     }
 
-    .tab-content {
-        padding-top: 2em;
-    }
+
 
     label + textarea {
     /*margin-left: 10px;*/
     }
 
-    .alert {
-        z-index: 100;
-        top: 50px;
-        position: absolute;
-        padding: 25px;
-    }
+    /* .alert { */
+    /*     z-index: 100; */
+    /*     top: 50px; */
+    /*     position: absolute; */
+    /*     padding: 25px; */
+    /* } */
 }
+
+// .tab-content is create by angular-ui bootstrap
+.tab-content {
+    padding-top: 2em;
+}
+
 
 .accordion-group {
     margin-bottom: 10px;
@@ -414,16 +430,16 @@ h1, h2, h3, h4, h5, legend {
 
 
 .synonyms-list {
-    
+
     li {
         padding: 1em;
-        
+
         &:hover {
             background-color: $light-grey;
-            
+
             .trash-btn {
                 visibility: visible;
-        
+
             }
         }
     }
@@ -443,7 +459,7 @@ h1, h2, h3, h4, h5, legend {
 
 .taxon-editor {
 
-    
+
     .infraspecific-container {
 
         table {
@@ -488,7 +504,7 @@ h1, h2, h3, h4, h5, legend {
 
     .panel {
         border: solid 1px #BDD4DE;//#FF530D;
-        
+
         background-color: inherit;
     }
 
@@ -514,7 +530,7 @@ h1, h2, h3, h4, h5, legend {
         i:hover {
             color: tint(#FF530D,40);
         }
-        
+
     }
 
     .message {
@@ -540,7 +556,7 @@ h1, h2, h3, h4, h5, legend {
     border: none;
     box-shadow: none;
     color: #8C281B;
-    
+
     &:hover {
         text-decoration: none;
         color: red;
@@ -563,7 +579,7 @@ h1, h2, h3, h4, h5, legend {
     margin-bottom: 3em;
 }
 
-#report-create-button { 
+#report-create-button {
     margin-bottom: 5em;
 }
 
@@ -626,13 +642,13 @@ h1, h2, h3, h4, h5, legend {
         margin-bottom: 50px
     }
 
-    
+
 }
 
 
 /*
  * Re-add nested dropdown support to BS3
- */ 
+ */
 /* .dropdown-submenu { */
 /*     position: relative; */
 /* } */
