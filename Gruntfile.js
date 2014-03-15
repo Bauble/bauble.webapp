@@ -26,9 +26,13 @@ module.exports = function (grunt) {
         yeomanConfig.app = require('./bower.json').appPath || yeomanConfig.app;
     } catch (e) {}
 
+    var awsSecrets = process.env.HOME + '/.aws.json';
+    var aws = grunt.file.exists(awsSecrets) ?
+        grunt.file.readJSON(awsSecrets) : {bauble: {accessKeyId: '', secretAccessKey: ''}};
+
     grunt.initConfig({
         yeoman: yeomanConfig,
-        aws: grunt.file.readJSON(process.env.HOME + '/.aws.json'),
+        aws: aws,
         watch: {
             compass: {
                 files: ['<%= yeoman.app %>/styles/{,*/}*.{scss,sass}'],
