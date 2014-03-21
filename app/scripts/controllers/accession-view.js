@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('BaubleApp')
-  .controller('AccessionViewCtrl', ['$scope', '$location', 'Accession',
-    function ($scope, $location, Accession) {
+  .controller('AccessionViewCtrl', ['$scope', '$location', '$state', 'Alert', 'Accession',
+    function ($scope, $location, $state, Alert, Accession) {
         $scope.accession = $scope.selected;
         Accession.get($scope.accession)
             .success(function(data, status, headers, config) {
@@ -26,12 +26,18 @@ angular.module('BaubleApp')
         });
 
         $scope.counts = {};
-        Accession.count($scope.accession, "/plants")
+
+        Accession.count($scope.accession, ['/plants'])
             .success(function(data, status, headers, config) {
-                $scope.counts.plants = data;
+                $scope.counts = data;
+                _.each(data, function(value, key) {
+                    // keys are in '/' notation
+                    key = _.last(key.split('/'));
+                    $scope.counts[key] = value;
+                });
             })
             .error(function(data, status, headers, config) {
-                // do something
-                /* jshint -W015 */
+                var defaultMessage = "Count not count the relations";
+                Alert.onErrorResponse(data, defaultMessage);
             });
     }]);

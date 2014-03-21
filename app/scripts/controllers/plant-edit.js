@@ -10,8 +10,8 @@ var acc_type_values ={
 };
 
 angular.module('BaubleApp')
-  .controller('PlantEditCtrl', ['$scope', '$location', '$stateParams', 'Accession', 'Plant', 'Location',
-    function ($scope, $location, $stateParams, Accession, Plant, Location) {
+  .controller('PlantEditCtrl', ['$scope', '$location', '$window', '$stateParams', 'Alert', 'Accession', 'Plant', 'Location',
+    function ($scope, $location, $window, $stateParams, Alert, Accession, Plant, Location) {
 
         $scope.plant = {
             accession_id: $location.search().accession,
@@ -37,8 +37,8 @@ angular.module('BaubleApp')
                     $scope.accession = data.location;
                 })
                 .error(function(data, status, headers, config) {
-                    // do something
-                    /* jshint -W015 */
+                    var defaultMessage = 'Could not get plant details.';
+                    Alert.onErrorResponse(data, defaultMessage);
                 });
         } else {
             if($scope.plant.accession_id) {
@@ -48,8 +48,8 @@ angular.module('BaubleApp')
                         $scope.taxon = data.taxon;
                     })
                     .error(function(data, status, headers, config) {
-                        // do something
-                        /* jshint -W015 */
+                        var defaultMessage = 'Could not get the accession details.';
+                        Alert.onErrorResponse(data, defaultMessage);
                     });
             }
             if($scope.plant.location_id) {
@@ -58,8 +58,8 @@ angular.module('BaubleApp')
                         $scope.location = data;
                     })
                     .error(function(data, status, headers, config) {
-                        // do something
-                        /* jshint -W015 */
+                        var defaultMessage = 'Could not get the location details.';
+                        Alert.onErrorResponse(data, defaultMessage);
                     });
             }
         }
@@ -87,7 +87,7 @@ angular.module('BaubleApp')
         };
 
         $scope.cancel = function() {
-            window.history.back();
+            $window.history.back();
         };
 
         // called when the save button is clicked on the editor
@@ -98,15 +98,11 @@ angular.module('BaubleApp')
             $scope.plant.location_id = $scope.location.id;
             Plant.save($scope.plant)
                 .success(function(data, status, headers, config) {
-                    console.log('data: ', data);
-                    $scope.cancel();
+                    $window.history.back();
                 })
                 .error(function(data, status, headers, config) {
-                    if(data) {
-                        $scope.alerts.push({type: 'error', msg: "Error!\n" + data});
-                    } else {
-                        $scope.alerts.push({type: 'error', msg: "Unknown error!"});
-                    }
+                    var defaultMessage = 'Could not save the plant.';
+                    Alert.onErrorResponse(data, defaultMessage);
                 });
 
         };

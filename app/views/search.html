@@ -5,7 +5,7 @@
     <div class="input-group">
       <span class="input-group-btn">
         <button class="btn btn-default" type="button"><i class="fa fa-cog"></i></button>
-      </span> <!-- input-group-btn -->
+        </span> <!-- input-group-btn -->
       <input id="search-field" ng-model="query" type="text" autocomplete="off"
              autocorrect="off" autocapitalize="off" spellcheck="false"
              placeholder="Enter a search query" class="form-control">
@@ -17,27 +17,16 @@
   </div> <!-- .search-box -->
 
 
-  <!-- <div ng-show="alert.length" class="row">
-  <div class="alert col-md-12">
-  <button type="button" class="close" data-dismiss="alert">&times;</button>
-  {{alert}}
-  </div>
-  </div> -->
-
   <div ng-show="message" class="col-md-12" style="text-align: center">
     {{message}}
   </div>
-
-  <!-- <div> -->
-  <!--   TODO: List of saved searches or search history -->
-  <!-- </div> -->
 
   <div class="row">
 
     <div class="col-md-4">
       <accordion>
         <accordion-group ng-if="values.length" ng-repeat="(group, values) in results"
-                         class="result-group" is-open="false" close-others="false">
+                         class="result-group" is-open="isOpen" close-others="false">
           <accordion-heading>
             {{capitalize(group)}}
             <span class="pull-right">{{values.length}}</span>

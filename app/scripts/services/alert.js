@@ -13,10 +13,14 @@ angular.module('BaubleApp')
                 this.alerts.splice(index, 1);
             },
 
+            clear: function() {
+                this.alerts = [];
+            },
+
             onErrorResponse: function(responseData, defaultMessage) {
                 var me = this;
                 // TODO: handle standard API errors
-                this.add(defaultMessage, 'error');
+                this.add(defaultMessage, 'danger');
             },
 
             alerts: []

@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('BaubleApp')
-  .controller('FamilyViewCtrl', ['$scope', '$stateParams', '$state', '$location', 'Family',
-    function ($scope, $stateParams, $state, $location, Family) {
+  .controller('FamilyViewCtrl', ['$scope', '$stateParams', '$state', '$location', 'Alert', 'Family',
+    function ($scope, $stateParams, $state, $location, Alert, Family) {
 
         $scope.family = $scope.selected;
 
@@ -34,39 +34,18 @@ angular.module('BaubleApp')
         });
 
         $scope.counts = {};
-        Family.count($scope.family, "/genera")
+        Family.count($scope.family, ['/genera', '/genera/taxa', '/genera/taxa/accessions',
+                                    '/genera/taxa/accessions/plants'])
             .success(function(data, status, headers, config) {
-                $scope.counts.genera = data;
+                $scope.counts = data;
+                _.each(data, function(value, key) {
+                    // keys are in '/' notation
+                    key = _.last(key.split('/'));
+                    $scope.counts[key] = value;
+                });
             })
             .error(function(data, status, headers, config) {
-                // do something
-                /* jshint -W015 */
-            });
-
-        Family.count($scope.family, "/genera/taxa")
-            .success(function(data, status, headers, config) {
-                $scope.counts.taxa = data;
-            })
-            .error(function(data, status, headers, config) {
-                // do something
-                /* jshint -W015 */
-            });
-
-        Family.count($scope.family, "/genera/taxa/accessions")
-            .success(function(data, status, headers, config) {
-                $scope.counts.accessions = data;
-            })
-            .error(function(data, status, headers, config) {
-                // do something
-                /* jshint -W015 */
-            });
-
-        Family.count($scope.family, "/genera/taxa/accessions/plants")
-            .success(function(data, status, headers, config) {
-                $scope.counts.plants = data;
-            })
-            .error(function(data, status, headers, config) {
-                // do something
-                /* jshint -W015 */
+                var defaultMessage = "Count not count the relations";
+                Alert.onErrorResponse(data, defaultMessage);
             });
     }]);

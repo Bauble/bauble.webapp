@@ -6,15 +6,9 @@
     <a class="btn btn-default" ng-href="#/accession/{{accession.id}}/delete">Delete</a>
   </div>
 
-  <!-- <div id="actionButtons" class="pull-right">
-  <span ng-repeat="button in viewMeta.buttons">
-  <button class="btn" data-emit="{{button.event}}">{{button.name}}</button>
-  </span>
-  </div> -->
-
   <h3>{{accession.str}}</h3>
   <h4>{{accession.taxon_str}}</h4>
 
-  <div># of Plants: {{counts.plants}}</div>
+  <div># of Plants: <a ng-href="{{'#/search?q=plant where accession.code%3d' + accession.code}}">{{counts.plants}}</a></div>
 
 </div>

@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('BaubleApp')
-  .controller('GenusViewCtrl', ['$scope', '$location', 'Genus',
-    function ($scope, $location, Genus) {
+  .controller('GenusViewCtrl', ['$scope', '$location', 'Alert', 'Genus',
+    function ($scope, $location, Alert, Genus) {
 
         $scope.genus = $scope.selected;
 
@@ -29,31 +29,17 @@ angular.module('BaubleApp')
 
         $scope.counts = {};
 
-        Genus.count($scope.genus, "/taxa")
+        Genus.count($scope.genus, ['/taxa', '/taxa/accessions', '/taxa/accessions/plants'])
             .success(function(data, status, headers, config) {
-                $scope.counts.taxa = data;
+                $scope.counts = data;
+                _.each(data, function(value, key) {
+                    // keys are in '/' notation
+                    key = _.last(key.split('/'));
+                    $scope.counts[key] = value;
+                });
             })
             .error(function(data, status, headers, config) {
-                // do something
-                /* jshint -W015 */
+                var defaultMessage = "Count not count the relations";
+                Alert.onErrorResponse(data, defaultMessage);
             });
-
-        Genus.count($scope.genus, "/taxa/accessions")
-            .success(function(data, status, headers, config) {
-                $scope.counts.accessions = data;
-            })
-            .error(function(data, status, headers, config) {
-                // do something
-                /* jshint -W015 */
-            });
-
-        Genus.count($scope.genus, "/taxa/accessions/plants")
-            .success(function(data, status, headers, config) {
-                $scope.counts.plants = data;
-            })
-            .error(function(data, status, headers, config) {
-                // do something
-                /* jshint -W015 */
-            });
-
     }]);

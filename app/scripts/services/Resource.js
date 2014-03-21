@@ -94,9 +94,12 @@ angular.module('BaubleApp')
 
                 count: function(resource, relation) {
                     return $http({
-                        url: [resourceUrl, 'count'].join('/'),
+                        url: [resourceUrl, resource.id || resource, 'count'].join('/'),
                         method: 'GET',
-                        headers: this._getAuthHeader()
+                        headers: this._getAuthHeader(),
+                        params: {
+                            relation: relation
+                        }
                     });
                     // var config = {
                     //     method: 'GET',

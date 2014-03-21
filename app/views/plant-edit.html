@@ -1,23 +1,10 @@
 <div ng-form name="plantForm" class="bauble-editor">
 
-  <alert class="col-md-6 col-md-3" ng-repeat="alert in alerts" type="alert.type"
-         close="closeAlert($index)">{{alert.msg}}</alert>
-
   <h3>{{plant.str || 'New plant'}}</h3>
 
-  <!-- <div class="row editor-header">
-  <div class="header-title col-md-8">
-  <h4>{{plant.str || 'New plant'}}</h4>
-  </div>
-  <div class="header-buttons col-md-3 pull-right">
-  <button class="btn" ng-click="cancel()">Cancel</button>
-  <button class="btn btn-primary" ng-click="save()">Save</button>
-  </div>
-  </div> -->
-
-  <tabset>
-    <tab heading="General">
-      <form>
+  <form>
+    <tabset>
+      <tab heading="General">
 
         <div class="form-group">
           <label for="accession-input">Accession</label>
@@ -39,14 +26,14 @@
         <div class="form-group">
           <label for="accession-type-input">Accession type</label>
           <select ng-model="plant.acc_type" class="form-control" id="accession-type-input"
-                    ng-options="value as text for (value, text) in acc_type_values">
+                  ng-options="value as text for (value, text) in acc_type_values">
           </select>
         </div> <!-- .form-group -->
 
 
         <div class="form-group">
           <label for="memorial-input">Memorial</label>
-          <input type="text" ng-model="plant.memorial" class="form-control" required/>
+          <input type="text" ng-model="plant.memorial" class="form-control"/>
         </div> <!-- .form-group -->
 
         <div class="form-group">
@@ -70,7 +57,7 @@
           <div class="form-group">
             <label for="chain-reason-input">Reason</label>
             <input type="text" ng-model="plant.change.reason" class="form-control"
-                     id="change-reason-input" required/>
+                   id="change-reason-input" required/>
           </div> <!-- .form-group -->
 
           <div class="form-group">
@@ -82,23 +69,25 @@
 
         </div> <!-- .editor-section -->
 
-      </form>
-    </tab>
 
-    <tab heading="Propagation">
-      <div ng-include="'views/prop_editor.html'"></div>
-    </tab>
+      </tab>
 
-    <!-- <tab heading="Notes">
-    <div ng-include="'views/notes_editor.html'"></div>
-    </tab> -->
+      <tab heading="Propagation">
+        <div ng-include="'views/prop_editor.html'"></div>
+      </tab>
 
-  </tabset>
+      <!-- <tab heading="Notes">
+      <div ng-include="'views/notes_editor.html'"></div>
+      </tab> -->
+
+    </tabset>
 
 
-  <div class="action-buttons">
-    <button class="btn btn-default" ng-click="cancel()">Cancel</button>
-    <button class="btn btn-primary" ng-click="save()">Save</button>
-  </div>
+    <div class="action-buttons">
+      <button class="btn btn-default" ng-click="cancel()">Cancel</button>
+      <button class="btn btn-primary" ng-click="save()">Save</button>
+    </div>
+
+  </form>
 
 </div> <!-- .plant-editor -->

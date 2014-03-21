@@ -1,17 +1,13 @@
 'use strict';
 
 angular.module('BaubleApp')
-  .controller('RootCtrl', ['$scope', '$location', '$state', 'User',
-    function ($scope, $location, $state, User) {
-        console.log('RootCtrl');
-        //$scope.alerts = globals.alerts;
-        $scope.closeAlert = function(index) {
-            $scope.alerts.splice(index, 1);
-        };
+  .controller('RootCtrl', ['$scope', '$location', '$state', 'Alert', 'User',
+    function ($scope, $location, $state, Alert, User) {
 
         $scope.$on('$stateChangeSuccess', function() {
             // controls the user menu
             $scope.user = User.local();
+            Alert.clear();
         });
 
         $scope.$on('login', function() {

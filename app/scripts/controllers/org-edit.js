@@ -1,13 +1,13 @@
 'use strict';
 
 angular.module('BaubleApp')
-  .controller('OrgEditCtrl', ['$scope', '$location', 'User', 'Organization',
-    function ($scope, $location, User, Organization) {
-
+  .controller('OrgEditCtrl', ['$scope', '$location', 'Alert', 'User', 'Organization',
+    function ($scope, $location, Alert, User, Organization) {
 
         $scope.$watch('org', function(org) {
             console.log('org: ', org);
         });
+
         $scope.save = function(){
             console.log('$scope.org: ', $scope.org);
             Organization.save($scope.org)
@@ -20,7 +20,8 @@ angular.module('BaubleApp')
                     $location.path('/');
                 })
                 .error(function(data, status, headers, config) {
-                    console.log('data: ', data);
+                    var defaultMessage = "Could not save organization.";
+                    Alert.onErrorResponse(data, defaultMessage);
                 });
         };
     }]);

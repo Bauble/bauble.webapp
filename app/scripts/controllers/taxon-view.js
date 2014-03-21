@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('BaubleApp')
-    .controller('TaxonViewCtrl', function ($scope, $location, Taxon) {
+    .controller('TaxonViewCtrl', function ($scope, $location, Alert, Taxon) {
 
         $scope.taxon = $scope.selected;
 
@@ -28,21 +28,17 @@ angular.module('BaubleApp')
 
         $scope.counts = {};
 
-        Taxon.count($scope.taxon, "/accessions")
+        Taxon.count($scope.taxon, ['/accessions', '/accessions/plants'])
             .success(function(data, status, headers, config) {
-                $scope.counts.accessions = data;
+                $scope.counts = data;
+                _.each(data, function(value, key) {
+                    // keys are in '/' notation
+                    key = _.last(key.split('/'));
+                    $scope.counts[key] = value;
+                });
             })
             .error(function(data, status, headers, config) {
-                // do something
-                /* jshint -W015 */
-            });
-
-        Taxon.count($scope.taxon, "/accessions/plants")
-            .success(function(data, status, headers, config) {
-                $scope.counts.plants = data;
-            })
-            .error(function(data, status, headers, config) {
-                // do something
-                /* jshint -W015 */
+                var defaultMessage = "Count not count the relations";
+                Alert.onErrorResponse(data, defaultMessage);
             });
     });

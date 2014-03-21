@@ -1,17 +1,17 @@
 'use strict';
 
 angular.module('BaubleApp')
-    .controller('PlantViewCtrl', function ($scope, $location, globals, Plant) {
+    .controller('PlantViewCtrl', function ($scope, $location, Alert, Plant) {
 
-        $scope.plant = globals.getSelected();
+        $scope.plant = $scope.selected;
 
-        Plant.get($scope.plant, function(result) {
-            $scope.plant = result.data;
-        });
-
-        $scope.$on('plant-edit', function(){
-            $scope.$apply(function() {
-                $location.path('/edit/plant');
+        Plant.get($scope.plant, {embed: ['location']})
+            .success(function(data, status, headers, config) {
+                $scope.plant = data;
+                console.log('$scope.plant: ', $scope.plant);
+            })
+            .error(function(data, status, headers, config) {
+                var defaultMessage = "Could not get plant details.";
+                Alert.onErrorResponse(data, defaultMessage);
             });
-        });
     });

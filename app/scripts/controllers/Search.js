@@ -6,11 +6,13 @@ angular.module('BaubleApp')
         $scope.viewMeta = null;
         $scope.selected = null;
         $scope.results = null; // the results of the search
+        $scope.$location = $location;  // so we can $watch it later;
         $scope.query = $location.search().q || '';
 
         $scope.capitalize = function(str) {
             return str.slice(0,1).toUpperCase() + str.slice(1,str.length);
         };
+
 
         // query the server for search results
         $scope.search = function() {
@@ -36,6 +38,7 @@ angular.module('BaubleApp')
                     if(_.size($scope.results) === 0) {
                         $scope.message = "Nothing found.";
                     }
+                    $scope.isOpen = _.size($scope.results) === 1 ? true : false;
 
                 })
                 .error(function(data, status, headers, config) {
@@ -48,6 +51,12 @@ angular.module('BaubleApp')
         if($scope.query) {
             $scope.search();
         }
+
+
+        $scope.$watch('$location.search().q', function(q) {
+            $scope.query = q;
+            $scope.search();
+        });
 
         // $scope.itemSelected = function(group, selected) {
         //     console.log('selected: ', selected);
