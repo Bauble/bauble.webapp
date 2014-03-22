@@ -7,7 +7,10 @@
 
   <h3>{{location.str}}</h3>
 
-  <div># of Plants: {{counts.plants}}</div>
+  <div># of Plants:
+    <a ng-href="#/search?q=plant where location.id%3d'{{location.id}}'">
+      {{counts.plants}}</a>
+  </div>
 
   <h4>Description</h4>
   <div ng-show="!location.description" style="color: #aaa">

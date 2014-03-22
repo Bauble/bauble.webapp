@@ -8,12 +8,26 @@
 
   <h3>{{family.str}}</h3>
 
-  <div># of Genera: {{counts.genera}}</div>
-  <div># of Taxa: {{counts.taxa}}</div>
-  <div># of Accessions: {{counts.accessions}}</div>
-  <div># of Plants: {{counts.plants}}</div>
+  <div># of Genera:
+    <a ng-href="#/search?q=genera where family.id%3d'{{family.id}}'">
+      {{counts.genera}}</a>
+  </div>
 
-  <h4>Syonyms</h4>
+  <div># of Taxa:
+    <a ng-href="#/search?q=taxa where genus.family.id%3d'{{family.id}}'">
+      {{counts.taxa}}</a>
+  </div>
+
+  <div># of Accessions:
+    <a ng-href="#/search?q=accession where taxon.genus.family.id%3d'{{family.id}}'">
+      {{counts.accessions}}</a>
+  </div>
+
+  <div># of Plants:
+    <a ng-href="#/search?q=plant where accession.taxon.genus.family.id%3d'{{family.id}}'">
+      {{counts.plants}}</a></div>
+
+  <h4>Synonyms</h4>
   <div ng-show="!family.synonyms || family.synonyms.length < 1" style="color: #aaa">
     This family has no synonyms.
   </div>

@@ -14,8 +14,15 @@
 
   <h3>{{taxon.str}}</h3>
 
-  <div># of Accessions: {{counts.accessions}}</div>
-  <div># of Plants: {{counts.plants}}</div>
+  <div># of Accessions:
+    <a ng-href="#/search?q=accession where taxon.id%3d'{{taxon.id}}'">
+      {{counts.accessions}}</a>
+  </div>
+
+  <div># of Plants:
+    <a ng-href="#/search?q=plant where accession.taxon.id%3d'{{taxon.id}}'">
+      {{counts.plants}}</a>
+  </div>
 
   <h4>Vernacular Names</h4>
   <div ng-show="!taxon.vernacular_names || taxon.vernacular_names.length < 1"

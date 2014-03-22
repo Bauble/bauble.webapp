@@ -6,17 +6,22 @@
     <a class="btn btn-default" ng-href="#/genus/{{genus.id}}/delete">Delete</a>
   </div>
 
-  <!-- <div id="actionButtons" class="pull-right">
-  <span ng-repeat="button in viewMeta.buttons">
-  <button class="btn" data-emit="{{button.event}}">{{button.name}}</button>
-  </span>
-  </div> -->
-
   <h3>{{genus.str}}</h3>
 
-  <div># of Taxa: {{counts.taxa}}</div>
-  <div># of Accessions: {{counts.accessions}}</div>
-  <div># of Plants: {{counts.plants}}</div>
+  <div># of Taxa:
+    <a ng-href="#/search?q=taxon where genus.id%3d'{{genus.id}}'">
+      {{counts.taxa}}</a>
+  </div>
+
+  <div># of Accessions:
+    <a ng-href="#/search?q=accession where taxon.genus.id%3d'{{genus.id}}'">
+      {{counts.accessions}}</a>
+  </div>
+
+  <div># of Plants:
+    <a ng-href="#/search?q=plant where accession.taxon.genus.id%3d'{{genus.id}}'">
+      {{counts.plants}}</a>
+  </div>
 
   <h4>Syonyms</h4>
   <div ng-show="!genus.synonyms || genus.synonyms.length < 1" style="color: #aaa">
