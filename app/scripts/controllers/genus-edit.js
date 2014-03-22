@@ -1,17 +1,20 @@
 'use strict';
 
 angular.module('BaubleApp')
-  .controller('GenusEditCtrl', ['$scope', '$location', '$stateParams', 'Family', 'Genus',
-    function($scope, $location, $stateParams, Family, Genus) {
+  .controller('GenusEditCtrl', ['$scope', '$q', '$window', '$location', '$stateParams', 'Alert', 'Family', 'Genus',
+    function($scope, $q, $window, $location, $stateParams, Alert, Family, Genus) {
 
         // isNew is inherited from the NewCtrl if this is a /new editor
         $scope.genus = {
             family_id: $location.search().family,
         };
 
-        $scope.notes = [];
-
-        console.log('$scope.genus: ', $scope.genus);
+        $scope.data = {
+            synonyms: [],
+            notes: []
+        };
+        $scope.removedSynonyms = [];
+        $scope.addedSynonyms = [];
 
         // make sure we have the family details
         if($stateParams.id) {
@@ -20,10 +23,16 @@ angular.module('BaubleApp')
                     console.log('data: ', data);
                     $scope.genus = data;
                     $scope.family = data.family;
+                    // pull out the notes and synonyms so we don't resubmit them
+                    // back on save
+                    $scope.data.notes = $scope.genus.notes || [];
+                    $scope.data.synonyms = $scope.genus.synonyms || [];
+                    delete $scope.genus.synonyms;
+                    delete $scope.genus.notes;
                 })
                 .error(function(data, status, headers, config) {
-                    // do something
-                    /* jshint -W015 */
+                    var defaultMessage = "Could not get genus details.";
+                    Alert.onErrorResponse(data, defaultMessage);
                 });
         } else if($scope.genus.family_id) {
             Family.get($scope.genus.family_id, {
@@ -31,8 +40,8 @@ angular.module('BaubleApp')
             }).success(function(data, status, headers, config) {
                 $scope.family = data;
             }).error(function(data, status, headers, config) {
-                // do something
-                /* jshint -W015 */
+                var defaultMessage = "Could not get family details.";
+                Alert.onErrorResponse(data, defaultMessage);
             });
         }
 
@@ -53,13 +62,26 @@ angular.module('BaubleApp')
                 });
         };
 
-        $scope.alerts = [];
-        $scope.closeAlert = function(index) {
-            $scope.alerts.splice(index, 1);
+        $scope.getSynonyms = function($viewValue) {
+            return Genus.list({filter: {genus: $viewValue + '%'}})
+                .then(function(response) {
+                    return response.data;
+                });
         };
 
+        $scope.addSynonym = function(synonym) {
+            $scope.data.synonyms.push(synonym);
+            $scope.addedSynonyms.push(synonym);
+        };
+
+        $scope.removeSynonym = function(synonym) {
+            $scope.removedSynonyms.push(synonym);
+            _.remove($scope.data.synonyms, {$$hashKey: synonym.$$hashKey });
+        };
+
+
         $scope.cancel = function() {
-            window.history.back();
+            $window.history.back();
         };
 
         // called when the save button is clicked on the editor
@@ -72,14 +94,26 @@ angular.module('BaubleApp')
             $scope.genus.family_id = $scope.family.id;
             Genus.save($scope.genus)
                 .success(function(data, status, headers, config) {
-                    $scope.cancel();
+                    // update the synonyms
+                    $q.all(_.flatten(
+                        _.map($scope.addedSynonyms, function(synonym) {
+                            console.log('synonym: ', synonym);
+                            return Genus.addSynonym($scope.genus, synonym);
+                        }),
+                        _.map($scope.removedSynonyms, function(synonym) {
+                            return Genus.removeSynonym($scope.genus, synonym);
+                        }))).then(function(result) {
+                            console.log('result: ', result);
+                            $window.history.back();
+                        }).catch(function(result) {
+                            var defaultMessage = "Some synonyms could not be saved.";
+                            Alert.onErrorResponse(result.data, defaultMessage);
+                        });
+
                 })
                 .error(function(data, status, headers, config) {
-                    if(data) {
-                        $scope.alerts.push({type: 'error', msg: "Error!\n" + data});
-                    } else {
-                        $scope.alerts.push({type: 'error', msg: "Unknown error!"});
-                    }
+                    var defaultMessage = "The genus could not be saved.";
+                    Alert.onErrorResponse(data, defaultMessage);
                 });
 
             _.each($scope.newNote, function(note) {

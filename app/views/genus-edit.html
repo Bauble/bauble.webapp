@@ -1,8 +1,5 @@
 <div ng-form name="genusForm" class="row bauble-editor genus-editor">
 
-  <alert class="span6 offset3" ng-repeat="alert in alerts" type="alert.type"
-         close="closeAlert($index)">{{alert.msg}}</alert>
-
   <h3>{{genus.str || 'New genus'}}</h3>
 
   <div class="editor-body">
@@ -43,6 +40,42 @@
 
             </form>
           </div>
+
+
+          <!-- Synonyms Form -->
+          <div class="col-md-5 col-md-offset-1">
+
+            <form role="form" name="synonyms">
+
+              <div class="form-group">
+                <label for="synonym-input">Synonyms</label>
+                <div class="input-group">
+                  <input type="text" ng-model="newSynonym"
+                         placeholder="Genus" typeahead-editable="false"
+                         typeahead="genus as genus.str for genus in getSynonyms($viewValue)"
+                         typeahead-loading="loadingSynonyms" class="form-control"
+                         id="synonym-input">
+                  <span class="input-group-btn">
+                    <button class="btn btn-default" ng-disabled="!newSynonym"
+                            ng-click="addSynonym(newSynonym); newSynonym=null;">Add</button>
+                  </span>
+                </div>
+              </div>  <!-- .form-group -->
+
+              <ul class="synonyms-list list-group">
+                <p ng-hide="data.synonyms && data.synonyms.length > 0">
+                  This genus doesn't have any synonyms.
+                </p>
+                <li ng-repeat="synonym in data.synonyms" class="list-group-item">
+                  {{synonym.str}}
+                  <button class="pull-right trash-btn btn" ng-click="removeSynonym(synonym)">
+                    <i class="fa fa-trash-o"></i></button>
+                </li>
+              </ul>
+            </form>
+          </div> <!-- .col -->
+
+
         </div> <!-- .row -->
       </tab>
 

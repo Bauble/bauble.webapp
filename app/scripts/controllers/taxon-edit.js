@@ -1,14 +1,22 @@
 'use strict';
 
 angular.module('BaubleApp')
-    .controller('TaxonEditCtrl', function ($scope, $location, $stateParams, Genus, Taxon) {
+  .controller('TaxonEditCtrl',
+   ['$scope', '$location', '$window', '$q', '$stateParams', 'Alert', 'Genus', 'Taxon',
+    function ($scope, $location, $window, $q, $stateParams, Alert, Genus, Taxon) {
         // isNew is inherited from the NewCtrl if this is a /new editor
         $scope.taxon = {
             genus_id: $location.search().genus,
         };
-        $scope.genus = {};
 
-        $scope.notes = [];
+        $scope.data = {
+            synonyms: [],
+            notes: []
+        };
+        $scope.removedSynonyms = [];
+        $scope.addedSynonyms = [];
+
+        $scope.genus = {};
 
         // make sure we have the family details
         if($stateParams.id) {
@@ -16,12 +24,15 @@ angular.module('BaubleApp')
                 .success(function(data, status, headers, config) {
                     $scope.taxon = data;
                     $scope.genus = data.genus;
-                    $scope.notes = $scope.taxon.notes || [];
+                    $scope.data.notes = $scope.taxon.notes || [];
+                    $scope.data.synonyms = $scope.taxon.synonyms || [];
+                    delete $scope.taxon.synonyms;
+                    delete $scope.taxon.notes;
                     $scope.addVernacularName();
                 })
                 .error(function(data, status, headers, config) {
-                   // do something
-                    /* jshint -W015 */
+                    var defaultMessage = "Could not get taxon details.";
+                    Alert.onErrorResponse(data, defaultMessage);
                 });
         } else if($scope.taxon.genus_id) {
             Genus.get($scope.taxon.genus_id)
@@ -29,8 +40,8 @@ angular.module('BaubleApp')
                     $scope.genus = data;
                 })
                 .error(function(data, status, headers, config) {
-                    // do something
-                    /* jshint -W015 */
+                    var defaultMessage = "Could not get genus details.";
+                    Alert.onErrorResponse(data, defaultMessage);
                 });
         }
 
@@ -39,13 +50,6 @@ angular.module('BaubleApp')
         $scope.qualifiers = ["agg.", "s. lat.", "s. str."];
         $scope.ranks = ["cv.", "f.", "subf.", "subsp.", "subvar.", "var."];
 
-        $scope.addSynonym = function(synonym) {
-            if(!$scope.taxon.synonyms) {
-                $scope.taxon.synonyms = [synonym];
-            } else {
-                $scope.taxon.synonyms.push(synonym);
-            }
-        };
 
         $scope.addVernacularName = function() {
             if(!$scope.taxon.vernacular_names) {
@@ -64,20 +68,25 @@ angular.module('BaubleApp')
         };
 
         $scope.getSynonyms = function($viewValue) {
-            return Taxon.list({filter: {family: $viewValue + '%'}})
+            return Taxon.list({filter: {genus: $viewValue + '%'}})
                 .then(function(result) {
-                    console.log('result.data: ', result.data);
                     return result.data;
                 });
         };
 
-        $scope.alerts = [];
-        $scope.closeAlert = function(index) {
-            $scope.alerts.splice(index, 1);
+        $scope.addSynonym = function(synonym) {
+            $scope.data.synonyms.push(synonym);
+            $scope.addedSynonyms.push(synonym);
         };
 
+        $scope.removeSynonym = function(synonym) {
+            $scope.removedSynonyms.push(synonym);
+            _.remove($scope.data.synonyms, {$$hashKey: synonym.$$hashKey });
+        };
+
+
         $scope.cancel = function() {
-            window.history.back();
+            $window.history.back();
         };
 
         // called when the save button is clicked on the editor
@@ -96,21 +105,35 @@ angular.module('BaubleApp')
             // only add new ones that don't exist
 
             // remove any vernacular names with a name
-            var tmpNames = [];
-            angular.forEach($scope.taxon.vernacular_names, function(vern, key) {
-                if(vern.name){
-                    tmpNames.push(vern);
-                }
-                $scope.taxon.vernacular_names = tmpNames;
-            });
+            // var tmpNames = [];
+            // angular.forEach($scope.taxon.vernacular_names, function(vern, key) {
+            //     if(vern.name){
+            //         tmpNames.push(vern);
+            //     }
+            //     $scope.taxon.vernacular_names = tmpNames;
+            // });
 
             Taxon.save($scope.taxon)
                 .success(function(data, status, headers, config) {
-                    $scope.cancel();
+                    $q.all(_.flatten(
+                        _.map($scope.addedSynonyms, function(synonym) {
+                            console.log('synonym: ', synonym);
+                            return Taxon.addSynonym($scope.genus, synonym);
+                        }),
+                        _.map($scope.removedSynonyms, function(synonym) {
+                            return Taxon.removeSynonym($scope.genus, synonym);
+                        }))).then(function(result) {
+                            console.log('result: ', result);
+                            $window.history.back();
+                        }).catch(function(result) {
+                            var defaultMessage = "Some synonyms could not be saved.";
+                            Alert.onErrorResponse(result.data, defaultMessage);
+                        });
+
                 })
                 .error(function(data, status, headers, config) {
-                    var msg = data ? "Error!\n" + data : "Unknown error!";
-                    $scope.alerts.push({type: 'error', msg: msg});
+                    var defaultMessage = "The taxon could not be saved.";
+                    Alert.onErrorResponse(data, defaultMessage);
                 });
         };
-    });
+    }]);

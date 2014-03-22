@@ -141,10 +141,10 @@ angular.module('BaubleApp')
             });
         };
 
-        resource.resmoveSynonym = function(family, synonym){
+        resource.removeSynonym = function(family, synonym){
             return $http({
                 url: [resource.resourceUrl, family.id || family, 'synonyms',
-                      synonym._id || synonym].join('/'),
+                      synonym.id || synonym].join('/'),
                 method: 'DELETE',
                 headers: this._getAuthHeader()
             });
@@ -152,14 +152,87 @@ angular.module('BaubleApp')
         return resource;
     }])
 
-// Genus service for CRUD genus types
-    .factory('Genus', ['Resource', function($resource) {
-        return $resource('/genus');
+    // Genus service for CRUD genus types
+    .factory('Genus', ['Resource', '$http', function($resource, $http) {
+        var resource =  $resource('/genus');
+
+        resource.getSynonym = function(genus, synonym){
+            return $http({
+                url: [resource.resourceUrl, genus.id || genus, 'synonyms', synonym.id||synonym].join('/'),
+                method: 'GET',
+                headers: this._getAuthHeader()
+            });
+        };
+
+        resource.listSynonyms = function(genus){
+            return $http({
+                url: [resource.resourceUrl, genus.id || genus, 'synonyms'].join('/'),
+                method: 'GET',
+                headers: this._getAuthHeader()
+            });
+        };
+
+        resource.addSynonym = function(genus, synonym){
+            return $http({
+                url: [resource.resourceUrl, genus.id || genus, 'synonyms'].join('/'),
+                method: 'POST',
+                data: synonym,
+                headers: this._getAuthHeader()
+            });
+        };
+
+        resource.removeSynonym = function(genus, synonym){
+            return $http({
+                url: [resource.resourceUrl, genus.id || genus, 'synonyms',
+                      synonym.id || synonym].join('/'),
+                method: 'DELETE',
+                headers: this._getAuthHeader()
+            });
+        };
+
+        return resource;
+
     }])
 
 // Taxon service for CRUD taxon types
-    .factory('Taxon', ['Resource', function($resource) {
-        return $resource('/taxon');
+    .factory('Taxon', ['Resource', '$http', function($resource, $http) {
+        var resource =  $resource('/taxon');
+
+        resource.getSynonym = function(taxon, synonym){
+            return $http({
+                url: [resource.resourceUrl, taxon.id || taxon, 'synonyms', synonym.id||synonym].join('/'),
+                method: 'GET',
+                headers: this._getAuthHeader()
+            });
+        };
+
+        resource.listSynonyms = function(taxon){
+            return $http({
+                url: [resource.resourceUrl, taxon.id || taxon, 'synonyms'].join('/'),
+                method: 'GET',
+                headers: this._getAuthHeader()
+            });
+        };
+
+        resource.addSynonym = function(taxon, synonym){
+            return $http({
+                url: [resource.resourceUrl, taxon.id || taxon, 'synonyms'].join('/'),
+                method: 'POST',
+                data: synonym,
+                headers: this._getAuthHeader()
+            });
+        };
+
+        resource.removeSynonym = function(taxon, synonym){
+            return $http({
+                url: [resource.resourceUrl, taxon.id || taxon, 'synonyms',
+                      synonym.id || synonym].join('/'),
+                method: 'DELETE',
+                headers: this._getAuthHeader()
+            });
+        };
+
+        return resource;
     }])
 
 // Accession service for CRUD accession types
