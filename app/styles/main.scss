@@ -392,26 +392,19 @@ h1, h2, h3, h4, h5, legend {
 }
 
 .bauble-editor {
-    //padding: 2em 4em;
-
     margin-bottom: 3em;
 
-    .tabbable {
-        margin-top: 2em;
+    h3 {
+        margin-bottom: 1.5em;
     }
 
-
-
-    label + textarea {
-    /*margin-left: 10px;*/
+    h4 {
+        margin-top: 3em;
     }
 
-    /* .alert { */
-    /*     z-index: 100; */
-    /*     top: 50px; */
-    /*     position: absolute; */
-    /*     padding: 25px; */
-    /* } */
+    h4:first-child {
+        margin-top: 0;
+    }
 }
 
 // .tab-content is create by angular-ui bootstrap
@@ -462,43 +455,84 @@ h1, h2, h3, h4, h5, legend {
 
 .taxon-editor {
 
+    .infrasp-row {
+        margin-bottom: .25em;
+    }
 
-    .infraspecific-container {
+    .vn-default-check {
+        margin: 0 auto !important; // center in column
+        height: 20px;
+    }
 
-        table {
-            margin-left: 25px;
+    .vn-add-btn {
+        margin-top: 1em;
+    }
+
+    .trash-btn {
+        background-color: white;
+        color: red;
+        visibility: hidden;
+        padding: 5px 8px;
+        border: 1px solid #ccc;
+        //margin: 0 auto !important; // center in column
+    }
+
+    i.fa-trash-o {
+        background-color: white;
+        color: red;
+        margin: auto;
+        padding: 0;
+    }
+
+    .vn-row {
+        margin-bottom: .25em;
+
+        &:hover {
+            //background-color: $light-grey;
+
+            .trash-btn {
+                visibility: visible;
+
+            }
         }
     }
 
-    .vernacular-name-container {
-        margin-bottom: 25px;
+    /* .infraspecific-container { */
 
-        .contents {
-            margin-left: 25px;
-        }
+    /*     table { */
+    /*         margin-left: 25px; */
+    /*     } */
+    /* } */
 
-        label {
-            font-weight: bold;
-        }
+    /* .vernacular-name-container { */
+    /*     margin-bottom: 25px; */
 
-        table {
-            thead {
-                background-color: #eee;
+    /*     .contents { */
+    /*         margin-left: 25px; */
+    /*     } */
 
-                td {
-                    border: solid 2px white;
-                    padding: 2px 5px;
-                }
-            }
+    /*     label { */
+    /*         font-weight: bold; */
+    /*     } */
 
-            tr {
-                // center the default checkbox
-                td:last-child {
-                    text-align: center;
-                }
-            }
-        }
-    }
+    /*     table { */
+    /*         thead { */
+    /*             background-color: #eee; */
+
+    /*             td { */
+    /*                 border: solid 2px white; */
+    /*                 padding: 2px 5px; */
+    /*             } */
+    /*         } */
+
+    /*         tr { */
+    /*             // center the default checkbox */
+    /*             td:last-child { */
+    /*                 text-align: center; */
+    /*             } */
+    /*         } */
+    /*     } */
+    /* } */
 }
 
 

@@ -8,7 +8,7 @@ angular.module('BaubleApp')
 
         $scope.$watch('selected', function(selected) {
             $scope.taxon = $scope.selected;
-            Taxon.get($scope.taxon)
+            Taxon.get($scope.taxon, {embed: ['synonyms', 'vernacular_names']})
                 .success(function(data, status, headers, config) {
                     $scope.taxon = data;
                 })

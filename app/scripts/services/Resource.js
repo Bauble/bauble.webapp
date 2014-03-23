@@ -232,6 +232,35 @@ angular.module('BaubleApp')
             });
         };
 
+        resource.listNames = function(taxon){
+            return $http({
+                url: [resource.resourceUrl, taxon.id || taxon, 'names'].join('/'),
+                method: 'GET',
+                headers: this._getAuthHeader()
+            });
+        };
+
+        resource.saveName = function(taxon, name){
+            var url = [resource.resourceUrl, taxon.id || taxon, 'names'].join('/');
+            url += name.id ? ('/' + name.id) : '';
+            console.log('name: ', name);
+            return $http({
+                url: url,
+                method: name.id ? 'PATCH' : 'POST',
+                data: name,
+                headers: this._getAuthHeader()
+            });
+        };
+
+        resource.removeName = function(taxon, name){
+            return $http({
+                url: [resource.resourceUrl, taxon.id || taxon, 'names',
+                      name.id || name].join('/'),
+                method: 'DELETE',
+                headers: this._getAuthHeader()
+            });
+        };
+
         return resource;
     }])
 
