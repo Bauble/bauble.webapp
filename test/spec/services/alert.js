@@ -2,17 +2,17 @@
 
 describe('Service: Alert', function () {
 
-  // load the service's module
-  beforeEach(module('baubleApp'));
+    // load the service's module
+    beforeEach(module('BaubleApp'));
 
-  // instantiate service
-  var Alert;
-  beforeEach(inject(function (_Alert_) {
-    Alert = _Alert_;
-  }));
+    // instantiate service
+    var Alert;
+    beforeEach(inject(function (_Alert_) {
+        Alert = _Alert_;
+    }));
 
-  it('should do something', function () {
-    expect(!!Alert).toBe(true);
-  });
+    it('should do something', function () {
+        expect(!!Alert).toBe(true);
+    });
 
 });
