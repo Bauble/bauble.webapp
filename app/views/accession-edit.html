@@ -11,132 +11,122 @@
       <tab heading="General">
         <form class="form-horizontal">
 
-          <div class="editor-section taxon-section">
-            <h5>Taxon</h5>
+          <h4>Taxon</h4>
 
-            <div class="form-group">
-              <label class="control-label col-md-2" for="taxonField">Taxon</label>
-              <div class="col-md-10">
-                <input type="text" ng-model="model.taxon"
-                       placeholder="Taxon" typeahead-editable="false"
-                       typeahead="taxon as taxon.str for taxon in getTaxa($viewValue)"
-                       typeahead-on-select="onSelectTaxon()"
-                       typeahead-input-formatter="model.taxon.str"
-                       typeahead-loading="loadingTaxa" class="form-control">
-              </div>
-            </div> <!-- .form-group -->
-
-            <div class="form-group">
-              <label class="control-label col-md-2" for="idQualField">ID qual</label>
-              <div class="col-md-2">
-                <select ng-model="model.accession.id_qual" ng-options="q for q in id_qualifiers"
-                        class="form-control"></select>
-              </div>
-
-              <label class="control-label col-md-2">Qualifier rank</label>
-              <div class="col-md-3">
-                <select ng-model="model.accession.id_qual_rank"
-                        ng-options="value as prop for (value, prop) in qualifier_rank"
-                        class="form-control"></select>
-              </div>
-            </div> <!-- .form-group -->
-
-          </div><!-- .editor-section -->
-
-          <div class="editor-section accession-section">
-            <h5>Accession</h5>
-
-            <div class="form-group">
-              <label class="control-label col-md-2" for="accessionField">
-                Accession</label>
-              <div class="col-md-2">
-                <input type="text" ng-model="model.accession.code" id="accessionField"
-                       class="form-control" required/>
-              </div>
-
-              <label class="control-label col-md-2">Date Received</label>
-              <div class="col-md-2">
-                <input bs-datepicker ng-model="model.accession.date_recvd"
-                       data-date="accession.date_recvd" class="form-control" type="text"/>
-              </div>
-            </div> <!-- .form-group -->
-
-            <div class="form-group">
-              <label class="control-label col-md-2">Type of material</label>
-              <div class="col-md-2">
-                <select ng-model="model.accession.recvd_type"
-                        ng-options="value as text for (value, text) in recvd_type_values"
-                        class="form-control"></select>
-              </div>
-
-              <label class="control-label col-md-2">Date Accessioned</label>
-              <div class="col-md-2">
-                <input bs-datepicker ng-model="model.accession.date_accd"
-                       data-date="accession.date_accd" class="form-control" type="text"/>
-              </div>
-            </div> <!-- .form-group -->
-
-            <div class="form-group">
-              <label class="control-label col-md-2">Quantity</label>
-              <div class="col-md-1">
-                <input type="text" ng-model="model.accession.quantity_recvd"
-                       class="form-control" required/>
-              </div>
-            </div> <!-- .form-group -->
-
-          </div> <!-- .editor-section -->
-
-          <div class="editor-section">
-            <h5>Intended locations</h5>
-            <div class="form-group">
-              <label class="control-label col-md-2">Location 1</label>
-              <div class="col-md-4">
-                <input type="text" ng-model="model.accession.intended_location_id"
-                       class="form-control"/>
-              </div>
-            </div> <!-- .form-group -->
-
-            <div class="form-group">
-              <label class="control-label col-md-2">Location 2</label>
-              <div class="col-md-4">
-                <input type="text" ng-model="model.accession.intended2_location_id"
-                       class="form-control"/>
-              </div>
-            </div> <!-- .form-group -->
-          </div> <!-- .editor-section -->
-
-          <div class="editor-section">
-            <h5>Flags</h5>
-            <div class="form-group">
-              <label class="control-label col-md-2">Private</label>
-              <div class="col-md-1">
-                <input type="checkbox" ng-model="model.accession.intended2_location_id"/>
-              </div>
+          <div class="form-group">
+            <label class="control-label col-md-2" for="taxonField">Taxon</label>
+            <div class="col-md-10">
+              <input type="text" ng-model="model.taxon"
+                     placeholder="Taxon" typeahead-editable="false"
+                     typeahead="taxon as taxon.str for taxon in getTaxa($viewValue)"
+                     typeahead-on-select="onSelectTaxon()"
+                     typeahead-input-formatter="model.taxon.str"
+                     typeahead-loading="loadingTaxa" class="form-control">
             </div>
-          </div> <!-- .editor-section -->
+          </div> <!-- .form-group -->
 
-          <div class="editor-section">
-            <h5>Provenance</h5>
-            <div class="form-group">
-              <label class="control-label col-md-2" for="provenanceField">Provenance</label>
-              <div class="col-md-4">
-                <select ng-model="model.accession.prov_type" class="form-control"
-                        id="provenanceField"
-                        ng-options="value as text for (value, text) in prov_type_values">
-                </select>
-              </div>
-            </div> <!-- .form-group -->
+          <div class="form-group">
+            <label class="control-label col-md-2" for="idQualField">ID qual</label>
+            <div class="col-md-2">
+              <select ng-model="model.accession.id_qual" ng-options="q for q in id_qualifiers"
+                      class="form-control"></select>
+            </div>
 
-            <div class="form-group">
-              <label class="control-label col-md-2" for="wildStatusField">Wild Status</label>
-              <div class="col-md-4">
-                <select ng-model="model.accession.wild_prov_status"
-                        id="wildStatusField" class="form-control"
-                        ng-options="value as text for (value, text) in wild_prov_status_values">
-                </select>
-              </div>
-            </div> <!-- .form-group -->
-          </div> <!-- .editor-section -->
+            <label class="control-label col-md-2">Qualifier rank</label>
+            <div class="col-md-3">
+              <select ng-model="model.accession.id_qual_rank"
+                      ng-options="value as prop for (value, prop) in qualifier_rank"
+                      class="form-control"></select>
+            </div>
+          </div> <!-- .form-group -->
+
+
+          <h4>Accession</h4>
+
+          <div class="form-group">
+            <label class="control-label col-md-2" for="accessionField">
+              Accession</label>
+            <div class="col-md-2">
+              <input type="text" ng-model="model.accession.code" id="accessionField"
+                     class="form-control" required/>
+            </div>
+
+            <label class="control-label col-md-2">Date Received</label>
+            <div class="col-md-2">
+              <input bs-datepicker ng-model="model.accession.date_recvd"
+                     data-date="accession.date_recvd" class="form-control" type="text"/>
+            </div>
+          </div> <!-- .form-group -->
+
+          <div class="form-group">
+            <label class="control-label col-md-2">Type of material</label>
+            <div class="col-md-2">
+              <select ng-model="model.accession.recvd_type"
+                      ng-options="value as text for (value, text) in recvd_type_values"
+                      class="form-control"></select>
+            </div>
+
+            <label class="control-label col-md-2">Date Accessioned</label>
+            <div class="col-md-2">
+              <input bs-datepicker ng-model="model.accession.date_accd"
+                     data-date="accession.date_accd" class="form-control" type="text"/>
+            </div>
+          </div> <!-- .form-group -->
+
+          <div class="form-group">
+            <label class="control-label col-md-2">Quantity</label>
+            <div class="col-md-1">
+              <input type="text" ng-model="model.accession.quantity_recvd"
+                     class="form-control" required/>
+            </div>
+          </div> <!-- .form-group -->
+
+          <h4>Intended locations</h4>
+          <div class="form-group">
+            <label class="control-label col-md-2">Location 1</label>
+            <div class="col-md-4">
+              <input type="text" ng-model="model.accession.intended_location_id"
+                     class="form-control"/>
+            </div>
+          </div> <!-- .form-group -->
+
+          <div class="form-group">
+            <label class="control-label col-md-2">Location 2</label>
+            <div class="col-md-4">
+              <input type="text" ng-model="model.accession.intended2_location_id"
+                     class="form-control"/>
+            </div>
+          </div> <!-- .form-group -->
+
+          <h4>Flags</h4>
+          <div class="form-group">
+            <label class="control-label col-md-2">Private</label>
+            <div class="col-md-1">
+              <input type="checkbox" ng-model="model.accession.intended2_location_id"/>
+            </div>
+          </div>
+
+
+          <h4>Provenance</h4>
+          <div class="form-group">
+            <label class="control-label col-md-2" for="provenanceField">Provenance</label>
+            <div class="col-md-4">
+              <select ng-model="model.accession.prov_type" class="form-control"
+                      id="provenanceField"
+                      ng-options="value as text for (value, text) in prov_type_values">
+              </select>
+            </div>
+          </div> <!-- .form-group -->
+
+          <div class="form-group">
+            <label class="control-label col-md-2" for="wildStatusField">Wild Status</label>
+            <div class="col-md-4">
+              <select ng-model="model.accession.wild_prov_status"
+                      id="wildStatusField" class="form-control"
+                      ng-options="value as text for (value, text) in wild_prov_status_values">
+              </select>
+            </div>
+          </div> <!-- .form-group -->
 
         </form> <!-- .form-horizontal -->
       </tab>   <!-- end "General" tab -->
@@ -219,7 +209,7 @@
               </div> <!-- .form-group -->
 
               <div class="editor-section">
-                <h5>Location Details</h5>
+                <h4>Location Details</h4>
 
                 <div class="long-lat-group">
                   <div class="form-group">
@@ -305,7 +295,7 @@
         </form> <!-- .form-horizontal -->
       </tab>   <!-- end "Source" tab -->
 
-      <tab heading="Verification">
+      <tab heading="Verification" ng-if="false">
         <div class="not-ready-warning">
           <p>We're still working on this one.</p>
         </div>
@@ -367,7 +357,7 @@
         </accordion>
       </tab> <!-- end "Verification" tab -->
 
-      <tab heading="Voucher">
+      <tab heading="Voucher" ng-if="false">
         <div class="not-ready-warning">
           <p>We're still working on this one.</p>
         </div>
