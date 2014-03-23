@@ -3,7 +3,6 @@
 angular.module('BaubleApp')
     .service('User', ['$http', 'apiRoot', function ($http, apiRoot) {
 
-        console.log('apiRoot: ', apiRoot);
         var resourceUrl = [apiRoot, 'user'].join('/');
 
         function AuthorizedUser(user) {
