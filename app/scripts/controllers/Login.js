@@ -15,14 +15,14 @@ angular.module('BaubleApp')
                     })
                     .error(function(data, status, headers, config) {
                         switch(status) {
-                            case 500:
-                                $scope.message = 'Server Error.';
-                                break;
-                            case 401:
-                                $scope.message = 'Invalid username or password';
-                                break;
-                            default:
-                                $scope.message = 'Unknown Error.';
+                        case 500:
+                            $scope.message = 'Server Error.';
+                            break;
+                        case 401:
+                            $scope.message = 'Invalid username or password';
+                            break;
+                        default:
+                            $scope.message = 'Unknown Error.';
                         }
                     });
             };
