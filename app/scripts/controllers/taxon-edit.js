@@ -106,10 +106,6 @@ angular.module('BaubleApp')
             // });
 
             function saveNames() {
-
-                // TODO: we don't have way to update names here...only add and
-                // remove
-
                 return $q.all(_.flatten(
                     _.map($scope.data.names.added, function(name) {
                         return Taxon.saveName($scope.taxon, name);
@@ -117,13 +113,10 @@ angular.module('BaubleApp')
                     _.map($scope.data.names.removed, function(name) {
                         return Taxon.removeName($scope.taxon, name);
                     })))
-                    // .then(function(result) {
-                    //     console.log('names result: ', result);
-                    //     //$window.history.back();
-                    // })
                     .catch(function(result) {
                         var defaultMessage = "Some names could not be saved.";
                         Alert.onErrorResponse(result.data, defaultMessage);
+                        $q.reject(result);
                     });
             }
 
@@ -135,15 +128,12 @@ angular.module('BaubleApp')
                     _.map($scope.data.synonyms.removed, function(synonym) {
                         return Taxon.removeSynonym($scope.taxon, synonym);
                     })))
-                    // .then(function(result) {
-                    //     //$window.history.back();
-                    // })
                     .catch(function(result) {
                         var defaultMessage = "Some synonyms could not be saved.";
                         Alert.onErrorResponse(result.data, defaultMessage);
+                        $q.reject(result);
                     });
             }
-
 
             function saveDistributions() {
                 return $q.all(_.flatten(
@@ -153,31 +143,22 @@ angular.module('BaubleApp')
                     _.map($scope.data.distribution.removed, function(distribution) {
                         return Taxon.removeDistribution($scope.taxon, distribution);
                     })))
-                    // .then(function(result) {
-                    //     //$window.history.back();
-                    // })
                     .catch(function(result) {
                         var defaultMessage = "Some distributions could not be saved.";
                         Alert.onErrorResponse(result.data, defaultMessage);
+                        $q.reject(result);
                     });
+
             }
 
             Taxon.save($scope.taxon)
                 .success(function(data, status, headers, config) {
-
-                    // TODO: this doesn't quite work as expect because it treating each
-                    // array of promises as a single promise
-                    $q.all(_.flatten(saveSynonyms(),
-                                     saveNames(),
-                                     saveDistributions()
-                                    )
-                          )
+                    $q.all(saveSynonyms(),
+                           saveNames(),
+                           saveDistributions())
                         .then(function(results) {
-                            console.log('results: ', results);
                             $window.history.back();
-                        })
-                        .catch(function(results) {
-                            console.log('error results: ', results);
+                            return results;
                         });
                 })
                 .error(function(data, status, headers, config) {
