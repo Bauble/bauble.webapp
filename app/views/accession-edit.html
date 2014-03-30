@@ -137,8 +137,6 @@
           <div class="form-group">
             <label class="control-label col-md-2" for="source-detail-input">Source</label>
             <div class="col-md-5">
-              <!-- <input ui-select2="sourceSelectOptions" ng-model="source.source_detail"
-              id="sourceField"/> -->
               <input type="text" ng-model="model.sourceDetail" id="source-detail-input"
                      placeholder="Source" typeahead-editable="false"
                      typeahead="source as source.str for source in getSources($viewValue)"
