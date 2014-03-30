@@ -234,7 +234,8 @@ module.exports = function (grunt) {
                         'components/angular/*',
                         'components/jquery/*',
                         'images/{,*/}*.{gif,webp,svg}',
-                        'styles/fonts/*'
+                        'styles/fonts/*',
+                        'data/*'
                     ]
                 }, {
                     expand: true,

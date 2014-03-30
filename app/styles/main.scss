@@ -749,3 +749,112 @@ h1, h2, h3, h4, h5, legend {
         margin-top: 1.25em;
     }
 }
+
+
+
+
+.dropdown-submenu {
+    position: relative;
+}
+
+.dropdown-submenu > .dropdown-menu {
+    top: 0;
+    left: 100%;
+    margin-top: -6px;
+    margin-left: -1px;
+    -webkit-border-radius: 0 6px 6px 6px;
+    -moz-border-radius: 0 6px 6px 6px;
+    border-radius: 0 6px 6px 6px;
+}
+
+.dropdown-submenu:hover > .dropdown-menu {
+    display: block;
+}
+
+.dropdown-submenu > a:after {
+    display: block;
+    content: " ";
+    float: right;
+    width: 0;
+    height: 0;
+    border-color: transparent;
+    border-style: solid;
+    border-width: 5px 0 5px 5px;
+    border-left-color: #cccccc;
+    margin-top: 5px;
+    margin-right: -10px;
+}
+
+.dropdown-submenu:hover > a:after {
+    border-left-color: #ffffff;
+}
+
+.dropdown-submenu.pull-left {
+    float: none;
+}
+
+.dropdown-submenu.pull-left>.dropdown-menu {
+    left: -100%;
+    margin-left: 10px;
+    -webkit-border-radius: 6px 0 6px 6px;
+    -moz-border-radius: 6px 0 6px 6px;
+    border-radius: 6px 0 6px 6px;
+}
+
+
+.geo-menu {
+
+    .dropdown-submenu > a:after {
+        content: none;  // remove bootstrap submenu caret
+    }
+
+    .dropdown-menu {
+        width: 225px;
+
+        li {
+            color: $font-color;
+            text-align: left;
+        }
+
+        & > li:hover {
+            color: $orange;
+        }
+    }
+}
+
+
+.dist-add-btn {
+    margin-right: 2em;
+}
+
+.dist-item {
+    //margin: .3em .3em;
+    //margin-top: .3em;
+    display: inline-block;
+    border: solid 1px #ccc;
+    border-radius: 3px;
+    margin-right: .2em;
+    background-color: white;
+    padding: .3em 0 .3em 1em;
+
+    button {
+        background-color: inherit;
+        border: none;
+        color: #ccc;
+        height: 100%;
+        line-height: 2em;
+        padding: 0 1em;
+        //padding-left: 1em;
+
+        &:hover {
+            color: $orange;
+        }
+
+    }
+    i {
+        //color: #ccc;
+        color: inherit;
+        height: 100%;
+        line-height: 2em;
+    }
+}
