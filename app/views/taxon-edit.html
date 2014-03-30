@@ -136,7 +136,8 @@
                          id="synonym-input">
                   <span class="input-group-btn">
                     <button class="btn btn-default" ng-disabled="!newSynonym"
-                            ng-click="addSynonym(newSynonym); newSynonym=null;">Add</button>
+                            ng-click="data.synonyms.push(newSynonym); newSynonym=null">
+                      Add</button>
                   </span>
                 </div>
               </div>  <!-- .form-group -->
@@ -147,7 +148,8 @@
                 </p>
                 <li ng-repeat="synonym in data.synonyms" class="list-group-item">
                   {{synonym.str}}
-                  <button class="pull-right trash-btn btn" ng-click="removeSynonym(synonym)">
+                  <button class="pull-right trash-btn btn"
+                          ng-click="data.synonyms.remove(synonym)">
                     <i class="fa fa-trash-o"></i></button>
                 </li>
               </ul>
@@ -162,9 +164,16 @@
           <div class="form-group">
             <label class="control-label col-md-2" for="distField">
               Distribution</label>
-            <div class="col-md-4">
-              <input type="text" class="form-control" ng-model="distribution"
-                     id="distfield"/>
+
+            <div class="col-md-10" >
+              <a type="button" class="pull-left dist-add-btn btn btn-link">
+                  <geography-menu on-click="data.distribution.push(geo)">Add</geography-menu>
+                </a>
+
+              <div ng-repeat="geo in data.distribution" class="dist-item"
+                   ng-click="data.distribution.remove(geo)">
+                {{geo.name}}<button><i class="fa fa-times"></i></button></div>
+
             </div>
           </div> <!-- .form-group -->
 
@@ -228,7 +237,7 @@
 
             <div class="text-center col-md-2">
               <button class="trash-btn btn" type="button"
-                      ng-click="removeName(name)">
+                      ng-click="data.names.remove(name)">
                 <i class="fa fa-trash-o"></i>
               </button>
             </div>   <!-- .col -->

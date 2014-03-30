@@ -2,37 +2,47 @@
 
 angular.module('BaubleApp')
   .controller('TaxonEditCtrl',
-   ['$scope', '$location', '$window', '$q', '$stateParams', 'Alert', 'Genus', 'Taxon',
-    function ($scope, $location, $window, $q, $stateParams, Alert, Genus, Taxon) {
+   ['$scope', '$location', '$window', '$q', '$http', '$stateParams', 'Alert', 'Genus', 'Taxon',
+    function ($scope, $location, $window, $q, $http, $stateParams, Alert, Genus, Taxon) {
         // isNew is inherited from the NewCtrl if this is a /new editor
         $scope.taxon = {
             genus_id: $location.search().genus,
         };
 
         $scope.data = {
-            synonyms: [],
-            names: [],
-            notes: []
+            synonyms: new ModelArray(),
+            names: new ModelArray(),
+            notes: new ModelArray(),
+            distribution: new ModelArray(),
         };
-        $scope.removedSynonyms = [];
-        $scope.addedSynonyms = [];
-        $scope.removedNames = [];
 
         $scope.genus = {};
 
-        // make sure we have the family details
+        $http.get('/data/geography.js')
+            .success(function(data, status, headers, config) {
+                $scope.geography = data;
+                console.log('data: ', data);
+            })
+            .error(function(data, status, headers, config) {
+                var defaultMessage = 'Could not get data for distribution menu.';
+                Alert.onErrorResponse(data, defaultMessage);
+            });
+
+        $scope.onGeoClicked = function(geo) {
+            console.log('geo: ', geo);
+            $scope.data.distribution.push(geo);
+        };
+
+        // make sure we have the taxon details
         if($stateParams.id) {
-            Taxon.get($stateParams.id, {embed: ['genus', 'vernacular_names', 'synonyms']})
+            Taxon.get($stateParams.id, {embed: ['genus', 'vernacular_names', 'synonyms', 'distribution']})
                 .success(function(data, status, headers, config) {
                     $scope.taxon = data;
                     $scope.genus = data.genus;
-                    $scope.data.notes = $scope.taxon.notes || [];
-                    $scope.data.names = $scope.taxon.vernacular_names || [];
-                    if($scope.data.names.length === 0) {
-                        $scope.addName({});
-                    }
-
-                    $scope.data.synonyms = $scope.taxon.synonyms || [];
+                    $scope.data.notes = new ModelArray($scope.taxon.notes || []);
+                    $scope.data.distributions = new  ModelArray(_.sortBy($scope.taxon.distribution, 'id') || []);
+                    $scope.data.names = new ModelArray($scope.taxon.vernacular_names || [{}]);
+                    $scope.data.synonyms = new ModelArray($scope.taxon.synonyms || []);
                     // delete the embedded properties so we don't resubmit them
                     delete $scope.taxon.genus;
                     delete $scope.taxon.synonyms;
@@ -79,29 +89,6 @@ angular.module('BaubleApp')
                 });
         };
 
-        // add a synonym
-        $scope.addSynonym = function(synonym) {
-            $scope.data.synonyms.push(synonym);
-            $scope.addedSynonyms.push(synonym);
-        };
-
-        // remove a synonym
-        $scope.removeSynonym = function(synonym) {
-            $scope.removedSynonyms.push(synonym);
-            _.remove($scope.data.synonyms, {$$hashKey: synonym.$$hashKey });
-        };
-
-
-        // remove a vernacular name
-        $scope.removeName = function(name) {
-
-            _.remove($scope.data.names, {$$hashKey: name.$$hashKey });
-            if(name.id) {
-                $scope.removedNames.push(name);
-            }
-        };
-
-
         $scope.cancel = function() {
             $window.history.back();
         };
@@ -124,15 +111,17 @@ angular.module('BaubleApp')
                 // remove
 
                 return $q.all(_.flatten(
-                    _.map($scope.data.names, function(name) {
+                    _.map($scope.data.names.added, function(name) {
                         return Taxon.saveName($scope.taxon, name);
                     }),
-                    _.map($scope.removedNames, function(name) {
+                    _.map($scope.data.names.removed, function(name) {
                         return Taxon.removeName($scope.taxon, name);
-                    }))).then(function(result) {
-                        console.log('names result: ', result);
-                        $window.history.back();
-                    }).catch(function(result) {
+                    })))
+                    // .then(function(result) {
+                    //     console.log('names result: ', result);
+                    //     //$window.history.back();
+                    // })
+                    .catch(function(result) {
                         var defaultMessage = "Some names could not be saved.";
                         Alert.onErrorResponse(result.data, defaultMessage);
                     });
@@ -140,39 +129,56 @@ angular.module('BaubleApp')
 
             function saveSynonyms() {
                 return $q.all(_.flatten(
-                    _.map($scope.addedSynonyms, function(synonym) {
-                        return Taxon.addSynonym($scope.genus, synonym);
+                    _.map($scope.data.synonyms.added, function(synonym) {
+                        return Taxon.addSynonym($scope.taxon, synonym);
                     }),
-                    _.map($scope.removedSynonyms, function(synonym) {
-                        return Taxon.removeSynonym($scope.genus, synonym);
-                    }))).then(function(result) {
-                        console.log('syn result: ', result);
-                        $window.history.back();
-                    }).catch(function(result) {
+                    _.map($scope.data.synonyms.removed, function(synonym) {
+                        return Taxon.removeSynonym($scope.taxon, synonym);
+                    })))
+                    // .then(function(result) {
+                    //     //$window.history.back();
+                    // })
+                    .catch(function(result) {
                         var defaultMessage = "Some synonyms could not be saved.";
+                        Alert.onErrorResponse(result.data, defaultMessage);
+                    });
+            }
+
+
+            function saveDistributions() {
+                return $q.all(_.flatten(
+                    _.map($scope.data.distribution.added, function(distribution) {
+                        return Taxon.addDistribution($scope.taxon, distribution);
+                    }),
+                    _.map($scope.data.distribution.removed, function(distribution) {
+                        return Taxon.removeDistribution($scope.taxon, distribution);
+                    })))
+                    // .then(function(result) {
+                    //     //$window.history.back();
+                    // })
+                    .catch(function(result) {
+                        var defaultMessage = "Some distributions could not be saved.";
                         Alert.onErrorResponse(result.data, defaultMessage);
                     });
             }
 
             Taxon.save($scope.taxon)
                 .success(function(data, status, headers, config) {
-                    saveSynonyms()
-                        .then(function(result) {
-                            saveNames()
-                                .then(function(result){
-                                    $window.history.back();
-                                })
-                                .catch(function(result){
-                                    var defaultMessage = "Some names could not be saved.";
-                                    Alert.onErrorResponse(result.data, defaultMessage);
-                                });
+
+                    // TODO: this doesn't quite work as expect because it treating each
+                    // array of promises as a single promise
+                    $q.all(_.flatten(saveSynonyms(),
+                                     saveNames(),
+                                     saveDistributions()
+                                    )
+                          )
+                        .then(function(results) {
+                            console.log('results: ', results);
+                            $window.history.back();
                         })
-                        .catch(function(result) {
-                            var defaultMessage = "Some synonyms could not be saved.";
-                            Alert.onErrorResponse(result.data, defaultMessage);
+                        .catch(function(results) {
+                            console.log('error results: ', results);
                         });
-
-
                 })
                 .error(function(data, status, headers, config) {
                     var defaultMessage = "The taxon could not be saved.";

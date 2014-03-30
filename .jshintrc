@@ -29,7 +29,8 @@
     "it": true,
     "moment": true,
     "$": true,
-    "_": true
+    "_": true,
+    "ModelArray": true
   },
   "devel": true
 }

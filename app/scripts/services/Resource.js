@@ -240,10 +240,10 @@ angular.module('BaubleApp')
             });
         };
 
+        // save or update a vernacular name
         resource.saveName = function(taxon, name){
             var url = [resource.resourceUrl, taxon.id || taxon, 'names'].join('/');
             url += name.id ? ('/' + name.id) : '';
-            console.log('name: ', name);
             return $http({
                 url: url,
                 method: name.id ? 'PATCH' : 'POST',
@@ -256,6 +256,35 @@ angular.module('BaubleApp')
             return $http({
                 url: [resource.resourceUrl, taxon.id || taxon, 'names',
                       name.id || name].join('/'),
+                method: 'DELETE',
+                headers: this._getAuthHeader()
+            });
+        };
+
+
+        resource.listDistributions = function(taxon){
+            return $http({
+                url: [resource.resourceUrl, taxon.id || taxon, 'distributions'].join('/'),
+                method: 'GET',
+                headers: this._getAuthHeader()
+            });
+        };
+
+        // save a new geography as a distribution
+        resource.addDistribution = function(taxon, distribution){
+            var url = [resource.resourceUrl, taxon.id || taxon, 'distributions'].join('/');
+            return $http({
+                url: url,
+                method: 'POST',
+                data: distribution,
+                headers: this._getAuthHeader()
+            });
+        };
+
+        resource.removeDistribution = function(taxon, distribution){
+            return $http({
+                url: [resource.resourceUrl, taxon.id || taxon, 'distributions',
+                      distribution.id || distribution].join('/'),
                 method: 'DELETE',
                 headers: this._getAuthHeader()
             });
