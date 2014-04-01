@@ -1,22 +1,26 @@
 <div class="search-page">
 
   <div class="search-box">
-    <form autocapitalize="off" autocorrect="off">
+    <form autocapitalize="off" autocorrect="off" >
       <div class="input-group">
         <!-- <span class="input-group-btn">
         <button class="btn btn-default" type="button"><i class="fa fa-cog"></i></button>
         </span> -->
         <input id="search-field" ng-model="query" type="text" autocorrect="off" autocapitalize="off"
-               spellcheck="false" placeholder="Enter a search query" class="form-control">
+               spellcheck="false" placeholder="Enter a search query" class="form-control"
+               ng-disabled="loading">
         <span class="input-group-btn">
-          <button class="btn btn-default" type="submit" ng-click="search(query)">Search</button>
+          <button class="btn btn-default" type="submit" ng-click="search(query)"
+                  ng-disabled="loading || !query">Search</button>
         </span> <!-- .input-grou-btn -->
       </div> <!-- .input-group -->
     </form>
   </div> <!-- .search-box -->
 
 
-  <div ng-show="message" class="col-md-12" style="text-align: center">
+  <div ng-if="loading" id="search-spinner"><i class="fa fa-spinner fa-spin fa-3x"></i></div>
+
+  <div ng-show="message && !loading" class="col-md-12" style="text-align: center">
     {{message}}
   </div>
 

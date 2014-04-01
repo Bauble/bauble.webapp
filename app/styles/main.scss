@@ -321,20 +321,20 @@ h1, h2, h3, h4, h5, legend {
     margin-bottom: 2em;
     padding-top: 2em;
 
-
-    //padding: 15px 15px;
-
-    //background-color: #F5F5F5;
-    //border: solid 1px #CCC;
-
-    /* form { */
-    /*     margin: 0; */
-    /* } */
-
     .fa {
         color: $font-color;
     }
 
+}
+
+
+#search-spinner {
+
+    text-align: center;
+
+    i {
+        color: #2b3a42;
+    }
 }
 
 .result-group {

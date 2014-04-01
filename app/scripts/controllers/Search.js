@@ -21,6 +21,7 @@ angular.module('BaubleApp')
 
         // query the server for search results
         $scope.search = function(query) {
+            $scope.loading = true;
             $scope.results = [];
 
             if(!query) {
@@ -44,10 +45,11 @@ angular.module('BaubleApp')
                         $scope.message = "Nothing found.";
                     }
                     $scope.isOpen = _.size($scope.results) === 1 ? true : false;
-
+                    $scope.loading = false;
                 })
                 .error(function(data, status, headers, config) {
                     $scope.message = "";
+                    $scope.loading = false;
                 });
         };
 
