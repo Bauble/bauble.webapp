@@ -28,7 +28,7 @@
     This genus has no synonyms.
   </div>
   <ul>
-      <li ng-repeat="synonym in genus.synonyms">
+    <li ng-repeat="synonym in genus.synonyms"><a ng-href="#/search?q=genus where id%3d'{{synonym.id}}'">{{synonym.str}}</a></li>
   </ul>
 
 </div>

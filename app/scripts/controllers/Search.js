@@ -7,6 +7,7 @@ angular.module('BaubleApp')
         $scope.selected = null;
         $scope.results = null; // the results of the search
         $scope.$location = $location;  // so we can $watch it later;
+        $scope.loading = false;
 
         $scope.capitalize = function(str) {
             return str.slice(0,1).toUpperCase() + str.slice(1,str.length);
@@ -15,13 +16,13 @@ angular.module('BaubleApp')
         // update the search whenever the q param changes
         $scope.$watch('$location.search().q', function(q) {
             $scope.viewMeta = null;
+            $scope.query = q;
             $scope.search(q);
         });
 
 
         // query the server for search results
         $scope.search = function(query) {
-            $scope.loading = true;
             $scope.results = [];
 
             if(!query) {
@@ -29,6 +30,7 @@ angular.module('BaubleApp')
                 return;
             }
 
+            $scope.loading = true;
             $location.search('q', query);
 
             $scope.message = "Searching....";

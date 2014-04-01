@@ -32,7 +32,7 @@
     This family has no synonyms.
   </div>
   <ul>
-      <li ng-repeat="synonym in family.synonyms">{{synonym.str}}</li>
+      <li ng-repeat="synonym in family.synonyms"><a ng-href="#/search?q=family where id%3d'{{synonym.id}}'">{{synonym.str}}</a></li>
   </ul>
 
 </div>

@@ -39,7 +39,7 @@
     This taxon has no synonyms.
   </div>
   <ul>
-      <li ng-repeat="synonym in taxon.synonyms">{{synonym.str}}</li>
+    <li ng-repeat="synonym in taxon.synonyms"><a ng-href="#/search?q=taxon where id%3d'{{synonym.id}}'">{{synonym.str}}</a></li>
   </ul>
 
 </div>
