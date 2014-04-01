@@ -315,83 +315,11 @@ angular.module('BaubleApp')
 
 // Organization service for CRUD location types
     .factory('Organization', ['$http', 'Resource', function($http, $resource) {
-        var resource = $resource('/organization');
-        angular.extend(resource, {
-            // get_admin: function(resource) {
-            //     var config = {
-            //         url: this.get_url_from_resource(resource) + "/admin",
-            //         headers: angular.extend(globals.getAuthHeader(), {
-
-            //         }),
-            //         method: 'GET'
-            //     };
-            //     return $http(config);
-            // },
-
-            // approve: function(resource) {
-            //     var config = {
-            //         url: this.get_url_from_resource(resource) + "/approve",
-            //         headers: angular.extend(globals.getAuthHeader(), {}),
-            //         method: 'POST'
-            //     };
-            //     return $http(config);
-            // }
-        });
-        return resource;
+        return $resource('/organization');
     }])
 
-// User service for CRUD location types
-  .factory('User2', ['$http', 'apiRoot', 'Resource',
-    function($http, apiRoot, $resource) {
-        var resource = $resource('/user');
 
-        function AuthorizedUser(user) {
-
-            var _user = {
-                getAuthHeader: function() {
-                    return {'Authorization': 'Basic ' +
-                            btoa(this.email + ':' + this.access_token)};
-                }
-            };
-
-            return _.extend(user, _user);
-        }
-
-        resource.extend = function(user) {
-            return new AuthorizedUser(user);
-        };
-
-        resource.login = function(email, password) {
-            return $http({
-                url: [apiRoot, 'login'].join('/'),
-                method: 'GET',
-                headers: {'Authorization': 'Basic ' + btoa(email + ':' + password)}
-            });
-        };
-
-
-        resource.local = function(user) {
-            var key = 'user';
-
-            if(user === null) {
-                // deleter
-                localStorage.removeItem(key);
-            } else {
-                if(user) {
-                    // setter
-                    localStorage.setItem(key, JSON.stringify(user));
-                } else {
-                    // getter
-                    var data = localStorage.getItem(key);
-                    return data === null ? data : this.extend(JSON.parse(data));
-                }
-            }
-        };
-
-        return resource;
-    }])
-
-// Report service
+// Report service.
     .factory('Report', ['Resource', function($resource) {
         return $resource('/report');
     }]);
