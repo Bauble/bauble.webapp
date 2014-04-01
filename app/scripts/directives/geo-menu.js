@@ -1,10 +1,8 @@
 'use strict';
 
 angular.module('BaubleApp')
-    .directive('geographyMenu', function ($http, $compile, Alert) {
+    .directive('geographyMenu', function ($http, $compile, $location, Alert) {
         return {
-            //templateUrl: 'views/geo-menu.html',
-            //template: '<a class="dropdown-toggle" ng-transclude></a>',
             template: '<span class="geo-menu dropdown">' +
                 '<a class="dropdown-toggle" ng-transclude></a>' +
                 '</span>',
@@ -18,24 +16,42 @@ angular.module('BaubleApp')
                 scope.data = [];
                 scope.indexedData = {};
 
-                scope.onSelected = function(id) {
+                scope.onSelected = function($event, id) {
+                    $event.preventDefault();
+                    $event.stopPropagation();
+
+                    // close the menu
+                    element.removeClass('open');
+
                     scope.onClick({geo: scope.indexedData[id]});
+                    return false;
+                };
+
+                scope.catchClick = function($event) {
+                    // catch the click so it doesn't propagate to the dropdown-toggle directive
+                    // and close hte menu
+                    $event.preventDefault();
+                    $event.stopPropagation();
+                    return false;
                 };
 
                 scope.buildMenu = function(rows) {
-                    var li, row, a;
+                    var li, row, a, ul;
                     var items = [];
                     for(var i=0; i<rows.length; i++) {
                         row = rows[i];
-                        a = $('<a ng-click="onSelected('+row.id+')"></a>')
-                            .text(row.name);
+                        a = $('<a ng-click="catchClick($event)"></a>').text(row.name);
                         li = $('<li></li>').append(a);
                         if(row.children && row.children.length > 0) {
                             li.addClass('dropdown-submenu');
                             a.append('<i class="pull-right fa fa-angle-right"></i>');
-                            li.append($('<ul class="dropdown-menu"></ul>')
-                                      .append(scope.buildMenu(row.children)));
+                            ul = $('<ul class="dropdown-menu"></ul>');
+                            a = $('<a ng-click="catchClick($event)"></a>').text(row.name);
+                            ul.append($('<li></li>').append(a));
+                            ul.append($('<li class="divider"></li>'));
+                            li.append(ul.append(scope.buildMenu(row.children)));
                         }
+                        a.attr('ng-click', 'onSelected($event,'+row.id+')');
                         items.push(li);
                     }
 
@@ -57,6 +73,7 @@ angular.module('BaubleApp')
 
 
                 function flatten(items) {
+                    // turn the items and it's nested children into an array
                     var item;
                     for(var i=items.length-1; i>=0; i--) {
                         item = items[i];

@@ -28,11 +28,6 @@ angular.module('BaubleApp')
                 Alert.onErrorResponse(data, defaultMessage);
             });
 
-        $scope.onGeoClicked = function(geo) {
-            console.log('geo: ', geo);
-            $scope.data.distribution.push(geo);
-        };
-
         // make sure we have the taxon details
         if($stateParams.id) {
             Taxon.get($stateParams.id, {embed: ['genus', 'vernacular_names', 'synonyms', 'distribution']})
@@ -68,7 +63,6 @@ angular.module('BaubleApp')
 
         $scope.qualifiers = ["agg.", "s. lat.", "s. str."];
         $scope.ranks = ["cv.", "f.", "subf.", "subsp.", "subvar.", "var."];
-
 
         // get genera for the genus completions
         $scope.getGenera = function($viewValue) {

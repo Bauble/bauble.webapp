@@ -751,8 +751,6 @@ h1, h2, h3, h4, h5, legend {
 }
 
 
-
-
 .dropdown-submenu {
     position: relative;
 }
@@ -803,6 +801,15 @@ h1, h2, h3, h4, h5, legend {
 
 
 .geo-menu {
+
+    .dropdown-menu > li > a {
+        padding: 7px 20px;
+
+        & > i {
+            padding-top: 2px;
+        }
+
+    }
 
     .dropdown-submenu > a:after {
         content: none;  // remove bootstrap submenu caret
