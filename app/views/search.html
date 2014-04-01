@@ -1,18 +1,17 @@
 <div class="search-page">
 
   <div class="search-box">
-    <form>
-    <div class="input-group">
-      <span class="input-group-btn">
+    <form autocapitalize="off" autocorrect="off">
+      <div class="input-group">
+        <!-- <span class="input-group-btn">
         <button class="btn btn-default" type="button"><i class="fa fa-cog"></i></button>
-        </span> <!-- input-group-btn -->
-      <input id="search-field" ng-model="query" type="text" autocomplete="off"
-             autocorrect="off" autocapitalize="off" spellcheck="false"
-             placeholder="Enter a search query" class="form-control">
-      <span class="input-group-btn">
-        <button class="btn btn-default" type="submit" ng-click="search(query)">Search</button>
-      </span> <!-- .input-grou-btn -->
-    </div> <!-- .input-group -->
+        </span> -->
+        <input id="search-field" ng-model="query" type="text" autocorrect="off" autocapitalize="off"
+               spellcheck="false" placeholder="Enter a search query" class="form-control">
+        <span class="input-group-btn">
+          <button class="btn btn-default" type="submit" ng-click="search(query)">Search</button>
+        </span> <!-- .input-grou-btn -->
+      </div> <!-- .input-group -->
     </form>
   </div> <!-- .search-box -->
 
