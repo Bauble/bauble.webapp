@@ -16,7 +16,14 @@ angular.module('BaubleApp')
                         $location.path("/");
                     })
                     .error(function(data, status, headers, config) {
-                        $scope.message = "Error";
+                        console.log('status: ', status);
+                        switch (status) {
+                        case 409:
+                            $scope.message = "An account with this email already exists.";
+                            break;
+                        default:
+                            $scope.message = "Error";
+                        }
                     });
             };
         }]);

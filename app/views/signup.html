@@ -23,9 +23,9 @@
         Create your account
       </button>
 
-      <div class="error" ng-show="message">
-        {{message}}
-      </div>
+      <alert ng-show="message" type="'danger'" close="error=null"
+             style="margin-top: 2em">{{message}}</alert>
+
     </form>
 
 
