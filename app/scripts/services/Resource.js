@@ -3,12 +3,13 @@
 angular.module('BaubleApp')
   .factory('Resource', ['$http', 'apiRoot', 'User',
     function ($http, apiRoot, User) {
-        return function(resourceRoot) {
+        return function(resourceRoot, name) {
             var resourceUrl = apiRoot + resourceRoot;
 
             return {
 
                 resourceUrl: apiRoot + resourceRoot,
+                name: name,
 
                 _getAuthHeader: function() {
                     var user = User.local();
@@ -75,7 +76,7 @@ angular.module('BaubleApp')
                 remove: function(resource) {
                     var config = {
                         method: 'DELETE',
-                        url: resourceUrl + (resource.id || resource),
+                        url: resourceUrl + '/' + (resource.id || resource),
                         headers: this._getAuthHeader()
                     };
                     return $http(config);
@@ -114,7 +115,7 @@ angular.module('BaubleApp')
     }])
 
     .factory('Family', ['Resource', '$http', function($resource, $http) {
-        var resource = $resource('/family');
+        var resource = $resource('/family', 'family');
 
         resource.getSynonym = function(family, synonym){
             return $http({

@@ -3,7 +3,7 @@
   <div id="summary-buttons" class="pull-right">
     <a class="btn btn-default" ng-href="#/taxon/{{taxon.id}}/edit">Edit</a>
     <a class="btn btn-default" ng-href="#/accession/add?taxon={{taxon.id}}">Add Accession</a>
-    <a class="btn btn-default" ng-href="#/taxon/{{taxon.id}}/delete">Delete</a>
+    <a class="btn btn-default" ng-click="delete(taxon.id)">Delete</a>
   </div>
 
   <!-- <div id="actionButtons" class="pull-right">

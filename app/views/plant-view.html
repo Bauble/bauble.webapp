@@ -2,7 +2,7 @@
 
   <div id="summary-buttons" class="pull-right">
     <a class="btn btn-default" ng-href="#/plant/{{plant.id}}/edit">Edit</a>
-    <a class="btn btn-default" ng-href="#/plant/{{plant.id}}/delete">Delete</a>
+    <a class="btn btn-default" ng-click="delete(plant.id)">Delete</a>
   </div>
 
   <h3>{{plant.str}}</h3>

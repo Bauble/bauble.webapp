@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('BaubleApp')
-  .controller('AccessionViewCtrl', ['$scope', '$location', '$state', 'Alert', 'Accession',
-    function ($scope, $location, $state, Alert, Accession) {
+  .controller('AccessionViewCtrl', ['$scope', '$location', '$state', 'Alert', 'Accession', 'DeleteModal',
+    function ($scope, $location, $state, Alert, Accession, DeleteModal) {
 
         $scope.accession = null;
         $scope.counts = null;
@@ -33,4 +33,13 @@ angular.module('BaubleApp')
                     Alert.onErrorResponse(data, defaultMessage);
                 });
         });
+
+
+        $scope.delete = function() {
+            DeleteModal(Accession, $scope.accession)
+                .catch(function(result){
+                    var defaultMessage = 'Could not get delete accession.';
+                    Alert.onErrorResponse(result.data, defaultMessage);
+                });
+        };
     }]);

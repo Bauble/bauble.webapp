@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('BaubleApp')
-    .controller('PlantViewCtrl', function ($scope, $location, Alert, Plant) {
+    .controller('PlantViewCtrl', function ($scope, $location, Alert, Plant, DeleteModal) {
 
         $scope.plant = null;
 
@@ -17,4 +17,13 @@ angular.module('BaubleApp')
                     Alert.onErrorResponse(data, defaultMessage);
                 });
         });
+
+
+        $scope.delete = function() {
+            DeleteModal(Plant, $scope.plant)
+                .catch(function(result){
+                    var defaultMessage = 'Could not get delete plant.';
+                    Alert.onErrorResponse(result.data, defaultMessage);
+                });
+        };
     });

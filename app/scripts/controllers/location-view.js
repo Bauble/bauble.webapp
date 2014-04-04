@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('BaubleApp')
-  .controller('LocationViewCtrl', ['$scope', '$location', 'Alert', 'Location',
-    function ($scope, $location, Alert, Location) {
+  .controller('LocationViewCtrl', ['$scope', '$location', 'Alert', 'Location', 'DeleteModal',
+    function ($scope, $location, Alert, Location, DeleteModal) {
 
         $scope.location = null;
         $scope.counts = null;
@@ -24,4 +24,13 @@ angular.module('BaubleApp')
                     Alert.onErrorResponse(data, defaultMessage);
                 });
         });
+
+
+        $scope.delete = function() {
+            DeleteModal(Location, $scope.location)
+                .catch(function(result){
+                    var defaultMessage = 'Could not get delete location.';
+                    Alert.onErrorResponse(result.data, defaultMessage);
+                });
+        };
     }]);

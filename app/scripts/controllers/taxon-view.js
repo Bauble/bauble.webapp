@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('BaubleApp')
-    .controller('TaxonViewCtrl', function ($scope, $location, Alert, Taxon) {
+    .controller('TaxonViewCtrl', function ($scope, $location, Alert, Taxon, DeleteModal) {
 
         $scope.taxon = null;
         $scope.counts = null;
@@ -31,4 +31,12 @@ angular.module('BaubleApp')
                     Alert.onErrorResponse(data, defaultMessage);
                 });
         });
+
+        $scope.delete = function() {
+            DeleteModal(Taxon, $scope.taxon)
+                .catch(function(result){
+                    var defaultMessage = 'Could not get delete taxon.';
+                    Alert.onErrorResponse(result.data, defaultMessage);
+                });
+        };
     });

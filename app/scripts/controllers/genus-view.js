@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('BaubleApp')
-  .controller('GenusViewCtrl', ['$scope', '$location', 'Alert', 'Genus',
-    function ($scope, $location, Alert, Genus) {
+  .controller('GenusViewCtrl', ['$scope', '$location', 'Alert', 'Genus', 'DeleteModal',
+    function ($scope, $location, Alert, Genus, DeleteModal) {
 
         $scope.genus = null;
         $scope.counts = null;
@@ -34,4 +34,12 @@ angular.module('BaubleApp')
                     Alert.onErrorResponse(data, defaultMessage);
                 });
         });
+
+        $scope.delete = function() {
+            DeleteModal(Genus, $scope.genus)
+                .catch(function(result){
+                    var defaultMessage = 'Could not get delete genus.';
+                    Alert.onErrorResponse(result.data, defaultMessage);
+                });
+        };
     }]);

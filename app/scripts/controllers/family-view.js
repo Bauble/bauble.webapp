@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('BaubleApp')
-  .controller('FamilyViewCtrl', ['$scope', '$stateParams', '$state', '$location', 'Alert', 'Family',
-    function ($scope, $stateParams, $state, $location, Alert, Family) {
+  .controller('FamilyViewCtrl', ['$scope', '$stateParams', '$state', '$location', 'Alert', 'Family', 'DeleteModal',
+    function ($scope, $stateParams, $state, $location, Alert, Family, DeleteModal) {
 
         $scope.family = null;
         $scope.counts = null;
@@ -34,4 +34,13 @@ angular.module('BaubleApp')
                     Alert.onErrorResponse(data, defaultMessage);
                 });
         });
+
+
+        $scope.delete = function() {
+            DeleteModal(Family, $scope.family)
+                .catch(function(result){
+                    var defaultMessage = 'Could not get delete family.';
+                    Alert.onErrorResponse(result.data, defaultMessage);
+                });
+        };
     }]);
