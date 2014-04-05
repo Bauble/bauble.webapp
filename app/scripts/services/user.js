@@ -79,6 +79,28 @@ angular.module('BaubleApp')
                         return data === null ? data : this.extend(JSON.parse(data));
                     }
                 }
+            },
+
+            forgotPassword: function(email) {
+                return $http({
+                    url: [apiRoot, 'forgot-password'].join('/'),
+                    method: 'POST',
+                    params: {
+                        email: email
+                    }
+                });
+            },
+
+            resetPassword: function(email, token, password) {
+                return $http({
+                    url: [apiRoot, 'reset-password'].join('/'),
+                    method: 'POST',
+                    data: {
+                        email: email,
+                        token: token,
+                        password: password
+                    }
+                });
             }
         };
     }]);

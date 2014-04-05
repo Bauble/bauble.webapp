@@ -71,7 +71,20 @@ angular.module('BaubleApp', [
 
             .state('signup', {
                 url: '/signup',
-                templateUrl: 'views/signup.html'
+                templateUrl: 'views/signup.html',
+                controller: 'SignupCtrl'
+            })
+
+            .state('reset-password', {
+                url: '/reset-password/:token',
+                templateUrl: 'views/reset-password.html',
+                controller: 'ResetPasswordCtrl'
+            })
+
+            .state('forgot-password', {
+                url: '/forgot_password',
+                templateUrl: 'views/forgot-password.html',
+                controller: 'ForgotPasswordCtrl'
             })
 
             .state('main.organization-new', {

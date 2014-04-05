@@ -14,7 +14,7 @@ angular.module('BaubleApp')
             },
 
             clear: function() {
-                this.alerts = [];
+                this.alerts.splice(0, this.alerts.length);
             },
 
             onErrorResponse: function(responseData, defaultMessage) {

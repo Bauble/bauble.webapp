@@ -254,8 +254,13 @@ h1, h2, h3, h4, h5, legend {
     }
 }
 
+#signup-page {
+    margin-top: 5em;
+}
+
 .form-signin {
-    margin: 5em 0;
+    //margin: 5em 0;
+    margin-top: 5em;
     padding: 2em;
     //background-color: #fff;
     background-color: #BDD4DE; //$navbar-bg-color;
@@ -279,6 +284,16 @@ h1, h2, h3, h4, h5, legend {
     margin-bottom: 15px;
     padding: 7px 9px;
     //background-color: $background-color;
+}
+
+.forgot-password {
+    margin: 1.5em auto !important;
+    font-size: 90%;
+    text-align: center;
+
+    a {
+        color: #888;
+    }
 }
 
 
@@ -864,5 +879,29 @@ h1, h2, h3, h4, h5, legend {
         color: inherit;
         height: 100%;
         line-height: 2em;
+    }
+}
+
+.reset-password-page {
+    padding: 5em 0;
+
+    input {
+        margin-bottom: 1em;
+    }
+
+    form {
+        margin-top: 2em;
+    }
+}
+
+.forgot-password-page {
+    padding: 5em 0;
+
+    p {
+        text-align: center;
+    }
+
+    form {
+        margin-top: 3em;
     }
 }
