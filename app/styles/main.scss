@@ -163,6 +163,10 @@ h1, h2, h3, h4, h5, legend {
     color: red;
 }
 
+.success {
+    color: green;
+}
+
 .navbar {
 
     // surely there's variables for the navbar dropdown/popover
@@ -904,4 +908,15 @@ h1, h2, h3, h4, h5, legend {
     form {
         margin-top: 3em;
     }
+}
+
+#change-password-form {
+
+    input {
+        margin-bottom: 1em;
+    }
+}
+
+.change-pwd-btn {
+    margin-right: 1em;
 }
