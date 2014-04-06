@@ -1,32 +1,63 @@
-<h3>Settings</h3>
-<tabset>
-  <tab heading="User">
+<div id="settings-page">
 
-    <div class="row">
-      <div class="col-md-3">
-        <form id="change-password-form" role="form">
-          <div class="form-group">
-            <label for="password1-input">Change Password</label>
-            <!-- <input type="password" class="form-control" id="currenet-password-input"
-            ng-model="currentPassword" placeholder="Current password"> -->
-            <input type="password" class="form-control" id="password1-input"
-                   ng-model="model.password1" placeholder="Enter password">
-            <input type="password" class="form-control" id="password2-input"
-                   ng-model="model.password2" placeholder="Confirm password">
-          </div>
+  <h3>Settings</h3>
+  <tabset>
+    <tab heading="Profile">
 
-          <button type="submit" class="change-pwd-btn btn btn-default"
-                  ng-disabled="model.password1 && (model.password1 != model.password2)"
-                  ng-click="changePassword(model.password1)">Save Password</button>
+      <div class="row">
+        <div class="col-md-3">
+          <form id="change-password-form" role="form">
+            <div class="form-group">
+              <label for="password1-input">Change Password</label>
+              <!-- <input type="password" class="form-control" id="currenet-password-input"
+              ng-model="currentPassword" placeholder="Current password"> -->
+              <input type="password" class="form-control" id="password1-input"
+                     ng-model="model.password1" placeholder="Enter password">
+              <input type="password" class="form-control" id="password2-input"
+                     ng-model="model.password2" placeholder="Confirm password">
+            </div>
 
-          <span ng-if="changePasswordSuccess === true" class="success">Saved.</span>
-          <span ng-if="changePasswordSuccess === false" class="error">Error.</span>
-        </form>
-      </div> <!-- .col -->
-    </div> <!-- .row -->
+            <button type="submit" class="change-pwd-btn btn btn-default"
+                    ng-disabled="model.password1 && (model.password1 != model.password2)"
+                    ng-click="changePassword(model.password1)">Save Password</button>
 
-  </tab>
-  <tab heading="Organization">
-    <div ng-include="'views/org-edit.html'">
-  </tab>
-</tabset>
+            <span ng-if="changePasswordSuccess === true" class="success">Saved.</span>
+            <span ng-if="changePasswordSuccess === false" class="error">Error.</span>
+          </form>
+        </div> <!-- .col -->
+      </div> <!-- .row -->
+
+    </tab>
+    <tab heading="Organization">
+
+      <h4>Details <a ng-click="editOrg()"><i class="fa fa-pencil"></i></a></h4>
+      <div class="org-details">
+        <div>{{organization.name}}</div>
+        <div>{{organization.short_name}}</div>
+        <div>{{organization.address}}</div>
+        <div>
+          <span>{{organization.city}}</span>
+          <span>{{organization.state}}</span>
+          <span>{{organization.zip}}</span>
+        </div>
+      </div>
+
+      <h4>Users</h4>
+      <table class="table">
+        <thead>
+          <tr><th>Name</th></tr>
+        </thead>
+        <tr ng-repeat="user in organization.users">
+          <td>{{user.email}}</td>
+        </tr>
+      </table>
+
+    </tab> <!-- organization tab -->
+
+    <tab heading="Account">
+      Billing
+    </tab> <!--  account tab -->
+
+
+  </tabset>
+</div>  <!-- #settings-page -->

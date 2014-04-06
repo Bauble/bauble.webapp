@@ -886,7 +886,7 @@ h1, h2, h3, h4, h5, legend {
     }
 }
 
-.reset-password-page {
+#reset-password-page {
     padding: 5em 0;
 
     input {
@@ -898,7 +898,7 @@ h1, h2, h3, h4, h5, legend {
     }
 }
 
-.forgot-password-page {
+#forgot-password-page {
     padding: 5em 0;
 
     p {
@@ -919,4 +919,23 @@ h1, h2, h3, h4, h5, legend {
 
 .change-pwd-btn {
     margin-right: 1em;
+}
+
+#settings-page {
+    h4 {
+        margin-top: 2em;
+
+        a {
+            font-size: 90%;
+            color: $link-color;
+            margin-left: 1em;
+            i {
+                color: $link-color;
+            }
+        }
+    }
+
+    h4:first-child {
+        margin-top: 0;
+    }
 }

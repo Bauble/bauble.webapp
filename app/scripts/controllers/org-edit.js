@@ -4,13 +4,8 @@ angular.module('BaubleApp')
   .controller('OrgEditCtrl', ['$scope', '$location', 'Alert', 'User', 'Organization',
     function ($scope, $location, Alert, User, Organization) {
 
-        $scope.$watch('org', function(org) {
-            console.log('org: ', org);
-        });
-
-        $scope.save = function(){
-            console.log('$scope.org: ', $scope.org);
-            Organization.save($scope.org)
+        $scope.save = function(org){
+            Organization.save(org)
                 .success(function(data, status, headers, config) {
                     $scope.user = User.local();
                     $scope.user.organization_id = data.id;

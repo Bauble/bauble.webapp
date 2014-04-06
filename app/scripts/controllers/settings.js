@@ -1,15 +1,25 @@
 'use strict';
 
 angular.module('BaubleApp')
-  .controller('SettingsCtrl', ['$scope', 'User',
-    function ($scope, User) {
+  .controller('SettingsCtrl', ['$scope', '$modal', 'User', 'Organization', 'Alert',
+    function ($scope, $modal, User, Organization, Alert) {
         $scope.user = User.local();
+        $scope.alerts = Alert.alerts;
 
         $scope.model = {
             password1: '',
             password2: '',
             changedPasswordSuccess: null
         };
+
+        Organization.get($scope.user.organization_id, {embed: 'users'})
+            .success(function(data, status, headers, config) {
+                $scope.organization = data;
+            })
+            .error(function(data, status, headers, config) {
+                var defaultMessage = "Could not get organization details.";
+                Alert.onErrorResponse(data, defaultMessage);
+            });
 
 
         $scope.changePassword = function(password) {
@@ -24,6 +34,46 @@ angular.module('BaubleApp')
                 .error(function(data, status, headers, config) {
                     $scope.changePasswordSuccess = false;
                 });
+
+        };
+
+
+        $scope.editOrg = function() {
+            var modalInstance = $modal.open({
+                templateUrl: 'views/org-edit-modal.html',
+                controller: function($scope, $modalInstance, organization){
+
+                    $scope.org = organization;
+
+                    $scope.save = function(org) {
+                        Organization.save(org)
+                            .success(function(data, status, headers, config) {
+                                $modalInstance.close(data);
+                            })
+                            .error(function(data, status, headers, config) {
+                                // TODO: show message
+                            });
+
+                    };
+                    $scope.cancel = function() {
+                        $modalInstance.dismiss('cancel');
+                    };
+                },
+                resolve: {
+                    organization: function() {
+                        return _.clone($scope.organization);
+                    }
+                }
+            });
+
+            modalInstance.result.then(function close(org){
+                var users = $scope.organization.users;
+                _.assign($scope.organization, org);
+                $scope.organization.users = users;
+            }, function dismiss() {
+                // TODO: canceled
+            });
+
 
         };
     }]);
