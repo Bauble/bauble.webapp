@@ -316,7 +316,21 @@ angular.module('BaubleApp')
 
 // Organization service for CRUD location types
     .factory('Organization', ['$http', 'Resource', function($http, $resource) {
-        return $resource('/organization');
+        var resource =  $resource('/organization');
+
+        resource.invite = function(organization, email, message) {
+            return $http({
+                url: [this.resourceUrl, organization.id || organization, 'invite'].join('/'),
+                method: 'POST',
+                headers: this._getAuthHeader(),
+                data: {
+                    email: email,
+                    message: message
+                }
+            });
+        };
+
+        return resource;
     }])
 
 

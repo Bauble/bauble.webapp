@@ -75,16 +75,22 @@ angular.module('BaubleApp', [
                 controller: 'SignupCtrl'
             })
 
-            .state('reset-password', {
+            .state('main.reset-password', {
                 url: '/reset-password/:token',
                 templateUrl: 'views/reset-password.html',
                 controller: 'ResetPasswordCtrl'
             })
 
-            .state('forgot-password', {
+            .state('main.forgot-password', {
                 url: '/forgot_password',
                 templateUrl: 'views/forgot-password.html',
                 controller: 'ForgotPasswordCtrl'
+            })
+
+            .state('main.accept-invitation', {
+                url: '/accept-invitation/:token',
+                templateUrl: 'views/accept-invitation.html',
+                controller: 'AcceptInvitationCtrl'
             })
 
             .state('main.organization-new', {

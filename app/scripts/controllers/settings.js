@@ -73,7 +73,19 @@ angular.module('BaubleApp')
             }, function dismiss() {
                 // TODO: canceled
             });
-
-
         };
+
+
+        $scope.invite = function() {
+            var modalInstance = $modal.open({
+                templateUrl: 'views/org-invite-modal.html',
+                controller: 'OrgInviteModalCtrl',
+                resolve: {
+                    organization: function() {
+                        return _.clone($scope.organization);
+                    }
+                }
+            });
+        };
+
     }]);

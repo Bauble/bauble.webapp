@@ -1,23 +1,18 @@
 'use strict';
 
-describe('Controller: SettingsCtrl', function () {
+describe('Controller: AcceptInvitationCtrl', function () {
 
     // load the controller's module
     beforeEach(module('BaubleApp'));
 
-    var SettingsCtrl,
+    var AcceptInvitationCtrl,
     scope;
 
     // Initialize the controller and a mock scope
-    beforeEach(inject(function ($controller, $rootScope, User) {
+    beforeEach(inject(function ($controller, $rootScope) {
         scope = $rootScope.$new();
-        User.local({
-            organization_id: 1
-        });
-
-        SettingsCtrl = $controller('SettingsCtrl', {
-            $scope: scope,
-            User: User
+        AcceptInvitationCtrl = $controller('AcceptInvitationCtrl', {
+            $scope: scope
         });
     }));
 

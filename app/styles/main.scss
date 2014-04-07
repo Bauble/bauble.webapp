@@ -939,3 +939,23 @@ h1, h2, h3, h4, h5, legend {
         margin-top: 0;
     }
 }
+
+#org-invite-modal {
+    .help-block {
+        margin-top: 2em;
+    }
+}
+
+#accept-invitation-page {
+    fa-spinner {
+        margin-top: 5em;
+    }
+
+    h2 {
+        margin-top: 4em;
+    }
+
+    form {
+        margin-top: 2em;
+    }
+}
