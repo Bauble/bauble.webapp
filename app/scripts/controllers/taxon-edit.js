@@ -2,8 +2,8 @@
 
 angular.module('BaubleApp')
   .controller('TaxonEditCtrl',
-   ['$scope', '$location', '$window', '$q', '$http', '$stateParams', 'Alert', 'Genus', 'Taxon',
-    function ($scope, $location, $window, $q, $http, $stateParams, Alert, Genus, Taxon) {
+   ['$scope', '$location', '$window', '$q', '$http', '$stateParams', 'Alert', 'Genus', 'Taxon', 'overlay',
+    function ($scope, $location, $window, $q, $http, $stateParams, Alert, Genus, Taxon, overlay) {
         // isNew is inherited from the NewCtrl if this is a /new editor
         $scope.taxon = {
             genus_id: $location.search().genus,
@@ -30,6 +30,7 @@ angular.module('BaubleApp')
 
         // make sure we have the taxon details
         if($stateParams.id) {
+            overlay('loading...');
             Taxon.get($stateParams.id, {embed: ['genus', 'vernacular_names', 'synonyms', 'distribution']})
                 .success(function(data, status, headers, config) {
                     $scope.taxon = data;
@@ -47,8 +48,12 @@ angular.module('BaubleApp')
                 .error(function(data, status, headers, config) {
                     var defaultMessage = "Could not get taxon details.";
                     Alert.onErrorResponse(data, defaultMessage);
+                })
+                .finally(function() {
+                    overlay.clear();
                 });
         } else if($scope.taxon.genus_id) {
+            overlay('loading...');
             Genus.get($scope.taxon.genus_id)
                 .success(function(data, status, headers, config) {
                     $scope.genus = data;
@@ -56,6 +61,9 @@ angular.module('BaubleApp')
                 .error(function(data, status, headers, config) {
                     var defaultMessage = "Could not get genus details.";
                     Alert.onErrorResponse(data, defaultMessage);
+                })
+                .finally(function() {
+                    overlay.clear();
                 });
         }
 

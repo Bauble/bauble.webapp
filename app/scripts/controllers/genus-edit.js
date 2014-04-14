@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('BaubleApp')
-  .controller('GenusEditCtrl', ['$scope', '$q', '$window', '$location', '$stateParams', 'Alert', 'Family', 'Genus',
-    function($scope, $q, $window, $location, $stateParams, Alert, Family, Genus) {
+  .controller('GenusEditCtrl', ['$scope', '$q', '$window', '$location', '$stateParams', 'Alert', 'Family', 'Genus', 'overlay',
+    function($scope, $q, $window, $location, $stateParams, Alert, Family, Genus, overlay) {
 
         // isNew is inherited from the NewCtrl if this is a /new editor
         $scope.genus = {
@@ -18,9 +18,9 @@ angular.module('BaubleApp')
 
         // make sure we have the family details
         if($stateParams.id) {
+            overlay('loading...');
             Genus.get($stateParams.id, {embed: ['family', 'notes', 'synonyms']})
                 .success(function(data, status, headers, config) {
-                    console.log('data: ', data);
                     $scope.genus = data;
                     $scope.family = data.family;
                     // pull out the notes and synonyms so we don't resubmit them
@@ -33,6 +33,9 @@ angular.module('BaubleApp')
                 .error(function(data, status, headers, config) {
                     var defaultMessage = "Could not get genus details.";
                     Alert.onErrorResponse(data, defaultMessage);
+                })
+                .finally(function() {
+                    overlay.clear();
                 });
         } else if($scope.genus.family_id) {
             Family.get($scope.genus.family_id, {
@@ -42,6 +45,9 @@ angular.module('BaubleApp')
             }).error(function(data, status, headers, config) {
                 var defaultMessage = "Could not get family details.";
                 Alert.onErrorResponse(data, defaultMessage);
+            })
+            .finally(function() {
+                overlay.clear();
             });
         }
 

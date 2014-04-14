@@ -10,8 +10,8 @@ var acc_type_values ={
 };
 
 angular.module('BaubleApp')
-  .controller('PlantEditCtrl', ['$scope', '$location', '$window', '$stateParams', 'Alert', 'Accession', 'Plant', 'Location',
-    function ($scope, $location, $window, $stateParams, Alert, Accession, Plant, Location) {
+  .controller('PlantEditCtrl', ['$scope', '$location', '$window', '$stateParams', 'Alert', 'Accession', 'Plant', 'Location', 'overlay',
+    function ($scope, $location, $window, $stateParams, Alert, Accession, Plant, Location, overlay) {
 
         $scope.plant = {
             accession_id: $location.search().accession,
@@ -29,6 +29,7 @@ angular.module('BaubleApp')
 
         // make sure we have the details
         if($stateParams.id) {
+            overlay('loading...');
             Plant.get($stateParams.id, {embed: ['notes', 'accession', 'location']})
                 .success(function(data, status, headers, config) {
                     $scope.plant = data;
@@ -39,9 +40,15 @@ angular.module('BaubleApp')
                 .error(function(data, status, headers, config) {
                     var defaultMessage = 'Could not get plant details.';
                     Alert.onErrorResponse(data, defaultMessage);
+                })
+                .finally(function() {
+                    overlay.clear();
                 });
         } else {
+            var loadingAccessions = false;
+            var loadingLocation = false;
             if($scope.plant.accession_id) {
+                loadingAccessions = true;
                 Accession.get($scope.plant.accession_id, {embed: ["taxon"]})
                     .success(function(data, status, headers, config) {
                         $scope.accession = data;
@@ -50,9 +57,16 @@ angular.module('BaubleApp')
                     .error(function(data, status, headers, config) {
                         var defaultMessage = 'Could not get the accession details.';
                         Alert.onErrorResponse(data, defaultMessage);
+                    })
+                    .finally(function() {
+                        loadingAccessions = false;
+                        if(!loadingAccessions && !loadingLocation) {
+                            overlay.clear();
+                        }
                     });
             }
             if($scope.plant.location_id) {
+                loadingLocation = true;
                 Location.get($scope.plant.accession_id)
                     .success(function(data, status, headers, config) {
                         $scope.location = data;
@@ -60,6 +74,12 @@ angular.module('BaubleApp')
                     .error(function(data, status, headers, config) {
                         var defaultMessage = 'Could not get the location details.';
                         Alert.onErrorResponse(data, defaultMessage);
+                    })
+                    .finally(function() {
+                        loadingLocation = false;
+                        if(!loadingAccessions && !loadingLocation) {
+                            overlay.clear();
+                        }
                     });
             }
         }

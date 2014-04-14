@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('BaubleApp')
-  .controller('RootCtrl', ['$scope', '$location', '$state', 'Alert', 'User',
-    function ($scope, $location, $state, Alert, User) {
+  .controller('RootCtrl', ['$scope', '$location', '$state', 'Alert', 'User', 'overlay',
+    function ($scope, $location, $state, Alert, User, overlay) {
 
         $scope.$on('$stateChangeSuccess', function() {
             // controls the user menu
@@ -17,4 +17,9 @@ angular.module('BaubleApp')
         $scope.$on('logout', function() {
             $scope.user = User.local();
         });
+
+        $scope.$watch('overlayService()', function(overlay){
+            $scope.overlay = overlay;
+        });
+        $scope.overlayService = overlay;
     }]);

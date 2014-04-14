@@ -1,12 +1,9 @@
 'use strict';
 
 angular.module('BaubleApp')
-  .controller('FamilyEditCtrl', ['$scope', '$q', '$window', '$stateParams', 'Alert', 'Family',
-    function ($scope, $q, $window, $stateParams, Alert, Family) {
+  .controller('FamilyEditCtrl', ['$scope', '$q', '$window', '$stateParams', 'Alert', 'Family', 'overlay',
+    function ($scope, $q, $window, $stateParams, Alert, Family, overlay) {
 
-        $scope.overlay = $stateParams.family_id ? "loading..." : null;
-        // isNew is inherited from the NewCtrl if this is a /new editor
-        //$scope.family = globals.getSelected() && !$scope.isNew ? globals.getSelected() : {};
         $scope.family = {};
         $scope.data = {
             synonyms: [],
@@ -18,6 +15,7 @@ angular.module('BaubleApp')
         $scope.addedSynonyms = [];
 
         if($stateParams.id) {
+            overlay("loading...");
             Family.get($stateParams.id, {embed: ['notes', 'synonyms']})
                 .success(function(data, status, headers, config) {
                     $scope.family = data;
@@ -28,10 +26,13 @@ angular.module('BaubleApp')
                     $scope.data.synonyms = $scope.family.synonyms || [];
                     delete $scope.family.synonyms;
                     delete $scope.family.notes;
-                    $scope.overlay = null;
                 })
                 .error(function(data, status, headers, config) {
-                    $scope.overlay = null;
+                    var defaultMessage = "Could not load family details.";
+                    Alert.onErrorResponse(data, defaultMessage);
+                })
+                .finally(function() {
+                    overlay.clear();
                 });
         }
 

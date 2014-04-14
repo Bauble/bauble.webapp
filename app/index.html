@@ -115,6 +115,12 @@
     </div>  <!-- .navbar -->
 
 
+    <div class="overlay" ng-show="overlay">
+      <p class="overlay-message text-center">
+        {{overlay}}
+      </p>
+    </div>
+
     <div class="container" id="content">
       <!-- <div class="not-ready-warning">
       <p>Bauble is currently under development. This site is not ready for general use.</p>
@@ -233,6 +239,7 @@
     <script src="scripts/services/alert.js"></script>
     <script src="scripts/services/delete-modal.js"></script>
     <script src="scripts/services/invitation.js"></script>
+    <script src="scripts/services/overlay.js"></script>
 
     <!--  directives -->
     <script src="scripts/directives/emit.js"></script>

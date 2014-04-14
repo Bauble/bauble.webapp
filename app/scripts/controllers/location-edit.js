@@ -1,13 +1,14 @@
 'use strict';
 
 angular.module('BaubleApp')
-  .controller('LocationEditCtrl', ['$scope', '$window', '$stateParams', 'Plant', 'Location', 'Alert',
-    function ($scope, $stateParams, $window, Plant, Location, Alert) {
+  .controller('LocationEditCtrl', ['$scope', '$window', '$stateParams', 'Plant', 'Location', 'Alert', 'overlay',
+    function ($scope, $window, $stateParams, Plant, Location, Alert, overlay) {
         // isNew is inherited from the NewCtrl if this is a /new editor
         $scope.locaton = {};
 
         // make sure we have the details
         if($stateParams.id) {
+            overlay('loading...');
             Location.get($stateParams.id)
                 .success(function(data, status, headers, config) {
                     $scope.location = data;
@@ -15,6 +16,9 @@ angular.module('BaubleApp')
                 .error(function(data, status, headers, config) {
                     var defaultMessage = 'Could not get location details.';
                     Alert.onErrorResponse(data, defaultMessage);
+                })
+                .finally(function() {
+                    overlay.clear();
                 });
         }
 

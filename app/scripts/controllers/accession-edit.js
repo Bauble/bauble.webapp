@@ -53,10 +53,9 @@ var recvd_type_values = {
 };
 
 angular.module('BaubleApp')
-  .controller('AccessionEditCtrl', ['$scope', '$location', '$modal', '$stateParams', 'Taxon', 'Accession', 'Source',
-    function ($scope, $location, $modal, $stateParams, Taxon, Accession, Source) {
-        // isNew is inherited from the NewCtrl if this is a /new editor
-        //$scope.accession = globals.getSelected() && !$scope.isNew ? globals.getSelected() : {date_accd: new Date(), date_recvd: new Date()};
+  .controller('AccessionEditCtrl', ['$scope', '$location', '$modal', '$stateParams', 'Alert', 'Taxon', 'Accession', 'Source', 'overlay',
+    function ($scope, $location, $modal, $stateParams, Alert, Taxon, Accession, Source, overlay) {
+
         $scope.model = {
             accession: {
                 taxon_id: $location.search().taxon,
@@ -73,7 +72,6 @@ angular.module('BaubleApp')
         };
 
         $scope.header = "New Accesion";
-
 
         $scope.refreshQualRankCombo = function() {
             $scope.model.qualifier_rank = {
@@ -115,6 +113,7 @@ angular.module('BaubleApp')
 
         // make sure we have the accession details
         if($stateParams.id) {
+            overlay('loading...');
             Accession.get($stateParams.id, {embed: ['taxon', 'taxon.genus']})
                 .success(function(data, status, headers, config) {
                     $scope.model.accession = data;
@@ -132,18 +131,25 @@ angular.module('BaubleApp')
                     $scope.header = $scope.model.accession.code + ' ' + $scope.model.taxon.str;
                 })
                 .error(function(data, status, headers, config) {
-                    // do something
-                    /* jshint -W015 */
+                    var defaultMessage = "Could not get accession details";
+                    Alert.onErrorResponse(data, defaultMessage);
+                })
+                .finally(function() {
+                    overlay.clear();
                 });
         } else if($scope.model.accession.taxon_id) {
+            overlay('loading');
             Taxon.get($scope.model.accession.taxon_id)
                 .success(function(data, status, headers, config) {
                     console.log('data: ', data);
                     $scope.model.taxon = data;
                 })
                 .error(function(data, status, headers, config) {
-                    // do something
-                    /* jshint -W015 */
+                    var defautMessage = 'Could not get the taxon details';
+                    Alert.onErrorResponse(data, defaultMessage);
+                })
+                .finally(function() {
+                    overlay.clear();
                 });
         }
 

@@ -959,3 +959,37 @@ h1, h2, h3, h4, h5, legend {
         margin-top: 2em;
     }
 }
+
+.overlay {
+    position: fixed;
+    background-color: #2b3a42; //white;
+    opacity: .8;
+    z-index: 9999;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+}
+
+
+.overlay-message {
+  -webkit-animation-name: blink;
+  -webkit-animation-duration: 1s;
+  -webkit-animation-iteration-count: infinite;
+  -webkit-animation-timing-function: ease-in-out;
+  color: white;
+  font-size: 3em;
+  padding-top: 3em;
+}
+
+
+@-webkit-keyframes blink {
+  0% {
+      opacity: 1.0;
+  }
+  50% {
+      opacity: .3;
+  }
+  100% {
+      opacity: 1.0;
+  }
+}
