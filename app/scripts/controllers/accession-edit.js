@@ -188,7 +188,6 @@ angular.module('BaubleApp')
         };
 
 
-
         $scope.formatSourceDetailInput = function() {
             console.log('$scope.source: ', $scope.source);
             console.log('$scope.sourceDetail: ', $scope.sourceDetail);
@@ -203,7 +202,6 @@ angular.module('BaubleApp')
             $scope.model.accession.source.id = angular.isDefined($scope.model.sourceDetail) ?
                 $scope.model.sourceDetail.id : null;
         };
-
 
 
         $scope.newSource = function() {
@@ -244,8 +242,8 @@ angular.module('BaubleApp')
                     $scope.cancel();
                 })
                 .error(function(data, status, headers, config) {
-                    // do something
-                    /* jshint -W015 */
+                    var defaultMessage = "The accession could not be saved.";
+                    Alert.onErrorResponse(data, defaultMessage);
                 });
         };
     }]);
