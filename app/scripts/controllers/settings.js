@@ -51,7 +51,8 @@ angular.module('BaubleApp')
                                 $modalInstance.close(data);
                             })
                             .error(function(data, status, headers, config) {
-                                // TODO: show message
+                                var defaultMessage = "Could not save organization";
+                                Alert.onErrorResponse(data, defaultMessage);
                             });
 
                     };

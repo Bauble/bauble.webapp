@@ -31,7 +31,7 @@ angular.module('BaubleApp')
                 .error(function(data, status, headers, config) {
                     var defaultMessage = 'Could not accept the invitation.';
                     Alert.onErrorResponse(data, defaultMessage);
-                })
-        }
+                });
+        };
 
     }]);

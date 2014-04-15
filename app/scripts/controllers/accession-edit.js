@@ -145,7 +145,7 @@ angular.module('BaubleApp')
                     $scope.model.taxon = data;
                 })
                 .error(function(data, status, headers, config) {
-                    var defautMessage = 'Could not get the taxon details';
+                    var defaultMessage = 'Could not get the taxon details';
                     Alert.onErrorResponse(data, defaultMessage);
                 })
                 .finally(function() {
