@@ -2,19 +2,19 @@
 
 describe('Directive: loadingSpinner', function () {
 
-  // load the directive's module
-  beforeEach(module('baubleApp'));
+    // load the directive's module
+    beforeEach(module('BaubleApp'));
 
-  var element,
+    var element,
     scope;
 
-  beforeEach(inject(function ($rootScope) {
-    scope = $rootScope.$new();
-  }));
+    beforeEach(inject(function ($rootScope) {
+        scope = $rootScope.$new();
+    }));
 
-  it('should make hidden element visible', inject(function ($compile) {
-    element = angular.element('<loading-spinner></loading-spinner>');
-    element = $compile(element)(scope);
-    expect(element.text()).toBe('this is the loadingSpinner directive');
-  }));
+    it('should do something', inject(function ($compile) {
+        element = angular.element('<a loading-spinner="false"></a>');
+        element = $compile(element)(scope);
+        // expect(element.text()).toBe('this is the loadingSpinner directive');
+    }));
 });
