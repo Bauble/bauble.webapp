@@ -6,6 +6,7 @@
   </div>
 
   <h3>{{plant.str}}</h3>
+  <h4><a ng-href="{{'#/search?q=taxon where id%3d' + plant.accession.taxon_id}}">{{plant.accession.taxon_str}}</a></h4>
 
   <div>Location: <a ng-href="#/search?q=location where code%3d'{{plant.location.code}}'">{{plant.location.str}}</a></div>
   <div>Type: {{plant.acc_type}}</div>
@@ -18,6 +19,14 @@
   </ul> -->
 
   <h4>Propagations</h4>
+  <div ng-show="!plant.propagations || plant.propagations.length < 1" style="color: #aaa">
+    This plant has no propagation.
+  </div>
+  <ul>
+    <li ng-repeat="propagation in plant.propagations" loading-spinner="plant.propagations">
+      {{propagation.str}}
+    </li>
+  </ul>
 
   <!-- <h4>Notes</h4> -->
 

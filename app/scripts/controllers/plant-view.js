@@ -8,7 +8,7 @@ angular.module('BaubleApp')
         $scope.$watch('selected', function(selected) {
             $scope.plant = $scope.selected;
 
-            Plant.get($scope.plant, {embed: ['location']})
+            Plant.get($scope.plant, {embed: ['location', 'accession']})
                 .success(function(data, status, headers, config) {
                     $scope.plant = data;
                 })
