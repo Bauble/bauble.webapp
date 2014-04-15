@@ -7,7 +7,7 @@
   </div>
 
   <h3>{{accession.str}}</h3>
-  <h4>{{accession.taxon_str}}</h4>
+  <h4><a <a ng-href="{{'#/search?q=taxon where id%3d' + accession.taxon_id}}">{{accession.taxon_str}}</h4>
 
   <div># of Plants:
     <a ng-href="{{'#/search?q=plant where accession.code%3d' + accession.code}}"
