@@ -9,6 +9,9 @@
   <h3>{{accession.str}}</h3>
   <h4>{{accession.taxon_str}}</h4>
 
-  <div># of Plants: <a ng-href="{{'#/search?q=plant where accession.code%3d' + accession.code}}">{{counts.plants}}</a></div>
-
+  <div># of Plants:
+    <a ng-href="{{'#/search?q=plant where accession.code%3d' + accession.code}}"
+       loading-spinner="counts.plants">
+      {{counts.plants}}</a>
+  </div>
 </div>

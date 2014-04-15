@@ -15,12 +15,14 @@
   <h3>{{taxon.str}}</h3>
 
   <div># of Accessions:
-    <a ng-href="#/search?q=accession where taxon.id%3d'{{taxon.id}}'">
+    <a ng-href="#/search?q=accession where taxon.id%3d'{{taxon.id}}'"
+       loading-spinner="counts.accessions">
       {{counts.accessions}}</a>
   </div>
 
   <div># of Plants:
-    <a ng-href="#/search?q=plant where accession.taxon.id%3d'{{taxon.id}}'">
+    <a ng-href="#/search?q=plant where accession.taxon.id%3d'{{taxon.id}}'"
+       loading-spinner="counts.plants">
       {{counts.plants}}</a>
   </div>
 
@@ -30,7 +32,8 @@
     This taxon has no vernacular names.
   </div>
   <ul>
-      <li ng-repeat="vn in taxon.vernacular_names">{{vn.name}} ({{vn.language}})</li>
+      <li ng-repeat="vn in taxon.vernacular_names" loading-spinner="taxon.vernacular_names">
+        {{vn.name}} ({{vn.language}})</li>
   </ul>
 
 
@@ -39,7 +42,9 @@
     This taxon has no synonyms.
   </div>
   <ul>
-    <li ng-repeat="synonym in taxon.synonyms"><a ng-href="#/search?q=taxon where id%3d'{{synonym.id}}'">{{synonym.str}}</a></li>
+    <li ng-repeat="synonym in taxon.synonyms" loading-spinner="taxon.synonyms">
+      <a ng-href="#/search?q=taxon where id%3d'{{synonym.id}}'">{{synonym.str}}</a>
+    </li>
   </ul>
 
 </div>

@@ -9,17 +9,20 @@
   <h3>{{genus.str}}</h3>
 
   <div># of Taxa:
-    <a ng-href="#/search?q=taxon where genus.id%3d'{{genus.id}}'">
+    <a ng-href="#/search?q=taxon where genus.id%3d'{{genus.id}}'"
+       loading-spinner="counts.taxa">
       {{counts.taxa}}</a>
   </div>
 
   <div># of Accessions:
-    <a ng-href="#/search?q=accession where taxon.genus.id%3d'{{genus.id}}'">
+    <a ng-href="#/search?q=accession where taxon.genus.id%3d'{{genus.id}}'"
+       loading-spinner="counts.accessions">
       {{counts.accessions}}</a>
   </div>
 
   <div># of Plants:
-    <a ng-href="#/search?q=plant where accession.taxon.genus.id%3d'{{genus.id}}'">
+    <a ng-href="#/search?q=plant where accession.taxon.genus.id%3d'{{genus.id}}'"
+       loading-spinner="counts.plants">
       {{counts.plants}}</a>
   </div>
 
@@ -28,7 +31,9 @@
     This genus has no synonyms.
   </div>
   <ul>
-    <li ng-repeat="synonym in genus.synonyms"><a ng-href="#/search?q=genus where id%3d'{{synonym.id}}'">{{synonym.str}}</a></li>
+    <li ng-repeat="synonym in genus.synonyms" loading-spinner="genus.synonyms">
+      <a ng-href="#/search?q=genus where id%3d'{{synonym.id}}'">{{synonym.str}}</a>
+    </li>
   </ul>
 
 </div>

@@ -9,22 +9,26 @@
   <h3>{{family.str}}</h3>
 
   <div># of Genera:
-    <a ng-href="#/search?q=genera where family.id%3d'{{family.id}}'">
+    <a ng-href="#/search?q=genera where family.id%3d'{{family.id}}'"
+       loading-spinner="counts.genera">
       {{counts.genera}}</a>
   </div>
 
   <div># of Taxa:
-    <a ng-href="#/search?q=taxa where genus.family.id%3d'{{family.id}}'">
+    <a ng-href="#/search?q=taxa where genus.family.id%3d'{{family.id}}'"
+       loading-spinner="counts.taxa">
       {{counts.taxa}}</a>
   </div>
 
   <div># of Accessions:
-    <a ng-href="#/search?q=accession where taxon.genus.family.id%3d'{{family.id}}'">
+    <a ng-href="#/search?q=accession where taxon.genus.family.id%3d'{{family.id}}'"
+       loading-spinner="counts.accessions">
       {{counts.accessions}}</a>
   </div>
 
   <div># of Plants:
-    <a ng-href="#/search?q=plant where accession.taxon.genus.family.id%3d'{{family.id}}'">
+    <a ng-href="#/search?q=plant where accession.taxon.genus.family.id%3d'{{family.id}}'"
+       loading-spinner="counts.plants">
       {{counts.plants}}</a></div>
 
   <h4>Synonyms</h4>
@@ -32,7 +36,9 @@
     This family has no synonyms.
   </div>
   <ul>
-      <li ng-repeat="synonym in family.synonyms"><a ng-href="#/search?q=family where id%3d'{{synonym.id}}'">{{synonym.str}}</a></li>
+    <li ng-repeat="synonym in family.synonyms" loading-spinner="family.synonyms">
+      <a ng-href="#/search?q=family where id%3d'{{synonym.id}}'">{{synonym.str}}</a>
+    </li>
   </ul>
 
 </div>
