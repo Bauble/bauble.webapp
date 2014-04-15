@@ -27,9 +27,11 @@ $font-family: 'Open Sans', sans-serif;
 $font-color: #3F5765;
 $link-color: #265573;
 
+$default-border: solid 1px $orange;
+
 $navbar-default-bg: $dark-blue;
 $navbar-default-color: $light-grey;
-$navbar-default-border: solid 1px $orange;
+$navbar-default-border: $orange;
 $navbar-default-link-color:  $light-grey;
 $navbar-default-link-hover-color: $orange;
 $navbar-default-link-active-bg: white;
@@ -40,7 +42,7 @@ $footer-height: 120px;
 $footer-top-padding: 120px;
 $footer-bg-color: $dark-blue;
 $footer-font-color: $baby-blue;
-$footer-border: $navbar-default-border;
+$footer-border: $default-border;
 
 $block-header-background: $baby-blue;
 $block-header-border: solid 1px $orange;
@@ -173,7 +175,7 @@ h1, h2, h3, h4, h5, legend {
     .dropdown-menu {
         border-top: 0;
         border-right: white;
-        border-bottom: $navbar-default-border;
+        border-bottom: $default-border;
 
         a, li > a {
             color: $navbar-default-bg
@@ -269,7 +271,7 @@ h1, h2, h3, h4, h5, legend {
     //background-color: #fff;
     background-color: #BDD4DE; //$navbar-bg-color;
     //border: 1px solid #e5e5e5;
-    border: $navbar-default-border;
+    border: $default-border;
 
     border-radius: 5px;
     box-shadow: 0 1px 2px rgba(0,0,0,.05);
