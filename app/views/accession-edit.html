@@ -157,8 +157,9 @@
           </div>
 
 
-          <accordion>
-            <accordion-group heading="Collection">
+          <!-- <accordion>
+          <accordion-group heading="Collection"> -->
+          <h4>Collection</h4>
               <div class="form-group">
                 <label class="col-md-2 control-label">Locale</label>
                 <div class="col-md-3">
@@ -177,8 +178,7 @@
               <div class="form-group">
                 <label class="control-label col-md-2">Collector</label>
                 <div class="col-md-3">
-                  <input type="text" ng-model="model.accession.source.collection.collector" class="form-control"
-                         />
+                  <input type="text" ng-model="model.accession.source.collection.collector" class="form-control"/>
                 </div> <!-- . -->
               </div> <!-- .form-group -->
 
@@ -283,12 +283,12 @@
                   </div> <!-- .col -->
                 </div> <!-- .form-group -->
               </div> <!-- .editor-section -->
-            </accordion-group>
+              <!-- </accordion-group> -->
 
             <!-- <accordion-group heading="Propagation of source material">
             <div ng-include="'views/propagation-edit.html'"></div>
             </accordion-group> -->
-          </accordion>
+            <!-- </accordion> -->
 
         </form> <!-- .form-horizontal -->
       </tab>   <!-- end "Source" tab -->
@@ -372,6 +372,7 @@
   <div class="action-buttons">
     <button class="btn btn-default" ng-click="cancel()">Cancel</button>
     <button class="btn btn-primary" ng-click="save()">Save</button>
+    <button class="btn btn-primary" ng-click="save(true)">Save and Add Plant</button>
   </div>
 
 </div>
