@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('BaubleApp')
-  .controller('FamilyEditCtrl', ['$scope', '$q', '$window', '$stateParams', 'Alert', 'Family', 'overlay',
-    function ($scope, $q, $window, $stateParams, Alert, Family, overlay) {
+  .controller('FamilyEditCtrl', ['$scope', '$q', '$location', '$stateParams', 'locationStack', 'Alert', 'Family', 'overlay',
+    function ($scope, $q, $location, $stateParams, locationStack, Alert, Family, overlay) {
 
         $scope.family = {};
         $scope.data = {
@@ -55,11 +55,11 @@ angular.module('BaubleApp')
         };
 
         $scope.cancel = function() {
-            $window.history.back();
+            locationStack.pop();
         };
 
 
-        $scope.save = function() {
+        $scope.save = function(addGenus) {
             // TODO: we should probably also update the selected result to reflect
             // any changes in the search result
             //$scope.family.notes = $scope.notes;
@@ -67,15 +67,23 @@ angular.module('BaubleApp')
             Family.save($scope.family)
                 .success(function(data, status, headers, config) {
 
+                    $scope.family = data;
+
                     // update the synonyms
-                    $q.all(_.flatten(
+                    return $q.all(_.flatten(
                         _.map($scope.addedSynonyms, function(synonym) {
                             return Family.addSynonym($scope.family, synonym);
                         }),
                         _.map($scope.removedSynonyms, function(synonym) {
                             return Family.removeSynonym($scope.family, synonym);
                         }))).then(function(result) {
-                            $window.history.back();
+                            console.log('result: ', result);
+                            if(addGenus) {
+                                $location.path('/genus/add').search({'family': $scope.family.id});
+                            } else {
+                                locationStack.pop();
+                            }
+
                         }).catch(function(result) {
                             var defaultMessage = "Some synonyms could not be saved.";
                             Alert.onErrorResponse(result.data, defaultMessage);
@@ -86,7 +94,14 @@ angular.module('BaubleApp')
                     Alert.onErrorResponse(data, defaultMessage);
                 });
 
-            // TODO: we need to save the synonyms and the notes...they should
+            // Todo: we need to save the synonyms and the notes...they should
             // be completely replaced...probably with a separate PUT
         };
+
+        // $scope.saveAndAddGenus = function() {
+        //     $scope.save()
+        //         .success(function(data, status, headers, config) {
+        //             $location.url('/genus/add').search('family_id', $scope.family.id);
+        //         });
+        // };
     }]);

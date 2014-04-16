@@ -53,8 +53,8 @@ var recvd_type_values = {
 };
 
 angular.module('BaubleApp')
-  .controller('AccessionEditCtrl', ['$scope', '$location', '$modal', '$stateParams', 'Alert', 'Taxon', 'Accession', 'Source', 'overlay',
-    function ($scope, $location, $modal, $stateParams, Alert, Taxon, Accession, Source, overlay) {
+  .controller('AccessionEditCtrl', ['$scope', '$location', '$modal', '$stateParams', 'locationStack', 'Alert', 'Taxon', 'Accession', 'Source', 'overlay',
+    function ($scope, $location, $modal, $stateParams, locationStack, Alert, Taxon, Accession, Source, overlay) {
 
         $scope.model = {
             accession: {
@@ -219,27 +219,34 @@ angular.module('BaubleApp')
             });
         };
 
+
         $scope.cancel = function() {
-            window.history.back();
+            locationStack.pop();
         };
 
         // called when the save button is clicked on the editor
-        $scope.save = function() {
+        $scope.save = function(addPlant) {
             // TODO: we need a way to determine if this is a save on a new or existing
             // object an whether we whould be calling save or edit
             // if(!$scope.model.accession.source) {
             //     delete $scope.model.accession.source;
             // }
-            console.log('$scope.model: ', $scope.model);
 
             // copy the date variables to the accession
             angular.forEach(['date_recvd', 'date_accd'], function(value, key) {
+                // TODO: we should just be able to submit iso formatted dates
                 $scope.model.accession[value] = moment($scope.model.accession[value]).format("YYYY-MM-DD");
             });
 
             Accession.save($scope.model.accession)
                 .success(function(data, status, headers, config) {
-                    $scope.cancel();
+                    $scope.model.accession = data;
+
+                    if(addPlant) {
+                        $location.path('/plant/add').search({'accession': $scope.model.accession.id});
+                    } else {
+                        locationStack.pop();
+                    }
                 })
                 .error(function(data, status, headers, config) {
                     var defaultMessage = "The accession could not be saved.";

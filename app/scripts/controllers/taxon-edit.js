@@ -2,8 +2,8 @@
 
 angular.module('BaubleApp')
   .controller('TaxonEditCtrl',
-   ['$scope', '$location', '$window', '$q', '$http', '$stateParams', 'Alert', 'Genus', 'Taxon', 'overlay',
-    function ($scope, $location, $window, $q, $http, $stateParams, Alert, Genus, Taxon, overlay) {
+   ['$scope', '$location', '$q', '$http', '$stateParams', 'locationStack', 'Alert', 'Genus', 'Taxon', 'overlay',
+    function ($scope, $location, $q, $http, $stateParams, locationStack, Alert, Genus, Taxon, overlay) {
         // isNew is inherited from the NewCtrl if this is a /new editor
         $scope.taxon = {
             genus_id: $location.search().genus,
@@ -92,11 +92,11 @@ angular.module('BaubleApp')
         };
 
         $scope.cancel = function() {
-            $window.history.back();
+            locationStack.pop();
         };
 
         // called when the save button is clicked on the editor
-        $scope.save = function() {
+        $scope.save = function(addAccession) {
 
             $scope.taxon.genus_id = $scope.genus.id;
 
@@ -155,12 +155,19 @@ angular.module('BaubleApp')
 
             Taxon.save($scope.taxon)
                 .success(function(data, status, headers, config) {
+
+                    $scope.taxon = data;
+
                     $q.all(saveSynonyms(),
                            saveNames(),
                            saveDistributions())
                         .then(function(results) {
-                            $window.history.back();
-                            return results;
+                            if(addAccession) {
+                                $location.path('/accession/add').search({'taxon': $scope.taxon.id});
+                            } else {
+                                locationStack.pop();
+                            }
+                            //return results;
                         });
                 })
                 .error(function(data, status, headers, config) {

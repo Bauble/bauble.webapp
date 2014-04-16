@@ -21,7 +21,7 @@ angular.module('BaubleApp', [
                 controller: 'DashboardCtrl'
             })
             .state('main.search', {
-                url: '/search',
+                url: '/search?q',
                 templateUrl: 'views/search.html',
                 controller: 'SearchCtrl',
             })

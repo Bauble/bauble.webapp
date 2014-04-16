@@ -10,8 +10,8 @@ var acc_type_values ={
 };
 
 angular.module('BaubleApp')
-  .controller('PlantEditCtrl', ['$scope', '$location', '$window', '$stateParams', 'Alert', 'Accession', 'Plant', 'Location', 'overlay',
-    function ($scope, $location, $window, $stateParams, Alert, Accession, Plant, Location, overlay) {
+  .controller('PlantEditCtrl', ['$scope', '$location', '$stateParams', 'locationStack', 'Alert', 'Accession', 'Plant', 'Location', 'overlay',
+    function ($scope, $location, $stateParams, locationStack, Alert, Accession, Plant, Location, overlay) {
         $scope.model = {
             accession: null,
             location: null,
@@ -113,7 +113,7 @@ angular.module('BaubleApp')
         };
 
         $scope.cancel = function() {
-            $window.history.back();
+            locationStack.pop();
         };
 
         // called when the save button is clicked on the editor
@@ -123,7 +123,7 @@ angular.module('BaubleApp')
             $scope.plant.location_id = $scope.model.location.id;
             Plant.save($scope.plant)
                 .success(function(data, status, headers, config) {
-                    $window.history.back();
+                    locationStack.pop();
                 })
                 .error(function(data, status, headers, config) {
                     var defaultMessage = 'Could not save the plant.';

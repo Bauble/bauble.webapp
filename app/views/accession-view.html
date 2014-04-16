@@ -1,8 +1,8 @@
 <div ng-controller="AccessionViewCtrl">
 
   <div id="summary-buttons" class="pull-right">
-    <a class="btn btn-default" ng-href="#/accession/{{accession.id}}/edit">Edit</a>
-    <a class="btn btn-default" ng-href="#/plant/add?accession={{accession.id}}">Add Plant</a>
+    <a class="btn btn-default" location-push ng-href="#/accession/{{accession.id}}/edit">Edit</a>
+    <a class="btn btn-default" location-push ng-href="#/plant/add?accession={{accession.id}}">Add Plant</a>
     <a class="btn btn-default" ng-click="delete(accession.id)">Delete</a>
   </div>
 

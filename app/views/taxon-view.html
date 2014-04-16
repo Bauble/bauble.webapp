@@ -1,8 +1,8 @@
 <div ng-controller="TaxonViewCtrl">
 
   <div id="summary-buttons" class="pull-right">
-    <a class="btn btn-default" ng-href="#/taxon/{{taxon.id}}/edit">Edit</a>
-    <a class="btn btn-default" ng-href="#/accession/add?taxon={{taxon.id}}">Add Accession</a>
+    <a class="btn btn-default" location-push ng-href="#/taxon/{{taxon.id}}/edit">Edit</a>
+    <a class="btn btn-default" location-push ng-href="#/accession/add?taxon={{taxon.id}}">Add Accession</a>
     <a class="btn btn-default" ng-click="delete(taxon.id)">Delete</a>
   </div>
 

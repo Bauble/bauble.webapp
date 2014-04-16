@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('BaubleApp')
-  .controller('GenusEditCtrl', ['$scope', '$q', '$window', '$location', '$stateParams', 'Alert', 'Family', 'Genus', 'overlay',
-    function($scope, $q, $window, $location, $stateParams, Alert, Family, Genus, overlay) {
+  .controller('GenusEditCtrl', ['$scope', '$q', '$location', '$stateParams', 'locationStack', 'Alert', 'Family', 'Genus', 'overlay',
+    function($scope, $q, $location, $stateParams, locationStack, Alert, Family, Genus, overlay) {
 
         // isNew is inherited from the NewCtrl if this is a /new editor
         $scope.genus = {
@@ -87,11 +87,11 @@ angular.module('BaubleApp')
 
 
         $scope.cancel = function() {
-            $window.history.back();
+            locationStack.pop();
         };
 
         // called when the save button is clicked on the editor
-        $scope.save = function() {
+        $scope.save = function(addTaxon) {
             // TODO: we need a way to determine if this is a save on a new or existing
             // object an whether we whould be calling save or edit
             // TODO: we should probably also update the selected result to reflect
@@ -100,6 +100,9 @@ angular.module('BaubleApp')
             $scope.genus.family_id = $scope.family.id;
             Genus.save($scope.genus)
                 .success(function(data, status, headers, config) {
+
+                    $scope.genus = data;
+
                     // update the synonyms
                     $q.all(_.flatten(
                         _.map($scope.addedSynonyms, function(synonym) {
@@ -109,8 +112,11 @@ angular.module('BaubleApp')
                         _.map($scope.removedSynonyms, function(synonym) {
                             return Genus.removeSynonym($scope.genus, synonym);
                         }))).then(function(result) {
-                            console.log('result: ', result);
-                            $window.history.back();
+                            if(addTaxon) {
+                                $location.path('/taxon/add').search({'genus': $scope.genus.id});
+                            } else {
+                                locationStack.pop();
+                            }
                         }).catch(function(result) {
                             var defaultMessage = "Some synonyms could not be saved.";
                             Alert.onErrorResponse(result.data, defaultMessage);

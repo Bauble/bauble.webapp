@@ -1,8 +1,8 @@
 <div ng-controller="GenusViewCtrl">
 
   <div id="summary-buttons" class="pull-right">
-    <a class="btn btn-default" ng-href="#/genus/{{genus.id}}/edit">Edit</a>
-    <a class="btn btn-default" ng-href="#/taxon/add?genus={{genus.id}}">Add Taxon</a>
+    <a class="btn btn-default" location-push ng-href="#/genus/{{genus.id}}/edit">Edit</a>
+    <a class="btn btn-default" location-push ng-href="#/taxon/add?genus={{genus.id}}">Add Taxon</a>
     <a class="btn btn-default" ng-click="delete(genus.id)">Delete</a>
   </div>
 
