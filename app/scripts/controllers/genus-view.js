@@ -10,7 +10,7 @@ angular.module('BaubleApp')
         $scope.$watch('selected', function(selected) {
             $scope.genus = $scope.selected;
 
-            Genus.get($scope.genus, {embed: ['synonyms']})
+            Genus.get($scope.genus, {embed: ['synonyms', 'family']})
                 .success(function(data, status, headers, config) {
                     $scope.genus = data;
                 })

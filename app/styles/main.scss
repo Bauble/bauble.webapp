@@ -776,6 +776,10 @@ h1, h2, h3, h4, h5, legend {
 }
 
 .resource-view {
+    h3 {
+        margin-top: 0;
+    }
+
     h4 {
         margin-top: 1.25em;
     }
@@ -1037,4 +1041,13 @@ input.ng-invalid.ng-dirty {
 
 .btn .fa {
     margin-right: 1em;
+}
+
+#summary-buttons {
+
+    .btn {
+        text-align: left;
+        //width: 100%;
+        margin-bottom: .75em;
+    }
 }
