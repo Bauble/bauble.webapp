@@ -204,10 +204,16 @@ angular.module('BaubleApp')
         };
 
 
-        $scope.newSource = function() {
+        $scope.editSource = function(sourceDetail) {
             var modalInstance = $modal.open({
                 templateUrl: 'views/source-detail-edit.html',
-                controller: "SourceDetailEditCtrl"
+                controller: "SourceDetailEditCtrl",
+                resolve: {
+                    sourceDetail: function() {
+                        console.log('resolve sourceDetail: ', sourceDetail);
+                        return sourceDetail;
+                    }
+                }
             });
 
             modalInstance.result.then(function(sourceDetail) {

@@ -1,36 +1,41 @@
 'use strict';
 
+var source_type_values = {
+    'Expedition': 'Expedition',
+    'GeneBank': 'Gene Bank',
+    'BG': 'Botanic Garden or Arboretum',
+    'Research/FieldStation': 'Research/Field Station',
+    'Staff': 'Staff member',
+    'UniversityDepartment': 'University Department',
+    'Club': 'Horticultural Association/Garden Club',
+    'MunicipalDepartment': 'Municipal department',
+    'Commercial': 'Nursery/Commercial',
+    'Individual': 'Individual',
+    'Other': 'Other',
+    'Unknown': 'Unknown',
+    null: ''
+};
+
 angular.module('BaubleApp')
-    .controller('SourceDetailEditCtrl', function ($scope, $modalInstance, Source) {
+  .controller('SourceDetailEditCtrl', ['$scope', '$modalInstance', 'Alert', 'Source', 'sourceDetail',
+    function ($scope, $modalInstance, Alert, Source, sourceDetail) {
 
-        $scope.source_detail = {};
+        $scope.sourceDetail = sourceDetail;
 
-        $scope.sourceTypeOptions = {
-            minimumInputLength: 1,
-            containerCssClass: "col-lg-10",
-        };
-
-        Source.get_schema(true)
-            .success(function(data, status, headers, config) {
-                $scope.source_types = data.columns.source_type.values;
-            })
-            .error(function(data, status, headers, config) {
-                // do something
-                /* jshint -W015 */
-            });
+        $scope.source_type_values = source_type_values;
 
         $scope.save = function() {
-            Source.save($scope.source_detail)
+            Source.save($scope.sourceDetail)
                 .success(function(data, status, headers, config) {
                     $modalInstance.close(data);
                 })
                 .error(function(data, status, headers, config) {
-                    // do something
-                    /* jshint -W015 */
+                    var defaultMessage = "Could not save source detail";
+                    Alert.onErrorResponse(data, defaultMessage);
                 });
         };
 
         $scope.cancel = function() {
             $modalInstance.dismiss('cancel');
         };
-    });
+    }]);
