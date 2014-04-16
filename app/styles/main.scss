@@ -421,13 +421,14 @@ h1, h2, h3, h4, h5, legend {
     }
 
     h4 {
-        margin-top: 3em;
+        margin: 3em 0 1em 0;
     }
 
     h4:first-child {
         margin-top: 0;
     }
 }
+
 
 // .tab-content is create by angular-ui bootstrap
 .tab-content {
@@ -1032,4 +1033,8 @@ input.ng-invalid.ng-dirty {
     .taxon-str {
         font-size: 90%;
     }
+}
+
+.btn .fa {
+    margin-right: 1em;
 }

@@ -1,11 +1,11 @@
 <div ng-controller="PlantViewCtrl">
 
   <div id="summary-buttons" class="pull-right">
-    <a class="btn btn-default" ng-href="#/plant/{{plant.id}}/edit">Edit</a>
+    <a class="btn btn-default" location-push ng-href="#/plant/{{plant.id}}/edit">Edit</a>
     <a class="btn btn-default" ng-click="delete(plant.id)">Delete</a>
   </div>
 
-  <h3>{{plant.str}}</h3>
+  <h3><a ng-href="{{'#/search?q=accession where id%3d' + plant.accession.id}}">{{accCode}}</a>{{plantCode}}</h3>
   <h4><a ng-href="{{'#/search?q=taxon where id%3d' + plant.accession.taxon_id}}">{{plant.accession.taxon_str}}</a></h4>
 
   <div>Location: <a ng-href="#/search?q=location where code%3d'{{plant.location.code}}'">{{plant.location.str}}</a></div>

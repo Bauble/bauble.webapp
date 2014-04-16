@@ -6,7 +6,7 @@ var prov_type_values = {
     'NotWild': "Not of wild source",
     'InsufficientData': "Insufficient Data",
     'Unknown': "Unknown",
-    None: ''
+    null: ''
 };
 
 
@@ -16,7 +16,7 @@ var wild_prov_status_values = {
     'CultivatedNative': "Cultivated native",
     'InsufficientData': "Insufficient Data",
     'Unknown': "Unknown",
-    None: ''
+    null: ''
 };
 
 
@@ -49,7 +49,7 @@ var recvd_type_values = {
     'BBIL': 'Bulbil',
     'VEGS': 'Vegetative spreading',
     'SCKR': 'Root sucker',
-    None: ''
+    null: ''
 };
 
 angular.module('BaubleApp')

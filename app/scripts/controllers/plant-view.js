@@ -11,6 +11,9 @@ angular.module('BaubleApp')
             Plant.get($scope.plant, {embed: ['location', 'accession']})
                 .success(function(data, status, headers, config) {
                     $scope.plant = data;
+                    var accLength = data.accession.code.length;
+                    $scope.accCode = data.str.substring(0, accLength);
+                    $scope.plantCode = data.str.substring(accLength, data.str.length);
                 })
                 .error(function(data, status, headers, config) {
                     var defaultMessage = "Could not get plant details.";
