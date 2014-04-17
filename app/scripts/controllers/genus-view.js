@@ -37,7 +37,13 @@ angular.module('BaubleApp')
 
         $scope.delete = function() {
             DeleteModal(Genus, $scope.genus)
+                .then(function(promise){
+                    Alert.add($scope.genus.str + ' removed.');
+                })
                 .catch(function(result){
+                    if(result === 'cancel') {
+                        return;
+                    }
                     var defaultMessage = 'Could not get delete genus.';
                     Alert.onErrorResponse(result.data, defaultMessage);
                 });

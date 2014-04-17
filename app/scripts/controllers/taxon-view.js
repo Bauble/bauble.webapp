@@ -34,7 +34,13 @@ angular.module('BaubleApp')
 
         $scope.delete = function() {
             DeleteModal(Taxon, $scope.taxon)
+                .then(function(promise){
+                    Alert.add($scope.taxon.str + ' removed.');
+                })
                 .catch(function(result){
+                    if(result === 'cancel') {
+                        return;
+                    }
                     var defaultMessage = 'Could not get delete taxon.';
                     Alert.onErrorResponse(result.data, defaultMessage);
                 });

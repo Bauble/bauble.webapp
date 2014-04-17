@@ -28,7 +28,13 @@ angular.module('BaubleApp')
 
         $scope.delete = function() {
             DeleteModal(Location, $scope.location)
+                .then(function(promise){
+                    Alert.add($scope.location.str + ' removed.');
+                })
                 .catch(function(result){
+                    if(result === 'cancel') {
+                        return;
+                    }
                     var defaultMessage = 'Could not get delete location.';
                     Alert.onErrorResponse(result.data, defaultMessage);
                 });

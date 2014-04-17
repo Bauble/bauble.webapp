@@ -24,7 +24,13 @@ angular.module('BaubleApp')
 
         $scope.delete = function() {
             DeleteModal(Plant, $scope.plant)
+                .then(function(promise){
+                    Alert.add($scope.plant.str + ' removed.');
+                })
                 .catch(function(result){
+                    if(result === 'cancel') {
+                        return;
+                    }
                     var defaultMessage = 'Could not get delete plant.';
                     Alert.onErrorResponse(result.data, defaultMessage);
                 });

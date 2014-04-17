@@ -37,7 +37,13 @@ angular.module('BaubleApp')
 
         $scope.delete = function() {
             DeleteModal(Accession, $scope.accession)
+                .then(function(promise){
+                    Alert.add($scope.accession.str + ' removed.');
+                })
                 .catch(function(result){
+                    if(result === 'cancel') {
+                        return;
+                    }
                     var defaultMessage = 'Could not get delete accession.';
                     Alert.onErrorResponse(result.data, defaultMessage);
                 });

@@ -38,7 +38,13 @@ angular.module('BaubleApp')
 
         $scope.delete = function() {
             DeleteModal(Family, $scope.family)
+                .then(function(promise){
+                    Alert.add($scope.family.str + ' removed.');
+                })
                 .catch(function(result){
+                    if(result === 'cancel') {
+                        return;
+                    }
                     var defaultMessage = 'Could not get delete family.';
                     Alert.onErrorResponse(result.data, defaultMessage);
                 });

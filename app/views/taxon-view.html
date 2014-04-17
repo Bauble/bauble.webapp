@@ -5,6 +5,9 @@
 
       <h3>{{taxon.str}}</h3>
 
+      <h4><a ng-href="#/search?q=family where id%3d'{{taxon['genus.family'].id}}'">
+        {{taxon["genus.family"].str}}</a></h4>
+
       <div># of Accessions:
         <a ng-href="#/search?q=accession where taxon.id%3d'{{taxon.id}}'"
            loading-spinner="counts.accessions">
