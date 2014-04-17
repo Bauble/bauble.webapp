@@ -46,7 +46,17 @@ angular.module('BaubleApp')
                     if(_.size($scope.results) === 0) {
                         $scope.message = "Nothing found.";
                     }
-                    $scope.isOpen = _.size($scope.results) === 1 ? true : false;
+
+                    if(_.size($scope.results) === 1) {
+                        $scope.isOpen = true;
+                        var key = _.keys($scope.results)[0];
+                        if(_.size($scope.results[key]) === 1) {
+                            $scope.itemSelected(key, $scope.results[key][0]);
+                        }
+                    } else {
+                        $scope.isOpen = false;
+                    }
+
                     $scope.loading = false;
                 })
                 .error(function(data, status, headers, config) {
