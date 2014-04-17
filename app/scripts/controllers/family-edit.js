@@ -6,13 +6,11 @@ angular.module('BaubleApp')
 
         $scope.family = {};
         $scope.data = {
-            synonyms: [],
-            notes: []
+            synonyms: new InstrumentedArray(),
+            notes: new InstrumentedArray(),
         };
 
         $scope.qualifiers = ["s. lat.", "s. str."];
-        $scope.removedSynonyms = [];
-        $scope.addedSynonyms = [];
 
         if($stateParams.id) {
             overlay("loading...");
@@ -22,8 +20,8 @@ angular.module('BaubleApp')
 
                     // pull out the notes and synonyms so we don't resubmit them
                     // back on save
-                    $scope.data.notes = $scope.family.notes || [];
-                    $scope.data.synonyms = $scope.family.synonyms || [];
+                    $scope.data.notes = new InstrumentedArray($scope.family.notes || []);
+                    $scope.data.synonyms = new InstrumentedArray($scope.family.synonyms || []);
                     delete $scope.family.synonyms;
                     delete $scope.family.notes;
                 })
@@ -44,16 +42,6 @@ angular.module('BaubleApp')
                 });
         };
 
-        $scope.addSynonym = function(synonym) {
-            $scope.data.synonyms.push(synonym);
-            $scope.addedSynonyms.push(synonym);
-        };
-
-        $scope.removeSynonym = function(synonym) {
-            $scope.removedSynonyms.push(synonym);
-            _.remove($scope.data.synonyms, {$$hashKey: synonym.$$hashKey });
-        };
-
         $scope.cancel = function() {
             locationStack.pop();
         };
@@ -71,10 +59,10 @@ angular.module('BaubleApp')
 
                     // update the synonyms
                     return $q.all(_.flatten(
-                        _.map($scope.addedSynonyms, function(synonym) {
+                        _.map($scope.data.synonyms.added, function(synonym) {
                             return Family.addSynonym($scope.family, synonym);
                         }),
-                        _.map($scope.removedSynonyms, function(synonym) {
+                        _.map($scope.data.synonyms.removed, function(synonym) {
                             return Family.removeSynonym($scope.family, synonym);
                         }))).then(function(result) {
                             console.log('result: ', result);

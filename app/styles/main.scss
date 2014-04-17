@@ -393,18 +393,6 @@ h1, h2, h3, h4, h5, legend {
 
 
 
-/* .list-group { */
-/*     background-color: $background-color; */
-/*     a {  */
-/*         background-color: white; */
-/*     } */
-/* } */
-
-
-/*.bauble-editor label + input {
-  margin-left: 10px;
-  }*/
-
 .block-header {
     @include block-header;
 }
@@ -448,7 +436,6 @@ h1, h2, h3, h4, h5, legend {
 .synonyms-list {
 
     li {
-        padding: 1em;
 
         &:hover {
             //background-color: $light-grey;
@@ -460,11 +447,25 @@ h1, h2, h3, h4, h5, legend {
         }
     }
 
+    .list-group-item {
+        padding: 7px 15px;
+
+        &> span {
+            display: inline-block;
+            width: 90%;
+        }
+    }
+
     .trash-btn {
+        display: inline-block;
         background-color: white;
         color: red;
         visibility: hidden;
-        padding: 0;
+        //padding: 0;
+        padding: 5px 8px;
+        //margin-bottom: 2px;
+        border: 1px solid #ccc;
+        text-align: right;
     }
 
     i.fa-trash-o {
@@ -499,24 +500,24 @@ h1, h2, h3, h4, h5, legend {
         margin-top: 1em;
     }
 
-    .trash-btn {
-        background-color: white;
-        color: red;
-        visibility: hidden;
-        padding: 5px 8px;
-        border: 1px solid #ccc;
-        //margin: 0 auto !important; // center in column
-    }
-
-    i.fa-trash-o {
-        background-color: white;
-        color: red;
-        margin: auto;
-        padding: 0;
-    }
-
     .vn-row {
         margin-bottom: .25em;
+
+        .trash-btn {
+            background-color: white;
+            color: red;
+            visibility: hidden;
+            padding: 5px 8px;
+            border: 1px solid #ccc;
+            //margin: 0 auto !important; // center in column
+        }
+
+        i.fa-trash-o {
+            background-color: white;
+            color: red;
+            margin: auto;
+            padding: 0;
+        }
 
         &:hover {
             //background-color: $light-grey;

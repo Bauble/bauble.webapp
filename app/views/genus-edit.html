@@ -57,7 +57,7 @@
                          id="synonym-input">
                   <span class="input-group-btn">
                     <button class="btn btn-default" ng-disabled="!newSynonym"
-                            ng-click="addSynonym(newSynonym); newSynonym=null;">Add</button>
+                            ng-click="data.synonyms.push(newSynonym); newSynonym=null;">Add</button>
                   </span>
                 </div>
               </div>  <!-- .form-group -->
@@ -67,9 +67,9 @@
                   This genus doesn't have any synonyms.
                 </p>
                 <li ng-repeat="synonym in data.synonyms" class="list-group-item">
-                  {{synonym.str}}
-                  <button class="pull-right trash-btn btn" ng-click="removeSynonym(synonym)">
-                    <i class="fa fa-trash-o"></i></button>
+                  <span>{{synonym.str}}</span>
+                  <button class="trash-btn btn" ng-click="data.synonyms.remove(synonym)">
+                        <i class="fa fa-trash-o"></i></button>
                 </li>
               </ul>
             </form>

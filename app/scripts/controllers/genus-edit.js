@@ -10,11 +10,9 @@ angular.module('BaubleApp')
         };
 
         $scope.data = {
-            synonyms: [],
-            notes: []
+            synonyms: new InstrumentedArray(),
+            notes: new InstrumentedArray()
         };
-        $scope.removedSynonyms = [];
-        $scope.addedSynonyms = [];
 
         // make sure we have the family details
         if($stateParams.id) {
@@ -25,8 +23,8 @@ angular.module('BaubleApp')
                     $scope.family = data.family;
                     // pull out the notes and synonyms so we don't resubmit them
                     // back on save
-                    $scope.data.notes = $scope.genus.notes || [];
-                    $scope.data.synonyms = $scope.genus.synonyms || [];
+                    $scope.data.notes = new InstrumentedArray($scope.genus.notes || []);
+                    $scope.data.synonyms = new InstrumentedArray($scope.genus.synonyms || []);
                     delete $scope.genus.synonyms;
                     delete $scope.genus.notes;
                 })
@@ -75,17 +73,6 @@ angular.module('BaubleApp')
                 });
         };
 
-        $scope.addSynonym = function(synonym) {
-            $scope.data.synonyms.push(synonym);
-            $scope.addedSynonyms.push(synonym);
-        };
-
-        $scope.removeSynonym = function(synonym) {
-            $scope.removedSynonyms.push(synonym);
-            _.remove($scope.data.synonyms, {$$hashKey: synonym.$$hashKey });
-        };
-
-
         $scope.cancel = function() {
             locationStack.pop();
         };
@@ -105,11 +92,10 @@ angular.module('BaubleApp')
 
                     // update the synonyms
                     $q.all(_.flatten(
-                        _.map($scope.addedSynonyms, function(synonym) {
-                            console.log('synonym: ', synonym);
+                        _.map($scope.data.synonyms.added, function(synonym) {
                             return Genus.addSynonym($scope.genus, synonym);
                         }),
-                        _.map($scope.removedSynonyms, function(synonym) {
+                        _.map($scope.data.synonyms.removed, function(synonym) {
                             return Genus.removeSynonym($scope.genus, synonym);
                         }))).then(function(result) {
                             if(addTaxon) {

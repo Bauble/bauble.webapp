@@ -144,13 +144,12 @@
 
               <ul class="synonyms-list list-group">
                 <p ng-hide="data.synonyms && data.synonyms.length > 0">
-                  This genus doesn't have any synonyms.
+                  This taxon doesn't have any synonyms.
                 </p>
                 <li ng-repeat="synonym in data.synonyms" class="list-group-item">
-                  {{synonym.str}}
-                  <button class="pull-right trash-btn btn"
-                          ng-click="data.synonyms.remove(synonym)">
-                    <i class="fa fa-trash-o"></i></button>
+                  <span>{{synonym.str}}</span>
+                  <button class="trash-btn btn" ng-click="data.synonyms.remove(synonym)">
+                        <i class="fa fa-trash-o"></i></button>
                 </li>
               </ul>
             </form>

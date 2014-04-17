@@ -10,10 +10,10 @@ angular.module('BaubleApp')
         };
 
         $scope.data = {
-            synonyms: new ModelArray(),
-            names: new ModelArray(),
-            notes: new ModelArray(),
-            distribution: new ModelArray(),
+            synonyms: new InstrumentedArray(),
+            names: new InstrumentedArray(),
+            notes: new InstrumentedArray(),
+            distribution: new InstrumentedArray(),
         };
 
         $scope.genus = {};
@@ -35,10 +35,10 @@ angular.module('BaubleApp')
                 .success(function(data, status, headers, config) {
                     $scope.taxon = data;
                     $scope.genus = data.genus;
-                    $scope.data.notes = new ModelArray($scope.taxon.notes || []);
-                    $scope.data.distributions = new  ModelArray(_.sortBy($scope.taxon.distribution, 'id') || []);
-                    $scope.data.names = new ModelArray($scope.taxon.vernacular_names || [{}]);
-                    $scope.data.synonyms = new ModelArray($scope.taxon.synonyms || []);
+                    $scope.data.notes = new InstrumentedArray($scope.taxon.notes || []);
+                    $scope.data.distributions = new  InstrumentedArray(_.sortBy($scope.taxon.distribution, 'id') || []);
+                    $scope.data.names = new InstrumentedArray($scope.taxon.vernacular_names || [{}]);
+                    $scope.data.synonyms = new InstrumentedArray($scope.taxon.synonyms || []);
                     // delete the embedded properties so we don't resubmit them
                     delete $scope.taxon.genus;
                     delete $scope.taxon.synonyms;

@@ -1,10 +1,13 @@
 
-
-function ModelArray(){
+//
+// An InstrumentedArray inherits from a native Javasript Array but
+// tracks adds and removes to the array when using push() and remove()
+//
+function InstrumentedArray(){
     "use strict";
 
-    if ( !(this instanceof ModelArray) ) {
-        return new ModelArray(arguments);
+    if ( !(this instanceof InstrumentedArray) ) {
+        return new InstrumentedArray(arguments);
     }
 
     var args = Array.prototype.slice.call(arguments);
@@ -23,11 +26,11 @@ function ModelArray(){
     this.removed = [];
 }
 
-ModelArray.prototype = [];  //new Array();
-//ModelArray.prototype = new Array();
+InstrumentedArray.prototype = [];  //new Array();
+//InstrumentedArray.prototype = new Array();
 
 
-ModelArray.prototype.remove = function(object) {
+InstrumentedArray.prototype.remove = function(object) {
     "use strict";
 
     var index = this.indexOf(object);
@@ -41,13 +44,12 @@ ModelArray.prototype.remove = function(object) {
     if(index !== -1) {
         this.added.splice(index, 1);
     } else {
-        this.removed.push(index);
+        this.removed.push(object);
     }
-    //console.log('this: ', this);
 };
 
 
-ModelArray.prototype.push = function(object) {
+InstrumentedArray.prototype.push = function(object) {
     "use strict";
 
     this.added.push(object);
@@ -55,6 +57,6 @@ ModelArray.prototype.push = function(object) {
 };
 
 
-// var a = new ModelArray(["x", "y", "z"]);
+// var a = new InstrumentedArray(["x", "y", "z"]);
 // console.log('a: ', a);
 // console.log('a[0]: ', a[0]);

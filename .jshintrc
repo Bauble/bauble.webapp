@@ -30,7 +30,7 @@
     "moment": true,
     "$": true,
     "_": true,
-    "ModelArray": true
+    "InstrumentedArray": true
   },
   "devel": true
 }
