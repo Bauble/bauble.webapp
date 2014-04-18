@@ -17,7 +17,7 @@
             <label class="control-label col-md-2" for="taxonField">Taxon</label>
             <div class="col-md-10">
               <input type="text" ng-model="model.taxon"
-                     placeholder="Taxon" typeahead-editable="false"
+                     placeholder="required" typeahead-editable="false"
                      typeahead="taxon as taxon.str for taxon in getTaxa($viewValue)"
                      typeahead-on-select="onSelectTaxon()"
                      typeahead-input-formatter="model.taxon.str"
@@ -48,7 +48,7 @@
               Accession</label>
             <div class="col-md-2">
               <input type="text" ng-model="model.accession.code" id="accessionField"
-                     class="form-control" required/>
+                     placeholder=required class="form-control" required/>
             </div>
 
             <label class="control-label col-md-2">Date Received</label>
@@ -75,8 +75,9 @@
 
           <div class="form-group">
             <label class="control-label col-md-2">Quantity</label>
-            <div class="col-md-1">
+            <div class="col-md-2">
               <input type="text" ng-model="model.accession.quantity_recvd"
+                     placeholder="required"
                      class="form-control" required/>
             </div>
           </div> <!-- .form-group -->
@@ -371,8 +372,8 @@
 
   <div class="action-buttons">
     <button class="btn btn-default" ng-click="cancel()">Cancel</button>
-    <button class="btn btn-primary" ng-click="save()">Save</button>
-    <button class="btn btn-primary" ng-click="save(true)">Save and Add Plant</button>
+    <button type="submit" class="btn btn-primary" ng-click="save()">Save</button>
+    <button type="submit" class="btn btn-primary" ng-click="save(true)">Save and Add Plant</button>
   </div>
 
 </div>

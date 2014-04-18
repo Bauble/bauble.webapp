@@ -18,7 +18,7 @@
                 <div class="col-sm-8">
                   <input type="text" ng-model="$parent.genus" id="genus-input"
                          typeahead-min-length="2"
-                         placeholder="Genus" typeahead-editable="false"
+                         placeholder="required" typeahead-editable="false"
                          typeahead="genus as genus.str for genus in getGenera($viewValue)"
                          typeahead-input-formatter="genus.str"
                          typeahead-loading="loadingGenera" class="form-control">
