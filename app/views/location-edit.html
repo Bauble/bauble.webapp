@@ -2,23 +2,30 @@
 
   <h3>{{location.str || 'New location'}}</h3>
 
-  <form>
+  <form class="form-horizontal">
 
     <div class="form-group">
-      <label for="code-input">Code</label>
-      <input type="text" ng-model="location.code" class="form-control" id="code-input"
-             required/>
+      <label class="control-label col-md-2" for="code-input">Code</label>
+      <div class="col-md-2">
+        <input type="text" ng-model="location.code" class="form-control" id="code-input"
+               maxlength="10" placeholder="required" required/>
+      </div>
     </div> <!-- .form-group -->
 
     <div class="form-group">
-      <label for="name-input">Name</label>
-      <input type="text" ng-model="location.name" class="form-control" id="name-input"/>
+      <label class="control-label col-md-2" for="name-input">Name</label>
+      <div class="col-md-6">
+        <input type="text" ng-model="location.name" class="form-control" id="name-input"
+               maxlength="64"/>
+      </div>
     </div> <!-- .form-group -->
 
     <div class="form-group">
-      <label for="description-input">Description</label>
-      <textarea ng-model="location.description" class="form-control" id="description-input">
-      </textarea>
+      <label class="control-label col-md-2" for="description-input">Description</label>
+      <div class="col-md-6">
+        <textarea ng-model="location.description" class="form-control" id="description-input" rows="3">
+        </textarea>
+      </div>
     </div> <!-- .form-group -->
 
   </form>
