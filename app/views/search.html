@@ -36,6 +36,7 @@
           </accordion-heading>
           <ul>
             <li class="result-item" ng-repeat="result in values"
+                ng-class="{'selected': $parent.selected.id===result.id}"
                 ng-click="itemSelected(group, result)">
               {{result.str}}
             </li>
