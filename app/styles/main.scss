@@ -35,10 +35,10 @@ $navbar-default-bg: $dark-blue;
 $navbar-default-color: $light-grey;
 $navbar-default-border: $orange;
 $navbar-default-link-color:  $light-grey;
-$navbar-default-link-hover-color: $orange;
+$navbar-default-link-hover-color: $light-orange;
 $navbar-default-link-active-bg: white;
-$navbar-default-link-active-color: $orange;
-$navbar-default-brand-hover-color: $orange;
+$navbar-default-link-active-color: $light-orange;
+$navbar-default-brand-hover-color: $light-orange;
 
 $footer-height: 120px;
 $footer-top-padding: 120px;
@@ -184,7 +184,7 @@ h1, h2, h3, h4, h5, legend {
         }
 
         a:hover, li > a:hover {
-            color: $orange;
+            color: $light-orange;
             background-color: white !important;
             background-image: none; // undo bootstrap background gradient on hover
         }
@@ -218,36 +218,6 @@ h1, h2, h3, h4, h5, legend {
 /*   } */
 /* } */
 
-.curious {
-    text-align: center;
-    a {
-        color: $orange;
-    }
-}
-
-.not-ready-warning {
-    background-color: $orange;
-    font-size: 90%;
-    text-align: center;
-    p {
-        color: $light-grey;
-    }
-}
-
-/* input { */
-/*     background-color: $background-color;// !important; */
-/* } */
-
-#curious-page {
-    padding-bottom: 3em;
-    li {
-        padding-bottom: 1em;
-    }
-
-    .feature-title {
-        font-weight: bold;
-    }
-}
 
 
 .login-page {
@@ -871,7 +841,7 @@ h1, h2, h3, h4, h5, legend {
         }
 
         & > li:hover {
-            color: $orange;
+            color: $light-orange;
         }
     }
 }
@@ -901,7 +871,7 @@ h1, h2, h3, h4, h5, legend {
         //padding-left: 1em;
 
         &:hover {
-            color: $orange;
+            color: $light-orange;
         }
 
     }
