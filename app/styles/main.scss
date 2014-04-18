@@ -12,6 +12,8 @@
 @import "compass/css3/box-shadow";
 
 
+$light-orange: #ff753d; //rgb(255, 117, 61);
+$light-orange2: #ff8756;
 $orange: #ff530d;
 $baby-blue: #bdd4de;
 $light-grey: #efefef;
@@ -306,7 +308,7 @@ h1, h2, h3, h4, h5, legend {
 .logout-page {
     padding: 5em 0;
     p {
-        color: #FF530D;
+        color: $orange;
     }
 }
 
@@ -392,11 +394,8 @@ h1, h2, h3, h4, h5, legend {
 }
 
 .result-item.selected {
-    //background-color: rgba(252, 59, 15, .7);
-    //background-color: rgb(253, 113, 69);
     color: white;
-    background-color: $orange;
-    opacity: 0.7;
+    background-color: $light-orange2;
 }
 
 
@@ -792,6 +791,10 @@ h1, h2, h3, h4, h5, legend {
     h4 {
         margin-top: 1.25em;
     }
+
+    .btn .fa {
+        margin-right: 1em;
+    }
 }
 
 
@@ -1048,9 +1051,7 @@ input.ng-invalid.ng-dirty {
     }
 }
 
-.btn .fa {
-    margin-right: 1em;
-}
+
 
 #summary-buttons {
 
@@ -1058,5 +1059,47 @@ input.ng-invalid.ng-dirty {
         text-align: left;
         //width: 100%;
         margin-bottom: .75em;
+    }
+}
+
+
+/* override the glyphicons used by the angular-ui datepicker */
+.glyphicon {
+    display: inline-block;
+    font-family: FontAwesome;
+    font-style: normal;
+    font-weight: normal;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.glyphicon-chevron-left:before {
+  content: "\f053";
+}
+
+.glyphicon-chevron-right:before {
+  content: "\f054";
+}
+
+
+/* styles for angular-ui bootstrap datepicker */
+.date-picker-input {
+
+    table {
+        overflow: hidden;
+        .btn{
+            border: none;
+            margin: 4px;
+        }
+    }
+
+    thead tr {
+        margin-bottom: 5px;
+    }
+
+
+    .btn-info {
+        background-color: $light-orange;
     }
 }

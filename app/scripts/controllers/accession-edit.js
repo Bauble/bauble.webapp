@@ -60,7 +60,7 @@ angular.module('BaubleApp')
             accession: {
                 taxon_id: $location.search().taxon,
                 date_accd: new Date(),
-                date_recvd: new Date(),
+                date_recvd: null, //new Date(),
                 source: {}
             },
             taxon: {},
@@ -226,6 +226,19 @@ angular.module('BaubleApp')
         };
 
 
+        $scope.dateOptions = {
+            'year-format': "'yy'",
+            'starting-day': 1,
+        };
+
+        $scope.openDatePopup = function($event, input) {
+            console.log('input: ', input);
+            $event.preventDefault();
+            $event.stopPropagation();
+            $scope[input + '_opened'] = true;
+        };
+
+
         $scope.cancel = function() {
             locationStack.pop();
         };
@@ -239,8 +252,11 @@ angular.module('BaubleApp')
             // }
 
             // copy the date variables to the accession
-            angular.forEach(['date_recvd', 'date_accd'], function(value, key) {
+            angular.forEach(['date_recvd', 'date_accd'], function(value) {
                 // TODO: we should just be able to submit iso formatted dates
+                if(!$scope.model.accession[value]) {
+                    return;
+                }
                 $scope.model.accession[value] = moment($scope.model.accession[value]).format("YYYY-MM-DD");
             });
 

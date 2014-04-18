@@ -21,7 +21,7 @@
                      typeahead="taxon as taxon.str for taxon in getTaxa($viewValue)"
                      typeahead-on-select="onSelectTaxon()"
                      typeahead-input-formatter="model.taxon.str"
-                     typeahead-loading="loadingTaxa" class="form-control">
+                     typeahead-loading="loadingTaxa" class="form-control" required>
             </div>
           </div> <!-- .form-group -->
 
@@ -48,13 +48,24 @@
               Accession</label>
             <div class="col-md-2">
               <input type="text" ng-model="model.accession.code" id="accessionField"
-                     placeholder=required class="form-control" required/>
+                     placeholder="required" class="form-control" required/>
             </div>
 
             <label class="control-label col-md-2">Date Received</label>
             <div class="col-md-2">
-              <input bs-datepicker ng-model="model.accession.date_recvd"
-                     data-date="accession.date_recvd" class="form-control" type="text"/>
+              <div class="input-group date-picker-input">
+                <input type="text" class="form-control" datepicker-popup="MM/dd/yyyy"
+                       show-weeks="false" show-button-bar="false"
+                       ng-model="model.accession.date_recvd"
+                       is-open="date_recvd_opened"  datepicker-options="dateOptions"
+                       date-disabled="disabled(date, mode)" close-text="Close"/>
+                <span class="input-group-btn">
+                  <button type="button" class="btn btn-default"
+                          ng-click="openDatePopup($event, 'date_recvd')">
+                    <i class="fa fa-calendar"></i>
+                  </button>
+                </span>
+              </div>
             </div>
           </div> <!-- .form-group -->
 
@@ -68,8 +79,19 @@
 
             <label class="control-label col-md-2">Date Accessioned</label>
             <div class="col-md-2">
-              <input bs-datepicker ng-model="model.accession.date_accd"
-                     data-date="accession.date_accd" class="form-control" type="text"/>
+              <div class="input-group date-picker-input">
+                <input type="text" class="form-control" datepicker-popup="MM/dd/yyyy"
+                       show-weeks="false" show-button-bar="false"
+                       ng-model="model.accession.date_accd"
+                       is-open="date_accd_opened"  datepicker-options="dateOptions"
+                       date-disabled="disabled(date, mode)" close-text="Close" />
+                <span class="input-group-btn">
+                  <button type="button" class="btn btn-default"
+                          ng-click="openDatePopup($event, 'date_accd')">
+                    <i class="fa fa-calendar"></i>
+                  </button>
+                </span>
+              </div>
             </div>
           </div> <!-- .form-group -->
 
@@ -77,8 +99,7 @@
             <label class="control-label col-md-2">Quantity</label>
             <div class="col-md-2">
               <input type="text" ng-model="model.accession.quantity_recvd"
-                     placeholder="required"
-                     class="form-control" required/>
+                     placeholder="required" class="form-control" required/>
             </div>
           </div> <!-- .form-group -->
 
@@ -193,9 +214,22 @@
 
               <div class="form-group">
                 <label class="control-label col-md-2">Date</label>
-                <div class="col-md-3">
-                  <input ui-date ng-model="model.accession.source.collection.date" type="text"
-                         class="form-control"/>
+                <div class="col-md-2">
+                  <div class="input-group date-picker-input">
+                    <input type="text" class="form-control" datepicker-popup="MM/dd/yyyy"
+                           show-weeks="false" show-button-bar="false"
+                           ng-model="model.accession.source.collection.date"
+                           is-open="coll_date_opened"  datepicker-options="dateOptions"
+                           date-disabled="disabled(date, mode)" close-text="Close" />
+                    <span class="input-group-btn">
+                      <button type="button" class="btn btn-default"
+                              ng-click="openDatePopup($event, 'coll_date')">
+                        <i class="fa fa-calendar"></i>
+                      </button>
+                    </span>
+                  </div>
+              <!-- <input ui-date ng-model="model.accession.source.collection.date" type="text"
+              class="form-control"/> -->
                 </div> <!-- .controls -->
               </div> <!-- .form-group -->
 
