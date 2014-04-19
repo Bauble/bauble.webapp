@@ -8,8 +8,8 @@
   https://kuler.adobe.com/#themeID/137458
   BAE8E5 CCF4FF D9FFF2 BAE8CB CCFFD1
   */
-@import "compass";
-@import "compass/css3/box-shadow";
+//@import "compass";
+//@import "compass/css3/box-shadow";
 
 
 $light-orange: #ff753d; //rgb(255, 117, 61);
@@ -46,21 +46,21 @@ $footer-bg-color: $dark-blue;
 $footer-font-color: $baby-blue;
 $footer-border: $default-border;
 
-$block-header-background: $baby-blue;
-$block-header-border: solid 1px $orange;
-$block-header-padding: .3em .3em;
+/* $block-header-background: $baby-blue; */
+/* $block-header-border: solid 1px $orange; */
+/* $block-header-padding: .3em .3em; */
 
 $icon-color: $orange;
 
-@import "bootstrap-sass/vendor/assets/stylesheets/bootstrap";
+@import "bootstrap";//"bootstrap-sass/vendor/assets/stylesheets/bootstrap";
 
-@mixin block-header {
-    display: block;
-    background-color: $block-header-background;
-    border: $block-header-border;
-    padding: $block-header-padding;
-    border-radius: 5px;
-}
+/* @mixin block-header { */
+/*     display: block; */
+/*     background-color: $block-header-background; */
+/*     border: $block-header-border; */
+/*     padding: $block-header-padding; */
+/*     border-radius: 5px; */
+/* } */
 
 html {
     position: relative;
@@ -370,9 +370,9 @@ h1, h2, h3, h4, h5, legend {
 
 
 
-.block-header {
-    @include block-header;
-}
+/* .block-header { */
+/*     @include block-header; */
+/* } */
 
 .action-buttons {
     margin-top: 4em;
@@ -412,46 +412,86 @@ h1, h2, h3, h4, h5, legend {
 
 .synonyms-list {
 
-    li {
+    display: table;
+    width: 100%;
 
-        &:hover {
-            //background-color: $light-grey;
+    .synonym-list-item {
 
-            .trash-btn {
-                visibility: visible;
+        display: table-row;
+        width: 100%;
+        padding: 0;
 
+        /*
+         * since we can't border-collapse on display: table we have to explicitly set our
+         * individual borders
+         */
+
+        // first row of first column
+        &:first-child > div:first-child {
+            border-top-left-radius: 4px;
+        }
+
+        // first row second column
+        &:first-child > div:last-child {
+            border-top-right-radius: 4px;
+        }
+
+        // last row first column
+        &:last-child > div:first-child {
+            border-bottom-left-radius: 4px;
+        }
+
+        // last row second column
+        &:last-child > div:last-child {
+            border-bottom-right-radius: 4px;
+        }
+
+        &:last-child {
+            & > div {
+                border-bottom: 1px solid #dddddd;
             }
         }
-    }
 
-    .list-group-item {
-        padding: 7px 15px;
+        & > div {
+            background-color: white;
+            display: table-cell;
+            border-collapse: collapse;
 
-        &> span {
-            display: inline-block;
-            width: 90%;
         }
+
+        & > div:first-child {
+            padding: 10px 15px;
+            width: 90%;
+            border-top: 1px solid #dddddd;
+            border-left: 1px solid #dddddd;
+        }
+
+        & > div:last-child {
+            width: 100%;
+            display: table-cell;
+            border-top: 1px solid #dddddd;
+            border-right: 1px solid #dddddd;
+        }
+
     }
 
     .trash-btn {
-        display: inline-block;
-        background-color: white;
-        color: red;
-        visibility: hidden;
-        //padding: 0;
-        padding: 5px 8px;
-        //margin-bottom: 2px;
-        border: 1px solid #ccc;
-        text-align: right;
+        width: 100%;
+        border-radius: 0;
+        background-color: red;
+        color: white;
+        padding: 10px 8px;
+        border: none;
+        text-align: center;
     }
 
     i.fa-trash-o {
-        background-color: white;
-        color: red;
-        margin: auto;
+        color: white;
+        background-color: red;
         padding: 0;
     }
 }
+
 
 // make checknoxes in horizontal forms look bettter
 .form-horizontal {
@@ -563,7 +603,7 @@ h1, h2, h3, h4, h5, legend {
         // TODO: use font-family and bullet style to set the proper icon for the select
         // when the list item has the .selected class
 
-        @include background-image(linear-gradient(left, $light-grey 85%, $baby-blue 100%));
+        //@include background-image(linear-gradient(left, $light-grey 85%, $baby-blue 100%));
         padding-top: 1em;
         padding-right: 1em;
         list-style: none;
@@ -580,7 +620,7 @@ h1, h2, h3, h4, h5, legend {
     }
 
     .message {
-        @include block-header;
+        //@include block-header;
         text-align: center;
         margin-top: 1em;
         padding: 1em;
@@ -631,7 +671,7 @@ h1, h2, h3, h4, h5, legend {
 
 
 .report-header {
-    @include block-header;
+    //@include block-header;
     //margin-bottom: 2em;
 }
 
