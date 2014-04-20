@@ -1,9 +1,4 @@
 
-// color theme : https://kuler.adobe.com/Fall-Grass-color-theme-2487072/
-/*
-  https://kuler.adobe.com/#themeID/7245;
-  #607056 #519E41 #85BF89 #9DDBB2 #BFE8BE
-  */
 /*
   https://kuler.adobe.com/#themeID/137458
   BAE8E5 CCF4FF D9FFF2 BAE8CB CCFFD1
@@ -52,7 +47,8 @@ $footer-border: $default-border;
 
 $icon-color: $orange;
 
-@import "bootstrap";//"bootstrap-sass/vendor/assets/stylesheets/bootstrap";
+@import "bootstrap";
+@import "animation";
 
 /* @mixin block-header { */
 /*     display: block; */
@@ -414,6 +410,7 @@ h1, h2, h3, h4, h5, legend {
 
     display: table;
     width: 100%;
+    overflow: hidden;
 
     .synonym-list-item {
 
@@ -483,6 +480,8 @@ h1, h2, h3, h4, h5, legend {
         padding: 10px 8px;
         border: none;
         text-align: center;
+
+        box-shadow: inset 7px 0 7px -7px black;
     }
 
     i.fa-trash-o {
@@ -732,66 +731,14 @@ h1, h2, h3, h4, h5, legend {
 }
 
 
-/*
- * Re-add nested dropdown support to BS3
- */
-/* .dropdown-submenu { */
-/*     position: relative; */
-/* } */
-
-/* .dropdown-submenu>.dropdown-menu { */
-/*     top:0; */
-/*     left:100%; */
-/*     margin-top:-6px; */
-/*     margin-left:-1px; */
-/*     -webkit-border-radius:0 6px 6px 6px; */
-/*     -moz-border-radius:0 6px 6px 6px; */
-/*     border-radius:0 6px 6px 6px; */
-/* } */
-
-/* .dropdown-submenu:hover>.dropdown-menu { */
-/*     display:block; */
-/* } */
-
-/* .dropdown-submenu>a:after{ */
-/*     display:block; */
-/*     content:" "; */
-/*     float:right; */
-/*     width:0; */
-/*     height:0; */
-/*     border-color:transparent; */
-/*     border-style:solid; */
-/*     border-width:5px 0 5px 5px; */
-/*     border-left-color:#cccccc; */
-/*     margin-top:5px; */
-/*     margin-right:-10px; */
-/* } */
-
-/* .dropdown-submenu:hover>a:after{ */
-/*     border-left-color:#ffffff; */
-/* } */
-
-/* .dropdown-submenu.pull-left{ */
-/*     float:none; */
-/* } */
-
-/* .dropdown-submenu.pull-left>.dropdown-menu { */
-/*     left:-100%; */
-/*     margin-left:10px; */
-/*     -webkit-border-radius:6px 0 6px 6px; */
-/*     -moz-border-radius:6px 0 6px 6px; */
-/*     border-radius:6px 0 6px 6px; */
-/* } */
-
-
 // fixes for select2
-.select2-container {
-    padding-left: 0px;
-}
+/* .select2-container { */
+/*     padding-left: 0px; */
+/* } */
 
-.select2-choice {
-    height: 34px !important;  // same height as .form-control
-}
+/* .select2-choice { */
+/*     height: 34px !important;  // same height as .form-control */
+/* } */
 
 .resource-view {
     h3 {
@@ -807,54 +754,6 @@ h1, h2, h3, h4, h5, legend {
     }
 }
 
-
-.dropdown-submenu {
-    position: relative;
-}
-
-.dropdown-submenu > .dropdown-menu {
-    top: 0;
-    left: 100%;
-    margin-top: -6px;
-    margin-left: -1px;
-    -webkit-border-radius: 0 6px 6px 6px;
-    -moz-border-radius: 0 6px 6px 6px;
-    border-radius: 0 6px 6px 6px;
-}
-
-.dropdown-submenu:hover > .dropdown-menu {
-    display: block;
-}
-
-.dropdown-submenu > a:after {
-    display: block;
-    content: " ";
-    float: right;
-    width: 0;
-    height: 0;
-    border-color: transparent;
-    border-style: solid;
-    border-width: 5px 0 5px 5px;
-    border-left-color: #cccccc;
-    margin-top: 5px;
-    margin-right: -10px;
-}
-
-.dropdown-submenu:hover > a:after {
-    border-left-color: #ffffff;
-}
-
-.dropdown-submenu.pull-left {
-    float: none;
-}
-
-.dropdown-submenu.pull-left>.dropdown-menu {
-    left: -100%;
-    margin-left: 10px;
-    -webkit-border-radius: 6px 0 6px 6px;
-    -moz-border-radius: 6px 0 6px 6px;
-    border-radius: 6px 0 6px 6px;
-}
 
 
 .geo-menu {
@@ -1009,28 +908,10 @@ h1, h2, h3, h4, h5, legend {
 
 
 .overlay-message {
-  -webkit-animation-name: blink;
-  -webkit-animation-duration: 1s;
-  -webkit-animation-iteration-count: infinite;
-  -webkit-animation-timing-function: ease-in-out;
   color: white;
   font-size: 3em;
   padding-top: 3em;
 }
-
-
-@-webkit-keyframes blink {
-  0% {
-      opacity: 1.0;
-  }
-  50% {
-      opacity: .3;
-  }
-  100% {
-      opacity: 1.0;
-  }
-}
-
 
 input.ng-invalid.ng-dirty {
     border-color:  #b22222; // firebrick red
@@ -1049,6 +930,7 @@ input.ng-invalid.ng-dirty {
     }
 }
 
+
 .accession-typehead-match {
     margin: .5em;
 
@@ -1062,7 +944,6 @@ input.ng-invalid.ng-dirty {
 }
 
 
-
 #summary-buttons {
 
     .btn {
@@ -1070,26 +951,6 @@ input.ng-invalid.ng-dirty {
         //width: 100%;
         margin-bottom: .75em;
     }
-}
-
-
-/* override the glyphicons used by the angular-ui datepicker */
-.glyphicon {
-    display: inline-block;
-    font-family: FontAwesome;
-    font-style: normal;
-    font-weight: normal;
-    line-height: 1;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-}
-
-.glyphicon-chevron-left:before {
-  content: "\f053";
-}
-
-.glyphicon-chevron-right:before {
-  content: "\f054";
 }
 
 
