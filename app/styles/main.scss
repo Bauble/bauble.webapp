@@ -7,6 +7,7 @@
 //@import "compass/css3/box-shadow";
 
 
+$dark-red: #8b0000;
 $light-orange: #ff753d; //rgb(255, 117, 61);
 $light-orange2: #ff8756;
 $orange: #ff530d;
@@ -475,7 +476,7 @@ h1, h2, h3, h4, h5, legend {
     .trash-btn {
         width: 100%;
         border-radius: 0;
-        background-color: red;
+        background-color: $dark-red;
         color: white;
         padding: 10px 8px;
         border: none;
@@ -486,7 +487,7 @@ h1, h2, h3, h4, h5, legend {
 
     i.fa-trash-o {
         color: white;
-        background-color: red;
+        background-color: $dark-red;
         padding: 0;
     }
 }

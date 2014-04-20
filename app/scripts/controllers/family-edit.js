@@ -7,7 +7,7 @@ angular.module('BaubleApp')
         $scope.family = {};
         $scope.data = {
             synonyms: new InstrumentedArray(),
-            notes: new InstrumentedArray(),
+            notes: new InstrumentedArray()
         };
 
         $scope.qualifiers = ["s. lat.", "s. str."];
@@ -41,6 +41,15 @@ angular.module('BaubleApp')
                     return response.data;
                 });
         };
+
+
+        $scope.selectSynonym = function($event, $index) {
+            console.log('$index: ', $index);
+            $scope.data.selectedSynonym = $index;
+            $event.stopPropagation();
+            $event.preventDefault();
+        };
+
 
         $scope.cancel = function() {
             locationStack.pop();

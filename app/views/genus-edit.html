@@ -44,35 +44,8 @@
 
           <!-- Synonyms Form -->
           <div class="col-md-5 col-md-offset-1">
-
-            <form role="form" name="synonyms">
-
-              <div class="form-group">
-                <label for="synonym-input">Synonyms</label>
-                <div class="input-group">
-                  <input type="text" ng-model="newSynonym"
-                         placeholder="Genus" typeahead-editable="false"
-                         typeahead="genus as genus.str for genus in getSynonyms($viewValue)"
-                         typeahead-loading="loadingSynonyms" class="form-control"
-                         id="synonym-input">
-                  <span class="input-group-btn">
-                    <button class="btn btn-default" ng-disabled="!newSynonym"
-                            ng-click="data.synonyms.push(newSynonym); newSynonym=null;">Add</button>
-                  </span>
-                </div>
-              </div>  <!-- .form-group -->
-
-              <ul class="synonyms-list list-group">
-                <p ng-hide="data.synonyms && data.synonyms.length > 0">
-                  This genus doesn't have any synonyms.
-                </p>
-                <li ng-repeat="synonym in data.synonyms" class="list-group-item">
-                  <span>{{synonym.str}}</span>
-                  <button class="trash-btn btn" ng-click="data.synonyms.remove(synonym)">
-                        <i class="fa fa-trash-o"></i></button>
-                </li>
-              </ul>
-            </form>
+            <synonyms-form model="data.synonyms" placeholder="Genus"
+                         query="getSynonyms($viewValue)"></synonyms-form>
           </div> <!-- .col -->
 
 

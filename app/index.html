@@ -22,7 +22,9 @@
 
     <!-- build:css({.tmp,app}) styles/main.css -->
     <!-- <link rel="stylesheet" href="components/angular-grid/ng-grid.css"/> -->
+    <!-- <link rel="stylesheet" href="components/animate.css/animate.min.css"> -->
     <link rel="stylesheet" href="styles/main.css">
+
     <!-- endbuild -->
 
   </head>
@@ -114,7 +116,7 @@
 
 
     <div class="overlay" ng-show="overlay">
-      <p class="overlay-message text-center">
+      <p class="overlay-message blink text-center">
         {{overlay}}
       </p>
     </div>
@@ -168,6 +170,7 @@
     <!-- NOTE: These components won't be cdn-ified if the versions haven't been
     update in the google-cdn package -->
 
+    <!-- TODO: The dropdown menu from geo-menu.js doesn't display if we disable jquery. If we would fix this then we could probably disable jQuery altogether and  save some KB -->
     <script src="components/jquery/jquery.min.js"></script>
     <script src="components/angular/angular.js"></script>
 
@@ -178,7 +181,6 @@
     <!-- <script src="components/angular-bootstrap/ui-bootstrap-tpls.js"></script> -->
     <script src="components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
     <script src="components/lodash/dist/lodash.min.js"></script>
-    <script src="components/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
     <!-- <script src="components/angular-grid/ng-grid-2.0.7.min.js"></script> -->
     <script src="components/momentjs/min/moment.min.js"></script>
     <!-- endbuild -->
@@ -246,6 +248,7 @@
     <script src="scripts/directives/geo-menu.js"></script>
     <script src="scripts/directives/loading-spinner.js"></script>
     <script src="scripts/directives/location-push.js"></script>
+    <script src="scripts/directives/synonyms-form.js"></script>
 
     <!-- endbuild -->
 
