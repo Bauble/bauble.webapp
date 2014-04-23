@@ -13,6 +13,8 @@ angular.module('BaubleApp')
                 onClick: '&',
             },
             link: function postLink(scope, element, attrs) {
+
+                var $ = angular.element;
                 scope.data = [];
                 scope.indexedData = {};
 
@@ -49,7 +51,14 @@ angular.module('BaubleApp')
                             a = $('<a ng-click="catchClick($event)"></a>').text(row.name);
                             ul.append($('<li></li>').append(a));
                             ul.append($('<li class="divider"></li>'));
-                            li.append(ul.append(scope.buildMenu(row.children)));
+
+                            // ** jqLite doesn't support appending arrays of items
+                            //li.append(ul.append(scope.buildMenu(row.children)));
+                            scope.buildMenu(row.children).forEach(function(item){
+                                ul.append(item);
+                            });
+                            li.append(ul);
+
                         }
                         a.attr('ng-click', 'onSelected($event,'+row.id+')');
                         items.push(li);
@@ -65,8 +74,14 @@ angular.module('BaubleApp')
                     if(!data || data.length === 0) {
                         return;
                     }
-                    var items = scope.buildMenu(data);
-                    var ul = $('<ul class="dropdown-menu"></ul').append(items);
+                    // ** jqLite doesn't support appending arrays of items
+                    // var items = scope.buildMenu(data);
+                    // var ul = $('<ul class="dropdown-menu"></ul>').append(items);
+                    var ul = $('<ul class="dropdown-menu"></ul>');
+                    scope.buildMenu(data).forEach(function(item){
+                        ul.append(item);
+                    });
+
                     var compiled = $compile(ul)(scope);
                     element.find('.dropdown-toggle').after(compiled);
                 });
