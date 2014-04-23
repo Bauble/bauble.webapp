@@ -1,6 +1,7 @@
-/*
- * These are mostly ripped off from animate.css (https://github.com/daneden/animate.css) so
- * we don't have to include the whole library.
+/**
+ * These were originally based on animate.css
+ * (https://github.com/daneden/animate.css) so we don't have to
+ * include the whole library.
  */
 
 @mixin animated {
@@ -9,7 +10,10 @@
 }
 
 
-@-webkit-keyframes slideInRight {
+/*
+ * Slide show right
+ */
+@-webkit-keyframes slideShowRight {
     0% {
         -webkit-transform: translateX(100%);
     }
@@ -20,14 +24,22 @@
     }
 }
 
-.slideInRight {
+
+@mixin slideShowRight {
     @include animated;
-    -webkit-animation-name: slideInRight;
+    -webkit-animation-name: slideShowRight;
     -webkit-animation-timing-function: ease-out;
     -webkit-animation-duration: .2s;
 }
 
 
+.slideShowRight {
+    @include slideShowRight
+}
+
+/*
+ * Blink
+ */
 @-webkit-keyframes blink {
   0% {
       opacity: 1.0;

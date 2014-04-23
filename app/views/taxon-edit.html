@@ -143,10 +143,16 @@
                 <geography-menu on-click="data.distribution.push(geo)">Add</geography-menu>
               </a>
 
-              <div ng-repeat="geo in data.distribution" class="dist-item"
-                   ng-click="data.distribution.remove(geo)">
-                {{geo.name}}<button><i class="fa fa-times"></i></button></div>
 
+              <button ng-repeat="geo in data.distribution"
+                      class="dist-item btn btn-default"
+                      ng-class="{'deletable': data.selectedDistItem===$index}"
+                      ng-hide="data.deletingItem==$index"
+                      ng-click="clickDistItem($event, $index, geo)">
+                {{geo.name}}
+                <i class="fa fa-trash-o"
+                   ng-show="data.selectedDistItem===$index" ></i>
+              </button>
             </div>
           </div> <!-- .form-group -->
 

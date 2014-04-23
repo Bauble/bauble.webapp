@@ -43,14 +43,6 @@ angular.module('BaubleApp')
         };
 
 
-        $scope.selectSynonym = function($event, $index) {
-            console.log('$index: ', $index);
-            $scope.data.selectedSynonym = $index;
-            $event.stopPropagation();
-            $event.preventDefault();
-        };
-
-
         $scope.cancel = function() {
             locationStack.pop();
         };

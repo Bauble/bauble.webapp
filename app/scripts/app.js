@@ -3,7 +3,8 @@
 angular.module('BaubleApp', [
     'ui.bootstrap',
     //'ngGrid',
-    'ui.router'
+    'ui.router',
+    'ngAnimate'
 ])
 
   .config(['$stateProvider', '$urlRouterProvider',

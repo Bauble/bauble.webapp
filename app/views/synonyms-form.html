@@ -26,7 +26,8 @@
          ng-click="onClick($event, $index)">
       <div class="first-cell">{{synonym.str}}</div>
       <div class="second-cell">
-        <button ng-show="data.selectedSynonym===$index" class="trash-btn slideInRight"
+        <button ng-show="data.selectedSynonym===$index"
+                class="trash-btn slideShowRight"
                 ng-click="model.remove(synonym)">
           <i class="fa fa-lg fa-trash-o"></i></button>
       </div>
