@@ -54,9 +54,10 @@
 
     </tab> <!-- organization tab -->
 
-    <tab heading="Account">
-      Billing
-    </tab> <!--  account tab -->
+    <!-- conditinally show accounts tab -->
+    <tab heading="Accounts" ng-show="accountsTabLoaded">
+      <div ng-include="'views/settings-accounts-tab.html'" onload="accountsTabLoaded=true"></div>
+    </tab>
 
 
   </tabset>
