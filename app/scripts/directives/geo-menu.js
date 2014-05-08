@@ -54,6 +54,7 @@ angular.module('BaubleApp')
 
                             // ** jqLite doesn't support appending arrays of items
                             //li.append(ul.append(scope.buildMenu(row.children)));
+                            /* jshint loopfunc: true */
                             scope.buildMenu(row.children).forEach(function(item){
                                 ul.append(item);
                             });
