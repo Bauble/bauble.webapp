@@ -14,11 +14,6 @@ module.exports = function (grunt) {
     // Time how long tasks take. Can help when optimizing build times
     require('time-grunt')(grunt);
 
-    // TODO: move these into environment variables
-    var awsSecrets = process.env.HOME + '/.aws.json';
-    var aws = grunt.file.exists(awsSecrets) ?
-        grunt.file.readJSON(awsSecrets) : {bauble: {accessKeyId: '', secretAccessKey: ''}};
-
     grunt.initConfig({
 
         // Project settings
@@ -28,7 +23,6 @@ module.exports = function (grunt) {
             dist: 'dist'
         },
 
-        aws: aws,
         watch: {
             js: {
                 files: ['<%= yeoman.app %>/scripts/{,*/}*.js'],
@@ -91,11 +85,6 @@ module.exports = function (grunt) {
                 }
             }
         },
-        // open: {
-        //     server: {
-        //         url: 'http://127.0.0.1:<%= connect.options.port %>'
-        //     }
-        // },
 
 
         // JSHint
@@ -391,62 +380,6 @@ module.exports = function (grunt) {
         //         }
         //     }
         // },
-
-        /* jshint camelcase: false */
-        aws_s3: {
-            options: {
-                accessKeyId: '<%= aws.bauble.accessKeyId %>',
-                secretAccessKey: '<%= aws.bauble.secretAccessKey %>',
-                uploadConcurrency: 5, // 5 simultaneous uploads
-                downloadConcurrency: 5 // 5 simultaneous downloads
-            },
-            staging: {
-                options: {
-                    bucket: 'app-staging.bauble.io',
-                    region: 'us-east-1',
-                    differential: true,
-                    //debug: true,
-                    sslEnabled: true
-                },
-                files: [
-                    {
-                        action: 'upload',
-                        cwd: '<%= yeoman.dist %>',
-                        src: '**',
-                        expand: true,
-                        dot: true
-                    },
-                    {
-                        action: 'delete',
-                        cwd: '<%= yeoman.dist %>',
-                        dest: '*'
-                    }
-                ]
-            },
-            production: {
-                options: {
-                    bucket: 'app.bauble.io',
-                    region: 'us-east-1',
-                    differential: true,
-                    //debug: true,
-                    sslEnabled: true
-                },
-                files: [
-                    {
-                        action: 'upload',
-                        cwd: '<%= yeoman.dist %>',
-                        src: '**',
-                        expand: true,
-                        dot: true
-                    },
-                    {
-                        action: 'delete',
-                        cwd: '<%= yeoman.dist %>',
-                        dest: '*'
-                    }
-                ]
-            }
-        }
     });
 
     grunt.registerTask('server', function (target) {
@@ -459,7 +392,6 @@ module.exports = function (grunt) {
             'concurrent:server',
             'autoprefixer',
             'connect:livereload',
-            //'open',
             'watch'
         ]);
     });
@@ -470,20 +402,6 @@ module.exports = function (grunt) {
         'autoprefixer',
         'connect:test',
         'karma'
-    ]);
-
-    grunt.registerTask('deploy:staging', [
-        'jshint',
-        'test',
-        'build',
-        'aws_s3:staging'
-    ]);
-
-    grunt.registerTask('deploy:production', [
-        'jshint',
-        'test',
-        'build',
-        'aws_s3:production'
     ]);
 
     grunt.registerTask('build', [
