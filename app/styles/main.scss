@@ -170,6 +170,11 @@ h1, h2, h3, h4, h5, legend {
 
 .navbar {
 
+    .navbar-brand {
+        font-family: 'Raleway', sans-serif;
+        font-weight: 400;
+    }
+
     // surely there's variables for the navbar dropdown/popover
     .dropdown-menu {
         border-top: 0;
