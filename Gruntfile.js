@@ -313,9 +313,10 @@ module.exports = function (grunt) {
                         '*.{ico,png,txt}',
                         '.htaccess',
                         //'components/**/*',
-                        // 'components/angular/*',
-                        // 'components/jquery/*',
 
+                        // copy these in case cdnify fails
+                        'components/angular/*',
+                        'components/jquery/*',
 
                         // 'images/{,*/}*.{gif,webp,svg}',
                         // 'styles/fonts/*',
