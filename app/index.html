@@ -116,9 +116,7 @@
 
 
     <div class="overlay" ng-show="overlay">
-      <p class="overlay-message blink text-center">
-        {{overlay}}
-      </p>
+      <p class="overlay-message blink text-center" ng-bind="overlay"></p>
     </div>
 
     <div class="container" id="content">
