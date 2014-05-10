@@ -15,7 +15,8 @@ angular.module('BaubleApp')
         }
 
         if(productionHosts.indexOf(host) !== -1) {
-            return 'https://api.nextglass.co/v1';
+            return 'https://api-baubleio.rhcloud.com/v1';
+            //return 'https://api.bauble.io/v1';
         }
 
         return 'http://localhost:9090/v1';
