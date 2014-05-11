@@ -4,8 +4,10 @@ angular.module('BaubleApp')
     .controller('SignupCtrl', ['$scope', '$location', 'User',
         function ($scope, $location, User) {
             $scope.message = null;
+            $scope.working = false;
 
             $scope.save = function() {
+                $scope.working = true;
                 console.log('$scope.user: ', $scope.user);
                 $scope.user.username = $scope.user.email;
                 console.log('$scope.user: ', $scope.user);
@@ -24,6 +26,9 @@ angular.module('BaubleApp')
                         default:
                             $scope.message = "Error";
                         }
+                    })
+                    .finally(function() {
+                        $scope.working = false;
                     });
             };
         }]);

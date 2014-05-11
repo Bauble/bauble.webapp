@@ -3,7 +3,7 @@
 angular.module('BaubleApp')
     .directive('loadingSpinner', function () {
         return {
-            template: '<i class="fa fa-spin fa-spinner" ng-hide="loaded"></i><span ng-transclude></span>',
+            template: '<i class="loading-spinner fa fa-spin fa-spinner" ng-show="show"></i><span ng-transclude></span>',
             transclude: true,
             scope: {
                 loadingSpinner: '='
@@ -11,7 +11,7 @@ angular.module('BaubleApp')
             restrict: 'A',
             link: function(scope, element, attrs) {
                 scope.$watch('loadingSpinner', function(loading) {
-                    scope.loaded = angular.isDefined(loading) && loading !== null;
+                    scope.show = !!loading;
                 });
             }
         };

@@ -7,21 +7,23 @@
 
       <div class="form-group">
         <label for="email">Email address</label>
-        <input type="email" ng-model="user.email" id="email" class="form-control"
-               autocapitalize="off" autocorrect="off" required>
+        <input type="email" ng-model="user.email" id="email"
+               class="form-control" autocapitalize="off" autocorrect="off"
+               ng-disabled="working" required>
       </div>
 
       <div class="form-group">
         <label for="password">Password</label>
         <input type="password" ng-model="user.password" id="password"
-               class="form-control" required>
+               class="form-control" ng-disabled="working" required>
       </div>
 
       <!-- TODO: we need to add a CAPTCHA here -->
 
-      <button type="submit" class="btn btn-default" ng-click="save()">
+      <button type="submit" class="btn btn-default" ng-click="save()"
+              ng-disabled="working">
         Create your account
-      </button>
+      </button><span loading-spinner="working"></span>
 
       <alert ng-show="message" type="'danger'" close="error=null"
              style="margin-top: 2em">{{message}}</alert>

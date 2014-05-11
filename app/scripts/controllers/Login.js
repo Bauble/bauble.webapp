@@ -5,8 +5,10 @@ angular.module('BaubleApp')
         function ($scope, $location, User) {
 
             $scope.message = null;
+            $scope.working = false;
 
             $scope.login = function() {
+                $scope.working = true;
                 User.login($scope.email, $scope.password)
                     .success(function(data, status, headers, config) {
                         User.local(data);
@@ -24,6 +26,9 @@ angular.module('BaubleApp')
                         default:
                             $scope.message = 'Unknown Error.';
                         }
+                    })
+                    .finally(function() {
+                        $scope.working = false;
                     });
             };
         });
