@@ -10,13 +10,11 @@ angular.module('BaubleApp')
         var host = $location.host();
 
         if(stagingHosts.indexOf(host) !== -1) {
-            //return 'https://api-staging.bauble.io/v1';
-            return 'https://api-baubleio.rhcloud.com/v1';
+            return 'https://api-staging.bauble.io/v1';
         }
 
         if(productionHosts.indexOf(host) !== -1) {
-            return 'https://api-baubleio.rhcloud.com/v1';
-            //return 'https://api.bauble.io/v1';
+            return 'https://api.bauble.io/v1';
         }
 
         return 'http://localhost:9090/v1';
