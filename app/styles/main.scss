@@ -36,10 +36,10 @@ $navbar-default-link-active-bg: white;
 $navbar-default-link-active-color: $light-orange;
 $navbar-default-brand-hover-color: $light-orange;
 
-$footer-height: 120px;
+$footer-height: 200px;
 $footer-top-padding: 120px;
-$footer-bg-color: $dark-blue;
-$footer-font-color: $baby-blue;
+$footer-bg-color: rgba(50, 50, 50, 1);
+$footer-font-color: #eee;
 $footer-border: $default-border;
 
 /* $block-header-background: $baby-blue; */
@@ -51,77 +51,24 @@ $icon-color: $orange;
 @import "bootstrap";
 @import "animation";
 
-/* @mixin block-header { */
-/*     display: block; */
-/*     background-color: $block-header-background; */
-/*     border: $block-header-border; */
-/*     padding: $block-header-padding; */
-/*     border-radius: 5px; */
-/* } */
-
 html {
     position: relative;
     min-height: 100%;
-    /* everything above here is for the sticky footer */
 }
 
 html, body {
-    /* margin:0; */
-    /* padding:0; */
-    //height:100%;
-    //background-color: #FFFDD0;
-    background-color: $background-color;
+    height:100%;
+    background-color: $light-grey;
     color: $font-color;
     font-family: $font-family;
-    //padding-top: 3em; // make space for navbar
 }
 
 body {
-    //margin-bottom: $footer-height + $footer-top-padding;
-    /* everything above here is for the sticky footer */
-    //padding-top: $navbar-height;
-    margin-bottom: $footer-height;
+    box-shadow:  0px 5px 20px 20px rgba(50, 50, 50, 0.75);
 }
 
 body > .container {
     padding-top: $navbar-height;
-    //padding: $navbar-height 15px 0;
-}
-
-#footer {
-    position:absolute;
-    bottom:0;
-    width:100%;
-    height: $footer-height;   /* Height of the footer */
-    /* everything above here is for the sticky footer */
-
-    border-top: $footer-border;
-    background-color: $footer-bg-color;
-    color: $footer-font-color;
-
-    .container {
-        padding-top: 10px;
-    }
-
-    /* .footer-col a:first-child { */
-    /*     // if this is any larger it shows a line below the footer but I'm not */
-    /*     // really sure why */
-    /*     margin-top: 15px; */
-    /* } */
-
-    a {
-        color: $footer-font-color;
-        display: block;
-        font-size: 90%;
-    }
-
-    .copyright {
-        top: 0;
-        font-size: .9em;
-        //margin-top: 2em;
-        margin-right: 2em;
-        background-color: inherit;
-    }
 }
 
 p  {
@@ -131,6 +78,40 @@ p  {
 a {
     color: $link-color;
 }
+
+#footer {
+    $footer-spacer: 1000px;
+    height: $footer-height + $footer-spacer;
+    padding-top: $footer-spacer + $navbar-height;
+    width: 100%;
+    background: #000;
+    position: fixed;
+    bottom: 0;
+    z-index: -1;
+    background-color: $footer-bg-color;
+
+    p {
+        color: #aaa;
+    }
+
+    a {
+        color: $footer-font-color;
+        display: block;
+        font-size: 95%;
+        padding: .3em;
+    }
+
+    .copyright {
+        position: fixed;
+        right: 0;
+        bottom: 0;
+        font-size: .9em;
+        margin-right: 2em;
+        background-color: inherit;
+    }
+}
+
+
 
 h1, h2, h3, h4, h5, legend {
     font-family: $heading-font-family;
@@ -145,20 +126,15 @@ h1, h2, h3, h4, h5, legend {
 
 
 #content {
-    //padding-top: $navbar-height;
-    //margin-top: $navbar-height;
-    //padding-bottom: $footer-height;   /* Height of the footer */
+    position: relative;
+    z-index: 100;
+    //background-color: $light-grey !important;
+    margin-bottom: $footer-height;
+    margin-top: $navbar-height;
+    padding-top: 3em;
+    overflow: hidden;
+    height: 100%;
 }
-
-/* #main-view { */
-/*     padding: 2em 0; */
-/* } */
-
-
-
-/* .container { */
-/*     min-height: 100%; */
-/* } */
 
 .error {
     color: red;
@@ -239,7 +215,6 @@ h1, h2, h3, h4, h5, legend {
 }
 
 #signup-page {
-    margin-top: 5em;
 
     .loading-spinner {
         margin: 0 1em;
@@ -322,7 +297,6 @@ h1, h2, h3, h4, h5, legend {
 
 .search-box {
     margin-bottom: 2em;
-    padding-top: 2em;
 
     .fa {
         color: $font-color;
