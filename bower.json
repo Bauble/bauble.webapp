@@ -2,11 +2,11 @@
   "name": "Bauble",
   "version": "0.0.1",
   "dependencies": {
-    "angular": "1.2.12",
-    "angular-sanitize": "1.2.12",
+    "angular": "1.2.16",
+    "angular-sanitize": "1.2.16",
     "json3": "~3.2.4",
     "es5-shim": "~2.0.8",
-    "jquery": "~2.0.3",
+    "jquery": "2.1.0",
     "angular-grid": "~2.0.6",
     "angular-bootstrap": "~0.10.0",
     "momentjs": "~2.1.0",
@@ -15,9 +15,13 @@
     "base64": "~0.3.0"
   },
   "devDependencies": {
-    "angular-mocks": "1.2.12",
-    "angular-scenario": "1.2.12",
+    "angular-mocks": "1.2.16",
+    "angular-scenario": "1.2.16",
     "lodash": "~2.4.1",
     "bootstrap-sass": "twbs/bootstrap-sass#~3.1.1"
+  },
+  "resolutions": {
+    "jquery": "2.1.0",
+    "angular": "1.2.16"
   }
 }

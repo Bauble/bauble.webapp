@@ -159,13 +159,13 @@
       </div>
     </div>      <!-- #footer -->
 
-    <!-- these scripts will be cdnified -->
-    <!-- NOTE: These components won't be cdn-ified if the versions haven't been
-    update in the google-cdn package -->
-
+    <!-- NOTE: These components won't be cdn-ified if:
+         1. The versions haven't been updated in the google-cdn-data package.
+         2. If you use the minifed versions here.
+    -->
     <!-- TODO: The dropdown menu from geo-menu.js doesn't display if we disable jquery. If we would fix this then we could probably disable jQuery altogether and  save some KB -->
-    <script src="components/jquery/jquery.min.js"></script>
-    <script src="components/angular/angular.min.js"></script>
+    <script src="components/jquery/dist/jquery.js"></script>
+    <script src="components/angular/angular.js"></script>
 
     <!-- build:js scripts/vendor.js -->
     <script src="components/angular-animate/angular-animate.js"></script>
