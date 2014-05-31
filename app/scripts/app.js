@@ -98,6 +98,12 @@ angular.module('BaubleApp', [
                 url: '/organization/new',
                 templateUrl: 'views/org-edit.html',
                 controller: 'OrgEditCtrl'
+            })
+
+            .state('main.reporter', {
+                url: '/reporter',
+                templateUrl: 'views/report-design.html',
+                controller: 'ReporterCtrl'
             });
 
         // .when('/admin', {
@@ -105,10 +111,7 @@ angular.module('BaubleApp', [
         //     controller: 'AdminCtrl'
         // })
 
-        // .when('/reporter', {
-        //     templateUrl: 'views/report_design.html',
-        //     controller: 'ReporterCtrl'
-        // })
+
 
         // .when('/docs', {
         //     templateUrl: 'views/docs.html'

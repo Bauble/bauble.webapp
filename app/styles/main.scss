@@ -584,10 +584,10 @@ h1, h2, h3, h4, h5, legend {
 
 #report-designer {
     margin-bottom: 5em;
+    min-height: 500px;
 
     .panel {
         border: solid 1px #BDD4DE;//#FF530D;
-
         background-color: inherit;
     }
 
@@ -596,24 +596,38 @@ h1, h2, h3, h4, h5, legend {
         background-color: #BDD4DE; //#f5f5f5;
     }
 
-    .action-icons {
-        // TODO: use font-family and bullet style to set the proper icon for the select
-        // when the list item has the .selected class
+    .action-icon-list {
 
-        //@include background-image(linear-gradient(left, $light-grey 85%, $baby-blue 100%));
-        padding-top: 1em;
-        padding-right: 1em;
+        margin: 0;
+        padding: .5em 0;
+        text-align: center;;
         list-style: none;
+
         li {
-            margin-bottom: .5em;
-        }
-        i {
-            margin-right: .5em;
-        }
-        i:hover {
-            color: tint(#FF530D,40);
+            margin-bottom: .2em;
         }
 
+        i {
+            color: $light-orange;
+            padding: .2em .5em;
+
+            &:hover {
+                color: tint($light-orange, 20);
+                border-left: solid 1px $light-orange;
+                border-right: solid 1px $light-orange;
+            }
+        }
+
+        .tooltip {
+            &.top .tooltip-arrow {
+                border-top-color: white;
+            }
+        }
+        .tooltip-inner {
+            background-color: white !important;
+            color: $light-orange;
+
+        }
     }
 
     .message {
@@ -638,7 +652,7 @@ h1, h2, h3, h4, h5, legend {
 .remove-button {
     border: none;
     box-shadow: none;
-    color: #8C281B;
+    color: $dark-red;
 
     &:hover {
         text-decoration: none;
