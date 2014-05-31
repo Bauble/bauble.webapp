@@ -116,20 +116,19 @@
 
       <div class="col-md-1">
         <ul class="action-icon-list">
-          <li tooltip="Edit columns">
-            <div class="dropdown">
-              <a data-toggle="dropdown"><i class="fa fa-plus fa-2x"></i></a>
-              <ul class="dropdown-menu" rolw="menu" aria-labelledby="dLabel">
-                <li ng-repeat="column in model.tableColumns">
-                  <a ng-click="column.visible=!column.visible">
-                    <i ng-show="column.visible" class="fa-check"></i>
-                    <i ng-show="!column.visible" class="fa-check-empty"></i>
-                    {{column.header}}
-                  </a>
-                </li>
-              </ul>
-            </div>
+          <li class="dropdown">
+            <a class="dropdown-toggle" tooltip="Edit columns"><i class="fa fa-plus fa-2x"></i></a>
+            <ul class="dropdown-menu column-dropdown" role="menu" aria-labelledby="dLabel">
+              <li ng-repeat="column in model.tableColumns">
+                <a ng-click="column.visible=!column.visible">
+                  <i ng-show="column.visible" class="fa fa-check-square-o"></i>
+                  <i ng-show="!column.visible" class="fa fa-square-o"></i>
+                  {{column.header}}
+                </a>
+              </li>
+            </ul>
           </li>
+
           <!-- <li><i class="fa fa-cog fa-2x"></i></li> -->
 
           <li tooltip="Edit query">

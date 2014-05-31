@@ -101,15 +101,13 @@ angular.module('BaubleApp')
             Resource($scope.model.resource).get_schema(true)
                 .success(function(data, status, headers, config) {
                     angular.forEach(data.columns, function(index, value) {
-                        if(value !== "id" && value.substring(value.length-3) !== "_id") {
-                            $scope.model.tableColumns.push(new TableColumn(value));
-                        }
+                        $scope.model.tableColumns.push(new TableColumn(value));
                     });
 
                 })
                 .error(function(data, status, headers, config) {
-                    // do something
-                  /* jshint -W015 */
+                    var defaultMessage = "** Error: Could not get schema for resource.";
+                    Alert.onErrorResponse(data, defaultMessage);
                 });
         });
 
@@ -225,7 +223,10 @@ angular.module('BaubleApp')
         $scope.download = function(){
             var row;
             var tableData = $scope.model.tableData;
-            var columns = _.pluck($scope.model.tableColumns, 'name');
+            var columns = _.chain($scope.model.tableColumns)
+                .filter('visible')
+                .pluck('name')
+                .value();
             var csv = [columns.join(',')];
             console.log('csv: ', csv);
             for(var i=0; i<tableData.length; i++) {
@@ -241,12 +242,11 @@ angular.module('BaubleApp')
             // http://stackoverflow.com/questions/17836273/export-javascript-data-to-csv-file-without-server-interaction
 
             // download the CSV
-            var csvString = csv.join('"%0A"');
-            var a = document.createElement('a');
-            a.href     = 'data:attachment/csv,' + csvString;
-            a.target   ='_blank';
-            console.log('$scope.model.report.name: ', $scope.model.report.name);
-            a.download = $scope.model.report.name + '.csv,' + encodeURIComponent(csvString);
-            a.click();
+            var csvString = csv.join('\n');
+            var dataUrl = 'data:text/csv,' + encodeURIComponent(csvString);
+
+            // the name doesn't set the filename on most browsers but we use it here anyways
+            var name = $scope.model.report.name.replace(' ', '_') + ".csv";
+            window.open(dataUrl, name);  //
         };
     }]);

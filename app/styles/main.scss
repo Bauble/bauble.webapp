@@ -630,6 +630,10 @@ h1, h2, h3, h4, h5, legend {
         }
     }
 
+    .column-dropdown {
+        text-align: left;
+    }
+
     .message {
         //@include block-header;
         text-align: center;
