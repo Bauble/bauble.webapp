@@ -3,17 +3,13 @@
 // TODO: add map for column names to display names or headers
 
 angular.module('BaubleApp')
-    .controller('ReporterCtrl', ['$scope', 'Alert', 'Search', 'Resource', 'Report',
-    function ($scope, Alert, Search, Resource, Report) {
+    .controller('ReporterCtrl', ['$scope', '$location', '$stateParams', 'Alert', 'Search', 'Resource', 'Report',
+    function ($scope, $location, $stateParams, Alert, Search, Resource, Report) {
 
         $scope.model = {
             resource: null,
             reports: null,
-            report: {
-                name: "New Report",
-                query: null,
-                settings: null,
-            },
+            report: null,
             showQueryBuilder: true,
             showReportSelector: false,
             tableData: null,
@@ -48,13 +44,6 @@ angular.module('BaubleApp')
 
         $scope.showReportSelector = true;
         $scope.showQueryBuilder = false;
-
-        $scope.reportTypes = [
-            { name: "Current search", type: 'current' },
-            { name: "New Search", type: 'new' },
-            { name: "Table", type: 'table' }
-        ];
-        $scope.reportType = $scope.reportTypes[0];
 
         $scope.operators =
             { '=':  '=',
@@ -98,6 +87,7 @@ angular.module('BaubleApp')
             }
 
             $scope.model.tableColumns = [new TableColumn('str', "Name", true)];
+            console.log('$scope.model.resource: ', $scope.model.resource);
             Resource($scope.model.resource).get_schema(true)
                 .success(function(data, status, headers, config) {
                     angular.forEach(data.columns, function(index, value) {
@@ -111,18 +101,33 @@ angular.module('BaubleApp')
                 });
         });
 
-        // TODO: this doesn't need to be an event...we should just be able to setup
-        // a callback on the directive
-        $scope.$on('schema-column-selected', function(event, element, selected) {
-            // ignore the selected event unless this is part of a filter
-            if(!element.hasClass('filter-schema-menu')) {
+        $scope.$watch('model.report', function(report){
+            console.log('report: ', report);
+            if(!report) {
                 return;
             }
 
-            var menus = element.parents('.filters-box').find('.filter-schema-menu'),
-                index = menus.index(element);
-            $scope.model.filters[index].column = selected;
+
+            $location.search('id', report.id);
+
+            $scope.model.showQueryBuilder = !!report.query;
+            $scope.model.showReportSelector = false;
+            return;
+            if(report.query) {
+                buildQueryModel(report.query);
+            } else {
+                $scope.model.filters = [{operator: '='}];
+            }
+            $scope.refreshTable();
         });
+
+
+        //
+        //  Set the column for the filter when selected from the schema menu.
+        //
+        $scope.onFilterSchemaSelect = function($event, column, selected, $index) {
+            $scope.model.filters[$index].column = selected;
+        };
 
 
         $scope.addFilterField = function() {
@@ -184,7 +189,9 @@ angular.module('BaubleApp')
         // build a filters from a query string
         //
         function buildQueryModel(query) {
+
             var words = query.split(' ');
+
             console.log('words: ', words);
             var model = {
                 resource: '/' + words[0]
@@ -248,5 +255,15 @@ angular.module('BaubleApp')
             // the name doesn't set the filename on most browsers but we use it here anyways
             var name = $scope.model.report.name.replace(' ', '_') + ".csv";
             window.open(dataUrl, name);  //
+        };
+
+        $scope.newReport = function() {
+            $scope.model.showReportSelector = false;
+            $scope.model.showQueryBuilder = true;
+            $scope.model.report = {
+                name: "New Report",
+                query: null,
+                settings: {}
+            };
         };
     }]);

@@ -2,17 +2,14 @@
   <div class="row" id="report-selector" ng-show="model.showReportSelector">
 
     <div class="col-xs-5">
-      <select ng-model="report" ng-options="report.name for report in model.reports"
+      <select ng-model="model.report" ng-options="report.name for report in model.reports"
               class="form-control" >
         <option value="">Select a report</option>
       </select>
     </div>
 
     <div class="col-xs-2">
-      <button class="btn btn-primary"
-              ng-click="showReportSelector=false; showQueryBuilder=true">
-        New report
-      </button>
+      <button class="btn btn-primary" ng-click="newReport()">New report</button>
     </div>
   </div> <!-- .row -->
 
@@ -44,7 +41,8 @@
             </div>
 
             <div class="col-md-3">
-              <div schema-menu class="filter-schema-menu" resource="model.resource"></div>
+              <div schema-menu on-select="onFilterSchemaSelect($event, column, selected, $index)"
+                   class="filter-schema-menu" resource="model.resource"></div>
             </div>
 
             <div class="col-md-1">

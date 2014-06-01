@@ -21,7 +21,6 @@ module.exports = function(config) {
             'app/components/angular-bootstrap/ui-bootstrap-tpls.js',
             'app/components/lodash/dist/lodash.min.js',
             'app/components/bootstrap-datepicker/js/bootstrap-datepicker.js',
-            //'app/components/angular-grid/ng-grid-2.0.7.min.js',
             'app/components/momentjs/min/moment.min.js',
             'app/scripts/*.js',
             'app/scripts/**/*.js',
