@@ -304,6 +304,18 @@ h1, h2, h3, h4, h5, legend {
     min-height: 500px;
 }
 
+/* Medium devices (desktops, 992px and up) */
+@media (min-width: $screen-md-min) {
+
+    #search-page {
+        padding: 0 6em;
+    }
+
+    #dashboard-page {
+        padding: 0 6em;
+    }
+}
+
 
 .search-box {
     margin-bottom: 2em;
@@ -375,6 +387,7 @@ h1, h2, h3, h4, h5, legend {
 .bauble-editor {
     margin-bottom: 3em;
     min-height: 500px;
+    padding: 0 1em;
 
     h3 {
         margin-bottom: 1.5em;
@@ -386,6 +399,14 @@ h1, h2, h3, h4, h5, legend {
 
     h4:first-child {
         margin-top: 0;
+    }
+}
+
+/* Medium devices (desktops, 992px and up) */
+@media (min-width: $screen-md-min) {
+
+    .bauble-editor {
+        padding: 0 6em;
     }
 }
 
@@ -642,6 +663,17 @@ h1, h2, h3, h4, h5, legend {
     }
 }
 
+
+/* Medium devices (desktops, 992px and up) */
+/* Large devices (large desktops, 1200px and up) */
+@media (min-width: $screen-md-min) { // and (min-width: $screen-lg-min) {
+
+    #report-designer {
+        padding: 0 6em;
+    }
+}
+
+
 .filters-row {
 }
 
@@ -867,6 +899,9 @@ h1, h2, h3, h4, h5, legend {
 }
 
 #settings-page {
+
+    min-height: 500px;
+
     h4 {
         margin-top: 2em;
 
@@ -884,6 +919,16 @@ h1, h2, h3, h4, h5, legend {
         margin-top: 0;
     }
 }
+
+
+/* Medium devices (desktops, 992px and up) */
+@media (min-width: $screen-md-min) {
+
+    #settings-page {
+        padding: 0 6em;
+    }
+}
+
 
 #org-invite-modal {
     .help-block {
