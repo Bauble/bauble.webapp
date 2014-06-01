@@ -1,17 +1,17 @@
 'use strict';
 
-describe('Controller: AdminNewOrgCtrl', function () {
+describe('Controller: ReportCtrl', function () {
 
     // load the controller's module
     beforeEach(module('BaubleApp'));
 
-    var AdminNewOrgCtrl,
+    var ReportCtrl,
     scope;
 
     // Initialize the controller and a mock scope
     beforeEach(inject(function ($controller) {
         scope = {};
-        AdminNewOrgCtrl = $controller('AdminNewOrgCtrl', {
+        ReportCtrl = $controller('ReportCtrl', {
             $scope: scope
         });
     }));

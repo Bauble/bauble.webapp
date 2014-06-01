@@ -9,7 +9,7 @@ angular.module('BaubleApp')
             scope: {
                 resource: '=',
                 scalarsOnly: '@',
-                onSelect: '='
+                onSelect: '&'
                 // label2: '=?' // i think this is only available in ng 1.2
             },
             template: '<div class="btn-group schema-menu">' +
@@ -51,12 +51,8 @@ angular.module('BaubleApp')
                     element.children('.btn').first().text(selected);
                     element.attr("data-selected", selected);
 
-                    // emit the event to let any listeners know that selection has
-                    // been made
-                    scope.$emit('schema-column-selected', element, selected);
-
                     if(scope.onSelect){
-                        scope.onSelect(event, column, selected);
+                        scope.onSelect({$event: event, column: column, selected: selected});
                     }
                 };
 
@@ -104,10 +100,13 @@ angular.module('BaubleApp')
                     }
                 };
 
-                scope.$watch('resource', function() {
+                scope.$watch('resource', function(resource) {
+                    if(!resource) {
+                        return;
+                    }
                     // build the menu for this resource
-                    if(typeof scope.resource !== 'undefined') {
-                        buildMenu(scope.resource, function(menu) {
+                    if(typeof resource !== 'undefined') {
+                        buildMenu(resource, function(menu) {
                             // TODO: can this be dont with one called like replaceWith()
                             // instead of first emptying and then appending
                             element.children('.dropdown-menu').first().empty()
