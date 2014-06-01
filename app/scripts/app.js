@@ -2,7 +2,6 @@
 
 angular.module('BaubleApp', [
     'ui.bootstrap',
-    //'ngGrid',
     'ui.router',
     'ngAnimate'
 ])
