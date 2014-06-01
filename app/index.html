@@ -89,7 +89,7 @@
           </ul>
 
           <ul ng-show="user" class="nav navbar-nav">
-            <li><a href="#reporter">Report</a></li>
+            <li><a href="#report">Report</a></li>
           </ul>
 
           <ul ng-hide="!user "class="nav navbar-nav pull-right">
@@ -182,18 +182,18 @@
     <script src="scripts/app.js"></script>
     <script src="scripts/utils.js"></script>
 
-    <script src="scripts/controllers/Main.js"></script>
-    <script src="scripts/controllers/Search.js"></script>
-    <script src="scripts/controllers/Root.js"></script>
+    <script src="scripts/controllers/main.js"></script>
+    <script src="scripts/controllers/search.js"></script>
+    <script src="scripts/controllers/root.js"></script>
     <script src="scripts/controllers/family-edit.js"></script>
     <script src="scripts/controllers/genus-edit.js"></script>
     <script src="scripts/controllers/taxon-edit.js"></script>
     <script src="scripts/controllers/accession-edit.js"></script>
     <script src="scripts/controllers/plant-edit.js"></script>
     <script src="scripts/controllers/location-edit.js"></script>
-    <script src="scripts/controllers/NotesEditor.js"></script>
-    <script src="scripts/controllers/Reporter.js"></script>
-    <script src="scripts/controllers/Login.js"></script>
+    <script src="scripts/controllers/notes-edit.js"></script>
+    <script src="scripts/controllers/report.js"></script>
+    <script src="scripts/controllers/login.js"></script>
     <script src="scripts/controllers/family-view.js"></script>
     <script src="scripts/controllers/genus-view.js"></script>
     <script src="scripts/controllers/taxon-view.js"></script>
@@ -202,15 +202,7 @@
     <script src="scripts/controllers/location-view.js"></script>
     <script src="scripts/controllers/source-detail-edit.js"></script>
     <script src="scripts/controllers/propagation-edit.js"></script>
-    <script src="scripts/controllers/NewUser.js"></script>
-    <script src="scripts/controllers/NewOrganization.js"></script>
-    <script src="scripts/controllers/Admin.js"></script>
-    <script src="scripts/controllers/AdminSysadmin.js"></script>
-    <script src="scripts/controllers/AdminUser.js"></script>
-    <script src="scripts/controllers/AdminOrg.js"></script>
-    <script src="scripts/controllers/AdminNewOrg.js"></script>
-    <script src="scripts/controllers/AdminNewUser.js"></script>
-    <script src="scripts/controllers/Logout.js"></script>
+    <script src="scripts/controllers/logout.js"></script>
     <script src="scripts/controllers/dashboard.js"></script>
     <script src="scripts/controllers/signup.js"></script>
     <script src="scripts/controllers/org-edit.js"></script>
@@ -222,10 +214,10 @@
 
     <!-- services -->
     <script src="scripts/services/user.js"></script>
-    <script src="scripts/services/apiRoot.js"></script>
-    <script src="scripts/services/Search.js"></script>
-    <script src="scripts/services/ViewMeta.js"></script>
-    <script src="scripts/services/Resource.js"></script>
+    <script src="scripts/services/api-root.js"></script>
+    <script src="scripts/services/search.js"></script>
+    <script src="scripts/services/view-meta.js"></script>
+    <script src="scripts/services/resource.js"></script>
     <script src="scripts/services/globals.js"></script>
     <script src="scripts/services/alert.js"></script>
     <script src="scripts/services/delete-modal.js"></script>
@@ -235,7 +227,7 @@
 
     <!--  directives -->
     <script src="scripts/directives/emit.js"></script>
-    <script src="scripts/directives/schemaMenu.js"></script>
+    <script src="scripts/directives/schema-menu.js"></script>
     <script src="scripts/directives/geo-menu.js"></script>
     <script src="scripts/directives/loading-spinner.js"></script>
     <script src="scripts/directives/location-push.js"></script>

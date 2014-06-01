@@ -3,7 +3,7 @@
 // TODO: add map for column names to display names or headers
 
 angular.module('BaubleApp')
-    .controller('ReporterCtrl', ['$scope', '$location', '$stateParams', 'Alert', 'Search', 'Resource', 'Report',
+    .controller('ReportCtrl', ['$scope', '$location', '$stateParams', 'Alert', 'Search', 'Resource', 'Report',
     function ($scope, $location, $stateParams, Alert, Search, Resource, Report) {
 
         $scope.model = {

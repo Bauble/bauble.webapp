@@ -99,10 +99,10 @@ angular.module('BaubleApp', [
                 controller: 'OrgEditCtrl'
             })
 
-            .state('main.reporter', {
-                url: '/reporter',
-                templateUrl: 'views/report-design.html',
-                controller: 'ReporterCtrl'
+            .state('main.report', {
+                url: '/report',
+                templateUrl: 'views/report.html',
+                controller: 'ReportCtrl'
             });
 
         // .when('/admin', {

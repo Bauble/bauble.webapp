@@ -8,8 +8,12 @@ angular.module('BaubleApp')
                 locationPush: '='
             },
             link: function postLink(scope, element, attrs) {
-                element.click(function() {
+                element.bind('click', function() {
                     locationStack.push($location, false);
+                });
+
+                scope.$on('$destroy', function() {
+                    element.unbind('click');
                 });
             }
         };
