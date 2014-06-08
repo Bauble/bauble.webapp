@@ -118,6 +118,7 @@ angular.module('BaubleApp')
 
         // called when the save button is clicked on the editor
         $scope.save = function() {
+            $scope.working = true;
             //$scope.plant.notes = $scope.notes;
             $scope.plant.accession_id = $scope.model.accession.id;
             $scope.plant.location_id = $scope.model.location.id;
@@ -128,7 +129,8 @@ angular.module('BaubleApp')
                 .error(function(data, status, headers, config) {
                     var defaultMessage = 'Could not save the plant.';
                     Alert.onErrorResponse(data, defaultMessage);
+                }).finally(function() {
+                    $scope.working = false;
                 });
-
         };
     }]);

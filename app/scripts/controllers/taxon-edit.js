@@ -147,6 +147,8 @@ angular.module('BaubleApp')
             //     }
             // });
 
+            $scope.working = true;
+
             function saveNames() {
                 return $q.all(_.flatten(
                     _.map($scope.data.names.added, function(name) {
@@ -156,6 +158,7 @@ angular.module('BaubleApp')
                         return Taxon.removeName($scope.taxon, name);
                     })))
                     .catch(function(result) {
+                        $scope.working = false;
                         var defaultMessage = "Some names could not be saved.";
                         Alert.onErrorResponse(result.data, defaultMessage);
                         $q.reject(result);
@@ -171,6 +174,7 @@ angular.module('BaubleApp')
                         return Taxon.removeSynonym($scope.taxon, synonym);
                     })))
                     .catch(function(result) {
+                        $scope.working = false;
                         var defaultMessage = "Some synonyms could not be saved.";
                         Alert.onErrorResponse(result.data, defaultMessage);
                         $q.reject(result);
@@ -186,6 +190,7 @@ angular.module('BaubleApp')
                         return Taxon.removeDistribution($scope.taxon, distribution);
                     })))
                     .catch(function(result) {
+                        $scope.working = false;
                         var defaultMessage = "Some distributions could not be saved.";
                         Alert.onErrorResponse(result.data, defaultMessage);
                         $q.reject(result);
@@ -213,6 +218,7 @@ angular.module('BaubleApp')
                 .error(function(data, status, headers, config) {
                     var defaultMessage = "The taxon could not be saved.";
                     Alert.onErrorResponse(data, defaultMessage);
+                    $scope.working = false;
                 });
         };
     }]);

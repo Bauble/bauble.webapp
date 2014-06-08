@@ -251,6 +251,8 @@ angular.module('BaubleApp')
             //     delete $scope.model.accession.source;
             // }
 
+            $scope.working = true;
+
             // copy the date variables to the accession
             angular.forEach(['date_recvd', 'date_accd'], function(value) {
                 // TODO: we should just be able to submit iso formatted dates
@@ -273,6 +275,8 @@ angular.module('BaubleApp')
                 .error(function(data, status, headers, config) {
                     var defaultMessage = "The accession could not be saved.";
                     Alert.onErrorResponse(data, defaultMessage);
+                }).finally(function() {
+                    $scope.working = false;
                 });
         };
     }]);

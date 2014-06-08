@@ -85,6 +85,7 @@ angular.module('BaubleApp')
             // any changes in the search result
             //$scope.genus.notes = $scope.notes;
             $scope.genus.family_id = $scope.family.id;
+            $scope.working = true;
             Genus.save($scope.genus)
                 .success(function(data, status, headers, config) {
 
@@ -106,12 +107,15 @@ angular.module('BaubleApp')
                         }).catch(function(result) {
                             var defaultMessage = "Some synonyms could not be saved.";
                             Alert.onErrorResponse(result.data, defaultMessage);
+                        }).finally(function() {
+                            $scope.working = false;
                         });
 
                 })
                 .error(function(data, status, headers, config) {
                     var defaultMessage = "The genus could not be saved.";
                     Alert.onErrorResponse(data, defaultMessage);
+                    $scope.working = false;
                 });
 
             _.each($scope.newNote, function(note) {

@@ -53,6 +53,7 @@ angular.module('BaubleApp')
             // any changes in the search result
             //$scope.family.notes = $scope.notes;
 
+            $scope.working = true;
             Family.save($scope.family)
                 .success(function(data, status, headers, config) {
 
@@ -81,6 +82,9 @@ angular.module('BaubleApp')
                 .error(function(data, status, headers, config) {
                     var defaultMessage = "The family could not be saved.";
                     Alert.onErrorResponse(data, defaultMessage);
+                })
+                .finally(function() {
+                    $scope.working = false;
                 });
 
             // Todo: we need to save the synonyms and the notes...they should

@@ -37,6 +37,7 @@ angular.module('BaubleApp')
         $scope.save = function() {
             // TODO: we need a way to determine if this is a save on a new or existing
             // object an whether we whould be calling save or edit
+            $scope.working = true;
             Location.save($scope.location)
                 .success(function(data, status, headers, config) {
                     $window.history.back();
@@ -44,6 +45,8 @@ angular.module('BaubleApp')
                 .error(function(data, status, headers, config) {
                     var defaultMessage = 'Could not save the location.';
                     Alert.onErrorResponse(data, defaultMessage);
+                }).finally(function() {
+                    $scope.working = false;
                 });
         };
     }]);
