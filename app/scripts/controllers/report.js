@@ -6,6 +6,17 @@ angular.module('BaubleApp')
     .controller('ReportCtrl', ['$scope', '$location', '$stateParams', 'Alert', 'Search', 'Resource', 'Report',
     function ($scope, $location, $stateParams, Alert, Search, Resource, Report) {
 
+        // object to represent the report table columns
+        function TableColumn(name, header, visible){
+            this.name = name;
+            this.header = header || this.name;
+            this.width = null;
+            this.visible = visible || false;
+
+            // if header is undefined set to name
+            //this.header = typeof this.header === "undefined" ? this.name : this.heade;
+        }
+
         $scope.model = {
             resource: null,
             reports: null,
@@ -66,16 +77,7 @@ angular.module('BaubleApp')
         ];
 
 
-      // object to represent the report table columns
-        function TableColumn(name, header, visible){
-            this.name = name;
-            this.header = header || this.name;
-            this.width = null;
-            this.visible = visible || false;
 
-            // if header is undefined set to name
-            //this.header = typeof this.header === "undefined" ? this.name : this.heade;
-        }
 
 
         $scope.$watch('model.resource', function(newValue, oldValue) {
@@ -101,24 +103,26 @@ angular.module('BaubleApp')
                 });
         });
 
+        //
+        //
+        //
         $scope.$watch('model.report', function(report){
             console.log('report: ', report);
             if(!report) {
                 return;
             }
 
-
             $location.search('id', report.id);
 
             $scope.model.showQueryBuilder = !!report.query;
             $scope.model.showReportSelector = false;
             return;
-            if(report.query) {
-                buildQueryModel(report.query);
-            } else {
-                $scope.model.filters = [{operator: '='}];
-            }
-            $scope.refreshTable();
+            // if(report.query) {
+            //     buildQueryModel(report.query);
+            // } else {
+            //     $scope.model.filters = [{operator: '='}];
+            // }
+            // $scope.refreshTable();
         });
 
 
