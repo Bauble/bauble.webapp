@@ -12,10 +12,10 @@ angular.module('BaubleApp')
                 onSelect: '&'
                 // label2: '=?' // i think this is only available in ng 1.2
             },
-            template: '<div class="btn-group schema-menu">' +
-                '<button type="button" class="btn btn-default dropdown-toggle" ng-class="{disabled: !resource}" data-toggle="dropdown">' +
+            template: '<div dropdown class="btn-group schema-menu">' +
+                '<button type="button" class="btn btn-default dropdown-toggle" ng-class="{disabled: !resource}">' +
                 '{{label}}' +
-                '<span class="caret"></span>' +
+                  '<span class="caret"></span>' +
                 '</button>'+
 
             '<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">' +
@@ -59,7 +59,7 @@ angular.module('BaubleApp')
                 // create a menu and append it to parentElement
                 function buildMenu(resource, callback) {
                     // get the schema for a resource
-                    Resource(resource).get_schema(scope.scalarsOnly)
+                    Resource(resource).getSchema(scope.scalarsOnly)
                         .success(function(data, status, headers, config) {
                             // create a new scope for the new menu
                             var newScope = scope.$new();
@@ -100,6 +100,9 @@ angular.module('BaubleApp')
                     }
                 };
 
+                //
+                // rebuild the schema menu when the resource changes
+                //
                 scope.$watch('resource', function(resource) {
                     if(!resource) {
                         return;
@@ -107,8 +110,9 @@ angular.module('BaubleApp')
                     // build the menu for this resource
                     if(typeof resource !== 'undefined') {
                         buildMenu(resource, function(menu) {
-                            // TODO: can this be dont with one called like replaceWith()
-                            // instead of first emptying and then appending
+                            // TODO: can this be dont with one called like
+                            // replaceWith() instead of first emptying and then
+                            // appending
                             element.children('.dropdown-menu').first().empty()
                                 .append(menu);
                         });

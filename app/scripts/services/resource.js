@@ -82,7 +82,7 @@ angular.module('BaubleApp')
                     return $http(config);
                 },
 
-                get_schema: function(scalars_only) {
+                getSchema: function(scalars_only) {
                     var config = {
                         method: 'GET',
                         url: resourceUrl + '/schema',
@@ -335,6 +335,18 @@ angular.module('BaubleApp')
 
 
 // Report service.
-    .factory('Report', ['Resource', function($resource) {
-        return $resource('/report');
+    .factory('Report', ['$http', 'Resource', function($http, $resource) {
+        var resource = $resource('/report');
+
+        resource.download = function(data, content_type) {
+            return $http({
+                url: [this.resourceUrl, '_download'].join('/'),
+                method: 'POST',
+                headers: _.extend({'content-type': content_type},
+                                  this._getAuthHeader()),
+                data: data
+            });
+        };
+
+        return resource;
     }]);

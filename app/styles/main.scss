@@ -1028,3 +1028,11 @@ input.ng-invalid.ng-dirty {
         background-color: $light-orange;
     }
 }
+
+
+.schema-menu {
+    .caret {
+        float: right;
+        margin-top: 10px
+    }
+}

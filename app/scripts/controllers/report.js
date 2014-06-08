@@ -3,17 +3,29 @@
 // TODO: add map for column names to display names or headers
 
 angular.module('BaubleApp')
-    .controller('ReportCtrl', ['$scope', '$location', '$stateParams', 'Alert', 'Search', 'Resource', 'Report',
-    function ($scope, $location, $stateParams, Alert, Search, Resource, Report) {
+    .controller('ReportCtrl', ['$scope', '$location', '$window', '$stateParams', 'Alert', 'Search', 'Resource', 'Report',
+    function ($scope, $location, $window, $stateParams, Alert, Search, Resource, Report) {
+
+        // object to represent the report table columns
+        function TableColumn(name, header, visible){
+            this.name = name;
+            this.header = header || this.name;
+            this.width = null;
+            this.visible = visible || false;
+
+            // if header is undefined set to name
+            //this.header = typeof this.header === "undefined" ? this.name : this.heade;
+        }
 
         $scope.model = {
-            resource: null,
+            //resource: null,
+            refreshButtonText: 'Create report',
             reports: null,
             report: null,
             showQueryBuilder: true,
             showReportSelector: false,
             tableData: null,
-            filters: [{operator: '='}],
+            //filters: [{operator: '='}],
             tableColumns: [new TableColumn('str', "Name", true)] // the list of column objects
         };
 
@@ -31,19 +43,43 @@ angular.module('BaubleApp')
         // }];
 
         // get the list of saved reports
-        Report.list()
-            .success(function(data, status, headers, config) {
-                $scope.model.reports = data;
-                $scope.model.showQueryBuilder = ($scope.model.reports.length === 0);
-                $scope.model.showReportSelector = ($scope.model.reports.length > 0);
-            })
-            .error(function(data, status, headers, config) {
-                // do something
-              /* jshint -W015 */
-            });
 
-        $scope.showReportSelector = true;
-        $scope.showQueryBuilder = false;
+        console.log('$stateParams: ', $stateParams);
+        if($stateParams.id) {
+            Report.get($stateParams)
+                .success(function(data, status, headers, config) {
+                    $scope.model.report = data;
+                    $scope.model.showQueryBuilder = true;
+                    $scope.model.showReportSelector = false;
+                    $scope.model.refreshButtonText = 'Refresh';
+                    console.log('query: ', $scope.model.report.query);
+                    var parsed = parseQuery($scope.model.report.query);
+                    console.log('parsed: ', parsed);
+                    $scope.model.report = _.extend($scope.model.report, parsed);
+                    //$scope.refreshTable();
+                })
+                .error(function(data, status, headers, config) {
+                    console.log('** Error: Could not load report');
+                    $location('/report');
+                });
+        } else {
+            $scope.showReportSelector = true;
+            $scope.showQueryBuilder = false;
+            Report.list()
+                .success(function(data, status, headers, config) {
+                    $scope.model.reports = data;
+                    // empty report
+                    $scope.model.report = {
+                        filters: [{operator: '='}],
+                    };
+                    $scope.model.showQueryBuilder = ($scope.model.reports.length === 0);
+                    $scope.model.showReportSelector = ($scope.model.reports.length > 0);
+                })
+                .error(function(data, status, headers, config) {
+                    // do something
+                    /* jshint -W015 */
+                });
+        }
 
         $scope.operators =
             { '=':  '=',
@@ -66,19 +102,7 @@ angular.module('BaubleApp')
         ];
 
 
-      // object to represent the report table columns
-        function TableColumn(name, header, visible){
-            this.name = name;
-            this.header = header || this.name;
-            this.width = null;
-            this.visible = visible || false;
-
-            // if header is undefined set to name
-            //this.header = typeof this.header === "undefined" ? this.name : this.heade;
-        }
-
-
-        $scope.$watch('model.resource', function(newValue, oldValue) {
+        $scope.$watch('model.report.resource', function(newValue, oldValue) {
             if(oldValue !== newValue && oldValue !== null) {
                 alert("Warn the user that the domain is changing!");
             }
@@ -87,9 +111,12 @@ angular.module('BaubleApp')
             }
 
             $scope.model.tableColumns = [new TableColumn('str', "Name", true)];
-            console.log('$scope.model.resource: ', $scope.model.resource);
-            Resource($scope.model.resource).get_schema(true)
+
+            // getting scalars only b/c we're using this for column headers,
+            // the schema menus are handled by the schema menu directive
+            Resource($scope.model.report.resource).getSchema(true)
                 .success(function(data, status, headers, config) {
+                    console.log('data: ', data);
                     angular.forEach(data.columns, function(index, value) {
                         $scope.model.tableColumns.push(new TableColumn(value));
                     });
@@ -103,22 +130,11 @@ angular.module('BaubleApp')
 
         $scope.$watch('model.report', function(report){
             console.log('report: ', report);
-            if(!report) {
+            if(!report || !report.id) {
                 return;
             }
 
-
-            $location.search('id', report.id);
-
-            $scope.model.showQueryBuilder = !!report.query;
-            $scope.model.showReportSelector = false;
-            return;
-            if(report.query) {
-                buildQueryModel(report.query);
-            } else {
-                $scope.model.filters = [{operator: '='}];
-            }
-            $scope.refreshTable();
+            $location.path('/report/' + report.id);
         });
 
 
@@ -126,24 +142,32 @@ angular.module('BaubleApp')
         //  Set the column for the filter when selected from the schema menu.
         //
         $scope.onFilterSchemaSelect = function($event, column, selected, $index) {
-            $scope.model.filters[$index].column = selected;
+            $scope.model.report.filters[$index].column = selected;
         };
 
 
         $scope.addFilterField = function() {
             // add another row to the list of filters
-            $scope.model.filters.push({ boolOp: "and" , operator: '='});
+            if(!$scope.model.report.filters) {
+                $scope.model.report.filters = [];
+            }
+            $scope.model.report.filters.push({ boolOp: "and" , operator: '='});
         };
 
         $scope.validateQuery = function() {
-            var valid = $scope.model.filters.length > 0 ? true : false;
-            $.each($scope.model.filters, function(index, filter) {
-                if(!filter.column || !filter.operator || !filter.value) {
-                    valid = false;
-                    return false;
-                }
-            });
-            return valid ? "" : "disabled";
+            try {
+                var valid = $scope.model.report.filters.length > 0 ? true : false;
+                $.each($scope.model.report.filters, function(index, filter) {
+                    if(!filter.column || !filter.operator || !filter.value) {
+                        valid = false;
+                        return false;
+                    }
+                });
+                return valid ? "" : "disabled";
+            } catch(exc) {
+                //console.log('exc: ', exc);
+                return false;
+            }
         };
 
         $scope.saveReport = function() {
@@ -188,29 +212,56 @@ angular.module('BaubleApp')
         //
         // build a filters from a query string
         //
-        function buildQueryModel(query) {
+        function parseQuery(query) {
+
+            // TODO: right now we only support query expressions and a pretty
+            // limited subset of them
+
+            var parsed = {
+                resource: '',
+                filters: []
+            };
 
             var words = query.split(' ');
+            if(words[1] === 'where') {
+                parsed.resource = '/' + words[0];
+            } else {
+                console.log("** Error: Could not parse: " + query);
+                return null;
+            }
 
-            console.log('words: ', words);
-            var model = {
-                resource: '/' + words[0]
-            };
-            return model;
+            words = _.rest(words, 2);
+            var indexBase = 0;
+            while(words.length > 0) {
+                parsed.filters.push({
+                    boolOp: indexBase === 1 ? words[0] : null,
+                    column: words[indexBase],
+                    operator: words[indexBase + 1],
+                    value: words[indexBase + 2]
+                });
+                words = _.rest(words, indexBase + 3);
+                indexBase = 1;  // from here on out we're going to have a boolOp
+            }
+
+            return parsed;
         }
 
         $scope.refreshTable = function() {
             // update the table data based on the domain, filters and report fields
             //$resource($scope.model.resource).
             // TODO: build up the query based on the filter fields
+            console.log('$scope.model.report.resource: ', $scope.model.report.resource);
+            if(!$scope.model.report || !$scope.model.report.resource) {
+                return;
+            }
 
-            var q = buildQueryString($scope.model.resource.substring(1), $scope.model.filters);
-            $scope.model.report.query = q;
+            var q = buildQueryString($scope.model.report.resource.substring(1),
+                                     $scope.model.report.filters);
 
             Search.query(q)
                 .success(function(data, status, headers, config) {
                     var resultProp = _.find($scope.domains,
-                                            {resource: $scope.model.resource}).result;
+                                            {resource: $scope.model.report.resource}).result;
                     $scope.model.tableData = data[resultProp];
                     $scope.model.message = (!$scope.model.tableData || $scope.model.tableData.length === 0) ? "No results." : "";
                 })
@@ -245,16 +296,33 @@ angular.module('BaubleApp')
                 csv.push(row.join(','));
             }
 
+
+            var csvString = csv.join('\n');
+            Report.download(csvString, 'text/csv')
+                .success(function(data, status, headers, config) {
+                    console.log('data: ', data);
+                })
+                .error(function(data, status, headers, config) {
+                    console.log('data: ', data);
+                });
+
             // TODO: this needs to be tested in IE
             // http://stackoverflow.com/questions/17836273/export-javascript-data-to-csv-file-without-server-interaction
 
             // download the CSV
-            var csvString = csv.join('\n');
-            var dataUrl = 'data:text/csv,' + encodeURIComponent(csvString);
+            // var csvString = csv.join('\n');
+            // var dataUrl = 'data:text/csv,' + encodeURIComponent(csvString);
+            // window.open(dataUrl);
 
             // the name doesn't set the filename on most browsers but we use it here anyways
-            var name = $scope.model.report.name.replace(' ', '_') + ".csv";
-            window.open(dataUrl, name);  //
+            // var name = $scope.model.report.name.replace(' ', '_') + ".csv";
+            // window.open(dataUrl, name);  //
+        };
+
+        //
+        //  Delete a save report or clear an unsaved report
+        //
+        $scope.deleteReport = function() {
         };
 
         $scope.newReport = function() {
@@ -262,7 +330,9 @@ angular.module('BaubleApp')
             $scope.model.showQueryBuilder = true;
             $scope.model.report = {
                 name: "New Report",
-                query: null,
+                resource: null,
+                filters: [{operator: '='}],
+                //query: null,
                 settings: {}
             };
         };
