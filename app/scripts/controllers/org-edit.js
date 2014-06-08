@@ -5,6 +5,7 @@ angular.module('BaubleApp')
     function ($scope, $location, Alert, User, Organization) {
 
         $scope.save = function(org){
+            $scope.working = true;
             Organization.save(org)
                 .success(function(data, status, headers, config) {
                     $scope.user = User.local();
@@ -17,6 +18,9 @@ angular.module('BaubleApp')
                 .error(function(data, status, headers, config) {
                     var defaultMessage = "Could not save organization.";
                     Alert.onErrorResponse(data, defaultMessage);
+                })
+                .finally(function() {
+                    $scope.working = false;
                 });
         };
     }]);
