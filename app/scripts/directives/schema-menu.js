@@ -9,12 +9,15 @@ angular.module('BaubleApp')
             scope: {
                 resource: '=',
                 scalarsOnly: '@',
-                onSelect: '&'
+                onSelect: '&',
+                onLoaded: '&',
+                selected: '=',
+                isOpen: '='
                 // label2: '=?' // i think this is only available in ng 1.2
             },
-            template: '<div dropdown class="btn-group schema-menu">' +
+            template: '<div dropdown class="btn-group schema-menu" is-open="isOpen">' +
                 '<button type="button" class="btn btn-default dropdown-toggle" ng-class="{disabled: !resource}">' +
-                '{{label}}' +
+                '{{selected}}' +
                   '<span class="caret"></span>' +
                 '</button>'+
 
@@ -43,18 +46,28 @@ angular.module('BaubleApp')
                 }
 
                 scope.onItemClicked = function(itemScope, event, column) {
+
+                    scope.isOpen = false;
+
                     // set the text on the btn to the selected item
                     var resourceParts = itemScope.resource.split("/");
                     resourceParts.push(itemScope.column);
                     resourceParts = resourceParts.splice(2); // remove the empty string and table
-                    var selected = resourceParts.join('.');
-                    element.children('.btn').first().text(selected);
-                    element.attr("data-selected", selected);
-
+                    scope.selected = resourceParts.join('.');
                     if(scope.onSelect){
-                        scope.onSelect({$event: event, column: column, selected: selected});
+                        scope.onSelect({$event: event, column: column,
+                                        selected: scope.selected});
                     }
                 };
+
+                //
+                // watch selected for changes and set the value on the button
+                //
+                scope.$watch('selected', function(selected){
+                    console.log('scope.selected: ', scope.selected);
+                    element.attr("data-selected", scope.selected);
+                });
+
 
                 // create a menu and append it to parentElement
                 function buildMenu(resource, callback) {

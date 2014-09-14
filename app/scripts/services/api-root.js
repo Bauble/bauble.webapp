@@ -17,5 +17,5 @@ angular.module('BaubleApp')
             return 'https://api.bauble.io/v1';
         }
 
-        return 'http://localhost:9090/v1';
+        return 'http://localhost:8088/v1';
     }]);

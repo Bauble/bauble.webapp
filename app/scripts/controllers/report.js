@@ -68,10 +68,8 @@ angular.module('BaubleApp')
             Report.list()
                 .success(function(data, status, headers, config) {
                     $scope.model.reports = data;
-                    // empty report
-                    $scope.model.report = {
-                        filters: [{operator: '='}],
-                    };
+                    // set current report to a new empty new repor
+                    $scope.newReport();
                     $scope.model.showQueryBuilder = ($scope.model.reports.length === 0);
                     $scope.model.showReportSelector = ($scope.model.reports.length > 0);
                 })
@@ -103,7 +101,10 @@ angular.module('BaubleApp')
 
 
         $scope.$watch('model.report.resource', function(newValue, oldValue) {
-            if(oldValue !== newValue && oldValue !== null) {
+            console.log('oldValue: ', oldValue);
+            console.log('newValue: ', newValue);
+
+            if(oldValue !== newValue && oldValue !== null && !_.isUndefined(oldValue)) {
                 alert("Warn the user that the domain is changing!");
             }
             if(newValue === null || typeof newValue === 'undefined') {
@@ -171,8 +172,12 @@ angular.module('BaubleApp')
         };
 
         $scope.saveReport = function() {
+            print("saving report: ", $scope.model.report.name);
 
             // TODO: get the report name if it hasn't already been set
+            if(!$scope.model.report.name) {
+
+            }
 
             // TOD: post saved report....where does the report name come from,
             // don't use a modal so it works on touch devices
@@ -185,7 +190,6 @@ angular.module('BaubleApp')
                     var defaultMessage = "** Error: Could not save the report.";
                     Alert.onErrorResponse(data, defaultMessage);
                 });
-
         };
 
 
@@ -250,8 +254,11 @@ angular.module('BaubleApp')
             // update the table data based on the domain, filters and report fields
             //$resource($scope.model.resource).
             // TODO: build up the query based on the filter fields
+            console.log('$scope.model.report: ', $scope.model.report);
             console.log('$scope.model.report.resource: ', $scope.model.report.resource);
             if(!$scope.model.report || !$scope.model.report.resource) {
+                console.log("Create new report...");
+                $scope.newReport();
                 return;
             }
 
@@ -279,31 +286,48 @@ angular.module('BaubleApp')
 
 
         $scope.download = function(){
-            var row;
-            var tableData = $scope.model.tableData;
-            var columns = _.chain($scope.model.tableColumns)
-                .filter('visible')
-                .pluck('name')
-                .value();
-            var csv = [columns.join(',')];
-            console.log('csv: ', csv);
-            for(var i=0; i<tableData.length; i++) {
-                row = [];
-                for(var j=0; j<columns.length; j++) {
-                    console.log('csv: ', csv);
-                    row.push('"' + tableData[i][columns[j]] + '"');
-                }
-                csv.push(row.join(','));
-            }
+            // var row;
+            // var tableData = $scope.model.tableData;
+            // var columns = _.chain($scope.model.tableColumns)
+            //     .filter('visible')
+            //     .pluck('name')
+            //     .value();
+            // var csv = [columns.join(',')];
+            // console.log('csv: ', csv);
+            // for(var i=0; i<tableData.length; i++) {
+            //     row = [];
+            //     for(var j=0; j<columns.length; j++) {
+            //         console.log('csv: ', csv);
+            //         row.push('"' + tableData[i][columns[j]] + '"');
+            //     }
+            //     csv.push(row.join(','));
+            // }
 
+            // **********
+            //
+            // TODO: to download a report we first have to save it to the
+            // server...for unsaved reports or new reports we could generate
+            // temporary reports with some random name and an automatic
+            // expiration date...or they just expire once they're
+            // downloaded....  even for saved reports we could ask the user if
+            // they want to save this report before downloading and if they say
+            // no we just go ahead and create a temporary report
+            //
+            // we could then open that link in a hidden iframe to initiate the
+            // download....this is probably the best way anyways b/c it will
+            // allows us in the future to add formatters without changing
+            // anything
+            //
+            // http://stackoverflow.com/a/8394118/240316
+            // **********
 
-            var csvString = csv.join('\n');
+            //var csvString = csv.join('\n');
             Report.download(csvString, 'text/csv')
                 .success(function(data, status, headers, config) {
                     console.log('data: ', data);
                 })
                 .error(function(data, status, headers, config) {
-                    console.log('data: ', data);
+                    console.log('error data: ', data);
                 });
 
             // TODO: this needs to be tested in IE
