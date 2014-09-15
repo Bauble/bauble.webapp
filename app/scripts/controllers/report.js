@@ -69,7 +69,9 @@ angular.module('BaubleApp')
                 .success(function(data, status, headers, config) {
                     $scope.model.reports = data;
                     // set current report to a new empty new repor
-                    $scope.newReport();
+                    if(data.length === 0) {
+                        $scope.newReport();
+                    }
                     $scope.model.showQueryBuilder = ($scope.model.reports.length === 0);
                     $scope.model.showReportSelector = ($scope.model.reports.length > 0);
                 })
@@ -107,11 +109,19 @@ angular.module('BaubleApp')
             if(oldValue !== newValue && oldValue !== null && !_.isUndefined(oldValue)) {
                 alert("Warn the user that the domain is changing!");
             }
+
             if(newValue === null || typeof newValue === 'undefined') {
+                console.log('empty resource');
                 return;
             }
 
             $scope.model.tableColumns = [new TableColumn('str', "Name", true)];
+
+            console.log('$scope.model.report.resource: ', $scope.model.report.resource);
+            if(!$scope.model.report.resource) {
+                console.log('returning');
+                return;
+            }
 
             // getting scalars only b/c we're using this for column headers,
             // the schema menus are handled by the schema menu directive
@@ -172,12 +182,9 @@ angular.module('BaubleApp')
         };
 
         $scope.saveReport = function() {
-            print("saving report: ", $scope.model.report.name);
+            console.log("saving report: ", $scope.model.report.name);
 
-            // TODO: get the report name if it hasn't already been set
-            if(!$scope.model.report.name) {
-
-            }
+            console.log('$scope.model.report: ', $scope.model.report);
 
             // TOD: post saved report....where does the report name come from,
             // don't use a modal so it works on touch devices
@@ -226,6 +233,10 @@ angular.module('BaubleApp')
                 filters: []
             };
 
+            if(!query) {
+                return parsed;
+            }
+
             var words = query.split(' ');
             if(words[1] === 'where') {
                 parsed.resource = '/' + words[0];
@@ -264,6 +275,7 @@ angular.module('BaubleApp')
 
             var q = buildQueryString($scope.model.report.resource.substring(1),
                                      $scope.model.report.filters);
+            $scope.model.report.query = q;
 
             Search.query(q)
                 .success(function(data, status, headers, config) {
@@ -286,61 +298,23 @@ angular.module('BaubleApp')
 
 
         $scope.download = function(){
-            // var row;
-            // var tableData = $scope.model.tableData;
-            // var columns = _.chain($scope.model.tableColumns)
-            //     .filter('visible')
-            //     .pluck('name')
-            //     .value();
-            // var csv = [columns.join(',')];
-            // console.log('csv: ', csv);
-            // for(var i=0; i<tableData.length; i++) {
-            //     row = [];
-            //     for(var j=0; j<columns.length; j++) {
-            //         console.log('csv: ', csv);
-            //         row.push('"' + tableData[i][columns[j]] + '"');
-            //     }
-            //     csv.push(row.join(','));
-            // }
+            if(_.isUndefined(!$scope.model.report.id)) {
+                // TODO: save the report
+            }
 
-            // **********
-            //
-            // TODO: to download a report we first have to save it to the
-            // server...for unsaved reports or new reports we could generate
-            // temporary reports with some random name and an automatic
-            // expiration date...or they just expire once they're
-            // downloaded....  even for saved reports we could ask the user if
-            // they want to save this report before downloading and if they say
-            // no we just go ahead and create a temporary report
-            //
-            // we could then open that link in a hidden iframe to initiate the
-            // download....this is probably the best way anyways b/c it will
-            // allows us in the future to add formatters without changing
-            // anything
-            //
-            // http://stackoverflow.com/a/8394118/240316
-            // **********
-
-            //var csvString = csv.join('\n');
-            Report.download(csvString, 'text/csv')
+            Report.csv($scope.model.report.id)
                 .success(function(data, status, headers, config) {
-                    console.log('data: ', data);
+                    var element = angular.element('<a/>');
+                    element.attr({
+                        href: 'data:attachment/csv;charset=utf-8,' + encodeURI(data),
+                        target: '_blank',
+                        download: _.template("${filename}.csv",
+                                             {filename: $scope.model.report.name})
+                    })[0].click();
                 })
                 .error(function(data, status, headers, config) {
                     console.log('error data: ', data);
                 });
-
-            // TODO: this needs to be tested in IE
-            // http://stackoverflow.com/questions/17836273/export-javascript-data-to-csv-file-without-server-interaction
-
-            // download the CSV
-            // var csvString = csv.join('\n');
-            // var dataUrl = 'data:text/csv,' + encodeURIComponent(csvString);
-            // window.open(dataUrl);
-
-            // the name doesn't set the filename on most browsers but we use it here anyways
-            // var name = $scope.model.report.name.replace(' ', '_') + ".csv";
-            // window.open(dataUrl, name);  //
         };
 
         //

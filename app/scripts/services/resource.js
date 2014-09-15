@@ -338,13 +338,11 @@ angular.module('BaubleApp')
     .factory('Report', ['$http', 'Resource', function($http, $resource) {
         var resource = $resource('/report');
 
-        resource.download = function(data, content_type) {
+        resource.csv = function(report) {
             return $http({
-                url: [this.resourceUrl, '_download'].join('/'),
-                method: 'POST',
-                headers: _.extend({'content-type': content_type},
-                                  this._getAuthHeader()),
-                data: data
+                url: [this.resourceUrl, report.id || report, 'csv'].join('/'),
+                method: 'GET',
+                headers: this._getAuthHeader()
             });
         };
 
