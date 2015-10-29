@@ -1,3 +1,5 @@
+## This repo has been put out to pasture.  For the future of Bauble on the web see the [Bauble/bauble.web](https://github.com/Bauble/bauble.web).
+
 # Bauble
 Bauble is a web application for managing plant collections.  It is intended to be used by botanic gardens,
 arboreta and herbariums to manage their plant records. For more information visit http://bauble.io
