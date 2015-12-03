@@ -5,7 +5,7 @@ Bauble is a web application for managing plant collections.  It is intended to b
 arboreta and herbariums to manage their plant records. For more information visit http://bauble.io
 
 ## Development - Getting Started
-First you'll need to install NodeJS (http://nodejs.org/)....
+First you'll need to install [NodeJS](http://nodejs.org/) and make sure that the executable `nodejs` is also linked as [`node`](https://github.com/Bauble/bauble2/issues/34)...
 
 ### Install the app
 ```shell
